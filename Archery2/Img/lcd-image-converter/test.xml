@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<data name="lcd_96_72" type="image">
+    <picture format="png">iVBORw0KGgoAAAANSUhEUgAAAGAAAABICAIAAACGBWc0AAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAuklEQVR4nO3asQ1CMRAFwTP992wSYjZA6F8wU8HTSnZ0M3x1Zube+/SMj3PW7Xk9vWE7gYJAQaAgUBAoCBQECgIFgYJAQaAgUBAoCBQECgIFgYJAQaAgUBAoCBQECgIFgYJAQaAgUBAoCAR/te6ia5bt8QcFgYJAQaAgUBAoCBQECgIFgYJAQaAgUBAoCBQECgIFgYJAQaAgUBAoCBQECgIFgYJAQaAgUBAoCMRvzp5rpZ08sSBQECi8AS9jD4PX3W0kAAAAAElFTkSuQmCC</picture>
+    <converted>C:/my_projects/src/lcd-image-converter/logo.c</converted>
+</data>

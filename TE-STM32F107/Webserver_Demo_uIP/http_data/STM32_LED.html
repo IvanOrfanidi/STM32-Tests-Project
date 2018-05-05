@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8" />
+	<style>
+	body {
+	margin:0;
+	padding:0;
+	font-size:16px;
+	color:#666666;
+	background-color:#FFFFFF;
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+	}
+	.leds {
+	padding:5px 10px;
+	float:left;
+	width:80px;
+	font-size:20px;
+	}
+	legend {
+	padding:0 8px;
+	}
+	</style>
+	<title>STM32 Webserver LEDs Control</title>
+	<meta name="description" content="Led" />
+</head>
+
+<body>
+	<form action="method=get">
+		<fieldset>
+			<legend>Управление светодиодами</legend>
+			<div class="leds"><input value="3" name="led" type="checkbox" />D1</div>
+			<div class="leds"><input value="2" name="led" type="checkbox" />D2</div>
+			<div class="leds"><input value="1" name="led" type="checkbox" />D4</div>
+			<div class="leds"><input value="Отправить" type="submit" /></div>
+		</fieldset>
+	</form>
+</body>
+</html>

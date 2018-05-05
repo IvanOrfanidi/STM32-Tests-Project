@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<exampleInfo>
+  <copyDir>..\Library\CMSIS\</copyDir>
+  <copyDir>..\Library\STM32F10x_StdPeriph_Driver\</copyDir>
+  <copyDir>..\Library\STM32_ETH_Driver\</copyDir>
+</exampleInfo>

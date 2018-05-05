@@ -1,0 +1,34 @@
+# NXP LPC2103 ARM7TDMI-S with 32kB Flash and 8kB SRAM, clocked with 12MHz crystal
+
+if { [info exists CHIPNAME] } {
+   set _CHIPNAME $CHIPNAME
+} else {
+   set _CHIPNAME lpc2103
+}
+
+if { [info exists ENDIAN] } {
+   set _ENDIAN $ENDIAN
+} else {
+   set _ENDIAN little
+}
+
+if { [info exists CPUTAPID ] } {
+   set _CPUTAPID $CPUTAPID
+} else {
+   set _CPUTAPID 0x4f1f0f0f
+}
+
+# LPC2000 -> SRST causes TRST
+reset_config trst_and_srst srst_pulls_trst
+
+# jtag speed
+jtag_khz 750
+
+# reset delays
+jtag_nsrst_delay 100
+jtag_ntrst_delay 100
+
+jtag newtap $_CHIPNAME cpu -irlen 4 -ircapture 0x1 -irmask 0xf -expected-id $_CPUTAPID
+
+set _TARGETNAME $_CHIPNAME.cpu
+target create $_TARGETNAME arm7tdmi -endian $_ENDIAN -chain-position $_TARGETNAME -variant arm7tdmi-s_r4

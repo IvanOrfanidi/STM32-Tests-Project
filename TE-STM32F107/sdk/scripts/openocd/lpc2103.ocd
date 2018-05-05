@@ -1,0 +1,10 @@
+source [find arm-usb-ocd.ocd]
+source [find lpc2000.ocd]
+
+# 8kB of internal SRAM
+$_TARGETNAME configure -work-area-phys 0x40000000 -work-area-size 0x2000 -work-area-backup 0
+
+# 32kB of internal Flash, core clocked with 14.7456 MHz crystal
+# flash bank lpc2000 <base> <size> 0 0 <target#> <variant> <clock> [calc_checksum]
+set _FLASHNAME $_CHIPNAME.flash
+flash bank $_FLASHNAME lpc2000 0x0 0x8000 0 0 $_TARGETNAME lpc2000_v2 14745 calc_checksum

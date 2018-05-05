@@ -1,0 +1,32 @@
+﻿Field=#~Integer~#~50|Field=Designator~String~Designator~308|Field=Value~String~Value~20|Field=Comment~String~Comment~20|ReportField=Currency~<none>|ReportField=ProductionQuantity~1|ReportField=ProjectFileName~Archer.PrjPCB|ReportField=ProjectFullPath~D:\Home Project\STM32-Tests-Project\Archery2\PCB\Archer.PrjPCB|ReportField=Title~Bill of Materials For Schematic Document [Archer.SchDoc]|ReportField=TotalQuantity~61|ReportField=ReportTime~16:19:46|ReportField=ReportDate~20.05.2017|ReportField=ReportDateTime~20.05.2017 16:19:46|ReportField=OutputName~Bill of Materials|ReportField=OutputType~BOM_PartType|ReportField=GeneratorName~BOM|ReportField=GeneratorDescription~Bill of Materials|ReportField=VariantName~None|ReportField=Address1~|ReportField=Address2~|ReportField=Address3~|ReportField=Address4~|ReportField=Application_BuildNumber~|ReportField=ApprovedBy~|ReportField=Author~|ReportField=CheckedBy~|ReportField=CompanyName~|ReportField=CurrentDate~20.05.2017|ReportField=CurrentTime~16:19:16|ReportField=Date~|ReportField=DocumentFullPathAndName~D:\Home Project\STM32-Tests-Project\Archery2\PCB\Archer.SchDoc|ReportField=DocumentName~Archer.SchDoc|ReportField=DocumentNumber~|ReportField=DrawnBy~|ReportField=Engineer~|ReportField=ImagePath~|ReportField=ModifiedDate~03.05.2017|ReportField=Organization~|ReportField=ProjectName~Archer.PrjPCB|ReportField=Revision~|ReportField=Rule~|ReportField=SheetNumber~|ReportField=SheetTotal~|ReportField=Time~|ReportField=Title~|ReportField=DataSourceFileName~Archer.SchDoc|ReportField=DataSourceFullPath~D:\Home Project\STM32-Tests-Project\Archery2\PCB\Archer.SchDoc
+1|BAT||Hirose DF13A-3P-1.25H(20)
+2|BOOT, SECOND, WKUP|no|ModelName
+3|C1, C3, C5, C8|10uF|чип 1206 10uF/50V, 
+4|C2, C9, C11, C12, C13, C14, C15|0.1uF|чип 0603 0.1uF/50V, 
+5|C4|1uF|чип 0603 1uF/50V, 
+6|C6, C7|3.9pF|чип 0603 3.9pF/50V, 
+7|C10|10uF|чип 0805 10uF/50V, 
+8|DA1||ModelName
+9|DA2||TPS78233DDCR(SOT23-5)
+10|DD1||ModelName
+11|FA1||F1210 2A/
+12|HA1||AST7525MATRQ
+13|OLED, SWD, UART1||DS1021-1x4
+14|R1, R4|0|чип 0603 0 5%
+15|R2, R3, R8, R12, R18, R19, R22|1k|чип 0603 1k 5%
+16|R5, R7, R9, R16, R17, R20, R21|10k|чип 0603 10k 5%
+17|R6|2.8k|чип 0603 2.8k 5%
+18|R10, R13|10|чип 0603 10 5%
+19|R11|20k|чип 0603 20k 5%
+20|R14|5.9k|чип 0603 5.9k 5%
+21|R15|30k|чип 0603 30k 5%
+22|RV1, RV2|B72590T7900V060|B72590T7900V060
+23|U1||STM32F103C8T6
+24|USB||1981568-1
+25|VD1, VD2||чип 0603 LED (RED)
+26|VD3||1N4148WS (SOD323)
+27|VT1||IRLML0030TRPBF (SOT-23)
+28|VT2||BC807 (SOT-23)
+29|VT3||IRLML6402TRPBF (SOT-23)
+30|VT4||MUN5211T1G (SOT-323)
+31|ZQ1|4 MHz|CSTCR4M00G53Z-B0(4 MHz)

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8" />
+	<link rel="stylesheet" href="STM32_Home_Webserver_Demo_files/stm32_extends.css" />
+	<link rel="icon" type="image/vnd.microsoft.icon" href="STM32_Home_Webserver_Demo_files/favicon.ico" />
+	<link rel="alternate" type="application/rss+xml" title="Сделано в Терраэлектронике" href="http://www.terraelectronica.ru/data/made.xml" />
+	<title>WEB-сервер :: TE-STM32F107</title>
+	<meta name="description" content="WEB-сервер для модуля TE-STM32F107 Барракуда с ядром Cortex-M3 и портом Ethernet" />
+</head>
+<body>
+
+<div class="wrapper col0">
+	<div id="topline">
+		<a class="flag_country" href="http://www.terraelectronica.ru/" title="Перейти на сайт Терраэлектроники" target="_blank"><img src="STM32_Home_Webserver_Demo_files/russian-flag.png" width="24" height="24" alt="RU" /></a>
+		<p> Тел.: +7 (495) 221-78-03 / Факс: +7 (495) 221-78-02</p>
+		<ul>
+			<li><a href="http://www.terraelectronica.ru/showroom.php" target="_blank">Витрины продукции</a>
+			<li><a href="http://www.terraelectronica.ru/company.php?Razdel=6" target="_blank">Адрес</a></li></li>
+			<li><a href="http://www.terraelectronica.ru/company.php" target="_blank">О компании</a></li>
+		</ul>
+		<br class="clear" />
+	</div>
+</div>
+
+<div class="wrapper">
+  <div id="header">
+	<div class="fl_left">
+		<img src="STM32_Home_Webserver_Demo_files/st766.png" alt="" />
+	</div>
+    <div class="fl_left">
+		<h1>ТЕРРИТОРИЯ<br />РАЗРАБОТЧИКОВ<br />ЭЛЕКТРОНИКИ</h1>
+	</div>
+	<br class="clear" />
+  </div>
+</div>
+
+<div class="wrapper col2">
+	<div id="topbar">
+		<div id="topnav">
+			<h2>WEB-сервер для встраиваемого модуля TE-STM32F107 Барракуда</h2>
+		</div>
+	</div>
+	<br class="clear" />
+</div>
+
+<div class="wrapper">
+	<div class="container">
+
+	<p><a href="STM32_Embedded_Module.html" title="Окрыть страницу описания модуля TE-STM32F107" target="_blank"><img class="imgr" src="STM32_Home_Webserver_Demo_files/TE-STM32F107.jpg" alt="TE-STM32F107" /></a>Демонстрационный проект для встраемого модуля TE-STM32F107. Основан на <a href="http://dunkels.com/adam/" target="_blank">uIP TCP/IP</a> стеке v0.9.</p>
+	
+	<p>С помощью веб-браузера вы можете управлять светодиодами модуля TE-STM32F107 и наблюдать напряжение на входе 10-го канала АЦП, которое обновляется 1 раз в секунду.</p>
+	
+	<p>Полная документации по микроконтроллеру STM32F107 доступна на сайте производителя: <a href="http://www.st.com/st-web-ui/active/en/catalog/mmc/FM141/SC1169/SS1031/LN1564/PF221020" target="_blank">www.st.com</a></p>
+
+	<h3>Управление светодиодами модуля TE-STM32F107</h3>
+	<p>Следущее окно позволяет управлять светодиодами модуля TE-STM32F107. Для включения светодиода установите галочку, для выключения снимите. Затем нажмите кнопку "Отправить".</p>
+
+	
+	<iframe src="STM32_LED.html" width="440" height="120" frameborder="0"></iframe>
+
+	<h3>Результат АЦП преобразования</h3>
+
+	<p>В следующем окне вы можете наблюдать за уровнем напряжения на входе 10-го канала АЦП.
+	Изменяя входное напряжение, вы увидите изменения показаний шкалы.</p>
+
+	<iframe src="STM32_StatusBar.html" width="700" height="120" frameborder="0"></iframe>
+
+	<br class="clear" />
+	</div>
+</div>
+
+<footer>
+	<div class="wrapper col8">
+	  <div id="copyright">
+		<p class="fl_left">Copyright &copy; 2013 - <a href="http://www.terraelectronica.ru/" target="_blank">Терраэлектроника ООО</a> - All Rights Reserved</p>
+		<p class="fl_right"><a href="http://twitter.com/TerraElectronic" title="Следуй за нами на Твиттер" target="_blank">Follow me on Twitter</a></p>
+		<br class="clear" />
+	  </div>
+	</div>
+</footer>
+
+</body>
+</html>

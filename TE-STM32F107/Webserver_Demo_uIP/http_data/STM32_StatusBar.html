@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8" />
+	<style>
+	body {
+	margin:0;
+	padding:0;
+	font-size:16px;
+	color:#666666;
+	background-color:#FFFFFF;
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+	}
+	fieldset {border-radius:6px;}
+	#voltmeter {
+	margin-left:14px;
+	}
+	legend {
+	padding:12px 8px;
+	}
+	#indicator {
+	background:#eeeee;
+	border:2px solid #ffffff;
+	width:536;
+	}
+	#grade {
+	border:1px solid #ffffff;
+	width:613px;
+	}
+	#mark td {
+	border-left:1px solid #000000;
+	width:12.5%;
+	text-align:center;
+	font-size:6px;
+	}
+	#nbsp {width:0;}
+	#volt {width:12.5%;}
+	.num {margin:4px 0 0 -10px;font-size:14px;}
+	#scale {
+	background:#33ff00;
+	height:20px;
+	}
+	</style>
+	<meta http-equiv="refresh" content="1" />
+	<title>STM32 Webserver ADC Conversion Status Bar</title>
+	<meta name="description" content="ADC" />
+</head>
+<body>
+	<fieldset>
+		<legend>Уровень входного сигнала</legend>
+		<div id="voltmeter">
+		<table id="indicator" cellpadding="0" cellspacing="0">
+			<tbody>
+				<tr>
+					<td>
+						<table border="0" cellpadding="0" cellspacing="0" width="260">
+							<tbody>
+								<tr>
+									<td id="scale"><div id="nbsp">&nbsp;</div></td>
+								</tr>
+							</tbody>
+						</table>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<table id="grade" cellpadding="0" cellspacing="0" border="0">
+			<tbody>
+				<tr id="mark">
+					<td>&bull;</td>
+					<td>&bull;</td>
+					<td>&bull;</td>
+					<td>&bull;</td>
+					<td>&bull;</td>
+					<td>&bull;</td>
+					<td>&bull;</td>
+					<td></td>
+				</tr>
+				<tr class="volt">
+					<td style="color:green;"><div class="num">0.0</div></td>
+					<td><div class="num">0.5</div></td>
+					<td><div class="num">1.0</div></td>
+					<td><div class="num">1.5</div></td>
+					<td><div class="num">2.0</div></td>
+					<td><div class="num">2.5</div></td>
+					<td><div class="num">3.0</div></td>
+					<td><div class="num">3.5</div></td>
+				</tr>
+			</tbody>
+		</table>
+		</div>
+	</fieldset>
+
+</body>
+</html>
