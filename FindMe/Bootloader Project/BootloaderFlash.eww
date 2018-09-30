@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<workspace>
+  <project>
+    <path>$WS_DIR$\BootloaderFlash.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>All</name>
+      <member>
+        <project>BootloaderFlash</project>
+        <configuration>Boot_ION_FM</configuration>
+      </member>
+      <member>
+        <project>BootloaderFlash</project>
+        <configuration>RAM Debug</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>
+
+
