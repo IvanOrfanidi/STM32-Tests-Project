@@ -19,8 +19,7 @@ int main()
    USB_Init();
 
    // Start Task //
-   xTaskCreate(
-      vPressureTask, "vPressureTask", configMINIMAL_STACK_SIZE * 1, NULL, tskIDLE_PRIORITY + 1, &xHandlePressureTask);
+   xTaskCreate(vPressureTask, "vPressureTask", configMINIMAL_STACK_SIZE * 1, NULL, tskIDLE_PRIORITY + 1, &xHandlePressureTask);
    xTaskCreate(vDebugTask, "vDebugTask", configMINIMAL_STACK_SIZE * 1, NULL, tskIDLE_PRIORITY + 1, &xHandleDebugTask);
 
    // Start scheduler //
@@ -29,13 +28,11 @@ int main()
 
 void vApplicationMallocFailedHook(void)
 {
-   for (;;)
-      ;
+   for (;;);
 }
 void vApplicationStackOverflowHook(TaskHandle_t pxTask, char* pcTaskName)
 {
-   for (;;)
-      ;
+   for (;;);
 }
 
 void vApplicationIdleHook(void)

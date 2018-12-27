@@ -47,8 +47,7 @@ void BMP180_Init(void)
    I2C_Cmd(I2C_PORT, ENABLE);   // Enable I2C
    I2C_Init(I2C_PORT, &I2CInit);   // Configure I2C
 
-   while (I2C_GetFlagStatus(I2C_PORT, I2C_FLAG_BUSY))
-      ;   // Wait until I2C free
+   while (I2C_GetFlagStatus(I2C_PORT, I2C_FLAG_BUSY));   // Wait until I2C free
 }
 
 void BMP180_Reset(void)
@@ -105,37 +104,37 @@ uint8_t BMP180_ReadReg(uint8_t reg)
    return value;
 }
 
+
 void BMP180_ReadCalibration(void)
 {
-   uint8_t i;
    uint8_t buffer[BMP180_PROM_DATA_LEN];
 
    I2C_AcknowledgeConfig(I2C_PORT, ENABLE);   // Enable I2C acknowledge
    I2C_GenerateSTART(I2C_PORT, ENABLE);   // Send START condition
-   while (!I2C_CheckEvent(I2C_PORT, I2C_EVENT_MASTER_MODE_SELECT))
-      ;   // Wait for EV5
+   while (!I2C_CheckEvent(I2C_PORT, I2C_EVENT_MASTER_MODE_SELECT));   // Wait for EV5
+   
    I2C_Send7bitAddress(I2C_PORT, BMP180_ADDR, I2C_Direction_Transmitter);   // Send slave address
-   while (!I2C_CheckEvent(I2C_PORT, I2C_EVENT_MASTER_TRANSMITTER_MODE_SELECTED))
-      ;   // Wait for EV6
+   while (!I2C_CheckEvent(I2C_PORT, I2C_EVENT_MASTER_TRANSMITTER_MODE_SELECTED));   // Wait for EV6
+   
    I2C_SendData(I2C_PORT, BMP180_PROM_START_ADDR);   // Send calibration first register address
-   while (!I2C_CheckEvent(I2C_PORT, I2C_EVENT_MASTER_BYTE_TRANSMITTED))
-      ;   // Wait for EV8
+   while (!I2C_CheckEvent(I2C_PORT, I2C_EVENT_MASTER_BYTE_TRANSMITTED));   // Wait for EV8
+   
    I2C_GenerateSTART(I2C_PORT, ENABLE);   // Send repeated START condition (aka Re-START)
-   while (!I2C_CheckEvent(I2C_PORT, I2C_EVENT_MASTER_MODE_SELECT))
-      ;   // Wait for EV5
+   while (!I2C_CheckEvent(I2C_PORT, I2C_EVENT_MASTER_MODE_SELECT));   // Wait for EV5
+   
    I2C_Send7bitAddress(I2C_PORT, BMP180_ADDR, I2C_Direction_Receiver);   // Send slave address for READ
-   while (!I2C_CheckEvent(I2C_PORT, I2C_EVENT_MASTER_RECEIVER_MODE_SELECTED))
-      ;   // Wait for EV6
-   for (i = 0; i < BMP180_PROM_DATA_LEN - 1; i++)
+   while (!I2C_CheckEvent(I2C_PORT, I2C_EVENT_MASTER_RECEIVER_MODE_SELECTED));   // Wait for EV6
+   
+   size_t i;
+   for (i= 0; i < BMP180_PROM_DATA_LEN - 1; i++)
    {
-      while (!I2C_CheckEvent(I2C_PORT, I2C_EVENT_MASTER_BYTE_RECEIVED))
-         ;   // Wait for EV7 (Byte received from slave)
+      while (!I2C_CheckEvent(I2C_PORT, I2C_EVENT_MASTER_BYTE_RECEIVED));   // Wait for EV7 (Byte received from slave)
       buffer[i] = I2C_ReceiveData(I2C_PORT);   // Receive byte
    }
    I2C_AcknowledgeConfig(I2C_PORT, DISABLE);   // Disable I2C acknowledgment
    I2C_GenerateSTOP(I2C_PORT, ENABLE);   // Send STOP condition
-   while (!I2C_CheckEvent(I2C_PORT, I2C_EVENT_MASTER_BYTE_RECEIVED))
-      ;   // Wait for EV7 (Byte received from slave)
+   while (!I2C_CheckEvent(I2C_PORT, I2C_EVENT_MASTER_BYTE_RECEIVED));   // Wait for EV7 (Byte received from slave)
+   
    buffer[i] = I2C_ReceiveData(I2C_PORT);   // Receive last byte
 
    BMP180_Calibration.AC1 = (buffer[0] << 8) | buffer[1];
@@ -150,6 +149,7 @@ void BMP180_ReadCalibration(void)
    BMP180_Calibration.MC = (buffer[18] << 8) | buffer[19];
    BMP180_Calibration.MD = (buffer[20] << 8) | buffer[21];
 }
+
 
 uint16_t BMP180_Read_UT(void)
 {

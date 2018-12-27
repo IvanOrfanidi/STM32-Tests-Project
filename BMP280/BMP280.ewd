@@ -2,7 +2,7 @@
 <project>
     <fileVersion>3</fileVersion>
     <configuration>
-        <name>STM32F103C8 (ROM 64kB, RAM 20kB)</name>
+        <name>Debug</name>
         <toolchain>
             <name>ARM</name>
         </toolchain>
@@ -44,7 +44,7 @@
                 </option>
                 <option>
                     <name>MemFile</name>
-                    <state>$TOOLKIT_DIR$\CONFIG\debugger\ST\STM32F103V8.ddf</state>
+                    <state>$TOOLKIT_DIR$\CONFIG\debugger\ST\STM32F103C8.ddf</state>
                 </option>
                 <option>
                     <name>RunToEnable</name>
@@ -80,7 +80,7 @@
                 </option>
                 <option>
                     <name>OCProductVersion</name>
-                    <state>7.60.1.11206</state>
+                    <state>8.22.1.15696</state>
                 </option>
                 <option>
                     <name>OCDynDriverList</name>
@@ -278,10 +278,6 @@
                 <wantNonLocal>1</wantNonLocal>
                 <debug>1</debug>
                 <option>
-                    <name>CatchSFERR</name>
-                    <state>1</state>
-                </option>
-                <option>
                     <name>OCDriverInfo</name>
                     <state>1</state>
                 </option>
@@ -400,6 +396,10 @@
                     <state>1</state>
                 </option>
                 <option>
+                    <name>CatchSFERR</name>
+                    <state>1</state>
+                </option>
+                <option>
                     <name>CatchHARDERR</name>
                     <state>1</state>
                 </option>
@@ -493,10 +493,6 @@
                 <version>8</version>
                 <wantNonLocal>1</wantNonLocal>
                 <debug>1</debug>
-                <option>
-                    <name>CatchSFERR</name>
-                    <state>1</state>
-                </option>
                 <option>
                     <name>OCDriverInfo</name>
                     <state>1</state>
@@ -649,6 +645,10 @@
                     <state>1</state>
                 </option>
                 <option>
+                    <name>CatchSFERR</name>
+                    <state>1</state>
+                </option>
+                <option>
                     <name>CatchHARDERR</name>
                     <state>1</state>
                 </option>
@@ -700,7 +700,7 @@
                 <option>
                     <name>IjetTraceSizeList</name>
                     <version>0</version>
-                    <state>2</state>
+                    <state>4</state>
                 </option>
                 <option>
                     <name>FlashBoardPathSlave</name>
@@ -723,10 +723,6 @@
                 <version>16</version>
                 <wantNonLocal>1</wantNonLocal>
                 <debug>1</debug>
-                <option>
-                    <name>CCCatchSFERR</name>
-                    <state>0</state>
-                </option>
                 <option>
                     <name>JLinkSpeed</name>
                     <state>1000</state>
@@ -863,6 +859,10 @@
                 </option>
                 <option>
                     <name>CCCatchINTERR</name>
+                    <state>0</state>
+                </option>
+                <option>
+                    <name>CCCatchSFERR</name>
                     <state>0</state>
                 </option>
                 <option>
@@ -1003,14 +1003,6 @@
                 <wantNonLocal>1</wantNonLocal>
                 <debug>1</debug>
                 <option>
-                    <name>CCSTLinkCatchSFERR</name>
-                    <state>0</state>
-                </option>
-                <option>
-                    <name>CCSTLinkDAPNumber</name>
-                    <state></state>
-                </option>
-                <option>
                     <name>OCDriverInfo</name>
                     <state>1</state>
                 </option>
@@ -1084,6 +1076,10 @@
                     <state>0</state>
                 </option>
                 <option>
+                    <name>CCSTLinkCatchSFERR</name>
+                    <state>0</state>
+                </option>
+                <option>
                     <name>CCSTLinkCatchHARDERR</name>
                     <state>0</state>
                 </option>
@@ -1103,6 +1099,10 @@
                     <name>CCSTLinkJtagSpeedList</name>
                     <version>0</version>
                     <state>0</state>
+                </option>
+                <option>
+                    <name>CCSTLinkDAPNumber</name>
+                    <state></state>
                 </option>
                 <option>
                     <name>CCSTLinkDebugAccessPortRadio</name>
@@ -1218,10 +1218,6 @@
                 <wantNonLocal>1</wantNonLocal>
                 <debug>1</debug>
                 <option>
-                    <name>CCXds100CatchSFERR</name>
-                    <state>0</state>
-                </option>
-                <option>
                     <name>OCDriverInfo</name>
                     <state>1</state>
                 </option>
@@ -1311,6 +1307,10 @@
                 </option>
                 <option>
                     <name>CCXds100CatchINTERR</name>
+                    <state>0</state>
+                </option>
+                <option>
+                    <name>CCXds100CatchSFERR</name>
                     <state>0</state>
                 </option>
                 <option>
@@ -1446,18 +1446,18 @@
         </debuggerPlugins>
     </configuration>
     <configuration>
-        <name>STM32F103RB (ROM 128kB, RAM 20kB)</name>
+        <name>Release</name>
         <toolchain>
             <name>ARM</name>
         </toolchain>
-        <debug>1</debug>
+        <debug>0</debug>
         <settings>
             <name>C-SPY</name>
             <archiveVersion>2</archiveVersion>
             <data>
                 <version>29</version>
                 <wantNonLocal>1</wantNonLocal>
-                <debug>1</debug>
+                <debug>0</debug>
                 <option>
                     <name>CInput</name>
                     <state>1</state>
@@ -1524,7 +1524,7 @@
                 </option>
                 <option>
                     <name>OCProductVersion</name>
-                    <state>7.60.1.11206</state>
+                    <state>8.22.1.15696</state>
                 </option>
                 <option>
                     <name>OCDynDriverList</name>
@@ -1536,7 +1536,7 @@
                 </option>
                 <option>
                     <name>UseFlashLoader</name>
-                    <state>0</state>
+                    <state>1</state>
                 </option>
                 <option>
                     <name>CLowLevel</name>
@@ -1666,7 +1666,7 @@
             <data>
                 <version>1</version>
                 <wantNonLocal>1</wantNonLocal>
-                <debug>1</debug>
+                <debug>0</debug>
                 <option>
                     <name>OCSimDriverInfo</name>
                     <state>1</state>
@@ -1691,7 +1691,7 @@
             <data>
                 <version>0</version>
                 <wantNonLocal>1</wantNonLocal>
-                <debug>1</debug>
+                <debug>0</debug>
                 <option>
                     <name>CCadiMemory</name>
                     <state>1</state>
@@ -1720,11 +1720,7 @@
             <data>
                 <version>4</version>
                 <wantNonLocal>1</wantNonLocal>
-                <debug>1</debug>
-                <option>
-                    <name>CatchSFERR</name>
-                    <state>1</state>
-                </option>
+                <debug>0</debug>
                 <option>
                     <name>OCDriverInfo</name>
                     <state>1</state>
@@ -1844,6 +1840,10 @@
                     <state>1</state>
                 </option>
                 <option>
+                    <name>CatchSFERR</name>
+                    <state>1</state>
+                </option>
+                <option>
                     <name>CatchHARDERR</name>
                     <state>1</state>
                 </option>
@@ -1899,7 +1899,7 @@
             <data>
                 <version>0</version>
                 <wantNonLocal>1</wantNonLocal>
-                <debug>1</debug>
+                <debug>0</debug>
                 <option>
                     <name>OCDriverInfo</name>
                     <state>1</state>
@@ -1936,11 +1936,7 @@
             <data>
                 <version>8</version>
                 <wantNonLocal>1</wantNonLocal>
-                <debug>1</debug>
-                <option>
-                    <name>CatchSFERR</name>
-                    <state>1</state>
-                </option>
+                <debug>0</debug>
                 <option>
                     <name>OCDriverInfo</name>
                     <state>1</state>
@@ -2093,6 +2089,10 @@
                     <state>1</state>
                 </option>
                 <option>
+                    <name>CatchSFERR</name>
+                    <state>1</state>
+                </option>
+                <option>
                     <name>CatchHARDERR</name>
                     <state>1</state>
                 </option>
@@ -2144,7 +2144,7 @@
                 <option>
                     <name>IjetTraceSizeList</name>
                     <version>0</version>
-                    <state>2</state>
+                    <state>4</state>
                 </option>
                 <option>
                     <name>FlashBoardPathSlave</name>
@@ -2166,11 +2166,7 @@
             <data>
                 <version>16</version>
                 <wantNonLocal>1</wantNonLocal>
-                <debug>1</debug>
-                <option>
-                    <name>CCCatchSFERR</name>
-                    <state>0</state>
-                </option>
+                <debug>0</debug>
                 <option>
                     <name>JLinkSpeed</name>
                     <state>1000</state>
@@ -2310,6 +2306,10 @@
                     <state>0</state>
                 </option>
                 <option>
+                    <name>CCCatchSFERR</name>
+                    <state>0</state>
+                </option>
+                <option>
                     <name>CCCatchHARDERR</name>
                     <state>0</state>
                 </option>
@@ -2366,7 +2366,7 @@
             <data>
                 <version>2</version>
                 <wantNonLocal>1</wantNonLocal>
-                <debug>1</debug>
+                <debug>0</debug>
                 <option>
                     <name>OCDriverInfo</name>
                     <state>1</state>
@@ -2399,7 +2399,7 @@
             <data>
                 <version>0</version>
                 <wantNonLocal>1</wantNonLocal>
-                <debug>1</debug>
+                <debug>0</debug>
                 <option>
                     <name>OCDriverInfo</name>
                     <state>1</state>
@@ -2420,7 +2420,7 @@
             <data>
                 <version>3</version>
                 <wantNonLocal>1</wantNonLocal>
-                <debug>1</debug>
+                <debug>0</debug>
                 <option>
                     <name>OCDriverInfo</name>
                     <state>1</state>
@@ -2445,15 +2445,7 @@
             <data>
                 <version>5</version>
                 <wantNonLocal>1</wantNonLocal>
-                <debug>1</debug>
-                <option>
-                    <name>CCSTLinkCatchSFERR</name>
-                    <state>0</state>
-                </option>
-                <option>
-                    <name>CCSTLinkDAPNumber</name>
-                    <state></state>
-                </option>
+                <debug>0</debug>
                 <option>
                     <name>OCDriverInfo</name>
                     <state>1</state>
@@ -2528,6 +2520,10 @@
                     <state>0</state>
                 </option>
                 <option>
+                    <name>CCSTLinkCatchSFERR</name>
+                    <state>0</state>
+                </option>
+                <option>
                     <name>CCSTLinkCatchHARDERR</name>
                     <state>0</state>
                 </option>
@@ -2549,6 +2545,10 @@
                     <state>0</state>
                 </option>
                 <option>
+                    <name>CCSTLinkDAPNumber</name>
+                    <state></state>
+                </option>
+                <option>
                     <name>CCSTLinkDebugAccessPortRadio</name>
                     <state>0</state>
                 </option>
@@ -2564,7 +2564,7 @@
             <data>
                 <version>0</version>
                 <wantNonLocal>1</wantNonLocal>
-                <debug>1</debug>
+                <debug>0</debug>
                 <option>
                     <name>CThirdPartyDriverDll</name>
                     <state>###Uninitialized###</state>
@@ -2589,7 +2589,7 @@
             <data>
                 <version>1</version>
                 <wantNonLocal>1</wantNonLocal>
-                <debug>1</debug>
+                <debug>0</debug>
                 <option>
                     <name>OCDriverInfo</name>
                     <state>1</state>
@@ -2660,11 +2660,7 @@
             <data>
                 <version>6</version>
                 <wantNonLocal>1</wantNonLocal>
-                <debug>1</debug>
-                <option>
-                    <name>CCXds100CatchSFERR</name>
-                    <state>0</state>
-                </option>
+                <debug>0</debug>
                 <option>
                     <name>OCDriverInfo</name>
                     <state>1</state>
@@ -2755,6 +2751,10 @@
                 </option>
                 <option>
                     <name>CCXds100CatchINTERR</name>
+                    <state>0</state>
+                </option>
+                <option>
+                    <name>CCXds100CatchSFERR</name>
                     <state>0</state>
                 </option>
                 <option>

@@ -5,7 +5,7 @@ uint16_t Tx_Idx1;
 uint16_t Rx_Idx1;
 
 __IO uint32_t I2CDirection;
-uint8_t Address;
+uint8_t Address = 0;
 
 void I2C1EvIrq(void)
 {
