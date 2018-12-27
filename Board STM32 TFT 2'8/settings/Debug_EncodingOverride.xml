@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<userOverrides>
+  <override>
+    <path>D:\ARM\Programs\Cortex\IAR\Modem\TFT\src\lcd_dis24.c</path>
+    <encoding>System</encoding>
+  </override>
+</userOverrides>
+
+
