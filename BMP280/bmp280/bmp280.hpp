@@ -131,6 +131,8 @@ class Bmp
 
    bool GetTemperature(float* const);   /// Get real temperature
 
+   bool GetHumidity(float* const);   /// Get real humidity
+
    bool CreateClass();   /// Returns the status of class creation
 
    void Reset();   /// Reset sensor BMP
@@ -176,8 +178,8 @@ class Bmp
     */
    enum BmpDefines_t : uint8_t
    {
-      BMP280_ADDR = 0xEE,   ///< BMP280 address
-      BMP280_CHIP_ID = 0x60   ///< Chip-id. This value is fixed to 0x55.
+      BMP280_ADDR = 0xEE,       ///< BMP280 address
+      BMP280_CHIP_ID = 0x60     ///< Chip-id. This value is fixed to 0x55.
    };
 
    /// Length
@@ -189,24 +191,26 @@ class Bmp
    /// BMP280 registers
    enum BmpRegisters_t : uint8_t
    {
-      BMP280_PROM_START_ADDR = 0x88,   ///< E2PROM calibration data start register
-      BMP280_CHIP_ID_REG = 0xD0,   ///< Chip ID
-      BMP280_TEMP_XLSB = 0xFC,   ///< bits: 7-4
+      BMP280_PROM_START_ADDR = 0x88,    ///< E2PROM calibration data start register
+      BMP280_CHIP_ID_REG = 0xD0,        ///< Chip ID
+      BMP280_HUM_LSB = 0xFE,
+      BMP280_HUM_MSB = 0xFD,
+      BMP280_TEMP_XLSB = 0xFC,          ///< bits: 7-4
       BMP280_TEMP_LSB = 0xFB,
       BMP280_TEMP_MSB = 0xFA,
       BMP280_TEMP = BMP280_TEMP_MSB,
-      BMP280_PRESS_XLSB = 0xF9,   ///< bits: 7-4
+      BMP280_PRESS_XLSB = 0xF9,         ///< bits: 7-4
       BMP280_PRESS_LSB = 0xF8,
       BMP280_PRESS_MSB = 0xF7,
       BMP280_PRESSURE = BMP280_PRESS_MSB,
-      BMP280_CONFIG = 0xF5,   ///< bits: 7-5 t_sb; 4-2 filter; 0 spi3w_en
-      BMP280_CTRL = 0xF4,   ///< bits: 7-5 osrs_t; 4-2 osrs_p; 1-0 mode
-      BMP280_STATUS = 0xF3,   ///< bits: 3 measuring; 0 im_update
-      BMP280_CTRL_HUM = 0xF2,   ///< bits: 2-0 osrs_h;
-      BMP280_CALIB = 0x88,   ///< E2PROM calibration data start register
+      BMP280_CONFIG = 0xF5,             ///< bits: 7-5 t_sb; 4-2 filter; 0 spi3w_en
+      BMP280_CTRL = 0xF4,               ///< bits: 7-5 osrs_t; 4-2 osrs_p; 1-0 mode
+      BMP280_STATUS = 0xF3,             ///< bits: 3 measuring; 0 im_update
+      BMP280_CTRL_HUM = 0xF2,           ///< bits: 2-0 osrs_h;
+      BMP280_CALIB = 0x88,              ///< E2PROM calibration data start register
       BMP280_HUM_CALIB_H1 = 0xA1,
-      BMP280_HUM_CALIB_H2_MSB = 0xE1,
-      BMP280_HUM_CALIB_H2_LSB = 0xE2,
+      BMP280_HUM_CALIB_H2_LSB = 0xE1,
+      BMP280_HUM_CALIB_H2_MSB = 0xE2,
 
       BMP280_HUM_CALIB_H3 = 0xE3,
       BMP280_HUM_CALIB_H4_MSB = 0xE4,
@@ -293,8 +297,18 @@ class Bmp
    };
 
    bool ReadRawTemperature(int32_t*);
+   
+   bool ReadRawPressure(int32_t*);
+   
+   bool ReadRawHumidity(uint32_t*);
+   
+   int32_t GetFineTemperature();
 
    int32_t CalcTemperature(int32_t);
+   
+   uint32_t CalcPressure(int32_t);
+   
+   uint32_t CalcHumidity(uint32_t);
 
    uint8_t WriteReg(uint8_t, uint8_t);
 

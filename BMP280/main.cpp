@@ -17,6 +17,9 @@ using namespace std;
 #include "bmp280.hpp"
 
 float temp = 0;
+uint16_t pressure = 0;
+float humidity = 0;
+
 
 int main()
 {
@@ -46,23 +49,21 @@ int main()
 
    /* Create sensor type BMP (pressure and temperature) */
    Bmp* bmp = new Bmp(I2C1, I2C_SPEED);
-   if ((bmp == nullptr) || (bmp->CreateClass() == false))
-   {
-      while (true)
-         ;
+   if((bmp == nullptr) || (bmp->CreateClass() == false)) {
+      while(true);
    }
 
    /* Read calibration parameters */
-   if (!(bmp->ReadCalibration()))
-   {
-      while (true)
-         ;
+   if(!(bmp->ReadCalibration())) {
+      while(true);
    }
 
    /* General loop */
-   while (true)
+   while(true)
    {
       bmp->GetTemperature(&temp);
+      bmp->GetPressureHg(&pressure);
+      bmp->GetHumidity(&humidity);
 
       Board::LedOn();
       Board::DelayMS(1000);
@@ -72,6 +73,7 @@ int main()
       IWDG_ReloadCounter();
    }
 }
+
 
 #ifdef USE_FULL_ASSERT
 
