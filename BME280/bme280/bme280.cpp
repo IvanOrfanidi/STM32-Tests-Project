@@ -90,9 +90,7 @@ Bme::Bme(I2C_TypeDef* i2c, uint32_t clock, const Params_t* const params)
 
    /* Init I2Cx */
    I2C_DeInit(I2Cx);        // De Init
-
    I2C_Cmd(I2Cx, ENABLE);   // Enable I2Cx
-
    I2C_Init(I2Cx, &init);   // Configure I2Cx
 
    int timeout = TIMEOUT;

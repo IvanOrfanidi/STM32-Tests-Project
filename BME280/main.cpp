@@ -42,11 +42,6 @@ int main()
    /* Initialisation Watchdog timer */
    Board::InitIWDG();
 
-   enum IicConfig_t
-   {
-      I2C_SPEED = 400000
-   };
-
    /* Create sensor type BME (pressure and temperature) */
    Bme* bme = new Bme(I2C1, I2C_SPEED);
    if((bme == nullptr) || (bme->CreateClass() == false)) {
