@@ -16,7 +16,7 @@
         <LeaveTargetRunning>_ 0</LeaveTargetRunning>
     </JLinkDriver>
     <DebugChecksum>
-        <Checksum>326073748</Checksum>
+        <Checksum>3666476203</Checksum>
     </DebugChecksum>
     <CodeCoverage>
         <Enabled>_ 0</Enabled>
@@ -31,6 +31,17 @@
     <CallStack>
         <ShowArgs>0</ShowArgs>
     </CallStack>
+    <struct_types>
+        <Fmt0>struct Bme::BmeCalibration_t-P1	4	0</Fmt0>
+        <Fmt1>struct Bme::BmeCalibration_t-P2	4	0</Fmt1>
+        <Fmt2>struct Bme::BmeCalibration_t-P3	4	0</Fmt2>
+        <Fmt3>struct Bme::BmeCalibration_t-P4	4	0</Fmt3>
+        <Fmt4>struct Bme::BmeCalibration_t-P5	4	0</Fmt4>
+        <Fmt5>struct Bme::BmeCalibration_t-P6	4	0</Fmt5>
+        <Fmt6>struct Bme::BmeCalibration_t-P7	4	0</Fmt6>
+        <Fmt7>struct Bme::BmeCalibration_t-P8	4	0</Fmt7>
+        <Fmt8>struct Bme::BmeCalibration_t-P9	4	0</Fmt8>
+    </struct_types>
     <Trace1>
         <Enabled>0</Enabled>
         <ShowSource>1</ShowSource>

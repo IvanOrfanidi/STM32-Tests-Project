@@ -23,6 +23,7 @@
 *.pbd.linf
 *.linf
 *.xcl
+*.dnx
 *.Zip
 *.SchDocPreview
 *.PcbDocPreview

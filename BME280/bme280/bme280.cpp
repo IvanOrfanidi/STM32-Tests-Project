@@ -248,7 +248,7 @@ bool Bme::ReadCalibration()
     }
 
     uint8_t buf[BME280_PROM_DATA_LEN];
-    for(auto i = 0; i < BME280_PROM_DATA_LEN - 1; i++)
+    for(size_t i = 0; i < BME280_PROM_DATA_LEN; i++)
     {
         timeout = TIMEOUT;
         while(!I2C_CheckEvent(I2Cx, I2C_EVENT_MASTER_BYTE_RECEIVED)) {
@@ -444,7 +444,7 @@ bool Bme::ReadRawPressure(int32_t* raw_pres)
     const uint8_t pres_lsb = ReadReg(BME280_PRESS_LSB);
     const uint8_t pres_xlsb = ReadReg(BME280_PRESS_XLSB);
 
-    if((pres_msb == 0x80) && (pres_lsb == 0) && (pres_xlsb == 0)) {
+    if((pres_msb == 0x80) && (pres_lsb == 0x00) && (pres_xlsb == 0x00)) {
         return false;
     }
 
@@ -465,7 +465,7 @@ bool Bme::ReadRawTemperature(int32_t* raw_temp)
     const uint8_t temp_lsb = ReadReg(BME280_TEMP_LSB);
     const uint8_t temp_xlsb = ReadReg(BME280_TEMP_XLSB);
 
-    if((temp_msb == 0x80) && (temp_lsb == 0) && (temp_xlsb == 0)) {
+    if((temp_msb == 0x80) && (temp_lsb == 0x00) && (temp_xlsb == 0x00)) {
         return false;
     }
 
