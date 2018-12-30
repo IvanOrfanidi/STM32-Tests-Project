@@ -25,9 +25,9 @@
 #define GpioToggle(a, b) a->ODR ^= b
 
 /// LIGHT LED
-#define LED_PIN GPIO_Pin_13
-#define PORT_LED GPIOC
-#define PORT_LED_CLK RCC_APB2Periph_GPIOC
+#define LED_PIN GPIO_Pin_12
+#define PORT_LED GPIOB
+#define PORT_LED_CLK RCC_APB2Periph_GPIOB
 
 #ifdef __cplusplus
 

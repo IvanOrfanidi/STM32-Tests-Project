@@ -38,7 +38,8 @@ int main()
 
     /* Initialisation Led */
     Board::InitLed();
-
+    Board::LedOn();
+    
     /* Initialisation Watchdog timer */
     Board::InitIWDG();
 
@@ -53,7 +54,7 @@ int main()
         while(true);
     }
 
-    Board::DelayMS(1000);
+    Board::DelayMS(500);
 
     /* General loop */
     while(true)
@@ -63,10 +64,10 @@ int main()
         bme->GetHumidity(&humidity);
 
         Board::LedOn();
-        Board::DelayMS(1000);
+        Board::DelayMS(500);
         IWDG_ReloadCounter();
         Board::LedOff();
-        Board::DelayMS(1000);
+        Board::DelayMS(500);
         IWDG_ReloadCounter();
     }
 }
