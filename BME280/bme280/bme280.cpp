@@ -19,6 +19,7 @@
 #include "stm32f10x_rcc.h"
 #include "stm32f10x_gpio.h"
 #include "board.hpp"
+#include <math.h>
 
 
 /**
@@ -312,7 +313,7 @@ bool Bme::ReadCalibration()
 }
 
 /**
- * @brief  Returns the status of class creation.
+ * @brief Returns the status of class creation.
  * @retval true -  Success;
  *         false - Fail.
  */
@@ -323,19 +324,90 @@ bool Bme::CreateClass() const
 
 
 /**
- * @brief  Returns the real pressure in mmHg
- * @param [out] pressure - the real pressure in mmHg
+ * @brief For given air pressure and sea level air pressure returns the altitude 
+ *  in meters as an integer multiplied with 100, i.e. altimeter function.
+ * @param [in] qfe - the QFE pressure
+ * @param [in] qnh - the QNH pressure
+ * @retval altitude in meters
+ */
+int Bme::GetAltitude(uint32_t qfe, uint32_t qnh) const
+{
+    double height = (1.0 - pow((double)qfe/(double)qnh, 1.0/5.25588)) / 2.25577e-5 * 100.0;
+    return (int)(height / 100);
+}
+
+
+double Bme::Ln(double x) const
+{
+    double y = (x-1) / (x+1);
+    double y2 = y * y;
+    double r = 0;
+    for (double i = 33; i > 0; i -= 2) {
+        r = 1.0 / i + y2 * r;
+    }
+    
+    return (2 * y * r);
+}
+
+
+/**
+ * @brief For given temperature and relative humidity returns the dew point 
+ *  in celsius.
+ * @param [in] qfe - the QFE pressure
+ * @param [in] qnh - the QNH pressure
+ * @retval altitude in meters
+ */
+float Bme::GetDewpoint(float hum, float temp) const
+{
+    hum /= 100;
+    const float x = 243.5 * (((17.67 * temp) / (243.5 + temp)) + Ln(hum));
+    const float y = 17.67 - (((17.67 * temp) / (243.5 + temp)) + Ln(hum));
+    const float dewpoint = x / y;
+    
+    return dewpoint;
+}
+
+
+/**
+ * @brief Fast integer Pa -> mmHg conversion (Pascals to millimeters of mercury)
+ * @param [in] ppa - the QNH pressure in Pa
+ * @retval pressure in mmHq
+ */
+uint16_t Bme::Pa2mmHg(uint32_t ppa) const
+{
+   return ((ppa * 75) / 10000);
+}
+
+
+/**
+ * @brief For given altitude converts the air pressure to sea level air pressure.
+ * @param [in] qfe - the QFE pressure
+ * @param [in] alt - the altitude of the measurement place in meters
+ * @retval pressure QNH(давление на уровне моря в точке измерения)
+ */
+double Bme::Qfe2Qnh(uint32_t qfe, int32_t alt) const
+{
+    // pow(a,b) - возведение  а в степень b
+    double height = pow((double)(1.0 - 2.25577e-5 * alt), (double)(-5.25588));
+    
+    return ((double)qfe * height);
+}
+
+
+/**
+ * @brief Returns the QNH pressure(давление на уровне моря в точке измерения)
+ * @param [in] alt - the altitude of the measurement place in meters 
+ * @param [out] ppa - the QNH pressure in Pa
  * @retval true -  Success;
  *         false - Fail.
  */
-bool Bme::GetPressureHg(uint16_t* const pressure)
+bool Bme::GetQnhPressure(uint32_t* const ppa, int32_t alt)
 {
     int32_t raw_pres;
     if(ReadRawPressure(&raw_pres)) {
-        const uint32_t pa_press = CalcPressure(raw_pres);
-
-        /* Fast integer Pa -> mmHg conversion (Pascals to millimeters of mercury) */
-        *pressure = (pa_press * 75) / 10000;
+        const double pressure = Qfe2Qnh(CalcPressure(raw_pres), alt);
+        *ppa = (uint32_t)pressure;
+        
         return true;
     }
     return false;
@@ -343,16 +415,18 @@ bool Bme::GetPressureHg(uint16_t* const pressure)
 
 
 /**
- * @brief  Returns the real pressure in Pa
- * @param [out] pressure - the real pressure in Pa
+ * @brief Returns the QFE pressure(давление измеренное в точке измерения)
+ * @param [out] pressure - the QFE pressure in Pa
  * @retval true -  Success;
  *         false - Fail.
  */
-bool Bme::GetPressurePa(uint32_t * const pressure)
+bool Bme::GetQfePressure(uint32_t* const ppa)
 {
     int32_t raw_pres;
     if(ReadRawPressure(&raw_pres)) {
-        *pressure = CalcPressure(raw_pres);
+        const uint32_t pressure = CalcPressure(raw_pres);
+        *ppa = pressure;
+        
         return true;
     }
     return false;
@@ -360,7 +434,7 @@ bool Bme::GetPressurePa(uint32_t * const pressure)
 
 
 /**
- * @brief  Returns the real humidity.
+ * @brief Returns the real humidity.
  * @param [out] humidity - the real humidity
  * @retval true -  Success;
  *         false - Fail.
@@ -371,14 +445,16 @@ bool Bme::GetHumidity(float* const humidity)
     if(ReadRawHumidity(&raw_hum)) {
         const float cal_hum = CalcHumidity(raw_hum);
         *humidity = cal_hum / 1024;
+        
         return true;
     }
+    
     return false;
 }
 
 
 /**
- * @brief  Get fine temperature
+ * @brief Get fine temperature
  * @retval fine temperature
  */
 int32_t Bme::GetFineTemperature()
@@ -395,7 +471,7 @@ int32_t Bme::GetFineTemperature()
 
 
 /**
- * @brief  Returns the real temperature.
+ * @brief Returns the real temperature.
  * @param [out] temperature - the real temperature
  * @retval true -  Success;
  *         false - Fail.
@@ -413,7 +489,7 @@ bool Bme::GetTemperature(float* const temperature)
 
 
 /**
- * @brief  Returns the RAW humidity.
+ * @brief Returns the RAW humidity.
  * @param [out] raw_hum - the RAW humidity
  * @retval true -  Success;
  *         false - Fail.
@@ -433,7 +509,7 @@ bool Bme::ReadRawHumidity(uint32_t* raw_hum)
 
 
 /**
- * @brief  Returns the RAW pressure.
+ * @brief Returns the RAW pressure.
  * @param [out] raw_pres - the RAW pressure
  * @retval true -  Success;
  *         false - Fail.
@@ -454,7 +530,7 @@ bool Bme::ReadRawPressure(int32_t* raw_pres)
 
 
 /**
- * @brief  Returns the RAW temperature.
+ * @brief Returns the RAW temperature.
  * @param [out] raw_temp - the RAW temperature
  * @retval true -  Success;
  *         false - Fail.
@@ -475,7 +551,7 @@ bool Bme::ReadRawTemperature(int32_t* raw_temp)
 
 
 /**
- * @brief  Calculating humidity
+ * @brief Calculating humidity
  * @param [in] raw_hum - raw humidity
  * @retval general value
  */
@@ -492,14 +568,12 @@ uint32_t Bme::CalcHumidity(uint32_t raw_hum)
                 * (int32_t) Calibration.H2 + 8192) >> 14);
     
     v_x1 = v_x1 - (((((v_x1 >> 15) * (v_x1 >> 15)) >> 7) * (int32_t) Calibration.H1) >> 4);
-    v_x1 = v_x1 < 0 ? 0 : v_x1;
-    v_x1 = v_x1 > 419430400 ? 419430400 : v_x1;
-    return v_x1 >> 12;
+    return (v_x1 >> 12);
 }      
 
 
 /**
- * @brief  Calculating pressure
+ * @brief Calculating pressure
  * @param [in] raw_pres - raw value
  * @retval general value
  */
@@ -519,18 +593,18 @@ uint32_t Bme::CalcPressure(int32_t raw_pres)
         return 0;  // avoid exception caused by division by zero
     }
 
-    int64_t p = 1048576 - raw_pres;
-    p = (((p << 31) - var2) * 3125) / var1;
-    var1 = ((int64_t) Calibration.P9 * (p >> 13) * (p >> 13)) >> 25;
-    var2 = ((int64_t) Calibration.P8 * p) >> 19;
+    int64_t pres = 1048576 - raw_pres;
+    pres = (((pres << 31) - var2) * 3125) / var1;
+    var1 = ((int64_t) Calibration.P9 * (pres >> 13) * (pres >> 13)) >> 25;
+    var2 = ((int64_t) Calibration.P8 * pres) >> 19;
 
-    p = ((p + var1 + var2) >> 8) + ((int64_t) Calibration.P7 << 4);
-    return p / 256;
+    pres = ((pres + var1 + var2) >> 8) + ((int64_t) Calibration.P7 << 4);
+    return (pres / 256);
 }
 
 
 /**
- * @brief  Calculating temperature
+ * @brief Calculating temperature
  * @param [in] raw_temp - raw value
  * @retval general value
  */
@@ -542,12 +616,12 @@ int32_t Bme::CalcTemperature(int32_t raw_temp) const
                      ((raw_temp >> 4) - (int32_t)Calibration.T1)) >> 12) * (int32_t)Calibration.T3) >> 14;
 
     int32_t fine_temp = var1 + var2;
-    return (fine_temp * 5 + 128) >> 8;
+    return ((fine_temp * 5 + 128) >> 8);
 }
 
 
 /**
- * @brief  Write command
+ * @brief Write command
  * @param [in] reg - register address
  * @param [in] value - value data or command
  * @retval return data from BME
@@ -596,7 +670,7 @@ uint8_t Bme::WriteReg(uint8_t reg, uint8_t value)
 
 
 /**
- * @brief  Read register
+ * @brief Read register
  * @param [in] reg - register address
  * @retval return data from BME
  */

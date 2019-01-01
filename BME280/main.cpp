@@ -16,9 +16,7 @@ using namespace std;
 #include "stm32f10x_conf.h"
 #include "bme280.hpp"
 
-float temp = 0;
-uint16_t pressure = 0;
-float humidity = 0;
+
 
 
 int main()
@@ -53,6 +51,13 @@ int main()
     if(!(bme->ReadCalibration())) {
         while(true);
     }
+    
+    float temp = 0;             // temperature
+    volatile uint32_t qfe = 0;  // QFE pressure in mmHg(давление измеренное в точке измерения)
+    volatile uint32_t qnh = 0;  // QNH pressure in mmHg(давление на уровне моря в точке измерения)
+    float hum = 0;              // humidity
+    volatile int alt = 0;       // altitude
+    volatile float dew = 0;     // точка росы
 
     Board::DelayMS(500);
 
@@ -60,8 +65,20 @@ int main()
     while(true)
     {
         bme->GetTemperature(&temp);
-        bme->GetPressureHg(&pressure);
-        bme->GetHumidity(&humidity);
+        
+        bme->GetHumidity(&hum);
+        
+        uint32_t ppa_qfe;
+        bme->GetQfePressure(&ppa_qfe);
+        qfe = bme->Pa2mmHg(ppa_qfe);
+        
+        uint32_t ppa_qnh;
+        bme->GetQnhPressure(&ppa_qnh, 50);
+        qnh = bme->Pa2mmHg(ppa_qnh);
+            
+        alt = bme->GetAltitude(ppa_qfe, ppa_qnh);
+        
+        dew = bme->GetDewpoint(hum, temp);
 
         Board::LedOn();
         Board::DelayMS(500);

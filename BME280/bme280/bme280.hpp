@@ -116,10 +116,18 @@ class Bme
 
         virtual ~Bme();   /// Destructor
 
-        bool GetPressurePa(uint32_t* const);     /// Get real pressure in Pa
+        bool GetQfePressure(uint32_t* const);               /// Get the QFE pressure(давление, измеренное на уровне аэродрома)
 
-        bool GetPressureHg(uint16_t* const);     /// Get real pressure in Pa
+        bool GetQnhPressure(uint32_t* const, int32_t alt);  /// Get the QNH pressure(это давление на уровне мор€ в точке измерени€)
 
+        int GetAltitude(uint32_t, uint32_t) const;          /// Get the altitude in meters
+        
+        float GetDewpoint(float, float) const;              /// Get the dew point in celsius  
+
+        uint16_t Pa2mmHg(uint32_t) const;                   /// Fast integer Pa -> mmHg conversion (Pascals to millimeters of mercury)
+
+        double Qfe2Qnh(uint32_t qfe, int32_t alt) const; /// Fast integer QFE -> QNH conversion
+        
         bool GetTemperature(float* const);       /// Get real temperature
 
         bool GetHumidity(float* const);          /// Get real humidity
@@ -133,164 +141,166 @@ class Bme
         bool ReadCalibration();      /// Read calibration parameters
 
     private:
- 
-    /// BME280 defines
-    enum TimeoutDefines_t
-    {
-        TIMEOUT = 500
-    };
-
-    /**
-    * BME280 or BME280 address is 0x77 if SDO pin is high, and is 0x76 if
-    * SDO pin is low.
-    */
-    enum BmeDefines_t : uint8_t
-    {
-        BME280_ADDR = 0xEE,       ///< BME280 address
-        BME280_CHIP_ID = 0x60     ///< Chip-id. This value is fixed to 0x55.
-    };
-
-    /// Length
-    enum BmeLengthDefines_t
-    {
-        BME280_PROM_DATA_LEN = 24,   ///< E2PROM length
-    };
-
-    /// BME280 registers
-    enum BmeRegisters_t : uint8_t
-    {
-        BME280_PROM_START_ADDR = 0x88,    ///< E2PROM calibration data start register
-        BME280_CHIP_ID_REG = 0xD0,        ///< Chip ID
-        BME280_HUM_LSB = 0xFE,
-        BME280_HUM_MSB = 0xFD,
-        BME280_TEMP_XLSB = 0xFC,          ///< bits: 7-4
-        BME280_TEMP_LSB = 0xFB,
-        BME280_TEMP_MSB = 0xFA,
-        BME280_TEMP = BME280_TEMP_MSB,
-        BME280_PRESS_XLSB = 0xF9,         ///< bits: 7-4
-        BME280_PRESS_LSB = 0xF8,
-        BME280_PRESS_MSB = 0xF7,
-        BME280_PRESSURE = BME280_PRESS_MSB,
-        BME280_CONFIG = 0xF5,             ///< bits: 7-5 t_sb; 4-2 filter; 0 spi3w_en
-        BME280_CTRL = 0xF4,               ///< bits: 7-5 osrs_t; 4-2 osrs_p; 1-0 mode
-        BME280_STATUS = 0xF3,             ///< bits: 3 measuring; 0 im_update
-        BME280_CTRL_HUM = 0xF2,           ///< bits: 2-0 osrs_h;
-        BME280_HUM_CALIB_H1 = 0xA1,
-        BME280_HUM_CALIB_H2_LSB = 0xE1,
-        BME280_HUM_CALIB_H2_MSB = 0xE2,
-        BME280_HUM_CALIB_H3 = 0xE3,
-        BME280_HUM_CALIB_H4_MSB = 0xE5,   ///< H4[11:4 3:0] = 0xE4[7:0] 0xE5[3:0] 12-bit signed
-        BME280_HUM_CALIB_H4_LSB = 0xE4,
-        BME280_HUM_CALIB_H5_MSB = 0xE6,   ///< H5[11:4 3:0] = 0xE6[7:0] 0xE5[7:4] 12-bit signed
-        BME280_HUM_CALIB_H5_LSB = 0xE5,
-        BME280_HUM_CALIB_H6 = 0xE7,
-        BME280_SOFT_RESET_REG = 0xE0,   ///< Soft reset control
-    };
-
-    /// BME280 control values
-    enum BmeControlValues_t : uint8_t
-    {
-        BME280_T_MEASURE = 0x2E,   ///< temperature measurement
-        BME280_P0_MEASURE = 0x34,   ///< pressure measurement (OSS=0, 4.5ms)
-        BME280_P1_MEASURE = 0x74,   ///< pressure measurement (OSS=1, 7.5ms)
-        BME280_P2_MEASURE = 0xB4,   ///< pressure measurement (OSS=2, 13.5ms)
-        BME280_P3_MEASURE = 0xF4,   ///< pressure measurement (OSS=3, 25.5ms)
-    };
-
-    /// Calibration parameters structure
-    struct BmeCalibration_t
-    {
-        uint16_t T1;
-        int16_t T2;
-        int16_t T3;
-
-        uint16_t P1;
-        int16_t P2;
-        int16_t P3;
-        int16_t P4;
-        int16_t P5;
-        int16_t P6;
-        int16_t P7;
-        int16_t P8;
-        int16_t P9;
-
-        /* Humidity compensation for BME280 */
-        uint8_t H1;
-        int16_t H2;
-        uint8_t H3;
-        int16_t H4;
-        int16_t H5;
-        int8_t H6;
-
-        BmeCalibration_t()
+     
+        /// BME280 defines
+        enum TimeoutDefines_t
         {
-            T1 = 0;
-            T2 = 0;
-            T3 = 0;
-            P1 = 0;
-            P2 = 0;
-            P3 = 0;
-            P4 = 0;
-            P5 = 0;
-            P6 = 0;
-            P7 = 0;
-            P8 = 0;
-            P9 = 0;
-            H1 = 0;
-            H2 = 0;
-            H3 = 0;
-            H4 = 0;
-            H5 = 0;
-            H6 = 0;
-        }
-    };
+            TIMEOUT = 500
+        };
 
-    /// Bme Information
-    struct BmeInformation_t
-    {
-        uint8_t ChipID;   ///< Chip ID. This value is fixed to 0x55
-    };
+        /**
+        * BME280 or BME280 address is 0x77 if SDO pin is high, and is 0x76 if
+        * SDO pin is low.
+        */
+        enum BmeDefines_t : uint8_t
+        {
+            BME280_ADDR = 0xEE,       ///< BME280 address
+            BME280_CHIP_ID = 0x60     ///< Chip-id. This value is fixed to 0x55.
+        };
 
-    /// Count BME sensors
-    enum Bme_t
-    {
-        BME1,
-        BME2,
+        /// Length
+        enum BmeLengthDefines_t
+        {
+            BME280_PROM_DATA_LEN = 24,   ///< E2PROM length
+        };
 
-        BME280_MAX_COUNT
-    };
+        /// BME280 registers
+        enum BmeRegisters_t : uint8_t
+        {
+            BME280_PROM_START_ADDR = 0x88,    ///< E2PROM calibration data start register
+            BME280_CHIP_ID_REG = 0xD0,        ///< Chip ID
+            BME280_HUM_LSB = 0xFE,
+            BME280_HUM_MSB = 0xFD,
+            BME280_TEMP_XLSB = 0xFC,          ///< bits: 7-4
+            BME280_TEMP_LSB = 0xFB,
+            BME280_TEMP_MSB = 0xFA,
+            BME280_TEMP = BME280_TEMP_MSB,
+            BME280_PRESS_XLSB = 0xF9,         ///< bits: 7-4
+            BME280_PRESS_LSB = 0xF8,
+            BME280_PRESS_MSB = 0xF7,
+            BME280_PRESSURE = BME280_PRESS_MSB,
+            BME280_CONFIG = 0xF5,             ///< bits: 7-5 t_sb; 4-2 filter; 0 spi3w_en
+            BME280_CTRL = 0xF4,               ///< bits: 7-5 osrs_t; 4-2 osrs_p; 1-0 mode
+            BME280_STATUS = 0xF3,             ///< bits: 3 measuring; 0 im_update
+            BME280_CTRL_HUM = 0xF2,           ///< bits: 2-0 osrs_h;
+            BME280_HUM_CALIB_H1 = 0xA1,
+            BME280_HUM_CALIB_H2_LSB = 0xE1,
+            BME280_HUM_CALIB_H2_MSB = 0xE2,
+            BME280_HUM_CALIB_H3 = 0xE3,
+            BME280_HUM_CALIB_H4_MSB = 0xE5,   ///< H4[11:4 3:0] = 0xE4[7:0] 0xE5[3:0] 12-bit signed
+            BME280_HUM_CALIB_H4_LSB = 0xE4,
+            BME280_HUM_CALIB_H5_MSB = 0xE6,   ///< H5[11:4 3:0] = 0xE6[7:0] 0xE5[7:4] 12-bit signed
+            BME280_HUM_CALIB_H5_LSB = 0xE5,
+            BME280_HUM_CALIB_H6 = 0xE7,
+            BME280_SOFT_RESET_REG = 0xE0,   ///< Soft reset control
+        };
 
-    bool ReadRawTemperature(int32_t*);
+        /// BME280 control values
+        enum BmeControlValues_t : uint8_t
+        {
+            BME280_T_MEASURE = 0x2E,   ///< temperature measurement
+            BME280_P0_MEASURE = 0x34,   ///< pressure measurement (OSS=0, 4.5ms)
+            BME280_P1_MEASURE = 0x74,   ///< pressure measurement (OSS=1, 7.5ms)
+            BME280_P2_MEASURE = 0xB4,   ///< pressure measurement (OSS=2, 13.5ms)
+            BME280_P3_MEASURE = 0xF4,   ///< pressure measurement (OSS=3, 25.5ms)
+        };
 
-    bool ReadRawPressure(int32_t*);
+        /// Calibration parameters structure
+        struct BmeCalibration_t
+        {
+            uint16_t T1;
+            int16_t T2;
+            int16_t T3;
 
-    bool ReadRawHumidity(uint32_t*);
+            uint16_t P1;
+            int16_t P2;
+            int16_t P3;
+            int16_t P4;
+            int16_t P5;
+            int16_t P6;
+            int16_t P7;
+            int16_t P8;
+            int16_t P9;
 
-    int32_t GetFineTemperature();
+            /* Humidity compensation for BME280 */
+            uint8_t H1;
+            int16_t H2;
+            uint8_t H3;
+            int16_t H4;
+            int16_t H5;
+            int8_t H6;
 
-    int32_t CalcTemperature(int32_t) const;
+            BmeCalibration_t()
+            {
+                T1 = 0;
+                T2 = 0;
+                T3 = 0;
+                P1 = 0;
+                P2 = 0;
+                P3 = 0;
+                P4 = 0;
+                P5 = 0;
+                P6 = 0;
+                P7 = 0;
+                P8 = 0;
+                P9 = 0;
+                H1 = 0;
+                H2 = 0;
+                H3 = 0;
+                H4 = 0;
+                H5 = 0;
+                H6 = 0;
+            }
+        };
 
-    uint32_t CalcPressure(int32_t);
+        /// Bme Information
+        struct BmeInformation_t
+        {
+            uint8_t ChipID;   ///< Chip ID. This value is fixed to 0x55
+        };
 
-    uint32_t CalcHumidity(uint32_t);
+        /// Count BME sensors
+        enum Bme_t
+        {
+            BME1,
+            BME2,
 
-    uint8_t WriteReg(uint8_t, uint8_t);
+            BME280_MAX_COUNT
+        };
 
-    uint8_t ReadReg(uint8_t);
+        bool ReadRawTemperature(int32_t*);
 
-    BmeCalibration_t Calibration;   ///< Calibration parameters from E2PROM of BME280
+        bool ReadRawPressure(int32_t*);
 
-    BmeInformation_t BmeInfo;   ///< Service information about BME280
+        bool ReadRawHumidity(uint32_t*);
 
-    I2C_TypeDef* I2Cx;   ///< ”казатель на экзепл€р рабочей шины
+        int32_t GetFineTemperature();
 
-    Params_t Params;   ///< ѕараметры настроек датчика
+        int32_t CalcTemperature(int32_t) const;
 
-    uint8_t Address;   ///< јдрес датчика на шине
+        uint32_t CalcPressure(int32_t);
 
-    uint32_t Clock;   ///< Baud Rate шины I2C
+        uint32_t CalcHumidity(uint32_t);
 
-    static Bme* Bme280[BME280_MAX_COUNT];   ///< —татические экземпл€ры класса
+        uint8_t WriteReg(uint8_t, uint8_t);
+
+        uint8_t ReadReg(uint8_t);
+        
+        double Ln(double) const;
+
+        BmeCalibration_t Calibration;   ///< Calibration parameters from E2PROM of BME280
+
+        BmeInformation_t BmeInfo;   ///< Service information about BME280
+
+        I2C_TypeDef* I2Cx;   ///< ”казатель на экзепл€р рабочей шины
+
+        Params_t Params;   ///< ѕараметры настроек датчика
+
+        uint8_t Address;   ///< јдрес датчика на шине
+
+        uint32_t Clock;   ///< Baud Rate шины I2C
+
+        static Bme* Bme280[BME280_MAX_COUNT];   ///< —татические экземпл€ры класса
 };
 
 #endif
