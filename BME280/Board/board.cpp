@@ -20,7 +20,9 @@
 #include "board.hpp"
 #include "stm32f10x_conf.h"
 
+
 uint32_t Board::SysCount = 0;
+
 
 /*
  * @brief  Set NVIC Priority Group.

@@ -7,18 +7,26 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-/* Standart lib */
 #include <iostream>
 using namespace std;
 
+
+/* User lib */
 #include "board.hpp"
 #include "stm32f10x_conf.h"
 #include "bme280.hpp"
 
 
+/// I2C Baudrate
+enum IicConfig_t
+{
+    I2C_SPEED = 400000
+};
 
 
+/*
+ * @brief General functions MAIN
+ */
 int main()
 {
     /* Set NVIC Priority Group (4 bits for preemption priority, 0 bits for

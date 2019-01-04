@@ -32,39 +32,54 @@
 #ifdef __cplusplus
 
 
-enum IicConfig_t
-{
-  I2C_SPEED = 400000
-};
-
-
+/*
+ * @brief Class Board
+ */
 class Board
 {
     public:
+    
         static void SetNvicPriorityGroup(uint32_t);   ///< Set NVIC Priority Group
+
         static void InitSysTick(uint32_t ticks_us = 1000);   ///< Init System Tick
+
         static uint32_t ClockUpdate();   ///< Update and geting System Clock Core
+
         static void InitLed();   ///< Initialisation Led
+
         static void InitBKP();   ///< Initialisation Backup
+
         static void InitIWDG();   ///< Initialisation Watchdog timer
+
         static void SleepDevice();   ///< Sleep Device
+
         static void WakeUpPinEnable();   ///< Enable WKUP pin
+
         static void LedOn();   ///< Enable Led
+
         static void LedOff();   ///< Disable Led
+
         static void DelayMS(uint32_t);   ///< Delay msec
+
         static uint32_t GetSysCount();   ///< Get System Counter
 
         static uint32_t SysCount;
 
     protected:
+    
         Board();   ///< Constructor
 
     private:
+    
         virtual ~Board();
 };
 
+
+/*
+ * @brief Extern interrupt
+ */
 extern "C" {
-void SysTick_Handler(void);
+    void SysTick_Handler(void);
 }
 #endif
 
