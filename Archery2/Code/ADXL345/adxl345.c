@@ -169,10 +169,8 @@ static uint8_t ADXL345_read_byte(uint8_t add)
 
    SPI_I2S_SendData(ADXL345_SPI, (add | 0x80) << 8 | 0x00);
 
-   while (SPI_I2S_GetFlagStatus(ADXL345_SPI, SPI_I2S_FLAG_TXE) == RESET)
-      ;
-   while (SPI_I2S_GetFlagStatus(ADXL345_SPI, SPI_I2S_FLAG_RXNE) == RESET)
-      ;
+   while (SPI_I2S_GetFlagStatus(ADXL345_SPI, SPI_I2S_FLAG_TXE) == RESET);
+   while (SPI_I2S_GetFlagStatus(ADXL345_SPI, SPI_I2S_FLAG_RXNE) == RESET);
 
    ACCEL_CS_DISABLE;
 
@@ -185,10 +183,8 @@ static uint8_t ADXL345_write_byte(uint8_t add, uint8_t val)
 
    SPI_I2S_SendData(ADXL345_SPI, add << 8 | val);
 
-   while (SPI_I2S_GetFlagStatus(ADXL345_SPI, SPI_I2S_FLAG_TXE) == RESET)
-      ;
-   while (SPI_I2S_GetFlagStatus(ADXL345_SPI, SPI_I2S_FLAG_RXNE) == RESET)
-      ;
+   while (SPI_I2S_GetFlagStatus(ADXL345_SPI, SPI_I2S_FLAG_TXE) == RESET);
+   while (SPI_I2S_GetFlagStatus(ADXL345_SPI, SPI_I2S_FLAG_RXNE) == RESET);
 
    ACCEL_CS_DISABLE;
 

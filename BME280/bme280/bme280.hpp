@@ -292,7 +292,7 @@ class Bme
 
         BmeInformation_t BmeInfo;   ///< Service information about BME280
 
-        I2C_TypeDef* I2Cx;   ///< ”казатель на экзепл€р рабочей шины
+        I2C_TypeDef* I2Cx;   ///< Interface
 
         Params_t Params;   ///< ѕараметры настроек датчика
 
@@ -300,7 +300,7 @@ class Bme
 
         uint32_t Clock;   ///< Baud Rate шины I2C
 
-        static Bme* Bme280[BME280_MAX_COUNT];   ///< —татические экземпл€ры класса
+        static Bme* Bme280[BME280_MAX_COUNT];   ///< Static instances of a class
 };
 
 #endif

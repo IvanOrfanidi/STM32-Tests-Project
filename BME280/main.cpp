@@ -49,7 +49,7 @@ int main()
     /* Initialisation Watchdog timer */
     Board::InitIWDG();
 
-    /* Create sensor type BME (pressure and temperature) */
+    /* Create sensor type BME (pressure, humidity and temperature) */
     Bme* bme = new Bme(I2C1, I2C_SPEED);
     if((bme == nullptr) || (bme->CreateClass() == false)) {
         while(true);

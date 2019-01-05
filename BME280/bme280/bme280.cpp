@@ -23,7 +23,7 @@
 
 
 /**
- * @brief Статические экземпляры класса
+ * @brief Static instances of a class
  */
 Bme* Bme::Bme280[Bme::BME280_MAX_COUNT];
 
@@ -49,7 +49,7 @@ Bme::Bme(I2C_TypeDef* i2c, uint32_t clock, const Params_t* const params)
 
     if(i2c == I2C1) {
         if(Bme280[BME1]) {
-        return;
+            return;
         }
         Bme280[BME1] = this;
 
@@ -132,7 +132,7 @@ Bme::Bme(I2C_TypeDef* i2c, uint32_t clock, const Params_t* const params)
 Bme::~Bme()
 {
     GPIO_InitTypeDef port;
-    port.GPIO_Mode = GPIO_Mode_AIN;
+    port.GPIO_Mode = GPIO_Mode_IN_FLOATING;
     port.GPIO_Speed = GPIO_Speed_2MHz;
 
     if(I2Cx == I2C1) {
@@ -337,12 +337,15 @@ int Bme::GetAltitude(uint32_t qfe, uint32_t qnh) const
 }
 
 
+/**
+ * @brief Natural logarithm
+ */
 double Bme::Ln(double x) const
 {
     double y = (x-1) / (x+1);
     double y2 = y * y;
     double r = 0;
-    for (double i = 33; i > 0; i -= 2) {
+    for (int i = 33; i > 0; i -= 2) {
         r = 1.0 / i + y2 * r;
     }
     
@@ -353,9 +356,9 @@ double Bme::Ln(double x) const
 /**
  * @brief For given temperature and relative humidity returns the dew point 
  *  in celsius.
- * @param [in] qfe - the QFE pressure
- * @param [in] qnh - the QNH pressure
- * @retval altitude in meters
+ * @param [in] hum - humidity
+ * @param [in] temp - temperature
+ * @retval dew point in celsius
  */
 float Bme::GetDewpoint(float hum, float temp) const
 {
