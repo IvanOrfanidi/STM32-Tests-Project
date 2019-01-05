@@ -308,6 +308,7 @@ bool Nrf::Check() const
     
     uint8_t answer[SIZE_TEST_BUF];
     ReadMBReg(nRF24_CMD_R_REGISTER | nRF24_REG_TX_ADDR, answer, SIZE_TEST_BUF);
+    
     if(memcmp(request, answer, SIZE_TEST_BUF)) {
         return false;
     }
