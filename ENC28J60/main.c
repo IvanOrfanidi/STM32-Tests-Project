@@ -15,33 +15,23 @@ int main()
    // InitIWDG();    // Init Watch Dog
    InitBKP();
 
-#ifdef DEBUG_OUTPUT_USB
-   Set_System();
-   Set_USBClock();
-   USB_Interrupts_Config();
-   USB_Init();
-#else
-   rtc_init();
-#endif
-
    // Start Task //
-   xTaskCreate(
-      vTask_uIP_periodic, "uIPp", configMINIMAL_STACK_SIZE * 2, NULL, tskIDLE_PRIORITY + 2, (xTaskHandle*)NULL);
+   xTaskCreate(vTask_uIP_periodic, "uIPp", configMINIMAL_STACK_SIZE * 4, NULL, tskIDLE_PRIORITY + 2, (xTaskHandle*)NULL);
    xTaskCreate(vTask_uIP, "uIP", configMINIMAL_STACK_SIZE * 4, NULL, tskIDLE_PRIORITY + 2, (xTaskHandle*)NULL);
 
    // Start scheduler //
    osKernelStart(NULL, NULL);
+   
+   while(true);
 }
 
 void vApplicationMallocFailedHook(void)
 {
-   for (;;)
-      ;
+   for (;;);
 }
 void vApplicationStackOverflowHook(TaskHandle_t pxTask, char* pcTaskName)
 {
-   for (;;)
-      ;
+   for (;;);
 }
 
 void vApplicationIdleHook(void)

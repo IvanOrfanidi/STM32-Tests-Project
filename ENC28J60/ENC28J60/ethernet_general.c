@@ -26,9 +26,9 @@ void vTask_uIP_periodic(void* pvParameters)
 
    // установим адрес хоста (не используем dhcp)
    uip_ipaddr_t ipaddr;
-   uip_ipaddr(ipaddr, 192, 168, 105, 100);
+   uip_ipaddr(ipaddr, 192, 168, 0, 110);
    uip_sethostaddr(ipaddr);
-   uip_ipaddr(ipaddr, 192, 168, 1, 5);
+   uip_ipaddr(ipaddr, 192, 168, 0, 1);
    uip_setdraddr(ipaddr);
    uip_ipaddr(ipaddr, 255, 255, 255, 0);
    uip_setnetmask(ipaddr);

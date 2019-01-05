@@ -93,9 +93,9 @@ extern uint32_t SystemCoreClock;
 #define configCPU_CLOCK_HZ (SystemCoreClock)
 #define configTICK_RATE_HZ ((portTickType)1000)
 #define configMAX_PRIORITIES ((unsigned portBASE_TYPE)5)
-#define configMINIMAL_STACK_SIZE ((unsigned short)128)   // *4
-#define configTOTAL_HEAP_SIZE ((size_t)10 * 512)
-#define configMAX_TASK_NAME_LEN (22)
+#define configMINIMAL_STACK_SIZE ((unsigned short)256)   // *4
+#define configTOTAL_HEAP_SIZE ((size_t)24 * 512)
+#define configMAX_TASK_NAME_LEN (28)
 #define configUSE_TRACE_FACILITY 1
 #define configUSE_16_BIT_TICKS 0
 #define configIDLE_SHOULD_YIELD 1
