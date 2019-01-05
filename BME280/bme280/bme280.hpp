@@ -285,8 +285,6 @@ class Bme
         uint8_t WriteReg(uint8_t, uint8_t);
 
         uint8_t ReadReg(uint8_t);
-        
-        double Ln(double) const;
 
         BmeCalibration_t Calibration;   ///< Calibration parameters from E2PROM of BME280
 

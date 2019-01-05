@@ -81,7 +81,7 @@ int main()
         qfe = bme->Pa2mmHg(ppa_qfe);
         
         uint32_t ppa_qnh;
-        bme->GetQnhPressure(&ppa_qnh, 50);
+        bme->GetQnhPressure(&ppa_qnh, 30);
         qnh = bme->Pa2mmHg(ppa_qnh);
             
         alt = bme->GetAltitude(ppa_qfe, ppa_qnh);

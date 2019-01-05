@@ -27,6 +27,9 @@
  */
 Bme* Bme::Bme280[Bme::BME280_MAX_COUNT];
 
+/// Natural logarithm
+static inline double ln(double x);
+
 
 /**
  * @brief Сonstructor
@@ -313,7 +316,7 @@ bool Bme::ReadCalibration()
 }
 
 /**
- * @brief Returns the status of class creation.
+ * @brief Returns the status of class creation
  * @retval true -  Success;
  *         false - Fail.
  */
@@ -325,14 +328,14 @@ bool Bme::CreateClass() const
 
 /**
  * @brief For given air pressure and sea level air pressure returns the altitude 
- *  in meters as an integer multiplied with 100, i.e. altimeter function.
+ *  in meters i.e. altimeter function
  * @param [in] qfe - the QFE pressure
  * @param [in] qnh - the QNH pressure
  * @retval altitude in meters
  */
 int Bme::GetAltitude(uint32_t qfe, uint32_t qnh) const
 {
-    double height = (1.0 - pow((double)qfe/(double)qnh, 1.0/5.25588)) / 2.25577e-5 * 100.0;
+    const double height = (1.0 - pow((double)qfe/(double)qnh, 1.0/5.25588)) / 2.25577e-5 * 100.0;
     return (int)(height / 100);
 }
 
@@ -340,11 +343,12 @@ int Bme::GetAltitude(uint32_t qfe, uint32_t qnh) const
 /**
  * @brief Natural logarithm
  */
-double Bme::Ln(double x) const
+static inline double ln(double x)
 {
-    double y = (x-1) / (x+1);
-    double y2 = y * y;
+    const double y = (x-1) / (x+1);
+    const double y2 = y * y;
     double r = 0;
+    
     for (int i = 33; i > 0; i -= 2) {
         r = 1.0 / i + y2 * r;
     }
@@ -363,9 +367,9 @@ double Bme::Ln(double x) const
 float Bme::GetDewpoint(float hum, float temp) const
 {
     hum /= 100;
-    const float x = 243.5 * (((17.67 * temp) / (243.5 + temp)) + Ln(hum));
-    const float y = 17.67 - (((17.67 * temp) / (243.5 + temp)) + Ln(hum));
-    const float dewpoint = x / y;
+    const double x = 243.5 * (((17.67 * temp) / (243.5 + temp)) + ln(hum));
+    const double y = 17.67 - (((17.67 * temp) / (243.5 + temp)) + ln(hum));
+    const double dewpoint = x / y;
     
     return dewpoint;
 }
@@ -391,7 +395,7 @@ uint16_t Bme::Pa2mmHg(uint32_t ppa) const
 double Bme::Qfe2Qnh(uint32_t qfe, int32_t alt) const
 {
     // pow(a,b) - возведение  а в степень b
-    double height = pow((double)(1.0 - 2.25577e-5 * alt), (double)(-5.25588));
+    const double height = pow((double)(1.0 - 2.25577e-5 * alt), (double)(-5.25588));
     
     return ((double)qfe * height);
 }
