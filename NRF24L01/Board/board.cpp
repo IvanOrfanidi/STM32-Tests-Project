@@ -103,6 +103,32 @@ void Board::InitLed()
 }
 
 
+void Board::GpioClock(const GPIO_TypeDef* port, FunctionalState state)
+{
+    if(port == GPIOA) {
+        RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, state);
+    }
+    else if (port == GPIOB) {
+        RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB, state);
+    }
+    else if (port == GPIOC) {
+        RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOC, state);
+    }
+    else if (port == GPIOD) {
+        RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOD, state);
+    }
+    else if (port == GPIOE) {
+        RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOE, state);
+    }
+    else if (port == GPIOF) {
+        RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOF, state);
+    }
+    else if (port == GPIOG) {
+        RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOG, state);
+    }
+}
+
+
 /**
  * @brief  Enable Led.
  * @retval None.

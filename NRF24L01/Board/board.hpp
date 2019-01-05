@@ -19,6 +19,7 @@
 #define __BOARD_HPP
 
 #include <stdint.h>
+#include "stm32f10x_gpio.h"
 
 #define GpioHigh(a, b) a->BSRR = b
 #define GpioLow(a, b) a->BRR = b
@@ -61,6 +62,8 @@ class Board
         static void DelayMS(uint32_t);   ///< Delay msec
 
         static uint32_t GetSysCount();   ///< Get System Counter
+
+        static void GpioClock(const GPIO_TypeDef*, FunctionalState);  ///< Enable/Disable Clock Port
 
         static uint32_t SysCount;
 

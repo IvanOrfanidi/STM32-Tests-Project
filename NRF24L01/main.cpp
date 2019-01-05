@@ -36,6 +36,16 @@ int main()
     Board::InitLed();
     Board::LedOn();
     
+       
+    /* Create radio */
+    Nrf* nrf1 = new Nrf(SPI1, GPIOB, GPIO_Pin_0, GPIOB, GPIO_Pin_2);
+    if((nrf1 == nullptr) || (nrf1->CreateClass() == false)) {
+        while(true);
+    }
+    
+    if(!(nrf1->Check())) {
+        while(true);
+    }
     
     /* General loop */
     while(true)
