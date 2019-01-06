@@ -14,6 +14,7 @@ using namespace std;
 /* User lib */
 #include "board.hpp"
 #include "stm32f10x_conf.h"
+#include "uart.hpp"
 #include "nrf24l01.hpp"
 
 
@@ -36,6 +37,9 @@ int main()
     Board::InitLed();
     Board::LedOn();
     
+    /* Create and initialisation class UART for debug */
+    Uart Debug(USART2, 9600, 256, 256, 0, 0);
+    VirtualPort *VPortDebug = &Debug;
        
     /* Create radio */
     Nrf* nrf1 = new Nrf(SPI1, GPIOB, GPIO_Pin_0, GPIOB, GPIO_Pin_2);

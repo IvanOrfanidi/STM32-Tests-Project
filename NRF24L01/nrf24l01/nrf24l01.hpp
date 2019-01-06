@@ -25,6 +25,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "virtual_port.hpp"
 #include "stm32f10x_spi.h"
 #include "stm32f10x_gpio.h"
 
@@ -219,7 +220,7 @@ class Nrf
         };
     
         /// Ñonstructor
-        Nrf(SPI_TypeDef*, GPIO_TypeDef*, uint16_t, GPIO_TypeDef*, uint16_t);
+        Nrf(VirtualPort*, GPIO_TypeDef*, uint16_t, GPIO_TypeDef*, uint16_t);
         
         virtual ~Nrf();   /// Destructor
         
@@ -245,14 +246,11 @@ class Nrf
             GPIO_InitTypeDef CE_Pin;
             GPIO_TypeDef* CNS_Port;
             GPIO_InitTypeDef CNS_Pin;
-            
-            SPI_TypeDef* SPIx;
 
             InterfaceSettings_t()
             {
                 CE_Port = nullptr;
                 CNS_Port = nullptr;
-                SPIx = nullptr;
             };
         };
         
@@ -271,8 +269,6 @@ class Nrf
         void ReadMBReg(uint8_t, uint8_t*, uint8_t) const;
         
         void InitGpio(InterfaceSettings_t&) const;      /// Initialisation GPIO
-        
-        void InitSpi(InterfaceSettings_t&) const;       /// Initialisation SPI
 
         void DeInitGpio(InterfaceSettings_t*) const;      /// Deinitialisation GPIO
 
@@ -285,6 +281,8 @@ class Nrf
         static Nrf* Nrf24[NRF24_MAX_COUNT];     ///< Static instances of a class
 
         InterfaceSettings_t* InterfaceSettings; ///< Interface
+
+        VirtualPort* VPort;
 };
 
 #endif

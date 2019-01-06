@@ -2376,6 +2376,33 @@
         </file>
     </group>
     <group>
+        <name>Drivers</name>
+        <group>
+            <name>SPI</name>
+            <file>
+                <name>$PROJ_DIR$\..\Drivers\SPI\spi.cpp</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\Drivers\SPI\spi.hpp</name>
+            </file>
+        </group>
+        <group>
+            <name>UART</name>
+            <file>
+                <name>$PROJ_DIR$\..\Drivers\UART\uart.cpp</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\Drivers\UART\uart.hpp</name>
+            </file>
+        </group>
+        <group>
+            <name>VirtualPort</name>
+            <file>
+                <name>$PROJ_DIR$\..\Drivers\VirtualPort\virtual_port.hpp</name>
+            </file>
+        </group>
+    </group>
+    <group>
         <name>NRF24L01</name>
         <file>
             <name>$PROJ_DIR$\..\nrf24l01\nrf24l01.cpp</name>
