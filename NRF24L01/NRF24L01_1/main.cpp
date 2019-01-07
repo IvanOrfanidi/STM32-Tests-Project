@@ -17,12 +17,14 @@ using namespace std;
 #include "uart.hpp"
 #include "spi.hpp"
 #include "nrf24l01.hpp"
-#include "stm32f10x_spi.h"
 
 
 VirtualPort* VPortUart = nullptr;
 
 
+/**
+ * @brief General functions main
+ */
 int main()
 {   
     /* Set NVIC Priority Group (4 bits for preemption priority, 0 bits for
@@ -46,6 +48,7 @@ int main()
     Uart Debug(USART2, 9600, 256, 0, 0, 0);
     VPortUart = &Debug;
     
+    /* Create and initialisation class SPI for nRF24L01 */
     SPI_InitTypeDef initStruct;
     initStruct.SPI_Mode = SPI_Mode_Master;
     initStruct.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_8;

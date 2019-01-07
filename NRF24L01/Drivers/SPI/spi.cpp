@@ -1,9 +1,9 @@
 /**
  ******************************************************************************
- * @file    spi.c
+ * @file    spi.cpp
  * @author  Ivan Orfanidi
  * @version V1.0.0
- * @date    26/01/2019
+ * @date    06/01/2019
  * @brief   This file provides all the SPI firmware method.
  ******************************************************************************
  * @attention

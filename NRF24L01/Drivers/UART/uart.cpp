@@ -1,15 +1,15 @@
 /**
  ******************************************************************************
- * @file    uart.c
+ * @file    uart.cpp
  * @author  Ivan Orfanidi
- * @version V1.0.0
- * @date    28-March-2018
+ * @version V1.0.1
+ * @date    06/01/2019
  * @brief   This file provides all the USART firmware method.
  ******************************************************************************
  * @attention
  *
  *
- * <h2><center>&copy; COPYRIGHT 2011 STMicroelectronics</center></h2>
+ * <h2><center>&copy; </center></h2>
  ******************************************************************************
  */
 
@@ -500,7 +500,7 @@ bool Uart::CreateClass()
 }
 
 
-/*
+/**
  * INTERRUPTS
  */
 bool Uart::Handler(USART_TypeDef *uart)
@@ -558,7 +558,7 @@ bool Uart::Handler(USART_TypeDef *uart)
 /**
  * @brief This function must be called from all global interruptions USARTs.
  */
-void USART_HandlerCallback(USART_TypeDef *uart)
+void USART_HandlerCallback(USART_TypeDef* uart)
 {
     for(auto i = 0; i < Uart::MAX_COUNT_UART; i++) {
         if(Uart::Uarts[i]) {

@@ -1,9 +1,9 @@
 /**
  ******************************************************************************
- * @file    uart.h
+ * @file    uart.hpp
  * @author  Ivan Orfanidi
- * @version V1.0.0
- * @date    28-March-2018
+ * @version V1.0.1
+ * @date    06/01/2019
  * @brief   This file contains all the methods prototypes for the USART
  *          firmware library.
  ******************************************************************************
@@ -62,15 +62,6 @@ class Uart : public VirtualPort
 
         BAUDRATE = 9600,
     };
-    
-    enum Uarts_t
-    {
-        UART1,
-        UART2,
-        UART3,
-            
-        MAX_COUNT_UART
-    };
 
     /// Ñonstructor
     Uart(USART_TypeDef* const usart,
@@ -108,10 +99,11 @@ class Uart : public VirtualPort
     USART_TypeDef* GetUSART();
 
     bool CreateClass();    ///< Returns the status of class creation
-    
-    static Uart* Uarts[MAX_COUNT_UART]; ///< Main array pointers of classes Uarts
 
+    
   private:
+  
+    friend void USART_HandlerCallback(USART_TypeDef*);
   
     void InitGpioUart();
 
@@ -147,6 +139,17 @@ class Uart : public VirtualPort
 
     USART_TypeDef* USARTx;    ///< Work USART
 
+        
+    enum Uarts_t
+    {
+        UART1,
+        UART2,
+        UART3,
+            
+        MAX_COUNT_UART
+    };
+    
+    static Uart* Uarts[MAX_COUNT_UART]; ///< Main array pointers of classes Uarts
 
 };
 

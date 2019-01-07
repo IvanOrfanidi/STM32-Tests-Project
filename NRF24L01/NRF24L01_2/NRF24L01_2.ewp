@@ -32,11 +32,11 @@
                 </option>
                 <option>
                     <name>Input description</name>
-                    <state></state>
+                    <state>Full formatting, without multibyte support.</state>
                 </option>
                 <option>
                     <name>Output description</name>
-                    <state></state>
+                    <state>Full formatting, without multibyte support.</state>
                 </option>
                 <option>
                     <name>GOutputBinary</name>
@@ -58,7 +58,7 @@
                 </option>
                 <option>
                     <name>RTDescription</name>
-                    <state></state>
+                    <state>Use the normal configuration of the C/C++ runtime library. No locale interface, C locale, no file descriptor support, no multibytes in printf and scanf, and no hex floats in strtod.</state>
                 </option>
                 <option>
                     <name>OGProductVersion</name>
@@ -121,7 +121,7 @@
                 </option>
                 <option>
                     <name>OGUseCmsis</name>
-                    <state>0</state>
+                    <state>1</state>
                 </option>
                 <option>
                     <name>OGUseCmsisDspLib</name>
@@ -353,6 +353,9 @@
                     <state>$PROJ_DIR$\..\System Core\Include</state>
                     <state>$PROJ_DIR$\..\StdPeriphLib\inc</state>
                     <state>$PROJ_DIR$\Board</state>
+                    <state>$PROJ_DIR$\..\Drivers\SPI</state>
+                    <state>$PROJ_DIR$\..\Drivers\UART</state>
+                    <state>$PROJ_DIR$\..\Drivers\VirtualPort</state>
                     <state>$PROJ_DIR$\..\nrf24l01</state>
                 </option>
                 <option>
@@ -2060,6 +2063,33 @@
         <file>
             <name>$PROJ_DIR$\Board\board.cpp</name>
         </file>
+    </group>
+    <group>
+        <name>Drivers</name>
+        <group>
+            <name>SPI</name>
+            <file>
+                <name>$PROJ_DIR$\..\Drivers\SPI\spi.cpp</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\Drivers\SPI\spi.hpp</name>
+            </file>
+        </group>
+        <group>
+            <name>UART</name>
+            <file>
+                <name>$PROJ_DIR$\..\Drivers\UART\uart.cpp</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\Drivers\UART\uart.hpp</name>
+            </file>
+        </group>
+        <group>
+            <name>VirtualPort</name>
+            <file>
+                <name>$PROJ_DIR$\..\Drivers\VirtualPort\virtual_port.hpp</name>
+            </file>
+        </group>
     </group>
     <group>
         <name>NRF24L01</name>

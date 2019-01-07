@@ -32,18 +32,9 @@ class Spi : public VirtualPort
         enum Default_t
         {
             RX_ADD_SIZE     = 16,
-            RX_BUFFER_SIZE  = 32,
+            RX_BUFFER_SIZE  = 16,
         };
-    
-        enum Spis_t
-        {
-            SPI_1,
-            SPI_2,
-            SPI_3,
-
-            MAX_COUNT_SPI
-        };
-        
+            
         /// Ñonstructor
         Spi(SPI_TypeDef* const, SPI_InitTypeDef* initStruct, size_t rx_size = RX_BUFFER_SIZE);
         
@@ -62,8 +53,7 @@ class Spi : public VirtualPort
         virtual uint32_t Receive(uint8_t*, size_t) override;
 
         virtual void ClearReceive() override;
-        
-        static Spi* Spis[MAX_COUNT_SPI]; ///< Main array pointers of classes Uarts
+
         
     private:
     
@@ -71,13 +61,23 @@ class Spi : public VirtualPort
     
         void InitDefSpi() const;  /// Initialisation default SPI
 
+        enum Spis_t
+        {
+            SPI_1,
+            SPI_2,
+            SPI_3,
+
+            MAX_COUNT_SPI
+        };
+
+        static Spi* Spis[MAX_COUNT_SPI]; ///< Main array pointers of classes Uarts
+
+        SPI_TypeDef* SPIx;  ///< Work SPI
+
         /* Recept val */
         size_t RxBufSize;
         size_t RxCount;
-        uint8_t *pRxBuf;
-    
-        SPI_TypeDef* SPIx;  ///< Work SPI
-    
+        uint8_t *pRxBuf;  
 };
 
 #endif
