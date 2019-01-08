@@ -55,10 +55,10 @@ int main()
     Spi Spi2(SPI2, &initStruct);
     VirtualPort* const VPortSpi = &Spi2;
     
-    Lan = new Enc(VPortSpi, GPIOA, GPIO_Pin_6, GPIOA, GPIO_Pin_7);
+    Lan = new Enc(VPortSpi, GPIOB, GPIO_Pin_11, GPIOB, GPIO_Pin_12);
     
-    uint8_t myMac[] = {0x00,0x2F,0x68,0x12,0xAC,0x30};
-    uint8_t myIp[] = {192, 168, 0, 110};
+    uint8_t myMac[] = { 0x00,0x2F,0x68,0x12,0xAC,0x30 };
+    uint8_t myIp[] = { 192, 168, 0, 110 };
     const uint16_t tcpPort = 80;
     
     Lan->Init(myMac, myIp, tcpPort);
@@ -70,7 +70,7 @@ int main()
     
     while(true)
     {
-        
+        //Lan->Task();
         IWDG_ReloadCounter();
     }
 }
