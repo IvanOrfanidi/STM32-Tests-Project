@@ -32,7 +32,7 @@ class Spi : public VirtualPort
         enum Default_t
         {
             RX_ADD_SIZE     = 16,
-            RX_BUFFER_SIZE  = 16,
+            RX_BUFFER_SIZE  = 1,
         };
             
         /// Ñonstructor

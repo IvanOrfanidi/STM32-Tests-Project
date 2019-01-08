@@ -16,8 +16,11 @@ using namespace std;
 #include "stm32f10x_conf.h"
 #include "uart.hpp"
 #include "spi.hpp"
+#include "exti.hpp"
 #include "nrf24l01.hpp"
 
+
+static void NrfTask();
 
 VirtualPort* VPortUart = nullptr;
 
@@ -51,7 +54,7 @@ int main()
     /* Create and initialisation class SPI for nRF24L01 */
     SPI_InitTypeDef initStruct;
     initStruct.SPI_Mode = SPI_Mode_Master;
-    initStruct.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_8;
+    initStruct.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_16;
     initStruct.SPI_Direction = SPI_Direction_2Lines_FullDuplex;
     initStruct.SPI_CPOL = SPI_CPOL_Low;
     initStruct.SPI_CPHA = SPI_CPHA_1Edge;
@@ -66,21 +69,39 @@ int main()
     /* Create radio */
     Nrf* nrf1 = new Nrf(VPortSpi, GPIOB, GPIO_Pin_0, GPIOB, GPIO_Pin_2);
     if((nrf1 == nullptr) || (nrf1->CreateClass() == false)) {
+        cout << "Class Nrf was not created!\r";
         while(true);
     }
-    
+    // Check radio
     if(!(nrf1->Check())) {
+        cout << "nRF fail!\r";
         while(true);
     }
+    // Init radio
+    nrf1->Init();
+    
+    /* Creating an external interrupt */
+    Exti* Interrupt = new Exti(GPIOA, GPIO_Pin_15, NrfTask);
+    Interrupt->SetTypeTrigger(EXTI_Trigger_Falling);
+    Interrupt->SetPriority(0, 0);
+    Interrupt->Enable();
+    
     
     /* General loop */
     while(true)
     {
-        cout << "Hello\r" << endl;
+        //cout << "Hello\r";
         Board::DelayMS(1000);
         IWDG_ReloadCounter();
     }
 }
+
+
+static void NrfTask()
+{
+    __NOP;
+}
+
 
 
 /* Private function prototypes -----------------------------------------------*/

@@ -356,6 +356,7 @@
                     <state>$PROJ_DIR$\..\Drivers\VirtualPort</state>
                     <state>$PROJ_DIR$\..\Drivers\UART</state>
                     <state>$PROJ_DIR$\..\Drivers\SPI</state>
+                    <state>$PROJ_DIR$\..\Drivers\EXTI</state>
                     <state>$PROJ_DIR$\..\nrf24l01</state>
                 </option>
                 <option>
@@ -2066,6 +2067,15 @@
     </group>
     <group>
         <name>Drivers</name>
+        <group>
+            <name>EXTI</name>
+            <file>
+                <name>$PROJ_DIR$\..\Drivers\EXTI\exti.cpp</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\Drivers\EXTI\exti.hpp</name>
+            </file>
+        </group>
         <group>
             <name>SPI</name>
             <file>

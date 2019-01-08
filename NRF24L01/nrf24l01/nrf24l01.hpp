@@ -26,12 +26,11 @@
 #include <string.h>
 
 #include "virtual_port.hpp"
-#include "stm32f10x_spi.h"
 #include "stm32f10x_gpio.h"
 
 
 /**
- * @brief Static nRF24L01
+ * @brief Class nRF24L01
  */
 class Nrf
 {
@@ -223,10 +222,17 @@ class Nrf
         Nrf(VirtualPort*, GPIO_TypeDef*, uint16_t, GPIO_TypeDef*, uint16_t);
         
         virtual ~Nrf();   /// Destructor
+
+        void Init();    /// Init radio
         
         bool CreateClass() const;   /// Returns the status of class creation
 
-        bool Check() const;
+        bool Check() const;     /// Check radio
+
+        void ClearIRQFlags();   /// Clear any pending IRQ flags
+
+        void SetPowerMode(PowerControl_t);
+
 
     private:
     
@@ -254,6 +260,10 @@ class Nrf
             };
         };
         
+        void WriteReg(uint8_t, uint8_t);
+        
+        uint8_t ReadReg(uint8_t);
+        
         void RxOn() const;
         
         void RxOff() const;
@@ -264,9 +274,9 @@ class Nrf
         
         uint8_t SpiSendReceiveData(uint8_t) const;
 
-        void WriteMBReg(uint8_t, const uint8_t*, uint8_t) const;
+        void WriteBuffer(uint8_t, const uint8_t*, uint8_t) const;
         
-        void ReadMBReg(uint8_t, uint8_t*, uint8_t) const;
+        void ReadBuffer(uint8_t, uint8_t*, uint8_t) const;
         
         void InitGpio(InterfaceSettings_t&) const;      /// Initialisation GPIO
 
@@ -278,7 +288,7 @@ class Nrf
 
         void SetInterfaceSettings(InterfaceSettings_t&);                /// Set alls interface settings 
 
-        static Nrf* Nrf24[NRF24_MAX_COUNT];     ///< Static instances of a class
+        static Nrf* Nrf24l01[NRF24_MAX_COUNT];     ///< Static instances of a class
 
         InterfaceSettings_t* InterfaceSettings; ///< Interface
 

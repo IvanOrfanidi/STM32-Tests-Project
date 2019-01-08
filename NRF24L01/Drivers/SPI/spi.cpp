@@ -227,7 +227,7 @@ void Spi::Transmit(const uint8_t *ptr, size_t len)
         pRxBuf[RxCount++] = byteRx;
         
         // Нехватает памяти, добавим еще
-        if(RxCount >= RxBufSize) {
+        if(RxCount > RxBufSize) {
             uint8_t* tempBuf  = new uint8_t[RxBufSize + RX_ADD_SIZE];
             memcpy(tempBuf, pRxBuf, RxCount);
             

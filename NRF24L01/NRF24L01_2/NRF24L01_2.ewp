@@ -353,9 +353,10 @@
                     <state>$PROJ_DIR$\..\System Core\Include</state>
                     <state>$PROJ_DIR$\..\StdPeriphLib\inc</state>
                     <state>$PROJ_DIR$\Board</state>
-                    <state>$PROJ_DIR$\..\Drivers\SPI</state>
-                    <state>$PROJ_DIR$\..\Drivers\UART</state>
                     <state>$PROJ_DIR$\..\Drivers\VirtualPort</state>
+                    <state>$PROJ_DIR$\..\Drivers\UART</state>
+                    <state>$PROJ_DIR$\..\Drivers\SPI</state>
+                    <state>$PROJ_DIR$\..\Drivers\EXTI</state>
                     <state>$PROJ_DIR$\..\nrf24l01</state>
                 </option>
                 <option>
