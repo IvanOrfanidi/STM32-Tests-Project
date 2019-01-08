@@ -53,42 +53,47 @@ class Exti
             EXTI_MAX_COUNT
         };
     
+        /// Ñonstructor
         Exti(GPIO_TypeDef*, uint16_t, void (*)());
         
+        /// Set Type Trigger
         void SetTypeTrigger(EXTITrigger_TypeDef);
 
+        /// Set Priority Interrupt
         void SetPriority(uint8_t, uint8_t);
         
-        void Enable() const;
+        void Enable() const;    /// Enable Interrupt
         
-        void Disable() const;
+        void Disable() const;   /// Disable Interrupt
         
-        static void ExtiHandler(size_t);
+        /// Public Interrupt Handler
+        static void ExtiHandler(size_t); 
         
     private:
         
-        void Run();
+        void Handler();     /// Private Interrupt Handler
     
-        static Exti* Extis[EXTI_MAX_COUNT];
+        static Exti* Extis[EXTI_MAX_COUNT]; ///< Main array pointers of classes Uarts
         
-        void (*Callback)();
+        void (*Callback)();     ///< Callback handler function
     
-        GPIO_TypeDef* Port;
+        GPIO_TypeDef* Port;     ///< Port interrupt
         
-        uint16_t Pin;
+        uint16_t Pin;           ///< Pin interrupt
         
-        EXTITrigger_TypeDef Trigger;
+        EXTITrigger_TypeDef Trigger;    ///< Type trigger interrupt
         
-        uint32_t Line;
+        uint32_t Line;          ///< Line interrupt
         
-        IRQn_Type Irq;
+        IRQn_Type Irq;          ///< Work interrupt
         
-        uint8_t PreemptionPriority;
+        uint8_t PreemptionPriority; ///< Preemption priority interrupt
         
-        uint8_t SubPriority;
+        uint8_t SubPriority;        ///< Sub priority interrupt
 };
 
 extern "C" {
+    /* This Ñ-function handles EXTIs global interrupt request */
     void EXTI0_IRQHandler(void);
     void EXTI1_IRQHandler(void);
     void EXTI2_IRQHandler(void);
@@ -98,5 +103,5 @@ extern "C" {
     void EXTI15_10_IRQHandler(void);
 }
 
-#endif
+#endif//__cplusplus
 #endif

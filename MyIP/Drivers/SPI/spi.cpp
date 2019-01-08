@@ -18,7 +18,7 @@
 
 /*
  * Main array pointers of classes Spis
- * Use MAX_COUNT_UART max quantity Spis
+ * Use MAX_COUNT_SPI max quantity Spis
  */
 Spi* Spi::Spis[Spi::MAX_COUNT_SPI];
 

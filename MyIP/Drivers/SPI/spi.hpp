@@ -70,7 +70,7 @@ class Spi : public VirtualPort
             MAX_COUNT_SPI
         };
 
-        static Spi* Spis[MAX_COUNT_SPI]; ///< Main array pointers of classes Uarts
+        static Spi* Spis[MAX_COUNT_SPI]; ///< Main array pointers of classes Spi
 
         SPI_TypeDef* SPIx;  ///< Work SPI
 

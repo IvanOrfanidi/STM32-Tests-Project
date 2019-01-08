@@ -16,16 +16,20 @@
 /* Includes ------------------------------------------------------------------*/
 #include "exti.hpp"
 
+
+/*
+ * Main array pointers of classes Extis
+ * Use EXTI_MAX_COUNT max quantity Extis
+ */
 Exti* Exti::Extis[EXTI_MAX_COUNT];
-static void Nop();
 
 
+/**
+ * @brief Empty function
+*/
 static void Nop()
 {
-    volatile int i = 100;
-    while(i--) {
-        __NOP;
-    }
+    __NOP;
 }
 
 
@@ -33,6 +37,7 @@ static void Nop()
  * @brief Ñonstructor
  * @param [in] preemption_priority - preemption priority
  * @param [in] sub_priority - sub priority
+ * @param [in] function - the interrupt processing function
  */
 Exti::Exti(GPIO_TypeDef* port, uint16_t pin, void (*function)())
 {
@@ -47,7 +52,6 @@ Exti::Exti(GPIO_TypeDef* port, uint16_t pin, void (*function)())
     else {
         Callback = &Nop;
     }
-    
     
     /* Enable GPIO clock */    
     uint8_t portSource;
@@ -207,6 +211,13 @@ Exti::Exti(GPIO_TypeDef* port, uint16_t pin, void (*function)())
 }
 
 
+/**
+ * @bref Set Type Trigger
+ * @param [in] trigger - type trigger:
+ *             EXTI_Trigger_Rising
+ *             EXTI_Trigger_Falling 
+ *             EXTI_Trigger_Rising_Falling 
+ */
 void Exti::SetTypeTrigger(EXTITrigger_TypeDef trigger)
 {
     Trigger = trigger;
@@ -221,8 +232,8 @@ void Exti::SetTypeTrigger(EXTITrigger_TypeDef trigger)
      
 /**
  * @bref Set Priority Interrupt
- * @param [in] preemption_priority - preemption priority
- * @param [in] sub_priority - sub priority
+ * @param [in] preemption_priority - preemption priority, default 0
+ * @param [in] sub_priority - sub priority, default 0
  */
 void Exti::SetPriority(uint8_t preemption_priority = 0, uint8_t sub_priority = 0)
 {
@@ -256,38 +267,53 @@ void Exti::SetPriority(uint8_t preemption_priority = 0, uint8_t sub_priority = 0
 }
 
 
+/**
+ * @bref Enable Interrupt
+ */
 void Exti::Enable() const
 {
     NVIC_EnableIRQ(Irq);
 }
 
 
+/**
+ * @bref Disable Interrupt
+ */
 void Exti::Disable() const
 {
     NVIC_DisableIRQ(Irq);
 }
 
 
+/**
+ * @bref Public Interrupt Handler
+ * @param [in] line - line interrupt
+ */
 void Exti::ExtiHandler(size_t line)
 {
-    if(Extis[line]) {
-        Extis[line]->Run();
+    if(Extis[line] != nullptr) {
+        Extis[line]->Handler();
     }
 }
 
-void Exti::Run()
+
+/**
+ * @bref Private Interrupt Handler
+ */
+void Exti::Handler()
 {
    (*Callback)();
 }
 
-/* This function handles EXTIs global interrupt request */
 
+/* This Ñ-function handles EXTIs global interrupt request */
 void EXTI0_IRQHandler(void)
 {
     if(EXTI_GetITStatus(EXTI_Line0) != RESET)
     {
         Exti::ExtiHandler(Exti::EXTI_0);
-        /* Clear the  EXTI line pending bit */
+        
+        // Clear the  EXTI line pending bit 
         EXTI_ClearITPendingBit(EXTI_Line0);
     }
 }
@@ -297,7 +323,8 @@ void EXTI1_IRQHandler(void)
     if(EXTI_GetITStatus(EXTI_Line1) != RESET)
     {
         Exti::ExtiHandler(Exti::EXTI_1);
-        /* Clear the  EXTI line pending bit */
+        
+        // Clear the  EXTI line pending bit 
         EXTI_ClearITPendingBit(EXTI_Line1);
     }
 }
@@ -307,7 +334,8 @@ void EXTI2_IRQHandler(void)
     if(EXTI_GetITStatus(EXTI_Line2) != RESET)
     {
         Exti::ExtiHandler(Exti::EXTI_2);
-        /* Clear the  EXTI line pending bit */
+        
+        // Clear the  EXTI line pending bit 
         EXTI_ClearITPendingBit(EXTI_Line2);
     }
 }
@@ -317,7 +345,8 @@ void EXTI3_IRQHandler(void)
     if(EXTI_GetITStatus(EXTI_Line3) != RESET)
     {
         Exti::ExtiHandler(Exti::EXTI_3);
-        /* Clear the  EXTI line pending bit */
+        
+        // Clear the  EXTI line pending bit 
         EXTI_ClearITPendingBit(EXTI_Line3);
     }
 }
@@ -327,7 +356,8 @@ void EXTI4_IRQHandler(void)
     if(EXTI_GetITStatus(EXTI_Line4) != RESET)
     {
         Exti::ExtiHandler(Exti::EXTI_4);
-        /* Clear the  EXTI line pending bit */
+        
+        // Clear the  EXTI line pending bit 
         EXTI_ClearITPendingBit(EXTI_Line4);
     }
 }
@@ -337,35 +367,40 @@ void EXTI9_5_IRQHandler(void)
     if(EXTI_GetITStatus(EXTI_Line5) != RESET)
     {
         Exti::ExtiHandler(Exti::EXTI_5);
-        /* Clear the  EXTI line pending bit */
+        
+        // Clear the  EXTI line pending bit 
         EXTI_ClearITPendingBit(EXTI_Line5);
     }
     
     if(EXTI_GetITStatus(EXTI_Line6) != RESET)
     {
         Exti::ExtiHandler(Exti::EXTI_6);
-        /* Clear the  EXTI line pending bit */
+        
+        // Clear the  EXTI line pending bit 
         EXTI_ClearITPendingBit(EXTI_Line6);
     }
     
     if(EXTI_GetITStatus(EXTI_Line7) != RESET)
     {
         Exti::ExtiHandler(Exti::EXTI_7);
-        /* Clear the  EXTI line pending bit */
+        
+        // Clear the  EXTI line pending bit 
         EXTI_ClearITPendingBit(EXTI_Line7);
     }
     
     if(EXTI_GetITStatus(EXTI_Line8) != RESET)
     {
         Exti::ExtiHandler(Exti::EXTI_8);
-        /* Clear the  EXTI line pending bit */
+        
+        // Clear the  EXTI line pending bit 
         EXTI_ClearITPendingBit(EXTI_Line8);
     }
     
     if(EXTI_GetITStatus(EXTI_Line9) != RESET)
     {
         Exti::ExtiHandler(Exti::EXTI_9);
-        /* Clear the  EXTI line pending bit */
+        
+        // Clear the  EXTI line pending bit 
         EXTI_ClearITPendingBit(EXTI_Line9);
     }
 }
@@ -375,42 +410,48 @@ void EXTI15_10_IRQHandler(void)
     if(EXTI_GetITStatus(EXTI_Line10) != RESET)
     {
         Exti::ExtiHandler(Exti::EXTI_10);
-        /* Clear the  EXTI line pending bit */
+        
+        // Clear the  EXTI line pending bit 
         EXTI_ClearITPendingBit(EXTI_Line10);
     }
     
     if(EXTI_GetITStatus(EXTI_Line11) != RESET)
     {
         Exti::ExtiHandler(Exti::EXTI_11);
-        /* Clear the  EXTI line pending bit */
+        
+        // Clear the  EXTI line pending bit 
         EXTI_ClearITPendingBit(EXTI_Line11);
     }
     
     if(EXTI_GetITStatus(EXTI_Line12) != RESET)
     {
         Exti::ExtiHandler(Exti::EXTI_12);
-        /* Clear the  EXTI line pending bit */
+        
+        // Clear the  EXTI line pending bit 
         EXTI_ClearITPendingBit(EXTI_Line12);
     }
     
     if(EXTI_GetITStatus(EXTI_Line13) != RESET)
     {
         Exti::ExtiHandler(Exti::EXTI_13);
-        /* Clear the  EXTI line pending bit */
+        
+        // Clear the  EXTI line pending bit 
         EXTI_ClearITPendingBit(EXTI_Line13);
     }
     
     if(EXTI_GetITStatus(EXTI_Line14) != RESET)
     {
         Exti::ExtiHandler(Exti::EXTI_14);
-        /* Clear the  EXTI line pending bit */
+        
+        // Clear the  EXTI line pending bit 
         EXTI_ClearITPendingBit(EXTI_Line14);
     }
     
     if(EXTI_GetITStatus(EXTI_Line15) != RESET)
     {
         Exti::ExtiHandler(Exti::EXTI_15);
-        /* Clear the  EXTI line pending bit */
+        
+        // Clear the  EXTI line pending bit 
         EXTI_ClearITPendingBit(EXTI_Line15);
     }
 }

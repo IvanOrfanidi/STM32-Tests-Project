@@ -70,7 +70,7 @@ int main()
     
     while(true)
     {
-        //Lan->Task();
+        Board::DelayMS(1000);
         IWDG_ReloadCounter();
     }
 }

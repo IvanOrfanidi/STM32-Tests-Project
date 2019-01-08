@@ -398,9 +398,9 @@ class Enc
         
         void PhyWrite(uint8_t, uint16_t);
         
-        void Write(uint8_t, uint8_t);
+        void WriteReg(uint8_t, uint8_t);
         
-        uint8_t Read(uint8_t);
+        uint8_t ReadReg(uint8_t);
         
         void SetBank(uint8_t);
         

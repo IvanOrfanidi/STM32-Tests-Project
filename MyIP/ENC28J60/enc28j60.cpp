@@ -95,20 +95,20 @@ void Enc::Init(uint8_t* macAddr, uint8_t* ipAddr, uint16_t tcpPort, size_t sizeB
     Board::DelayMS(100);
     
     // Rx start
-    Write(ERXSTL, RXSTART_INIT & 0xFF);
-    Write(ERXSTH, RXSTART_INIT >> 8);
+    WriteReg(ERXSTL, RXSTART_INIT & 0xFF);
+    WriteReg(ERXSTH, RXSTART_INIT >> 8);
     // set receive pointer address
-    Write(ERXRDPTL, RXSTART_INIT & 0xFF);
-    Write(ERXRDPTH, RXSTART_INIT >> 8);
+    WriteReg(ERXRDPTL, RXSTART_INIT & 0xFF);
+    WriteReg(ERXRDPTH, RXSTART_INIT >> 8);
     // RX end
-    Write(ERXNDL, RXSTOP_INIT & 0xFF);
-    Write(ERXNDH, RXSTOP_INIT >> 8);
+    WriteReg(ERXNDL, RXSTOP_INIT & 0xFF);
+    WriteReg(ERXNDH, RXSTOP_INIT >> 8);
     // TX start
-    Write(ETXSTL, TXSTART_INIT & 0xFF);
-    Write(ETXSTH, TXSTART_INIT >> 8);
+    WriteReg(ETXSTL, TXSTART_INIT & 0xFF);
+    WriteReg(ETXSTH, TXSTART_INIT >> 8);
     // TX end
-    Write(ETXNDL, TXSTOP_INIT & 0xFF);
-    Write(ETXNDH, TXSTOP_INIT >> 8);
+    WriteReg(ETXNDL, TXSTOP_INIT & 0xFF);
+    WriteReg(ETXNDH, TXSTOP_INIT >> 8);
     // do bank 1 stuff, packet filter:
     // For broadcast packets we allow only ARP packtets
     // All other packets should be unicast only for our mac (MAADR)
@@ -119,38 +119,38 @@ void Enc::Init(uint8_t* macAddr, uint8_t* ipAddr, uint16_t tcpPort, size_t sizeB
     // 06 08 -- ff ff ff ff ff ff -> ip checksum for theses bytes=f7f9
     // in binary these poitions are:11 0000 0011 1111
     // This is hex 303F->EPMM0=0x3f,EPMM1=0x30
-    Write(ERXFCON, ERXFCON_UCEN | ERXFCON_CRCEN | ERXFCON_PMEN);
-    Write(EPMM0, 0x3f);
-    Write(EPMM1, 0x30);
-    Write(EPMCSL, 0xf9);
-    Write(EPMCSH, 0xf7);
+    WriteReg(ERXFCON, ERXFCON_UCEN | ERXFCON_CRCEN | ERXFCON_PMEN);
+    WriteReg(EPMM0, 0x3f);
+    WriteReg(EPMM1, 0x30);
+    WriteReg(EPMCSL, 0xf9);
+    WriteReg(EPMCSH, 0xf7);
     //
     //
     // do bank 2 stuff
     // enable MAC receive
-    Write(MACON1, MACON1_MARXEN | MACON1_TXPAUS | MACON1_RXPAUS);
+    WriteReg(MACON1, MACON1_MARXEN | MACON1_TXPAUS | MACON1_RXPAUS);
     // bring MAC out of reset
-    Write(MACON2, 0x00);
+    WriteReg(MACON2, 0x00);
     // enable automatic padding to 60bytes and CRC operations
     WriteOp(ENC28J60_BIT_FIELD_SET, MACON3, MACON3_PADCFG0 | MACON3_TXCRCEN | MACON3_FRMLNEN);
     // set inter-frame gap (non-back-to-back)
-    Write(MAIPGL, 0x12);
-    Write(MAIPGH, 0x0C);
+    WriteReg(MAIPGL, 0x12);
+    WriteReg(MAIPGH, 0x0C);
     // set inter-frame gap (back-to-back)
-    Write(MABBIPG, 0x12);
+    WriteReg(MABBIPG, 0x12);
     // Set the maximum packet size which the controller will accept
     // Do not send packets longer than MAX_FRAMELEN:
-    Write(MAMXFLL, MAX_FRAMELEN & 0xFF);	
-    Write(MAMXFLH, MAX_FRAMELEN >> 8);
+    WriteReg(MAMXFLL, MAX_FRAMELEN & 0xFF);	
+    WriteReg(MAMXFLH, MAX_FRAMELEN >> 8);
     // do bank 3 stuff
     // write MAC address
     // NOTE: MAC address in ENC28J60 is byte-backward
-    Write(MAADR5, macAddr[0]);
-    Write(MAADR4, macAddr[1]);
-    Write(MAADR3, macAddr[2]);
-    Write(MAADR2, macAddr[3]);
-    Write(MAADR1, macAddr[4]);
-    Write(MAADR0, macAddr[5]);
+    WriteReg(MAADR5, macAddr[0]);
+    WriteReg(MAADR4, macAddr[1]);
+    WriteReg(MAADR3, macAddr[2]);
+    WriteReg(MAADR2, macAddr[3]);
+    WriteReg(MAADR1, macAddr[4]);
+    WriteReg(MAADR0, macAddr[5]);
     // no loopback of transmitted frames
     PhyWrite(PHCON2, PHCON2_HDLDIS);
     // switch to bank 0
@@ -211,18 +211,18 @@ void Enc::InitPhy()
 void Enc::PhyWrite(uint8_t address, uint16_t data)
 {
     // set the PHY register address
-    Write(MIREGADR, address);
+    WriteReg(MIREGADR, address);
     // write the PHY data
-    Write(MIWRL, data);
-    Write(MIWRH, data>>8);
+    WriteReg(MIWRL, data);
+    WriteReg(MIWRH, data>>8);
     // wait until the PHY write completes
-    while(Read(MISTAT) & MISTAT_BUSY) {
+    while(ReadReg(MISTAT) & MISTAT_BUSY) {
         Board::DelayMS(1);
     } 
 }
 
 
-void Enc::Write(uint8_t address, uint8_t data)
+void Enc::WriteReg(uint8_t address, uint8_t data)
 {
     // set the bank
     SetBank(address);
@@ -231,7 +231,7 @@ void Enc::Write(uint8_t address, uint8_t data)
 }
 
 
-uint8_t Enc::Read(uint8_t address)
+uint8_t Enc::ReadReg(uint8_t address)
 {
     // set the bank
     SetBank(address);
@@ -351,13 +351,13 @@ size_t Enc::PacketReceive(uint8_t* packet, size_t maxlen)
     // check if a packet has been received and buffered
     //if( !(enc28j60Read(EIR) & EIR_PKTIF) ){
     // The above does not work. See Rev. B4 Silicon Errata point 6.
-    if(Read(EPKTCNT) == 0) {
+    if(ReadReg(EPKTCNT) == 0) {
         return 0;
     }
 
     // Set the read pointer to the start of the received packet
-    Write(ERDPTL, NextPacketPtr);
-    Write(ERDPTH, NextPacketPtr >> 8);
+    WriteReg(ERDPTL, NextPacketPtr);
+    WriteReg(ERDPTH, NextPacketPtr >> 8);
 
     // read the next packet pointer
     NextPacketPtr = ReadOp(ENC28J60_READ_BUF_MEM, 0);
@@ -390,8 +390,8 @@ size_t Enc::PacketReceive(uint8_t* packet, size_t maxlen)
 
     // Move the RX read pointer to the start of the next received packet
     // This frees the memory we just read out
-    Write(ERXRDPTL, NextPacketPtr);
-    Write(ERXRDPTH, NextPacketPtr >> 8);
+    WriteReg(ERXRDPTL, NextPacketPtr);
+    WriteReg(ERXRDPTH, NextPacketPtr >> 8);
 
     // decrement the packet counter indicate we are done with this packet
     WriteOp(ENC28J60_BIT_FIELD_SET, ECON2, ECON2_PKTDEC);
@@ -402,11 +402,11 @@ size_t Enc::PacketReceive(uint8_t* packet, size_t maxlen)
 void Enc::PacketSend(const uint8_t* packet, size_t len)
 { 
     // Set the write pointer to start of transmit buffer area
-    Write(EWRPTL, TXSTART_INIT & 0xFF);
-    Write(EWRPTH, TXSTART_INIT >> 8);
+    WriteReg(EWRPTL, TXSTART_INIT & 0xFF);
+    WriteReg(EWRPTH, TXSTART_INIT >> 8);
     // Set the TXND pointer to correspond to the packet size given
-    Write(ETXNDL, (TXSTART_INIT + len) & 0xFF);
-    Write(ETXNDH, (TXSTART_INIT + len) >> 8);
+    WriteReg(ETXNDL, (TXSTART_INIT + len) & 0xFF);
+    WriteReg(ETXNDH, (TXSTART_INIT + len) >> 8);
     // write per-packet control byte (0x00 means use macon3 settings)
     WriteOp(ENC28J60_WRITE_BUF_MEM, 0, 0x00);
     // copy the packet into the transmit buffer
@@ -414,7 +414,7 @@ void Enc::PacketSend(const uint8_t* packet, size_t len)
     // send the contents of the transmit buffer onto the network
     WriteOp(ENC28J60_BIT_FIELD_SET, ECON1, ECON1_TXRTS);
     // Reset the transmit logic problem. See Rev. B4 Silicon Errata point 12.
-    if((Read(EIR) & EIR_TXERIF)) {
+    if((ReadReg(EIR) & EIR_TXERIF)) {
         WriteOp(ENC28J60_BIT_FIELD_CLR, ECON1, ECON1_TXRTS);
     }
 }
