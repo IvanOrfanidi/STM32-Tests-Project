@@ -448,7 +448,7 @@ class Enc
         
         VirtualPort* VPort;     ///< Port SPI
 
-        static Enc* Enc28j60[ENC_MAX_COUNT];     ///< Static instances of a class
+        static Enc* Encs[ENC_MAX_COUNT];     ///< Static instances of a class
 };
 
 #endif

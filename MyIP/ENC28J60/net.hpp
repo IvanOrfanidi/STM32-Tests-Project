@@ -186,6 +186,11 @@ namespace Net
         TCP
     };
     
+    enum Size_t
+    {
+        ETH_HEADER_SIZE    = 42
+    };
+    
     
     bool EthTypeIsArp(uint8_t*, size_t, const uint8_t*);
     

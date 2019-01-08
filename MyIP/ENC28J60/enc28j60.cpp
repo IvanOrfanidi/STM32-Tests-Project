@@ -18,11 +18,16 @@
 #include "board.hpp"
 
 
-Enc* Enc::Enc28j60[ENC_MAX_COUNT];
+Enc* Enc::Encs[ENC_MAX_COUNT];
 
 
 /**
  * @brief Ñonstructor
+ * @param [in] port - virtual port (SPI)
+ * @param [in] cs_port - chip select port
+ * @param [in] cs_pin - chip select pin
+ * @param [in] reset_port - chip reset port
+ * @param [in] reset_pin - chip reset pin
  */
 Enc::Enc(VirtualPort* port, GPIO_TypeDef* cs_port, uint16_t cs_pin, GPIO_TypeDef* reset_port, uint16_t reset_pin)
 {
@@ -54,9 +59,9 @@ Enc::Enc(VirtualPort* port, GPIO_TypeDef* cs_port, uint16_t cs_pin, GPIO_TypeDef
     InterfaceSettings = nullptr;
     size_t freeClass = ENC_MAX_COUNT;
     for(size_t i = 0; i < ENC_MAX_COUNT; i++) {
-        if(Enc28j60[i]) {
+        if(Encs[i]) {
             InterfaceSettings_t encSettings;
-            Enc28j60[i]->GetInterfaceSettings(&encSettings);
+            Encs[i]->GetInterfaceSettings(&encSettings);
             if(((memcmp(&encSettings.CS_Pin, &newSettings.CS_Pin, sizeof(GPIO_InitTypeDef)) == 0) &&
                (encSettings.CS_Port == newSettings.CS_Port)) ||
                ((memcmp(&encSettings.RESET_Pin, &newSettings.RESET_Pin, sizeof(GPIO_InitTypeDef)) == 0) &&
@@ -79,7 +84,7 @@ Enc::Enc(VirtualPort* port, GPIO_TypeDef* cs_port, uint16_t cs_pin, GPIO_TypeDef
     // Config GPIO(CS, RESET)
     InitGpio(newSettings);
 
-    Enc28j60[freeClass] = this;
+    Encs[freeClass] = this;
 }
 
 
@@ -211,8 +216,7 @@ void Enc::PhyWrite(uint8_t address, uint16_t data)
     Write(MIWRL, data);
     Write(MIWRH, data>>8);
     // wait until the PHY write completes
-    while(Read(MISTAT) & MISTAT_BUSY)
-    {
+    while(Read(MISTAT) & MISTAT_BUSY) {
         Board::DelayMS(1);
     } 
 }
@@ -239,8 +243,7 @@ uint8_t Enc::Read(uint8_t address)
 void Enc::SetBank(uint8_t address)
 {
     // set the bank (if needed)
-    if((address & BANK_MASK) != Enc28j60Bank)
-    {
+    if((address & BANK_MASK) != Enc28j60Bank) {
         // set the bank
         WriteOp(ENC28J60_BIT_FIELD_CLR, ECON1, (ECON1_BSEL1|ECON1_BSEL0));
         WriteOp(ENC28J60_BIT_FIELD_SET, ECON1, (address & BANK_MASK) >> 5);
@@ -265,8 +268,7 @@ uint8_t Enc::ReadOp(uint8_t op, uint8_t address) const
     VPort->Receive((uint8_t*)&byte, sizeof(uint8_t));
     
     // do dummy read if needed (for mac and mii, see datasheet page 29)
-    if(address & 0x80)
-    {
+    if(address & 0x80) {
         byte = 0x00;
         VPort->Transmit((uint8_t*)&byte, sizeof(uint8_t));
         while(VPort->GetLen() == 0);
@@ -349,8 +351,7 @@ size_t Enc::PacketReceive(uint8_t* packet, size_t maxlen)
     // check if a packet has been received and buffered
     //if( !(enc28j60Read(EIR) & EIR_PKTIF) ){
     // The above does not work. See Rev. B4 Silicon Errata point 6.
-    if(Read(EPKTCNT) == 0)
-    {
+    if(Read(EPKTCNT) == 0) {
         return 0;
     }
 
@@ -372,20 +373,17 @@ size_t Enc::PacketReceive(uint8_t* packet, size_t maxlen)
     rxstat |= ReadOp(ENC28J60_READ_BUF_MEM, 0) << 8;
 
     // limit retrieve length
-    if (len > maxlen - 1)
-    {
+    if(len > maxlen - 1) {
         len = maxlen - 1;
     }
     // check CRC and symbol errors (see datasheet page 44, table 7-3):
     // The ERXFCON.CRCEN is set by default. Normally we should not
     // need to check this.
-    if ((rxstat & 0x80) == 0)
-    {
+    if((rxstat & 0x80) == 0) {
         // invalid
         len = 0;
     }
-    else
-    {
+    else {
         // copy the packet from the receive buffer
         ReadBuffer(packet, len);
     }
@@ -416,8 +414,7 @@ void Enc::PacketSend(const uint8_t* packet, size_t len)
     // send the contents of the transmit buffer onto the network
     WriteOp(ENC28J60_BIT_FIELD_SET, ECON1, ECON1_TXRTS);
     // Reset the transmit logic problem. See Rev. B4 Silicon Errata point 12.
-    if((Read(EIR) & EIR_TXERIF))
-    {
+    if((Read(EIR) & EIR_TXERIF)) {
         WriteOp(ENC28J60_BIT_FIELD_CLR, ECON1, ECON1_TXRTS);
     }
 }
@@ -499,19 +496,19 @@ void Enc::Task()
             return;
         }
         
-        /// arp is broadcast if unknown but a host may also verify the mac address by sending it to a unicast address
+        // arp is broadcast if unknown but a host may also verify the mac address by sending it to a unicast address
         if(Net::EthTypeIsArp(Buf, pacLen, IpAddr)) {
             size_t ansLel = Net::MakeArpAnswerFromRequest(Buf, pacLen, MacAddr, IpAddr);
             PacketSend(Buf, ansLel);
             continue;
         }
         
-        /// check if the ip packet is for us
+        // check if the ip packet is for us
         if(!(Net::EthTypeIsIp(Buf, pacLen, IpAddr))) {
             continue;
         }
         
-        /// ICMP Echo (ping)
+        // ICMP Echo (ping)
         if(Net::EthTypeIsIcmpEcho(Buf, pacLen)) 
         {
             size_t ansLel = Net::MakeIcmpEchoAnswerFromRequest(Buf, pacLen, MacAddr, IpAddr);

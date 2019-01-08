@@ -16,6 +16,13 @@ using namespace std;
 #include "stm32f10x_conf.h"
 #include "spi.hpp"
 #include "enc28j60.hpp"
+#include "exti.hpp"
+
+
+static void LanTask();
+
+
+Enc* Lan = nullptr;
 
 
 int main()
@@ -48,19 +55,28 @@ int main()
     Spi Spi2(SPI2, &initStruct);
     VirtualPort* const VPortSpi = &Spi2;
     
-    Enc* Lan = new Enc(VPortSpi, GPIOA, GPIO_Pin_6, GPIOA, GPIO_Pin_7);
+    Lan = new Enc(VPortSpi, GPIOA, GPIO_Pin_6, GPIOA, GPIO_Pin_7);
     
     uint8_t myMac[] = {0x00,0x2F,0x68,0x12,0xAC,0x30};
     uint8_t myIp[] = {192, 168, 0, 110};
     const uint16_t tcpPort = 80;
     
     Lan->Init(myMac, myIp, tcpPort);
-    
+        
+    Exti* Interrupt = new Exti(GPIOC, GPIO_Pin_6, LanTask);
+    Interrupt->SetTypeTrigger(EXTI_Trigger_Falling);
+    Interrupt->SetPriority(0, 0);
+    Interrupt->Enable();
     
     while(true)
     {
-        Lan->Task();
+        
         IWDG_ReloadCounter();
-        //Board::DelayMS(100);
     }
+}
+
+
+static void LanTask()
+{
+    Lan->Task();
 }
