@@ -2378,6 +2378,15 @@
     <group>
         <name>Drivers</name>
         <group>
+            <name>EXTI</name>
+            <file>
+                <name>$PROJ_DIR$\..\Drivers\EXTI\exti.cpp</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\Drivers\EXTI\exti.hpp</name>
+            </file>
+        </group>
+        <group>
             <name>SPI</name>
             <file>
                 <name>$PROJ_DIR$\..\Drivers\SPI\spi.cpp</name>

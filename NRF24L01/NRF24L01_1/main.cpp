@@ -72,11 +72,13 @@ int main()
         cout << "Class Nrf was not created!\r";
         while(true);
     }
+    
     // Check radio
     if(!(nrf1->Check())) {
         cout << "nRF fail!\r";
         while(true);
     }
+    
     // Init radio
     nrf1->Init();
     

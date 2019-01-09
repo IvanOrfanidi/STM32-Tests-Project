@@ -108,6 +108,15 @@ class Nrf
             nRF24_MASK_ARC_CNT         = 0x0F, // Mask for ARC_CNT[3:0] bits in OBSERVE_TX registe
         };
         
+        /// Register setup of address widths
+        enum AddrWidth_t
+        {
+            ILLEGAL = 0x00,
+            BYTES_3 = 0x01,
+            BYTES_4 = 0x02,
+            BYTES_5 = 0x03
+        };
+        
         // Retransmit delay
         enum RetransmitDelay_t : uint8_t
         {
@@ -152,7 +161,7 @@ class Nrf
         {
             nRF24_CRC_off   = 0x00, // CRC disabled
             nRF24_CRC_1byte = 0x08, // 1-byte CRC
-            nRF24_CRC_2byte = 0x0c  // 2-byte CRC
+            nRF24_CRC_2byte = 0x0C  // 2-byte CRC
         };
         
         /// nRF24L01 power control
@@ -229,10 +238,67 @@ class Nrf
 
         bool Check() const;     /// Check radio
 
-        void ClearIRQFlags();   /// Clear any pending IRQ flags
+        void ClearIRQFlags() const;   /// Clear any pending IRQ flags
 
-        void SetPowerMode(PowerControl_t);
+        void SetPowerMode(PowerControl_t);  /// Control transceiver power mode
 
+        /// Reset packet lost counter (PLOS_CNT bits in OBSERVER_TX register)
+        void ResetPLOS() const;
+
+        void SetRFChannel(uint8_t) const;   /// Set frequency channel
+
+        void FlushTX() const;   /// Flush the TX FIFO
+
+        void FlushRX() const;   /// Flush the RX FIFO
+
+        void WritePayload(uint8_t*, uint8_t) const; /// Write TX payload
+
+        void SetOperationalMode(uint8_t) const; /// Set transceiver operational mode
+
+        void SetCrcScheme(uint8_t) const;   /// Configure transceiver CRC scheme
+        
+        /// Set automatic retransmission parameters
+        void SetAutoRetr(uint8_t, uint8_t) const;
+
+        void SetAddrWidth(uint8_t) const;   /// Set of address widths
+        
+        /// Set static RX address for a specified pipe
+        void SetAddr(uint8_t, const uint8_t*) const;
+        
+        /// Configure RF output power in TX mode
+        void SetTxPower(uint8_t) const;
+        
+        /// Configure transceiver data rate
+        void SetDataRate(uint8_t) const;
+        
+        void SetRxPipe(uint8_t, uint8_t, uint8_t) const;
+        
+        /// Disable specified RX pipe
+        void ClosePipe(uint8_t) const;
+        
+        /// Enable the auto retransmit
+        void EnableAA(uint8_t) const;
+        
+        /// Disable the auto retransmit
+        void DisableAA(uint8_t) const;
+        
+        /// Get value of the STATUS register
+        uint8_t GetStatus() const;
+        
+        /// Get pending IRQ flags
+        uint8_t GetIRQFlags() const;
+        
+        /// Get status of the RX FIFO
+        uint8_t GetStatus_RXFIFO() const;
+        
+        /// Get status of the TX FIFO
+        uint8_t GetStatus_TXFIFO() const;
+        
+        /// Get pipe number for the payload available for reading from RX FIFO
+        uint8_t GetRXSource() const;
+        
+        /// Get auto retransmit statistic
+        uint8_t GetRetransmitCounters() const;
 
     private:
     
@@ -244,6 +310,17 @@ class Nrf
             NRF24_3,
             
             NRF24_MAX_COUNT
+        };
+        
+        /// Default
+        enum Default_t : uint8_t
+        {
+            MAX_COUNT_AUTO_RETRANSMITS  = 3,    ///< Максимальном количество попыток при неудачной отправке
+            DEF_RF_CHANNEL              = 2,
+            DEF_RF_OUTPUT_POWER         = nRF24_TXPWR_0dBm,
+            DEF_RF_DATA_RATE            = nRF24_DR_2Mbps,
+            DEF_DYNPD                   = 0,
+            DEF_FEATURE                 = 0
         };
         
         struct InterfaceSettings_t
@@ -260,9 +337,9 @@ class Nrf
             };
         };
         
-        void WriteReg(uint8_t, uint8_t);
+        void WriteReg(uint8_t, uint8_t) const;
         
-        uint8_t ReadReg(uint8_t);
+        uint8_t ReadReg(uint8_t) const;
         
         void RxOn() const;
         
@@ -292,7 +369,7 @@ class Nrf
 
         InterfaceSettings_t* InterfaceSettings; ///< Interface
 
-        VirtualPort* VPort;
+        VirtualPort* VPort;         ///< Virtual port SPI
 };
 
 #endif

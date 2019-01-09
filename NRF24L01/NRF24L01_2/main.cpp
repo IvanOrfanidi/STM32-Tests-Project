@@ -16,10 +16,11 @@ using namespace std;
 #include "stm32f10x_conf.h"
 #include "uart.hpp"
 #include "spi.hpp"
+#include "exti.hpp"
 #include "nrf24l01.hpp"
 
 
-VirtualPort* VPortUart = nullptr;
+static void NrfTask();
 
 
 /**
@@ -43,10 +44,6 @@ int main()
     /* Initialisation Led */
     Board::InitLed();
     Board::LedOn();
-    
-    /* Create and initialisation class UART for debug */
-    Uart Debug(USART2, 9600, 256, 0, 0, 0);
-    VPortUart = &Debug;
     
     /* Create and initialisation class SPI for nRF24L01 */
     SPI_InitTypeDef initStruct;
@@ -73,11 +70,26 @@ int main()
         while(true);
     }
     
+    // Init radio
+    nrf1->Init();
+    
+    /* Creating an external interrupt */
+    Exti* Interrupt = new Exti(GPIOA, GPIO_Pin_15, NrfTask);
+    Interrupt->SetTypeTrigger(EXTI_Trigger_Falling);
+    Interrupt->SetPriority(0, 0);
+    Interrupt->Enable();
+    
     /* General loop */
     while(true)
     {
-        cout << "Hello\r" << endl;
         Board::DelayMS(1000);
         IWDG_ReloadCounter();
     }
 }
+
+
+static void NrfTask()
+{
+    __NOP;
+}
+
