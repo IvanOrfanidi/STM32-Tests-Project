@@ -20,8 +20,12 @@ using namespace std;
 #include "nrf24l01.hpp"
 
 
+const uint8_t nRF_ADDR[] = { 'E', 'S', 'B' };
+
+
 static void NrfTask();
 
+volatile Nrf::RXResult_t pipe;
 
 /**
  * @brief General functions main
@@ -57,21 +61,53 @@ int main()
     initStruct.SPI_NSS = SPI_NSS_Soft;
     initStruct.SPI_CRCPolynomial = 7;
     
-    Spi Spi1(SPI1, &initStruct);
-    VirtualPort* const VPortSpi = &Spi1;
+    Spi Spi2(SPI2, &initStruct);
+    VirtualPort* const VPortSpi = &Spi2;
        
     /* Create radio */
-    Nrf* nrf1 = new Nrf(VPortSpi, GPIOB, GPIO_Pin_0, GPIOB, GPIO_Pin_2);
-    if((nrf1 == nullptr) || (nrf1->CreateClass() == false)) {
+    Nrf* rxSingle = new Nrf(VPortSpi, GPIOB, GPIO_Pin_0, GPIOB, GPIO_Pin_1);
+    if((rxSingle == nullptr) || (rxSingle->CreateClass() == false)) {
         while(true);
     }
     
-    if(!(nrf1->Check())) {
+    if(!(rxSingle->Check())) {
         while(true);
     }
     
     // Init radio
-    nrf1->Init();
+    rxSingle->Init();
+    
+    // Set RF channel
+    rxSingle->SetRFChannel(40);
+    
+    // Set data rate
+    rxSingle->SetDataRate(Nrf::DR_250kbps);
+    
+    // Set CRC scheme
+    rxSingle->SetCrcScheme(Nrf::CRC_2byte);
+    
+    // Set address width, its common for all pipes (RX and TX)
+    rxSingle->SetAddrWidth(sizeof(nRF_ADDR)/sizeof(nRF_ADDR[0]));
+    
+    // Configure RX PIPE
+    rxSingle->SetAddr(Nrf::PIPE1, nRF_ADDR); // program address for pipe
+    rxSingle->SetRxPipe(Nrf::PIPE1, Nrf::AA_ON, 10); // Auto-ACK: enabled, payload length: 10 bytes
+    
+    // Set TX power (maximum)
+    rxSingle->SetTxPower(Nrf::RF24_PA_MAX);
+    
+    // Set operational mode (PRX == receiver)
+    rxSingle->SetOperationalMode(Nrf::MODE_RX);
+    
+    // Clear any pending IRQ flags
+    rxSingle->ClearIRQFlags();
+    
+    // Wake the transceiver
+    rxSingle->SetPowerMode(Nrf::PWR_UP);
+    Board::DelayMS(5);
+    
+    // Put the transceiver to the RX mode
+    rxSingle->RxOn();
     
     /* Creating an external interrupt */
     Exti* Interrupt = new Exti(GPIOA, GPIO_Pin_15, NrfTask);
@@ -79,10 +115,21 @@ int main()
     Interrupt->SetPriority(0, 0);
     Interrupt->Enable();
     
+    // Buffer to store a payload of maximum width
+    uint8_t buffer[32];
+    memset(buffer, 0, sizeof(buffer));
+    uint8_t length = 10;
+    
+    
     /* General loop */
     while(true)
     {
-        Board::DelayMS(1000);
+        if(rxSingle->GetStatus_RXFIFO() != Nrf::STATUS_RXFIFO_EMPTY) {
+    		// Get a payload from the transceiver
+            memset(buffer, 0, sizeof(buffer));
+    		pipe = rxSingle->ReadPayload(buffer, &length);
+            IWDG_ReloadCounter();
+        }
         IWDG_ReloadCounter();
     }
 }

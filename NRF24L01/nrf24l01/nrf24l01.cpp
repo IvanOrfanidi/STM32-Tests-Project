@@ -21,26 +21,26 @@
 
      
 /// Addresses of the RX_PW_P# registers
-const uint8_t nRF24_RX_PW_PIPE[] = 
+const uint8_t RX_PW_PIPE[] = 
 {
-    Nrf::nRF24_REG_RX_PW_P0,
-    Nrf::nRF24_REG_RX_PW_P1,
-    Nrf::nRF24_REG_RX_PW_P2,
-    Nrf::nRF24_REG_RX_PW_P3,
-    Nrf::nRF24_REG_RX_PW_P4,
-    Nrf::nRF24_REG_RX_PW_P5
+    Nrf::REG_RX_PW_P0,
+    Nrf::REG_RX_PW_P1,
+    Nrf::REG_RX_PW_P2,
+    Nrf::REG_RX_PW_P3,
+    Nrf::REG_RX_PW_P4,
+    Nrf::REG_RX_PW_P5
 };
 
 /// Addresses of the address registers
-const uint8_t nRF24_ADDR_REGS[] = 
+const uint8_t ADDR_REGS[] = 
 {
-    Nrf::nRF24_REG_RX_ADDR_P0,
-    Nrf::nRF24_REG_RX_ADDR_P1,
-    Nrf::nRF24_REG_RX_ADDR_P2,
-    Nrf::nRF24_REG_RX_ADDR_P3,
-    Nrf::nRF24_REG_RX_ADDR_P4,
-    Nrf::nRF24_REG_RX_ADDR_P5,
-    Nrf::nRF24_REG_TX_ADDR
+    Nrf::REG_RX_ADDR_P0,
+    Nrf::REG_RX_ADDR_P1,
+    Nrf::REG_RX_ADDR_P2,
+    Nrf::REG_RX_ADDR_P3,
+    Nrf::REG_RX_ADDR_P4,
+    Nrf::REG_RX_ADDR_P5,
+    Nrf::REG_TX_ADDR
 };
 
 
@@ -130,50 +130,48 @@ void Nrf::Init()
 {
     /* Set transceiver to it's initial state 
     note: RX/TX pipe addresses remains untouched */
-    uint8_t state = nRF24_CRC_1byte;
-    WriteReg(nRF24_REG_CONFIG, state);
-    state = ReadReg(nRF24_REG_STATUS);
+    // Регистр основной конфигурации радиомодуля
+    uint8_t state = DEF_CRC_SCHEME;
+    WriteReg(REG_CONFIG, state);
     
     // Регистр который включает автоподтверждение для определённого канала обмена
     //  (не путать с частотными каналами, которых много)
-    state = (1<< nRF24_PIPE0) |
-            (1<< nRF24_PIPE1) |
-            (1<< nRF24_PIPE2) |
-            (1<< nRF24_PIPE3) |
-            (1<< nRF24_PIPE4) |
-            (1<< nRF24_PIPE5); 
-    WriteReg(nRF24_REG_EN_AA, state);
-    
-    state = ReadReg(nRF24_REG_STATUS);
+    state = (1<< PIPE0) |
+            (1<< PIPE1) |
+            (1<< PIPE2) |
+            (1<< PIPE3) |
+            (1<< PIPE4) |
+            (1<< PIPE5); 
+    WriteReg(REG_EN_AA, state);
     
     // Регистр включает использование каналов
-    state = (1<< nRF24_PIPE0) |
-            (1<< nRF24_PIPE1);
-    WriteReg(nRF24_REG_EN_RXADDR, state);
+    state = (1<< PIPE0) |
+            (1<< PIPE1);
+    WriteReg(REG_EN_RXADDR, state);
     
     // Регистр устанавливает величину адресов приёмника и передатчика
     state = BYTES_5;
-    WriteReg(nRF24_REG_SETUP_AW, BYTES_5);
+    WriteReg(REG_SETUP_AW, BYTES_5);
     
     // Регистр устанавливает параметры для повторных передач пакета при их неудачной отправке
-    state = ((uint8_t)MAX_COUNT_AUTO_RETRANSMITS & nRF24_MASK_RETR_ARC);
-    WriteReg(nRF24_REG_SETUP_RETR, state);
+    state = ((uint8_t)MAX_COUNT_AUTO_RETRANSMITS & MASK_RETR_ARC);
+    WriteReg(REG_SETUP_RETR, state);
     
     // Регистр устанавливает RF канал, частота + 2400MHz
     state = DEF_RF_CHANNEL;
-    WriteReg(nRF24_REG_RF_CH, state);
+    WriteReg(REG_RF_CH, state);
     
     // Регистр устанавливает конфигурацию RF(PLL, скорость данных, мощность, LNA усиление)
     state = DEF_RF_OUTPUT_POWER | DEF_RF_DATA_RATE;
-    WriteReg(nRF24_REG_RF_SETUP, state);
+    WriteReg(REG_RF_SETUP, state);
     
     // Регистр устанавливает динамическую длину полезной нагрузки
     state = DEF_DYNPD;
-    WriteReg(nRF24_REG_DYNPD, state);
+    WriteReg(REG_DYNPD, state);
     
     // Регистр устанавливает параметры для полезной нагрузки
     state = DEF_FEATURE;
-    WriteReg(nRF24_REG_FEATURE, state);
+    WriteReg(REG_FEATURE, state);
     
     /* Clear the FIFO's */
     FlushRX();
@@ -193,9 +191,9 @@ void Nrf::Init()
 void Nrf::ClearIRQFlags() const
 {
     // Clear RX_DR, TX_DS and MAX_RT bits of the STATUS register
-    uint8_t state = ReadReg(nRF24_REG_STATUS);
-    state |= nRF24_MASK_STATUS_IRQ;
-    WriteReg(nRF24_REG_STATUS, state);
+    uint8_t state = ReadReg(REG_STATUS);
+    state |= MASK_STATUS_IRQ;
+    WriteReg(REG_STATUS, state);
 }
 
 
@@ -271,12 +269,18 @@ bool Nrf::CreateClass() const
 }
 
 
+/**
+ * @brief Put the transceiver to the RX mode
+ */
 void Nrf::RxOn() const
 {
     GPIO_SetBits(InterfaceSettings->CE_Port, InterfaceSettings->CE_Pin.GPIO_Pin);
 }
 
 
+/**
+ * @brief Put the transceiver to the TX mode
+ */
 void Nrf::RxOff() const
 {
     GPIO_ResetBits(InterfaceSettings->CE_Port, InterfaceSettings->CE_Pin.GPIO_Pin);
@@ -293,16 +297,79 @@ bool Nrf::Check() const
     /// Fake address to test transceiver presence (5 bytes long)
     enum { SIZE_TEST_BUF = 5 };
     const uint8_t request[SIZE_TEST_BUF] = { 'n', 'R', 'F', '2', '4'};
-    WriteBuffer(nRF24_CMD_W_REGISTER | nRF24_REG_TX_ADDR, request, SIZE_TEST_BUF);
+    WriteBuffer(CMD_W_REGISTER | REG_TX_ADDR, request, SIZE_TEST_BUF);
     
     uint8_t answer[SIZE_TEST_BUF];
-    ReadBuffer(nRF24_CMD_R_REGISTER | nRF24_REG_TX_ADDR, answer, SIZE_TEST_BUF);
+    ReadBuffer(CMD_R_REGISTER | REG_TX_ADDR, answer, SIZE_TEST_BUF);
     
     if(memcmp(request, answer, SIZE_TEST_BUF)) {
         return false;
     }
     
     return true;
+}
+
+
+/**
+ * @brief Function to transmit data packet
+ * @param [in] buf - pointer to the buffer with data to transmit
+ * @param [in] length - length of the data buffer in bytes
+ * @retval: one of TXResult_t values:
+ *              TX_SUCCESS
+ *              TX_ERROR
+ *              TX_TIMEOUT
+ *              TX_MAXRT
+*/
+Nrf::TXResult_t Nrf::TransmitPacket(const uint8_t* buf, uint8_t length) const
+{
+    uint32_t wait = WAIT_TIMEOUT;
+
+    // Deassert the CE pin (in case if it still high)
+    RxOff();
+
+    // Transfer a data from the specified buffer to the TX FIFO
+    WritePayload(buf, length);
+
+    // Start a transmission by asserting CE pin (must be held at least 10us)
+    RxOn();
+
+    // Poll the transceiver status register until one of the following flags will be set:
+    //   TX_DS  - means the packet has been transmitted
+    //   MAX_RT - means the maximum number of TX retransmits happened
+    // note: this solution is far from perfect, better to use IRQ instead of polling the status
+    uint8_t status;
+    do {
+        status = GetStatus();
+        if(status & (FLAG_TX_DS | FLAG_MAX_RT)) {
+            break;
+        }
+    } while (wait--);
+    
+    // Deassert the CE pin (Standby-II --> Standby-I)
+    RxOff();
+
+    if(!wait) {
+        // Timeout
+        return TX_TIMEOUT;
+    }
+    
+    // Clear pending IRQ flags
+    ClearIRQFlags();
+    
+    if(status & FLAG_MAX_RT) {
+        // Auto retransmit counter exceeds the programmed maximum limit (FIFO is not removed)
+        return TX_MAXRT;
+    }
+
+    if(status & FLAG_TX_DS) {
+        // Successful transmission
+        return TX_SUCCESS;
+    }
+
+    // Some banana happens, a payload remains in the TX FIFO, flush it
+    FlushTX();
+
+    return TX_ERROR;
 }
 
 
@@ -351,7 +418,7 @@ void Nrf::ReadBuffer(uint8_t reg, uint8_t* buf, uint8_t count) const
     SpiSendReceiveData(reg);
     
     while(count--) {
-        *buf++ = SpiSendReceiveData(Nrf24Registers_t::nRF24_CMD_NOP);
+        *buf++ = SpiSendReceiveData(Nrf24Registers_t::CMD_NOP);
     }
     
     CsnHigh();
@@ -362,10 +429,10 @@ uint8_t Nrf::ReadReg(uint8_t address) const
 {
     CsnLow();
 
-    uint8_t byte = address & nRF24_MASK_REG_MAP;
+    uint8_t byte = address & MASK_REG_MAP;
     VPort->Transmit((uint8_t*)&byte, sizeof(uint8_t));
     
-    byte = nRF24_CMD_NOP;
+    byte = CMD_NOP;
     while(VPort->GetLen() == 0);
     VPort->Receive((uint8_t*)&byte, sizeof(uint8_t));
     
@@ -384,9 +451,9 @@ void Nrf::WriteReg(uint8_t address, uint8_t data) const
 {
     CsnLow();
     
-    if(address < nRF24_CMD_W_REGISTER) {
+    if(address < CMD_W_REGISTER) {
         // This is a register access
-        SpiSendReceiveData(nRF24_CMD_W_REGISTER | (address & nRF24_MASK_REG_MAP));
+        SpiSendReceiveData(CMD_W_REGISTER | (address & MASK_REG_MAP));
     
         SpiSendReceiveData(data);
     }
@@ -394,8 +461,8 @@ void Nrf::WriteReg(uint8_t address, uint8_t data) const
         // This is a single byte command or future command/register
         SpiSendReceiveData(address);
         
-        if ((address != nRF24_CMD_FLUSH_TX) && (address != nRF24_CMD_FLUSH_RX) && 
-            (address != nRF24_CMD_REUSE_TX_PL) && (address != nRF24_CMD_NOP)) {
+        if ((address != CMD_FLUSH_TX) && (address != CMD_FLUSH_RX) && 
+            (address != CMD_REUSE_TX_PL) && (address != CMD_NOP)) {
                 SpiSendReceiveData(data);
             }
     }
@@ -413,7 +480,7 @@ uint8_t Nrf::SpiSendReceiveData(uint8_t byte) const
 {
     VPort->Transmit((uint8_t*)&byte, sizeof(uint8_t));
     
-    byte = nRF24_CMD_NOP;
+    byte = CMD_NOP;
     while(VPort->GetLen() == 0);
     
     VPort->Receive((uint8_t*)&byte, sizeof(uint8_t));
@@ -423,24 +490,24 @@ uint8_t Nrf::SpiSendReceiveData(uint8_t byte) const
 
 /**
  * @brief Control transceiver power mode
- * @param [in] mode - new state of power mode, one of nRF24_PWR_xx values:
- *              nRF24_PWR_UP    - Power up
-                nRF24_PWR_DOWN  - Power down
+ * @param [in] mode - new state of power mode, one of PWR_xx values:
+ *              PWR_UP    - Power up
+                PWR_DOWN  - Power down
  */
 void Nrf::SetPowerMode(PowerControl_t mode)
 {
-    uint8_t state = ReadReg(nRF24_REG_CONFIG);
-    if(mode == nRF24_PWR_UP) {
+    uint8_t state = ReadReg(REG_CONFIG);
+    if(mode == PWR_UP) {
         // Set the PWR_UP bit of CONFIG register to wake the transceiver
         // It goes into Stanby-I mode with consumption about 26uA
-        state |= nRF24_CONFIG_PWR_UP;
+        state |= CONFIG_PWR_UP;
     }
     else {
         // Clear the PWR_UP bit of CONFIG register to put the transceiver
         // into power down mode with consumption about 900nA
-        state &= ~nRF24_CONFIG_PWR_UP;
+        state &= ~CONFIG_PWR_UP;
     }
-    WriteReg(nRF24_REG_CONFIG, state);
+    WriteReg(REG_CONFIG, state);
 }
 
 
@@ -450,8 +517,8 @@ void Nrf::SetPowerMode(PowerControl_t mode)
 void Nrf::ResetPLOS() const
 {
     // The PLOS counter is reset after write to RF_CH register
-    const uint8_t value = ReadReg(nRF24_REG_RF_CH);
-    WriteReg(nRF24_REG_RF_CH, value);
+    const uint8_t value = ReadReg(REG_RF_CH);
+    WriteReg(REG_RF_CH, value);
 }
 
 
@@ -463,7 +530,7 @@ void Nrf::ResetPLOS() const
  */
 void Nrf::SetRFChannel(uint8_t channel) const
 {
-    WriteReg(nRF24_REG_RF_CH, channel);
+    WriteReg(REG_RF_CH, channel);
 }
 
 
@@ -472,7 +539,7 @@ void Nrf::SetRFChannel(uint8_t channel) const
  */
 void Nrf::FlushTX() const
 {
-    WriteReg(nRF24_CMD_FLUSH_TX, nRF24_CMD_NOP);
+    WriteReg(CMD_FLUSH_TX, CMD_NOP);
 }
 
 
@@ -481,62 +548,86 @@ void Nrf::FlushTX() const
  */
 void Nrf::FlushRX() const
 {
-    WriteReg(nRF24_CMD_FLUSH_RX, nRF24_CMD_NOP);
+    WriteReg(CMD_FLUSH_RX, CMD_NOP);
 }
 
+
+Nrf::RXResult_t Nrf::ReadPayload(uint8_t* buf, uint8_t* length)
+{
+    // Extract a payload pipe number from the STATUS register
+    const uint8_t pipe = ((ReadReg(REG_STATUS) & MASK_RX_P_NO) >> 1);
+    
+    // RX FIFO empty?
+    if(pipe < RX_PIPE_ALL) {
+        // Get payload length
+        *length = ReadReg(RX_PW_PIPE[pipe]);
+
+        // Read a payload from the RX FIFO
+        if(*length) {
+            ReadBuffer(CMD_R_RX_PAYLOAD, buf, *length);
+        }
+
+        return (RXResult_t)pipe;
+    }
+
+    // The RX FIFO is empty
+    *length = 0;
+
+    return RX_EMPTY;
+}
    
 /**
  * @brief Write TX payload
  * @param [in] buf - pointer to the buffer with payload data
  * @param [in] length - payload length in bytes
  */
-void Nrf::WritePayload(uint8_t* buf, uint8_t length) const
+void Nrf::WritePayload(const uint8_t* buf, uint8_t length) const
 {
-    WriteBuffer(nRF24_CMD_W_TX_PAYLOAD, buf, length);
+    WriteBuffer(CMD_W_TX_PAYLOAD, buf, length);
 }
 
    
 /**
  * @brief Set transceiver operational mode
- * @param [in] mode - operational mode, one of nRF24_MODE_xx values
+ * @param [in] mode - operational mode, one of MODE_xx values
  */
-void Nrf::SetOperationalMode(uint8_t mode) const
+void Nrf::SetOperationalMode(TransceiverMode_t mode) const
 {
     // Configure PRIM_RX bit of the CONFIG register
-    uint8_t value  = ReadReg(nRF24_REG_CONFIG);
-    value &= ~nRF24_CONFIG_PRIM_RX;
-    value |= (mode & nRF24_CONFIG_PRIM_RX);
-    WriteReg(nRF24_REG_CONFIG, value);
+    uint8_t value  = ReadReg(REG_CONFIG);
+    value &= ~CONFIG_PRIM_RX;
+    value |= ((uint8_t)mode & CONFIG_PRIM_RX);
+    WriteReg(REG_CONFIG, value);
 }
 
 
 /**
  * @brief Configure transceiver CRC scheme
- * @param [in] scheme - CRC scheme, one of nRF24_CRC_xx values
+ * @param [in] scheme - CRC scheme, one of CRC_xx values
  * @note: transceiver will forcibly turn on the CRC in case if auto acknowledgment
  *       enabled for at least one RX pipe
  */
 void Nrf::SetCrcScheme(uint8_t scheme) const
 {
     // Configure EN_CRC[3] and CRCO[2] bits of the CONFIG register
-    uint8_t value  = ReadReg(nRF24_REG_CONFIG);
-    value &= ~nRF24_MASK_CRC;
-    value |= (scheme & nRF24_MASK_CRC);
-    WriteReg(nRF24_REG_CONFIG, value);
+    uint8_t value  = ReadReg(REG_CONFIG);
+    value &= ~MASK_CRC;
+    value |= (scheme & MASK_CRC);
+    WriteReg(REG_CONFIG, value);
 }
 
 
 /**
  * @brief Set automatic retransmission parameters
- * @param [in] ard - auto retransmit delay, one of nRF24_ARD_xx values
+ * @param [in] ard - auto retransmit delay, one of ARD_xx values
  * @param [in] arc - count of auto retransmits, value form 0 to 15
  * @note: zero arc value means that the automatic retransmission disabled
 */
 void Nrf::SetAutoRetr(uint8_t ard, uint8_t arc) const
 {
     // Set auto retransmit settings (SETUP_RETR register)
-    const uint8_t value = ((ard << 4) | (arc & nRF24_MASK_RETR_ARC));
-    WriteReg(nRF24_REG_SETUP_RETR, value);
+    const uint8_t value = ((ard << 4) | (arc & MASK_RETR_ARC));
+    WriteReg(REG_SETUP_RETR, value);
 }
 
 
@@ -547,13 +638,13 @@ void Nrf::SetAutoRetr(uint8_t ard, uint8_t arc) const
 */
 void Nrf::SetAddrWidth(uint8_t addr_width) const
 {
-    WriteReg(nRF24_REG_SETUP_AW, addr_width - 2);
+    WriteReg(REG_SETUP_AW, addr_width - 2);
 }
 
 
 /**
  * @brief Set static RX address for a specified pipe
- * @param [in] pipe - pipe to configure address, one of nRF24_PIPEx values
+ * @param [in] pipe - pipe to configure address, one of PIPEx values
  * @param [in] addr - pointer to the buffer with address
  * @note: pipe can be a number from 0 to 5 (RX pipes) and 6 (TX pipe)
  * @note: buffer length must be equal to current address width of transceiver
@@ -568,16 +659,16 @@ void Nrf::SetAddr(uint8_t pipe, const uint8_t* addr) const
     uint8_t addr_width;
     switch(pipe)
     {
-        case nRF24_PIPETX:
-        case nRF24_PIPE0:
-        case nRF24_PIPE1:
+        case PIPETX:
+        case PIPE0:
+        case PIPE1:
             // Get address width
-            addr_width = ReadReg(nRF24_REG_SETUP_AW) + 1;
+            addr_width = ReadReg(REG_SETUP_AW) + 1;
             // Write address in reverse order (LSByte first)
             addr += addr_width;
             CsnLow();
             
-            SpiSendReceiveData(nRF24_CMD_W_REGISTER | nRF24_ADDR_REGS[pipe]);
+            SpiSendReceiveData(CMD_W_REGISTER | ADDR_REGS[pipe]);
             do {
                 SpiSendReceiveData(*addr--);
             } 
@@ -585,12 +676,12 @@ void Nrf::SetAddr(uint8_t pipe, const uint8_t* addr) const
             
             CsnHigh();
             break;
-        case nRF24_PIPE2:
-        case nRF24_PIPE3:
-        case nRF24_PIPE4:
-        case nRF24_PIPE5:
+        case PIPE2:
+        case PIPE3:
+        case PIPE4:
+        case PIPE5:
             // Write address LSBbyte (only first byte from the addr buffer)
-            WriteReg(nRF24_ADDR_REGS[pipe], *addr);
+            WriteReg(ADDR_REGS[pipe], *addr);
             break;
         default:
             // Incorrect pipe number -> do nothing
@@ -601,56 +692,56 @@ void Nrf::SetAddr(uint8_t pipe, const uint8_t* addr) const
 
 /**
  * @brief Configure RF output power in TX mode
- * @param [in] tx_pwr - RF output power, one of nRF24_TXPWR_xx values
+ * @param [in] tx_pwr - RF output power, one of TXPWR_xx values
 */
 void Nrf::SetTxPower(uint8_t tx_pwr) const
 {
     // Configure RF_PWR[2:1] bits of the RF_SETUP register
-    uint8_t value  = ReadReg(nRF24_REG_RF_SETUP);
-    value &= ~nRF24_MASK_RF_PWR;
+    uint8_t value  = ReadReg(REG_RF_SETUP);
+    value &= ~MASK_RF_PWR;
     value |= tx_pwr;
-    WriteReg(nRF24_REG_RF_SETUP, value);
+    WriteReg(REG_RF_SETUP, value);
 }
 
 
 /**
  * @brief Configure transceiver data rate
- * @param [in] data_rate - data rate, one of nRF24_DR_xx values
+ * @param [in] data_rate - data rate, one of DR_xx values
 */
 void Nrf::SetDataRate(uint8_t data_rate) const
 {
     // Configure RF_DR_LOW[5] and RF_DR_HIGH[3] bits of the RF_SETUP register
-    uint8_t value  = ReadReg(nRF24_REG_RF_SETUP);
-    value &= ~nRF24_MASK_DATARATE;
+    uint8_t value  = ReadReg(REG_RF_SETUP);
+    value &= ~MASK_DATARATE;
     value |= data_rate;
-    WriteReg(nRF24_REG_RF_SETUP, value);
+    WriteReg(REG_RF_SETUP, value);
 }
 
 
 /**
  * @brief Configure a specified RX pipe
  * @param [in] pipe - number of the RX pipe, value from 0 to 5
- * @param [in] aa_state - state of auto acknowledgment, one of nRF24_AA_xx values
+ * @param [in] aa_state - state of auto acknowledgment, one of AA_xx values
  * @param [in] payload_len - payload length in bytes
 */
 void Nrf::SetRxPipe(uint8_t pipe, uint8_t aa_state, uint8_t payload_len) const
 {
     // Enable the specified pipe (EN_RXADDR register)
-    uint8_t value = ((ReadReg(nRF24_REG_EN_RXADDR) | (1 << pipe)) & nRF24_MASK_EN_RX);
-    WriteReg(nRF24_REG_EN_RXADDR, value);
+    uint8_t value = ((ReadReg(REG_EN_RXADDR) | (1 << pipe)) & MASK_EN_RX);
+    WriteReg(REG_EN_RXADDR, value);
 
     // Set RX payload length (RX_PW_Px register)
-    WriteReg(nRF24_RX_PW_PIPE[pipe], payload_len & nRF24_MASK_RX_PW);
+    WriteReg(RX_PW_PIPE[pipe], payload_len & MASK_RX_PW);
 
     // Set auto acknowledgment for a specified pipe (EN_AA register)
-    value = ReadReg(nRF24_REG_EN_AA);
-    if (aa_state == nRF24_AA_ON) {
+    value = ReadReg(REG_EN_AA);
+    if (aa_state == AA_ON) {
         value |=  (1 << pipe);
     }
     else {
         value &= ~(1 << pipe);
     }
-    WriteReg(nRF24_REG_EN_AA, value);
+    WriteReg(REG_EN_AA, value);
 }
 
 
@@ -660,10 +751,10 @@ void Nrf::SetRxPipe(uint8_t pipe, uint8_t aa_state, uint8_t payload_len) const
 */
 void Nrf::ClosePipe(uint8_t pipe) const
 {
-    uint8_t value  = ReadReg(nRF24_REG_EN_RXADDR);
+    uint8_t value  = ReadReg(REG_EN_RXADDR);
     value &= ~(1 << pipe);
-    value &= nRF24_MASK_EN_RX;
-    WriteReg(nRF24_REG_EN_RXADDR, value);
+    value &= MASK_EN_RX;
+    WriteReg(REG_EN_RXADDR, value);
 }
 
 /**
@@ -673,9 +764,9 @@ void Nrf::ClosePipe(uint8_t pipe) const
 void Nrf::EnableAA(uint8_t pipe) const
 {
     // Set bit in EN_AA register
-    uint8_t value  = ReadReg(nRF24_REG_EN_AA);
+    uint8_t value  = ReadReg(REG_EN_AA);
     value |= (1 << pipe);
-    WriteReg(nRF24_REG_EN_AA, value);
+    WriteReg(REG_EN_AA, value);
 }
 
 
@@ -688,13 +779,13 @@ void Nrf::DisableAA(uint8_t pipe) const
 {
     if (pipe > 5) {
         // Disable Auto-ACK for ALL pipes
-        WriteReg(nRF24_REG_EN_AA, 0x00);
+        WriteReg(REG_EN_AA, 0x00);
     }
     else {
         // Clear bit in the EN_AA register
-        uint8_t value  = ReadReg(nRF24_REG_EN_AA);
+        uint8_t value  = ReadReg(REG_EN_AA);
         value &= ~(1 << pipe);
-        WriteReg(nRF24_REG_EN_AA, value);
+        WriteReg(REG_EN_AA, value);
     }
 }
 
@@ -705,7 +796,7 @@ void Nrf::DisableAA(uint8_t pipe) const
 */
 uint8_t Nrf::GetStatus() const
 {
-    return ReadReg(nRF24_REG_STATUS);
+    return ReadReg(REG_STATUS);
 }
 
 
@@ -715,28 +806,28 @@ uint8_t Nrf::GetStatus() const
 */
 uint8_t Nrf::GetIRQFlags() const
 {
-    return (ReadReg(nRF24_REG_STATUS) & nRF24_MASK_STATUS_IRQ);
+    return (ReadReg(REG_STATUS) & MASK_STATUS_IRQ);
 }
 
 
 /**
  * @brief Get status of the RX FIFO
- * @retval: one of the nRF24_STATUS_RXFIFO_xx values
+ * @retval: one of the STATUS_RXFIFO_xx values
 */
 uint8_t Nrf::GetStatus_RXFIFO() const
 {
-    return (ReadReg(nRF24_REG_FIFO_STATUS) & nRF24_MASK_RXFIFO);
+    return (ReadReg(REG_FIFO_STATUS) & MASK_RXFIFO);
 }
 
 
 /**
  * @brief Get status of the TX FIFO
- * @retval: one of the nRF24_STATUS_TXFIFO_xx values
+ * @retval: one of the STATUS_TXFIFO_xx values
  * @note: the TX_REUSE bit ignored
 */
 uint8_t Nrf::GetStatus_TXFIFO() const
 {
-    return ((ReadReg(nRF24_REG_FIFO_STATUS) & nRF24_MASK_TXFIFO) >> 4);
+    return ((ReadReg(REG_FIFO_STATUS) & MASK_TXFIFO) >> 4);
 }
 
 
@@ -746,7 +837,7 @@ uint8_t Nrf::GetStatus_TXFIFO() const
 */
 uint8_t Nrf::GetRXSource() const
 {
-    return ((ReadReg(nRF24_REG_STATUS) & nRF24_MASK_RX_P_NO) >> 1);
+    return ((ReadReg(REG_STATUS) & MASK_RX_P_NO) >> 1);
 }
 
 
@@ -758,5 +849,5 @@ uint8_t Nrf::GetRXSource() const
 */
 uint8_t Nrf::GetRetransmitCounters() const
 {
-    return (ReadReg(nRF24_REG_OBSERVE_TX));
+    return (ReadReg(REG_OBSERVE_TX));
 }

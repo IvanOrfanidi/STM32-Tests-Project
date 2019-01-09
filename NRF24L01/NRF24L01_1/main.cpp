@@ -19,6 +19,7 @@ using namespace std;
 #include "exti.hpp"
 #include "nrf24l01.hpp"
 
+const uint8_t nRF_ADDR[] = { 'E', 'S', 'B' };
 
 static void NrfTask();
 
@@ -67,20 +68,56 @@ int main()
     VirtualPort* const VPortSpi = &Spi1;
        
     /* Create radio */
-    Nrf* nrf1 = new Nrf(VPortSpi, GPIOB, GPIO_Pin_0, GPIOB, GPIO_Pin_2);
-    if((nrf1 == nullptr) || (nrf1->CreateClass() == false)) {
+    Nrf* txSingle = new Nrf(VPortSpi, GPIOB, GPIO_Pin_0, GPIOB, GPIO_Pin_2);
+    if((txSingle == nullptr) || (txSingle->CreateClass() == false)) {
         cout << "Class Nrf was not created!\r";
         while(true);
     }
     
     // Check radio
-    if(!(nrf1->Check())) {
+    if(!(txSingle->Check())) {
         cout << "nRF fail!\r";
         while(true);
     }
     
     // Init radio
-    nrf1->Init();
+    txSingle->Init();
+    
+    // Set RF channel
+    txSingle->SetRFChannel(40);
+    
+    // Set data rate
+    txSingle->SetDataRate(Nrf::DR_250kbps);
+    
+    // Set CRC scheme
+    txSingle->SetCrcScheme(Nrf::CRC_2byte);
+    
+    // Set address width, its common for all pipes (RX and TX)
+    txSingle->SetAddrWidth(sizeof(nRF_ADDR)/sizeof(nRF_ADDR[0]));
+    
+    // Configure TX PIPE
+    txSingle->SetAddr(Nrf::PIPETX, nRF_ADDR);  // program TX address
+    txSingle->SetAddr(Nrf::PIPE0, nRF_ADDR);   // program address for pipe#0, must be same as TX (for Auto-ACK)
+    
+    // Set TX power (maximum)
+    txSingle->SetTxPower(Nrf::RF24_PA_MAX);
+
+    // Configure auto retransmit: 10 retransmissions with pause of 2500s in between
+    txSingle->SetAutoRetr(Nrf::ARD_2500us, 10);
+    
+    // Enable Auto-ACK for pipe#0 (for ACK packets)
+    txSingle->EnableAA(Nrf::PIPE0);
+    
+    // Set operational mode (PTX == transmitter)
+    txSingle->SetOperationalMode(Nrf::MODE_TX);
+    
+    // Clear any pending IRQ flags
+    txSingle->ClearIRQFlags();
+    
+    // Wake the transceiver
+    txSingle->SetPowerMode(Nrf::PWR_UP);
+    Board::DelayMS(5);
+    
     
     /* Creating an external interrupt */
     Exti* Interrupt = new Exti(GPIOA, GPIO_Pin_15, NrfTask);
@@ -88,11 +125,37 @@ int main()
     Interrupt->SetPriority(0, 0);
     Interrupt->Enable();
     
+    // Buffer to store a payload of maximum width
+    uint8_t buffer[32];
+    memset(buffer, 0, sizeof(buffer));
+    const uint8_t length = 10;
+    uint32_t j = 0;
+    
+    uint32_t packetsLost = 0;
+    uint32_t otxPlosCnt = 0;
+    volatile uint32_t otxArcCnt = 0;
     
     /* General loop */
     while(true)
     {
-        //cout << "Hello\r";
+        // Prepare data packet
+    	for(size_t i = 0; i < length; i++) {
+    		buffer[i] = j++;
+    		if(j > 0x000000FF) {
+                j = 0;
+            }
+    	}
+        
+        // Transmit a packet
+        const Nrf::TXResult_t res = txSingle->TransmitPacket(buffer, length);
+        uint8_t otx = txSingle->GetRetransmitCounters();
+        otxPlosCnt = (otx & Nrf::MASK_PLOS_CNT) >> 4; // packets lost counter
+        otxArcCnt  = (otx & Nrf::MASK_ARC_CNT); // auto retransmissions counter
+        
+        if(res == Nrf::TX_MAXRT) {
+            packetsLost += otxPlosCnt;
+        }
+        
         Board::DelayMS(1000);
         IWDG_ReloadCounter();
     }
