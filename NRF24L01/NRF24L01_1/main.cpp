@@ -48,8 +48,11 @@ int main()
     Board::InitLed();
     Board::LedOn();
     
+    /* Initialisation Watchdog Timer */
+    Board::InitIWDG();
+    
     /* Create and initialisation class UART for debug */
-    Uart Debug(USART2, 9600, 256, 0, 0, 0);
+    Uart Debug(USART2, 9600, 256, 0);
     VPortUart = &Debug;
     
     /* Create and initialisation class SPI for nRF24L01 */
@@ -80,42 +83,23 @@ int main()
         while(true);
     }
     
-    // Init radio
-    txSingle->Init();
-    
-    // Set RF channel
-    txSingle->SetRFChannel(40);
-    
-    // Set data rate
-    txSingle->SetDataRate(Nrf::DR_250kbps);
-    
-    // Set CRC scheme
-    txSingle->SetCrcScheme(Nrf::CRC_2byte);
-    
-    // Set address width, its common for all pipes (RX and TX)
-    txSingle->SetAddrWidth(sizeof(nRF_ADDR)/sizeof(nRF_ADDR[0]));
-    
-    // Configure TX PIPE
-    txSingle->SetAddr(Nrf::PIPETX, nRF_ADDR);  // program TX address
-    txSingle->SetAddr(Nrf::PIPE0, nRF_ADDR);   // program address for pipe#0, must be same as TX (for Auto-ACK)
-    
-    // Set TX power (maximum)
-    txSingle->SetTxPower(Nrf::RF24_PA_MAX);
-
-    // Configure auto retransmit: 10 retransmissions with pause of 2500s in between
-    txSingle->SetAutoRetr(Nrf::ARD_2500us, 10);
-    
-    // Enable Auto-ACK for pipe#0 (for ACK packets)
-    txSingle->EnableAA(Nrf::PIPE0);
-    
-    // Set operational mode (PTX == transmitter)
-    txSingle->SetOperationalMode(Nrf::MODE_TX);
-    
-    // Clear any pending IRQ flags
-    txSingle->ClearIRQFlags();
-    
+    // Init radio for transmitter
+    Nrf::Settings_t  settingsNrf;
+    settingsNrf.OperationalMode = Nrf::MODE_TX;
+    settingsNrf.Channel = 40;                       // RF channel 40
+    settingsNrf.Pipe = Nrf::PIPE0;                  // Work pipe
+    settingsNrf.DataRate = Nrf::DR_250kbps;         // data rate
+    settingsNrf.RfPower = Nrf::RF24_PA_MAX;         // TX power (maximum)
+    settingsNrf.CrcScheme = Nrf::CRC_2byte;         // CRC scheme
+    settingsNrf.StateAutoAck = Nrf::AA_ON;          // Auto-ACK
+    settingsNrf.AutoRetransmitDelay = Nrf::ARD_2500us;  // pause of 2500s in between
+    settingsNrf.CountAutoRetransmits = 10;          // Count retransmissions
+    settingsNrf.AddrWidth = sizeof(nRF_ADDR)/sizeof(nRF_ADDR[0]);        // Address width, its common for all pipes (RX and TX)
+    memcpy(settingsNrf.Addr, nRF_ADDR, sizeof(nRF_ADDR)/sizeof(nRF_ADDR[0]));
+    txSingle->Init(settingsNrf);
+            
     // Wake the transceiver
-    txSingle->SetPowerMode(Nrf::PWR_UP);
+    txSingle->Enable();
     Board::DelayMS(5);
     
     
@@ -128,7 +112,7 @@ int main()
     // Buffer to store a payload of maximum width
     uint8_t buffer[32];
     memset(buffer, 0, sizeof(buffer));
-    const uint8_t length = 10;
+    const uint8_t length = 32;
     uint32_t j = 0;
     
     uint32_t packetsLost = 0;
@@ -152,11 +136,11 @@ int main()
         otxPlosCnt = (otx & Nrf::MASK_PLOS_CNT) >> 4; // packets lost counter
         otxArcCnt  = (otx & Nrf::MASK_ARC_CNT); // auto retransmissions counter
         
-        if(res == Nrf::TX_MAXRT) {
+        if(res != Nrf::TX_SUCCESS) {
             packetsLost += otxPlosCnt;
         }
         
-        Board::DelayMS(1000);
+        Board::DelayMS(500);
         IWDG_ReloadCounter();
     }
 }
