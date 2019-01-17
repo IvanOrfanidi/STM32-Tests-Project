@@ -35,7 +35,7 @@
 class Nrf
 {
     public:
-    
+       
         /// nRF24L01 registers
         enum Nrf24Registers_t : uint8_t
         {
@@ -168,14 +168,7 @@ class Nrf
             CRC_1byte = 0x08, // 1-byte CRC
             CRC_2byte = 0x0C  // 2-byte CRC
         };
-        
-        /// nRF24L01 power control
-        enum PowerControl_t : uint8_t
-        {
-            PWR_UP   = 0x02, // Power up
-            PWR_DOWN = 0x00  // Power down
-        };
-        
+                
         /// Transceiver mode
         enum TransceiverMode_t : uint8_t
         {
@@ -242,13 +235,51 @@ class Nrf
             TX_TIMEOUT,     // It was timeout during packet transmit
             TX_MAXRT        // Transmit failed with maximum auto retransmit count
         };
+        
+        struct Settings_t
+        {
+            enum { MAX_SIZE_ADDRESS = 5 };
+            uint8_t Addr[MAX_SIZE_ADDRESS];
+            uint8_t AddrWidth;
+            TransceiverMode_t OperationalMode;      ///< transceiver operational mode
+            uint8_t Channel;                        ///< RF channel
+            DataRate_t DataRate;                    ///< transceiver data rate
+            CrcEncodingScheme_t CrcScheme;          ///< transceiver CRC scheme
+            EnumerationRxPipe_t Pipe;               ///< Work pipe
+            RfOutputPower_t RfPower;                ///< RF output power in TX mode
+            RetransmitDelay_t AutoRetransmitDelay;  ///< automatic retransmit delay
+            uint8_t  CountAutoRetransmits;          ///< count of automatic retransmits
+            StateAutoAcknowledgment_t StateAutoAck; ///< state of auto acknowledgment, one of AA_xx values
+            uint8_t PayloadLength;
+            
+            /// Ñonstructor
+            Settings_t()
+            {
+                Addr[0] = 'N';
+                Addr[1] = 'R';
+                Addr[2] = 'F';
+                Addr[3] = '2';
+                Addr[4] = '4';
+                AddrWidth = 5;
+                OperationalMode = MODE_TX;
+                Channel = 10;
+                DataRate = DR_1Mbps;
+                CrcScheme = CRC_2byte;
+                Pipe = PIPE0;
+                AutoRetransmitDelay = ARD_2500us;
+                CountAutoRetransmits = 10;
+
+                StateAutoAck = AA_ON;
+                PayloadLength = 10;
+            }
+        };
     
         /// Ñonstructor
         Nrf(VirtualPort*, GPIO_TypeDef*, uint16_t, GPIO_TypeDef*, uint16_t);
         
         virtual ~Nrf();   /// Destructor
 
-        void Init();    /// Init radio
+        void Init(Settings_t&);    /// Init radio
         
         bool CreateClass() const;   /// Returns the status of class creation
 
@@ -258,8 +289,6 @@ class Nrf
         TXResult_t TransmitPacket(const uint8_t*, uint8_t) const;
 
         void ClearIRQFlags() const;   /// Clear any pending IRQ flags
-
-        void SetPowerMode(PowerControl_t);  /// Control transceiver power mode
 
         /// Reset packet lost counter (PLOS_CNT bits in OBSERVER_TX register)
         void ResetPLOS() const;
@@ -276,33 +305,43 @@ class Nrf
 
         void SetOperationalMode(TransceiverMode_t) const; /// Set transceiver operational mode
 
-        void SetCrcScheme(uint8_t) const;   /// Configure transceiver CRC scheme
+        void SetCrcScheme(CrcEncodingScheme_t) const;   /// Configure transceiver CRC scheme
         
         /// Set automatic retransmission parameters
-        void SetAutoRetr(uint8_t, uint8_t) const;
+        void SetAutoRetr(RetransmitDelay_t, uint8_t) const;
 
         void SetAddrWidth(uint8_t) const;   /// Set of address widths
         
         /// Set static RX address for a specified pipe
         void SetAddr(uint8_t, const uint8_t*) const;
         
+        void Enable() const;    /// Enable transceiver power
+        
+        void Disable() const;   /// Disable transceiver power
+
+        /// Put the transceiver to the RX mode
+        void RxOn() const;
+        
+        /// Put the transceiver to the TX mode
+        void RxOff() const;
+        
         /// Configure RF output power in TX mode
-        void SetTxPower(uint8_t) const;
+        void SetTxPower(RfOutputPower_t) const;
         
         /// Configure transceiver data rate
-        void SetDataRate(uint8_t) const;
+        void SetDataRate(DataRate_t) const;
         
         /// Configure a specified RX pipe
-        void SetRxPipe(uint8_t, uint8_t, uint8_t) const;
+        void SetRxPipe(EnumerationRxPipe_t, StateAutoAcknowledgment_t, uint8_t) const;
         
         /// Disable specified RX pipe
         void ClosePipe(uint8_t) const;
         
         /// Enable the auto retransmit
-        void EnableAA(uint8_t) const;
+        void EnableAA(EnumerationRxPipe_t) const;
         
         /// Disable the auto retransmit
-        void DisableAA(uint8_t) const;
+        void DisableAA(EnumerationRxPipe_t) const;
         
         /// Get value of the STATUS register
         uint8_t GetStatus() const;
@@ -321,18 +360,19 @@ class Nrf
         
         /// Get auto retransmit statistic
         uint8_t GetRetransmitCounters() const;
-        
-        /// Put the transceiver to the RX mode
-        void RxOn() const;
-        
-        /// Put the transceiver to the TX mode
-        void RxOff() const;
 
     private:
     
         enum Timouts_t
         {
             WAIT_TIMEOUT    = 0x000FFFFF,
+        };
+        
+        /// nRF24L01 power control
+        enum PowerControl_t : uint8_t
+        {
+            PWR_UP   = 0x02, // Power up
+            PWR_DOWN = 0x00  // Power down
         };
     
         /// Count nRF24L01
@@ -344,20 +384,7 @@ class Nrf
             
             NRF24_MAX_COUNT
         };
-        
-        /// Default
-        enum Default_t : uint8_t
-        {
-            MAX_COUNT_AUTO_RETRANSMITS  = 3,    ///< Ìàêñèìàëüíîì êîëè÷åñòâî ïîïûòîê ïðè íåóäà÷íîé îòïðàâêå
-            DEF_RF_CHANNEL              = 2,
-            DEF_RF_OUTPUT_POWER         = RF24_PA_MAX,
-            DEF_RF_DATA_RATE            = DR_2Mbps,
-
-            DEF_CRC_SCHEME              = CRC_1byte,
-            DEF_DYNPD                   = 0,
-            DEF_FEATURE                 = 0
-        };
-        
+                
         struct InterfaceSettings_t
         {
             GPIO_TypeDef* CE_Port;
@@ -372,13 +399,18 @@ class Nrf
             };
         };
         
+        /// Write a byte register
         void WriteReg(uint8_t, uint8_t) const;
         
+        /// Read a byte register
         uint8_t ReadReg(uint8_t) const;
                 
         void CsnLow() const;
         
         void CsnHigh() const;
+        
+        /// Control transceiver power mode
+        void SetPowerMode(PowerControl_t) const;
         
         uint8_t SpiSendReceiveData(uint8_t) const;
 

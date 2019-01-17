@@ -31,18 +31,6 @@ const uint8_t RX_PW_PIPE[] =
     Nrf::REG_RX_PW_P5
 };
 
-/// Addresses of the address registers
-const uint8_t ADDR_REGS[] = 
-{
-    Nrf::REG_RX_ADDR_P0,
-    Nrf::REG_RX_ADDR_P1,
-    Nrf::REG_RX_ADDR_P2,
-    Nrf::REG_RX_ADDR_P3,
-    Nrf::REG_RX_ADDR_P4,
-    Nrf::REG_RX_ADDR_P5,
-    Nrf::REG_TX_ADDR
-};
-
 
 /**
  * @brief Static instances of a class
@@ -126,54 +114,61 @@ Nrf::~Nrf()
 }
 
 
-void Nrf::Init()
+void Nrf::Init(Settings_t& settings)
 {
-    /* Set transceiver to it's initial state 
-    note: RX/TX pipe addresses remains untouched */
-    // Регистр основной конфигурации радиомодуля
-    uint8_t state = DEF_CRC_SCHEME;
-    WriteReg(REG_CONFIG, state);
-    
-    // Регистр который включает автоподтверждение для определённого канала обмена
-    //  (не путать с частотными каналами, которых много)
-    state = (1<< PIPE0) |
-            (1<< PIPE1) |
-            (1<< PIPE2) |
-            (1<< PIPE3) |
-            (1<< PIPE4) |
-            (1<< PIPE5); 
-    WriteReg(REG_EN_AA, state);
-    
-    // Регистр включает использование каналов
-    state = (1<< PIPE0) |
-            (1<< PIPE1);
-    WriteReg(REG_EN_RXADDR, state);
-    
-    // Регистр устанавливает величину адресов приёмника и передатчика
-    state = BYTES_5;
-    WriteReg(REG_SETUP_AW, BYTES_5);
-    
-    // Регистр устанавливает параметры для повторных передач пакета при их неудачной отправке
-    state = ((uint8_t)MAX_COUNT_AUTO_RETRANSMITS & MASK_RETR_ARC);
-    WriteReg(REG_SETUP_RETR, state);
-    
-    // Регистр устанавливает RF канал, частота + 2400MHz
-    state = DEF_RF_CHANNEL;
-    WriteReg(REG_RF_CH, state);
-    
-    // Регистр устанавливает конфигурацию RF(PLL, скорость данных, мощность, LNA усиление)
-    state = DEF_RF_OUTPUT_POWER | DEF_RF_DATA_RATE;
-    WriteReg(REG_RF_SETUP, state);
-    
+    //  Set transceiver to it's initial state
     // Регистр устанавливает динамическую длину полезной нагрузки
-    state = DEF_DYNPD;
-    WriteReg(REG_DYNPD, state);
-    
+    WriteReg(REG_DYNPD, 0);
     // Регистр устанавливает параметры для полезной нагрузки
-    state = DEF_FEATURE;
-    WriteReg(REG_FEATURE, state);
+    WriteReg(REG_FEATURE, 0);
     
-    /* Clear the FIFO's */
+    // Set RF channel, freq + 2400MHz
+    SetRFChannel(settings.Channel);
+    
+    // Set data rate
+    SetDataRate(settings.DataRate);
+    
+    // Set CRC scheme
+    SetCrcScheme(settings.CrcScheme);
+    
+    // Set address width, its common for all pipes (RX and TX)
+    SetAddrWidth(settings.AddrWidth);
+    
+    // Configure TX/RX PIPE
+    if(settings.OperationalMode == MODE_TX) {
+        // Set program TX address
+        SetAddr(Nrf::PIPETX, settings.Addr);
+        
+        // Set program address for pipe, must be same as TX (for Auto-ACK)
+        SetAddr(settings.Pipe, settings.Addr);
+
+        // Configure Auto-ACK for pipe (for ACK packets)
+        if(settings.StateAutoAck == AA_ON) {
+            // Set configure auto retransmit
+            SetAutoRetr(settings.AutoRetransmitDelay, settings.CountAutoRetransmits);
+            EnableAA(settings.Pipe);
+        }
+        else {
+            DisableAA(settings.Pipe);
+        }
+    }
+    else {
+        // Set program RX address
+        SetAddr(settings.Pipe, settings.Addr);
+        
+        // Configure Auto-ACK: enabled and payload length
+        if(settings.StateAutoAck == AA_ON) {
+            SetRxPipe(settings.Pipe, settings.StateAutoAck, settings.PayloadLength);
+        }
+    }
+    
+    // Set TX power
+    SetTxPower(settings.RfPower);
+    
+    // Set operational mode (PTX == transmitter)
+    SetOperationalMode(settings.OperationalMode);
+    
+    // Clear the FIFO's
     FlushRX();
     FlushTX();
     
@@ -407,9 +402,9 @@ void Nrf::WriteBuffer(uint8_t reg, const uint8_t* buf, uint8_t count) const
 
 /**
  * @brief Read a multi-byte register
- * @param [in] reg - number of register to write
- * @param [out] buf - pointer to the buffer with data to write
- * @param [in] count - number of bytes to write
+ * @param [in] reg - number of register to read
+ * @param [out] buf - pointer to the buffer with data to read
+ * @param [in] count - number of bytes to read
  */
 void Nrf::ReadBuffer(uint8_t reg, uint8_t* buf, uint8_t count) const
 {
@@ -425,6 +420,11 @@ void Nrf::ReadBuffer(uint8_t reg, uint8_t* buf, uint8_t count) const
 }
 
 
+/**
+ * @brief Read a byte register
+ * @param [in] address - address of register to read
+ * @retval data byte
+ */
 uint8_t Nrf::ReadReg(uint8_t address) const
 {
     CsnLow();
@@ -447,6 +447,11 @@ uint8_t Nrf::ReadReg(uint8_t address) const
 }
 
 
+/**
+ * @brief Write a byte register
+ * @param [in] address - address of register to write
+ * @param [in] data - data byte
+ */
 void Nrf::WriteReg(uint8_t address, uint8_t data) const
 {
     CsnLow();
@@ -494,7 +499,7 @@ uint8_t Nrf::SpiSendReceiveData(uint8_t byte) const
  *              PWR_UP    - Power up
                 PWR_DOWN  - Power down
  */
-void Nrf::SetPowerMode(PowerControl_t mode)
+void Nrf::SetPowerMode(PowerControl_t mode) const
 {
     uint8_t state = ReadReg(REG_CONFIG);
     if(mode == PWR_UP) {
@@ -508,6 +513,26 @@ void Nrf::SetPowerMode(PowerControl_t mode)
         state &= ~CONFIG_PWR_UP;
     }
     WriteReg(REG_CONFIG, state);
+}
+
+
+/**
+ * @brief Enable transceiver power
+ */
+void Nrf::Enable() const
+{
+    // Clear any pending IRQ flags
+    ClearIRQFlags();
+    SetPowerMode(Nrf::PWR_UP);
+}
+
+
+/**
+ * @brief Disable transceiver power
+ */
+void Nrf::Disable() const
+{
+    SetPowerMode(PWR_DOWN);
 }
 
 
@@ -553,7 +578,7 @@ void Nrf::FlushRX() const
 
 
 Nrf::RXResult_t Nrf::ReadPayload(uint8_t* buf, uint8_t* length)
-{
+{    
     // Extract a payload pipe number from the STATUS register
     const uint8_t pipe = ((ReadReg(REG_STATUS) & MASK_RX_P_NO) >> 1);
     
@@ -607,12 +632,12 @@ void Nrf::SetOperationalMode(TransceiverMode_t mode) const
  * @note: transceiver will forcibly turn on the CRC in case if auto acknowledgment
  *       enabled for at least one RX pipe
  */
-void Nrf::SetCrcScheme(uint8_t scheme) const
+void Nrf::SetCrcScheme(CrcEncodingScheme_t scheme) const
 {
     // Configure EN_CRC[3] and CRCO[2] bits of the CONFIG register
     uint8_t value  = ReadReg(REG_CONFIG);
     value &= ~MASK_CRC;
-    value |= (scheme & MASK_CRC);
+    value |= ((uint8_t)scheme & MASK_CRC);
     WriteReg(REG_CONFIG, value);
 }
 
@@ -623,7 +648,7 @@ void Nrf::SetCrcScheme(uint8_t scheme) const
  * @param [in] arc - count of auto retransmits, value form 0 to 15
  * @note: zero arc value means that the automatic retransmission disabled
 */
-void Nrf::SetAutoRetr(uint8_t ard, uint8_t arc) const
+void Nrf::SetAutoRetr(RetransmitDelay_t ard, uint8_t arc) const
 {
     // Set auto retransmit settings (SETUP_RETR register)
     const uint8_t value = ((ard << 4) | (arc & MASK_RETR_ARC));
@@ -655,6 +680,18 @@ void Nrf::SetAddrWidth(uint8_t addr_width) const
 */
 void Nrf::SetAddr(uint8_t pipe, const uint8_t* addr) const
 {
+    /// Addresses of the address registers
+    const uint8_t ADDR_REGS[] = 
+    {
+        Nrf::REG_RX_ADDR_P0,
+        Nrf::REG_RX_ADDR_P1,
+        Nrf::REG_RX_ADDR_P2,
+        Nrf::REG_RX_ADDR_P3,
+        Nrf::REG_RX_ADDR_P4,
+        Nrf::REG_RX_ADDR_P5,
+        Nrf::REG_TX_ADDR
+    };
+
     // RX_ADDR_Px register
     uint8_t addr_width;
     switch(pipe)
@@ -694,7 +731,7 @@ void Nrf::SetAddr(uint8_t pipe, const uint8_t* addr) const
  * @brief Configure RF output power in TX mode
  * @param [in] tx_pwr - RF output power, one of TXPWR_xx values
 */
-void Nrf::SetTxPower(uint8_t tx_pwr) const
+void Nrf::SetTxPower(RfOutputPower_t tx_pwr) const
 {
     // Configure RF_PWR[2:1] bits of the RF_SETUP register
     uint8_t value  = ReadReg(REG_RF_SETUP);
@@ -708,7 +745,7 @@ void Nrf::SetTxPower(uint8_t tx_pwr) const
  * @brief Configure transceiver data rate
  * @param [in] data_rate - data rate, one of DR_xx values
 */
-void Nrf::SetDataRate(uint8_t data_rate) const
+void Nrf::SetDataRate(DataRate_t data_rate) const
 {
     // Configure RF_DR_LOW[5] and RF_DR_HIGH[3] bits of the RF_SETUP register
     uint8_t value  = ReadReg(REG_RF_SETUP);
@@ -724,7 +761,7 @@ void Nrf::SetDataRate(uint8_t data_rate) const
  * @param [in] aa_state - state of auto acknowledgment, one of AA_xx values
  * @param [in] payload_len - payload length in bytes
 */
-void Nrf::SetRxPipe(uint8_t pipe, uint8_t aa_state, uint8_t payload_len) const
+void Nrf::SetRxPipe(EnumerationRxPipe_t pipe, StateAutoAcknowledgment_t aa_state, uint8_t payload_len) const
 {
     // Enable the specified pipe (EN_RXADDR register)
     uint8_t value = ((ReadReg(REG_EN_RXADDR) | (1 << pipe)) & MASK_EN_RX);
@@ -761,11 +798,11 @@ void Nrf::ClosePipe(uint8_t pipe) const
  * @brief Enable the auto retransmit (a.k.a. enhanced ShockBurst) for the specified RX pipe
  * @param [in] pipe - number of the RX pipe, value from 0 to 5
 */
-void Nrf::EnableAA(uint8_t pipe) const
+void Nrf::EnableAA(EnumerationRxPipe_t pipe) const
 {
     // Set bit in EN_AA register
     uint8_t value  = ReadReg(REG_EN_AA);
-    value |= (1 << pipe);
+    value |= (1 << (uint8_t)pipe);
     WriteReg(REG_EN_AA, value);
 }
 
@@ -775,7 +812,7 @@ void Nrf::EnableAA(uint8_t pipe) const
  * @param [in] pipe - number of the RX pipe, value from 0 to 5, 
  *             any other value will disable AA for all RX pipes
 */
-void Nrf::DisableAA(uint8_t pipe) const
+void Nrf::DisableAA(EnumerationRxPipe_t pipe) const
 {
     if (pipe > 5) {
         // Disable Auto-ACK for ALL pipes
@@ -784,7 +821,7 @@ void Nrf::DisableAA(uint8_t pipe) const
     else {
         // Clear bit in the EN_AA register
         uint8_t value  = ReadReg(REG_EN_AA);
-        value &= ~(1 << pipe);
+        value &= ~(1 << (uint8_t)pipe);
         WriteReg(REG_EN_AA, value);
     }
 }

@@ -49,6 +49,9 @@ int main()
     Board::InitLed();
     Board::LedOn();
     
+    /* Initialisation Watchdog Timer */
+    Board::InitIWDG();
+    
     /* Create and initialisation class SPI for nRF24L01 */
     SPI_InitTypeDef initStruct;
     initStruct.SPI_Mode = SPI_Mode_Master;
@@ -74,36 +77,21 @@ int main()
         while(true);
     }
     
-    // Init radio
-    rxSingle->Init();
-    
-    // Set RF channel
-    rxSingle->SetRFChannel(40);
-    
-    // Set data rate
-    rxSingle->SetDataRate(Nrf::DR_250kbps);
-    
-    // Set CRC scheme
-    rxSingle->SetCrcScheme(Nrf::CRC_2byte);
-    
-    // Set address width, its common for all pipes (RX and TX)
-    rxSingle->SetAddrWidth(sizeof(nRF_ADDR)/sizeof(nRF_ADDR[0]));
-    
-    // Configure RX PIPE
-    rxSingle->SetAddr(Nrf::PIPE1, nRF_ADDR); // program address for pipe
-    rxSingle->SetRxPipe(Nrf::PIPE1, Nrf::AA_ON, 10); // Auto-ACK: enabled, payload length: 10 bytes
-    
-    // Set TX power (maximum)
-    rxSingle->SetTxPower(Nrf::RF24_PA_MAX);
-    
-    // Set operational mode (PRX == receiver)
-    rxSingle->SetOperationalMode(Nrf::MODE_RX);
-    
-    // Clear any pending IRQ flags
-    rxSingle->ClearIRQFlags();
-    
+    Nrf::Settings_t  settingsNrf;
+    settingsNrf.OperationalMode = Nrf::MODE_RX;
+    settingsNrf.Channel = 40;                       // RF channel 40
+    settingsNrf.Pipe = Nrf::PIPE1;                  // Work pipe
+    settingsNrf.DataRate = Nrf::DR_250kbps;         // data rate
+    settingsNrf.RfPower = Nrf::RF24_PA_MAX;         // TX power (maximum)
+    settingsNrf.CrcScheme = Nrf::CRC_2byte;         // CRC scheme
+    settingsNrf.StateAutoAck = Nrf::AA_ON;          // Auto-ACK
+    settingsNrf.PayloadLength = 32;
+    settingsNrf.AddrWidth = sizeof(nRF_ADDR)/sizeof(nRF_ADDR[0]);        // Address width, its common for all pipes (RX and TX)
+    memcpy(settingsNrf.Addr, nRF_ADDR, sizeof(nRF_ADDR)/sizeof(nRF_ADDR[0]));
+    rxSingle->Init(settingsNrf);
+            
     // Wake the transceiver
-    rxSingle->SetPowerMode(Nrf::PWR_UP);
+    rxSingle->Enable();
     Board::DelayMS(5);
     
     // Put the transceiver to the RX mode
@@ -118,7 +106,7 @@ int main()
     // Buffer to store a payload of maximum width
     uint8_t buffer[32];
     memset(buffer, 0, sizeof(buffer));
-    uint8_t length = 10;
+    uint8_t length = 32;
     
     
     /* General loop */
@@ -126,9 +114,8 @@ int main()
     {
         if(rxSingle->GetStatus_RXFIFO() != Nrf::STATUS_RXFIFO_EMPTY) {
     		// Get a payload from the transceiver
-            memset(buffer, 0, sizeof(buffer));
     		pipe = rxSingle->ReadPayload(buffer, &length);
-            IWDG_ReloadCounter();
+            memset(buffer, 0, sizeof(buffer));
         }
         IWDG_ReloadCounter();
     }
