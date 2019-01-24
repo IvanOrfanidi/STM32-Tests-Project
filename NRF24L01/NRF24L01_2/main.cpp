@@ -107,7 +107,7 @@ int main()
     uint8_t buffer[32];
     memset(buffer, 0, sizeof(buffer));
     uint8_t length = 32;
-    
+    volatile uint8_t RPD = 0;
     
     /* General loop */
     while(true)
@@ -115,6 +115,8 @@ int main()
         if(rxSingle->GetStatus_RXFIFO() != Nrf::STATUS_RXFIFO_EMPTY) {
     		// Get a payload from the transceiver
     		pipe = rxSingle->ReadPayload(buffer, &length);
+            RPD = rxSingle->GetReceivedPowerDetector();
+            IWDG_ReloadCounter();
             memset(buffer, 0, sizeof(buffer));
         }
         IWDG_ReloadCounter();

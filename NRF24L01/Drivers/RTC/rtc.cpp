@@ -18,26 +18,47 @@
 #include "stm32f10x_bkp.h"
 #include "stm32f10x_rtc.h"
 
+
+#define visocosn(Year) ((Year % 4) ? 0 : 1)
+
+
 const uint8_t mon_len[] = { 0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
 
-/*******************************************************************************
- * Function Name  : InitRTC
- * Description    : initializes HW RTC,
- *                  sets default time-stamp if RTC has not been initialized
- *before Input          : None Output         : None Return         : not used
- *  Based on code from a STM RTC example in the StdPeriph-Library package
- *******************************************************************************/
-void Rtc::InitRTC()
+
+
+/**
+ * @bref Initialisation RTC
+ * @param rtc - Data
+ */
+void Rtc::Init(const RTC_t* const rtc)
+{
+    // Init RTC
+    if(InitRtc()) {
+        // Set current time
+        if(nullptr == rtc) {
+            SetTime(RTC_t::DEF_TIME);    // here: 1st January 2010 00:00:00
+        }
+        else {
+            SetTime(rtc);
+        }
+    }
+}
+
+
+/**
+ * @bref Initialisation RTC
+ */
+bool Rtc::InitRtc()
 {
     /* Enable PWR and BKP clocks */
     RCC_APB1PeriphClockCmd(RCC_APB1Periph_PWR, ENABLE);
     RCC_APB1PeriphClockCmd(RCC_APB1Periph_BKP, ENABLE);
+    
+    /* Enable the LSI OSC */
+    RCC_LSICmd(ENABLE);
 
-    /* LSI clock stabilization time */
-    for(uint16_t i = 0; i < 5000; i++)
-    {
-        ;
-    }
+    /* Wait till LSI is ready */
+    while (RCC_GetFlagStatus(RCC_FLAG_LSIRDY) == RESET);
 
     if(BKP_ReadBackupRegister(BKP_DR1) != 0xA5A5)
     {
@@ -62,8 +83,8 @@ void Rtc::InitRTC()
                 break;
         }
 
-        if(Timeout)    // LSE - OK.
-        {
+        if(Timeout) {   // LSE - OK.
+            
             /* Select LSE as RTC Clock Source */
             RCC_RTCCLKConfig(RCC_RTCCLKSource_LSE);    // LSE = 32.768 KHz
 
@@ -80,8 +101,8 @@ void Rtc::InitRTC()
             RTC_SetPrescaler(32767); /* RTC period = RTCCLK/RTC_PR = (32.768
                                           KHz)/(32767+1) */
         }
-        else    // LSE - NO.
-        {
+        else {   // LSE - NO.
+            
             uint32_t count = 10000;
 
             // Enable the LSI OSC
@@ -99,26 +120,18 @@ void Rtc::InitRTC()
             // Select the RTC Clock Source
             RCC_RTCCLKConfig(RCC_RTCCLKSource_LSI);
 
-            /* Enable RTC Clock */
+            // Enable RTC Clock
             RCC_RTCCLKCmd(ENABLE);
 
-            /* Wait for RTC registers synchronization */
+            // Wait for RTC registers synchronization
             RTC_WaitForSynchro();
 
-            /* Wait until last write operation on RTC registers has finished */
+            // Wait until last write operation on RTC registers has finished
             RTC_WaitForLastTask();
 
-            /* Set RTC prescaler: set RTC period to 1sec */
+            // Set RTC prescaler: set RTC period to 1sec
             RTC_SetPrescaler(40000);
-
-            // Error LSE.
         }
-
-        /* Wait until last write operation on RTC registers has finished */
-        RTC_WaitForLastTask();
-
-        /* Set initial value */
-        RTC_SetCounter((uint32_t)(1262304000));    // here: 1st January 2010 11:55:00
 
         /* Wait until last write operation on RTC registers has finished */
         RTC_WaitForLastTask();
@@ -127,14 +140,18 @@ void Rtc::InitRTC()
 
         /* Lock access to BKP Domain */
         PWR_BackupAccessCmd(DISABLE);
+        
+        return true; 
     }
-    else
-    {
-        /* Wait for RTC registers synchronization */
-        // RTC_WaitForSynchro();
-    }
+    
+    return false; 
 }
 
+        
+/**
+ * @bref Enable the LSI OSC
+ * @retval true - success, false - fail
+ */
 bool Rtc::LseEnable()
 {
     uint32_t count = 0xFFFFFFFF;
@@ -143,16 +160,15 @@ bool Rtc::LseEnable()
     RCC_LSEConfig(RCC_LSE_ON);
 
     // Wait till LSE is ready
-    while(RCC_GetFlagStatus(RCC_FLAG_LSERDY) == RESET && (--count) > 0)
-    {
+    while(RCC_GetFlagStatus(RCC_FLAG_LSERDY) == RESET && (--count) > 0) {
         __NOP();
         __NOP();
         __NOP();
         __NOP();
     }
-    if(0 == count)
-    {
-        return true;
+    
+    if(0 == count) {
+        return false;
     }
 
     // LCD Clock Source Selection
@@ -176,11 +192,13 @@ bool Rtc::LseEnable()
     /* Wait for RTC registers synchronization */
     RTC_WaitForSynchro();
 
-    return false;
+    return true;
 }
+
 
 /**
  * @bref Enable the LSI OSC
+ * @retval true - success, false - fail
  */
 bool Rtc::LsiEnable()
 {
@@ -190,16 +208,15 @@ bool Rtc::LsiEnable()
     RCC_LSICmd(ENABLE);
 
     // Wait till LSI is ready
-    while(RCC_GetFlagStatus(RCC_FLAG_LSIRDY) == RESET && (--count) > 0)
-    {
+    while(RCC_GetFlagStatus(RCC_FLAG_LSIRDY) == RESET && (--count) > 0) {
         __NOP();
         __NOP();
         __NOP();
         __NOP();
     }
-    if(0 == count)
-    {
-        return true;
+    
+    if(0 == count) {
+        return false;
     }
 
     // Select the RTC Clock Source
@@ -223,103 +240,129 @@ bool Rtc::LsiEnable()
     /* Wait for RTC registers synchronization */
     RTC_WaitForSynchro();
 
-    return false;
+    return true;
 }
 
-/*******************************************************************************
- * Function Name  : rtc_settime
- * Description    : sets HW-RTC with values from time-struct, takes DST into
- *                  account, HW-RTC always running in non-DST time
- * Input          : None
- * Output         : None
- * Return         : not used
- *******************************************************************************/
-void Rtc::SetTime(const RTC_t* const rtc)
-{
-    uint32_t cnt = Date2Sec(rtc);
-    PWR_BackupAccessCmd(ENABLE);
 
+/**
+ * @bref Set time
+ * @param rtc - Time
+ */
+void Rtc::SetTime(time_t rtc)
+{
+    const uint32_t cnt = (uint32_t)rtc;
+    
     /* Wait until last write operation on RTC registers has finished */
     RTC_WaitForLastTask();
     RTC_SetCounter(cnt);
 
     /* Wait until last write operation on RTC registers has finished */
     RTC_WaitForLastTask();
-    PWR_BackupAccessCmd(DISABLE);
 }
 
-void Rtc::GetTime(RTC_t *rtc)
+
+/**
+ * @bref Set time
+ * @param [in] rtc - Time
+ */
+void Rtc::SetTime(const RTC_t* const rtc)
 {
-    uint32_t t;
-    while((t = RTC_GetCounter()) != RTC_GetCounter())
-    {
-        ;
+    uint32_t cnt = Date2Sec(rtc);
+    
+    /* Wait until last write operation on RTC registers has finished */
+    RTC_WaitForLastTask();
+    RTC_SetCounter(cnt);
+
+    /* Wait until last write operation on RTC registers has finished */
+    RTC_WaitForLastTask();
+}
+
+
+/**
+ * @bref Geting current time
+ * @retval Current time
+ */
+time_t Rtc::GetTime()
+{
+    return (time_t)RTC_GetCounter();
+}
+
+
+/**
+ * @brief Geting current time
+ * @param [out] rtc - Current time
+ */
+void Rtc::GetTime(RTC_t* rtc)
+{
+    Sec2Date(rtc, RTC_GetCounter());
+}
+
+
+/**
+ * @brief Convert sec to date
+ * @param [out] rtc - date
+ * @param [in] sec - time
+ */
+void Rtc::Sec2Date(RTC_t* rtc, time_t sec)
+{
+    if(sec >= 946684800L) {
+        sec -= 946684800L;    //Дата позже 1 января 2000 года
+        rtc->Year = 0;
     }
-    Sec2Date(rtc, t);
-}
+    else {
+        rtc->Year = 70;    //Дата от 1970 года до 1999 года
+    }
 
-void Rtc::Sec2Date(RTC_t *pDest, uint32_t Sec)
-{
     uint32_t dl = 0;
-
-    pDest->h12 = RTC_H12_AM;
-    pDest->wday = 0;
-
-    if(Sec >= 946684800L)
-    {
-        Sec -= 946684800L;    //Дата позже 1 января 2000 года
-        pDest->year = 0;
-    }
-    else
-    {
-        pDest->year = 70;    //Дата от 1970 года до 1999 года
+    for(dl = 365L; sec >= (dl = 86400L * (365L + visocosn(rtc->Year))); sec -= dl) {
+        rtc->Year++;
     }
 
-    for(dl = 365L; Sec >= (dl = 86400L * (365L + visocosn(pDest->year))); Sec -= dl, pDest->year++)
-        ;
+    rtc->Hour = 1;
+    const time_t limit = (dl = 86400L * (mon_len[rtc->Hour] + ((rtc->Hour == 2) ? visocosn(rtc->Year) : 0)));
+    
+    for(; sec >= limit; sec -= dl) {
+        rtc->Hour++;
+    }
 
-    for(pDest->month = 1;
-        Sec >= (dl = 86400L * (mon_len[pDest->month] + ((pDest->month == 2) ? visocosn(pDest->year) : 0)));
-        Sec -= dl, pDest->month++)
-        ;
-
-    pDest->year += 2000;
-    pDest->mday = Sec / (86400L) + 1;
-    Sec %= 86400L;
-    pDest->hour = Sec / 3600L;
-    Sec %= 3600L;
-    pDest->min = Sec / 60L;
-    Sec %= 60L;
-    pDest->sec = Sec;
+    rtc->Year += 2000;
+    rtc->Mday = sec / (86400L) + 1;
+    sec %= 86400L;
+    rtc->Hour = sec / 3600L;
+    sec %= 3600L;
+    rtc->Min = sec / 60L;
+    sec %= 60L;
+    rtc->Sec = sec;
 }
 
-uint32_t Rtc::Date2Sec(const RTC_t *pSrc)
+
+/**
+ * @brief Converting date to sec
+ * @param [in] rtc - date
+ * @retval Time
+ */
+uint32_t Rtc::Date2Sec(const RTC_t* rtc)
 {
     uint32_t TimeInSec = 0;
     uint32_t tmp = 0;
-    uint16_t year;
+    uint16_t Year;
 
-    year = pSrc->year - 2000;
+    Year = rtc->Year - 2000;
 
-    if(year < 70)
-    {
+    if(Year < 70) {
         TimeInSec += 946684800L;    //Дата позже 1 января 2000 года
-        for(tmp = 0; tmp < year; TimeInSec += 86400L * (365L + visocosn(tmp)), tmp++)
-            ;
+        for(tmp = 0; tmp < Year; TimeInSec += 86400L * (365L + visocosn(tmp)), tmp++);
     }
-    else
-    {
-        for(tmp = 70; tmp < year; TimeInSec += 86400L * (365L + visocosn(tmp)), tmp++)
-            ;
+    else {
+        for(tmp = 70; tmp < Year; TimeInSec += 86400L * (365L + visocosn(tmp)), tmp++);
     }
 
-    for(tmp = 0; tmp < pSrc->month; TimeInSec += (86400L * (mon_len[tmp] + ((tmp == 2) ? visocosn(year) : 0))), tmp++)
-        ;
+    for(tmp = 0; tmp < rtc->Hour; TimeInSec += (86400L * (mon_len[tmp] + ((tmp == 2) ? visocosn(Year) : 0))), tmp++);
 
-    TimeInSec += (86400L) * (pSrc->mday - 1);
-    TimeInSec += 3600L * pSrc->hour;
-    TimeInSec += 60L * pSrc->min;
-    TimeInSec += pSrc->sec;
+    TimeInSec += (86400L) * (rtc->Mday - 1);
+    TimeInSec += 3600L * rtc->Hour;
+    TimeInSec += 60L * rtc->Min;
+    TimeInSec += rtc->Sec;
 
     return TimeInSec;
 }

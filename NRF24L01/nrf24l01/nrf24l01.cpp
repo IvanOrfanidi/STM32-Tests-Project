@@ -305,6 +305,12 @@ bool Nrf::Check() const
 }
 
 
+bool Nrf::GetReceivedPowerDetector() const
+{
+   return (ReadReg(REG_RPD) & 1);
+}
+
+
 /**
  * @brief Function to transmit data packet
  * @param [in] buf - pointer to the buffer with data to transmit
@@ -699,6 +705,7 @@ void Nrf::SetAddr(uint8_t pipe, const uint8_t* addr) const
         case PIPETX:
         case PIPE0:
         case PIPE1:
+        {
             // Get address width
             addr_width = ReadReg(REG_SETUP_AW) + 1;
             // Write address in reverse order (LSByte first)
@@ -713,13 +720,16 @@ void Nrf::SetAddr(uint8_t pipe, const uint8_t* addr) const
             
             CsnHigh();
             break;
+        }
         case PIPE2:
         case PIPE3:
         case PIPE4:
         case PIPE5:
+        {
             // Write address LSBbyte (only first byte from the addr buffer)
             WriteReg(ADDR_REGS[pipe], *addr);
             break;
+        }
         default:
             // Incorrect pipe number -> do nothing
             break;

@@ -2410,6 +2410,15 @@
                 <name>$PROJ_DIR$\..\Drivers\VirtualPort\virtual_port.hpp</name>
             </file>
         </group>
+        <group>
+            <name>RTC</name>
+            <file>
+                <name>$PROJ_DIR$\..\Drivers\RTC\rtc.cpp</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\Drivers\RTC\rtc.hpp</name>
+            </file>
+        </group>
     </group>
     <group>
         <name>NRF24L01</name>

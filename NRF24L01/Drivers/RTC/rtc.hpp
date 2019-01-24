@@ -20,56 +20,71 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include <stdint.h>
-
-#define visocosn(year) ((year % 4) ? 0 : 1)
-
-#ifndef RTC_H12_AM
-#define RTC_H12_AM ((uint8_t)0x00)
-#endif
-
-#ifndef RTC_H12_PM
-#define RTC_H12_PM ((uint8_t)0x40)
-#endif
+#include <time.h>
+     
 
 #ifdef __cplusplus
 
+     
 /*
  * General struct Data Time
  */
-#pragma pack(push, 1)
-typedef struct
+struct RTC_t
 {
-    uint16_t year;  /* 1..4095 */
-    uint8_t month;  /* 1..12 */
-    uint8_t mday;   /* 1.. 31 */
-    uint8_t wday;   /* 0..6, Sunday = 0*/
-    uint8_t hour;   /* 0..23 */
-    uint8_t min;    /* 0..59 */
-    uint8_t sec;    /* 0..59 */
-    uint8_t dst;    /* 0 Winter, !=0 Summer */
-    uint8_t h12;    // AM..PM
-} RTC_t;
-#pragma pack(pop)
+    uint16_t Year;  // 1..4095
+    uint8_t Month;  // 1..12
+    uint8_t Mday;   // 1.. 31
+    
+    uint8_t Hour;   // 0..23
+    uint8_t Min;    // 0..59
+    uint8_t Sec;    // 0..59
+    
+    RTC_t()
+    {
+        Year = 2010;
+        Month = 1;
+        Mday = 1;
+        Hour = 0;
+        Min = 0;
+        Sec = 0;
+    }
+    
+    enum Defines_t
+    { 
+        DEF_TIME    = 1262304000u
+    };
+};
 
+
+/*
+ * @brief Class RTC
+ */
 class Rtc
 {
-  public:
-    static void InitRTC();    ///< Initializes HW RTC.
+    public:
 
-    static void SetTime(const RTC_t* const rtc);    ///< Sets HW-RTC with values from time-struct, takes DST into
-                                                    //  account, HW-RTC always running in non-DST time.
+        static void Init(const RTC_t* const rtc = nullptr);    ///< Initializes HW RTC.
 
-    static uint32_t Date2Sec(const RTC_t* pSrc);    ///< Converting date to sec.
+        static void SetTime(time_t);
 
-    static void Sec2Date(RTC_t*, uint32_t);    ///< Convert sec to date.
+        static void SetTime(const RTC_t* const);    ///< Sets HW-RTC with values from time-struct, takes DST into
+                                                    //  account, HW-RTC always running in non-DST time
 
-    static void GetTime(RTC_t* rtc);    ///< Geting current Time.
+        static time_t Date2Sec(const RTC_t*);    ///< Converting date to sec
 
-    static bool LseEnable();    ///< LSE Clock 32.768 KHz
+        static void Sec2Date(RTC_t*, time_t);    ///< Convert sec to date
 
-    static bool LsiEnable();    ///< LSI Clock ~40 KHz
+        static void GetTime(RTC_t*);    ///< Geting current time
 
-  private:
+        static time_t GetTime();     ///< Geting current time
+
+        static bool LseEnable();    ///< LSE Clock 32.768 KHz
+
+        static bool LsiEnable();    ///< LSI Clock ~40 KHz
+
+    private:
+    
+        static bool InitRtc();
 };
 
 #endif

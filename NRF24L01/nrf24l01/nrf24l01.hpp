@@ -150,15 +150,15 @@ class Nrf
         /// RF output power in TX mode
         enum RfOutputPower_t : uint8_t
         {
-            TXPWR_18dBm   = 0x00, // -18dBm
-            TXPWR_12dBm   = 0x02, // -12dBm
-            TXPWR_6dBm    = 0x04, //  -6dBm
-            TXPWR_0dBm    = 0x06,  //   0dBm
+            TXPWR_18dBm   = 0x00,   // -18dBm
+            TXPWR_12dBm   = 0x02,   // -12dBm
+            TXPWR_6dBm    = 0x04,   //  -6dBm
+            TXPWR_0dBm    = 0x06,   //   0dBm
                 
-            RF24_PA_MIN         = TXPWR_18dBm,
-            RF24_PA_LOW         = TXPWR_12dBm,
-            RF24_PA_HIGH        = TXPWR_6dBm,
-            RF24_PA_MAX         = TXPWR_0dBm
+            RF24_PA_MIN         = TXPWR_18dBm,  ///< 7.0mA
+            RF24_PA_LOW         = TXPWR_12dBm,  ///< 7.5mA
+            RF24_PA_HIGH        = TXPWR_6dBm,   ///< 9.0mA
+            RF24_PA_MAX         = TXPWR_0dBm    ///< 11.3mA
         };
         
         /// CRC encoding scheme
@@ -185,7 +185,9 @@ class Nrf
             PIPE3  = 0x03, // pipe3
             PIPE4  = 0x04, // pipe4
             PIPE5  = 0x05, // pipe5
-            PIPETX = 0x06  // TX address (not a pipe in fact)
+            PIPETX = 0x06, // TX address (not a pipe in fact)
+                
+            PIPE_ALL = 6
         };
         
         /// State of auto acknowledgment for specified pipe
@@ -264,6 +266,7 @@ class Nrf
                 OperationalMode = MODE_TX;
                 Channel = 10;
                 DataRate = DR_1Mbps;
+                RfPower = RF24_PA_MAX;
                 CrcScheme = CRC_2byte;
                 Pipe = PIPE0;
                 AutoRetransmitDelay = ARD_2500us;
@@ -284,6 +287,8 @@ class Nrf
         bool CreateClass() const;   /// Returns the status of class creation
 
         bool Check() const;     /// Check radio
+
+        bool GetReceivedPowerDetector() const;
 
         /// Function to transmit data packet
         TXResult_t TransmitPacket(const uint8_t*, uint8_t) const;
