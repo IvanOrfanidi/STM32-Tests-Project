@@ -2431,6 +2431,18 @@
     </group>
     <group>
         <name>SDCard</name>
+        <group>
+            <name>fatfs</name>
+            <file>
+                <name>$PROJ_DIR$\SDСard\fatfs\ff.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\SDСard\fatfs\ff.h</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\SDСard\fatfs\integer.h</name>
+            </file>
+        </group>
         <file>
             <name>$PROJ_DIR$\SDСard\sdcard.cpp</name>
         </file>
