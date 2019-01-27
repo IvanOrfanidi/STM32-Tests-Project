@@ -48,109 +48,112 @@
 
 #ifdef __cplusplus
 
+
+/*
+ * @brief Class RTC
+ */
 class Uart : public VirtualPort
 {
-  public:
-  
-    enum Default_t
-    {
-        PREEMPTION_PRIORITY = 0,
-        SUB_PRIORITY = 0,
+    public:
 
-        TX_BUFFER_SIZE = 256,
-        RX_BUFFER_SIZE = 256,
+        enum Default_t
+        {
+            PREEMPTION_PRIORITY = 0,
+            SUB_PRIORITY = 0,
 
-        BAUDRATE = 9600,
-    };
+            TX_BUFFER_SIZE = 256,
+            RX_BUFFER_SIZE = 256,
 
-    /// Ñonstructor
-    Uart(USART_TypeDef* const usart,
-         uint32_t baudrate = BAUDRATE,
-         size_t tx_size = TX_BUFFER_SIZE,
-         size_t rx_size = RX_BUFFER_SIZE,
-         uint8_t preemption_priority = PREEMPTION_PRIORITY,
-         uint8_t sub_priority = SUB_PRIORITY);
+            BAUDRATE = 9600,
+        };
 
-    
-    virtual ~Uart();    /// Destructor
+        /// Ñonstructor
+        Uart(USART_TypeDef* const usart,
+        uint32_t baudrate = BAUDRATE,
+        size_t tx_size = TX_BUFFER_SIZE,
+        size_t rx_size = RX_BUFFER_SIZE,
+        uint8_t preemption_priority = PREEMPTION_PRIORITY,
+        uint8_t sub_priority = SUB_PRIORITY);
 
-    void InitUart(uint32_t baudrate = BAUDRATE);    ///< Initialization hard UART
 
-    void SetData(uint8_t);
+        virtual ~Uart();    /// Destructor
 
-    bool GetData(uint8_t* const);
+        void InitUart(uint32_t baudrate = BAUDRATE);    ///< Initialization hard UART
 
-    virtual size_t GetLen() override;
+        void SetData(uint8_t);
 
-    virtual void WaitingCompleteTransfer() override;
+        bool GetData(uint8_t* const);
 
-    virtual void Transmit(const uint8_t*, size_t) override;
+        virtual size_t GetLen() override;
 
-    virtual void ClearTransmit() override;
+        virtual void WaitingCompleteTransfer() override;
 
-    virtual size_t Receive(uint8_t*, size_t) override;
+        virtual void Transmit(const uint8_t*, size_t) override;
 
-    virtual void ClearReceive() override;
+        virtual void ClearTransmit() override;
 
-    bool GetStatusBufOverflow();
+        virtual size_t Receive(uint8_t*, size_t) override;
 
-    bool Handler(USART_TypeDef *uart);
+        virtual void ClearReceive() override;
 
-    USART_TypeDef* GetUSART();
+        bool GetStatusBufOverflow();
 
-    bool CreateClass();    ///< Returns the status of class creation
+        bool Handler(USART_TypeDef *uart);
 
-    
-  private:
-  
-    friend void USART_HandlerCallback(USART_TypeDef*);
-  
-    void InitGpioUart();
+        USART_TypeDef* GetUSART();
 
-    void DeInitGpioUart();    ///< Deinitialization GPIO for UART
+        bool CreateClass();    ///< Returns the status of class creation
 
-    bool InitDataBuf(size_t, size_t);
 
-    void InitClkUart();    ///< Enable Periph Clock APB for UART. APB2 for USART1
-                           ///< and APB1 for USART2, USART3.
+    private:
 
-    void InitNvic(uint8_t preemption_priority = PREEMPTION_PRIORITY,
-                      uint8_t sub_priority = SUB_PRIORITY);    ///< Init Nested Vectored
-                                                               ///< Interrupt Controller (NVIC)
+        friend void USART_HandlerCallback(USART_TypeDef*);
 
-    /* Transmit val */
-    size_t TxBufSize;
+        void InitGpioUart();
 
-    size_t TxWrIndex;
-    size_t TxRrIndex;
-    size_t TxCount;
+        void DeInitGpioUart();    ///< Deinitialization GPIO for UART
 
-    uint8_t *pTxBuf;
+        bool InitDataBuf(size_t, size_t);
 
-    /* Recept val */
-    size_t RxBufSize;
+        void InitClkUart();    ///< Enable Periph Clock APB for UART. APB2 for USART1
+                   ///< and APB1 for USART2, USART3.
 
-    size_t RxWrIndex;
-    size_t RxRrIndex;
-    size_t RxCount;
-    bool BufOverflow;
+        void InitNvic(uint8_t preemption_priority = PREEMPTION_PRIORITY,
+              uint8_t sub_priority = SUB_PRIORITY);    ///< Init Nested Vectored
+                                                       ///< Interrupt Controller (NVIC)
 
-    uint8_t *pRxBuf;
+        /* Transmit val */
+        size_t TxBufSize;
 
-    USART_TypeDef* USARTx;    ///< Work USART
+        size_t TxWrIndex;
+        size_t TxRrIndex;
+        size_t TxCount;
 
-        
-    enum Uarts_t
-    {
-        UART1,
-        UART2,
-        UART3,
-            
+        uint8_t *pTxBuf;
+
+        /* Recept val */
+        size_t RxBufSize;
+
+        size_t RxWrIndex;
+        size_t RxRrIndex;
+        size_t RxCount;
+        bool BufOverflow;
+
+        uint8_t *pRxBuf;
+
+        USART_TypeDef* USARTx;    ///< Work USART
+
+
+        enum Uarts_t
+        {
+            UART1,
+            UART2,
+            UART3,
+
         MAX_COUNT_UART
-    };
-    
-    static Uart* Uarts[MAX_COUNT_UART]; ///< Main array pointers of classes Uarts
+        };
 
+        static Uart* Uarts[MAX_COUNT_UART]; ///< Main array pointers of classes Uarts
 };
 
 extern "C" {
@@ -158,6 +161,7 @@ extern "C" {
     void USART2_IRQHandler(void);
     void USART3_IRQHandler(void);
 }
-#endif
+
+#endif//__cplusplus
 
 #endif

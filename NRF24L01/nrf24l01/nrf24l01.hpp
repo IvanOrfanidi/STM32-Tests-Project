@@ -238,9 +238,14 @@ class Nrf
             TX_MAXRT        // Transmit failed with maximum auto retransmit count
         };
         
+        // Size address
+        enum SizeAddr_t
+        {
+            MAX_SIZE_ADDRESS = 5 
+        };
+        
         struct Settings_t
         {
-            enum { MAX_SIZE_ADDRESS = 5 };
             uint8_t Addr[MAX_SIZE_ADDRESS];
             uint8_t AddrWidth;
             TransceiverMode_t OperationalMode;      ///< transceiver operational mode

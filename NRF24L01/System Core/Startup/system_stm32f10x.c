@@ -113,7 +113,7 @@
 /* #define SYSCLK_FREQ_36MHz  36000000 */
 /* #define SYSCLK_FREQ_48MHz  48000000 */
 /* #define SYSCLK_FREQ_56MHz  56000000 */
-#   define SYSCLK_FREQ_72MHz 72000000
+#define SYSCLK_FREQ_72MHz 72000000
 #endif
 
 /*!< Uncomment the following line if you need to use external SRAM mounted
@@ -255,9 +255,9 @@ void SystemInit(void)
 #endif /* STM32F10X_CL */
 
 #if defined(STM32F10X_HD) || (defined STM32F10X_XL) || (defined STM32F10X_HD_VL)
-#   ifdef DATA_IN_ExtSRAM
+#ifdef DATA_IN_ExtSRAM
    SystemInit_ExtMemCtl();
-#   endif /* DATA_IN_ExtSRAM */
+#endif /* DATA_IN_ExtSRAM */
 #endif
 
    /* Configure the System clock frequency, HCLK, PCLK2 and PCLK1 prescalers */
@@ -349,11 +349,11 @@ void SystemCoreClockUpdate(void)
       }
       else
       {
-#   if defined(STM32F10X_LD_VL) || defined(STM32F10X_MD_VL) || (defined STM32F10X_HD_VL)
+#if defined(STM32F10X_LD_VL) || defined(STM32F10X_MD_VL) || (defined STM32F10X_HD_VL)
          prediv1factor = (RCC->CFGR2 & RCC_CFGR2_PREDIV1) + 1;
          /* HSE oscillator clock selected as PREDIV1 clock entry */
          SystemCoreClock = (HSE_VALUE / prediv1factor) * pllmull;
-#   else
+#else
          /* HSE selected as PLL clock entry */
          if ((RCC->CFGR & RCC_CFGR_PLLXTPRE) != (uint32_t)RESET)
          { /* HSE oscillator clock divided by 2 */
@@ -363,7 +363,7 @@ void SystemCoreClockUpdate(void)
          {
             SystemCoreClock = HSE_VALUE * pllmull;
          }
-#   endif
+#endif
       }
 #else
       pllmull = pllmull >> 18;
@@ -538,16 +538,16 @@ static void SetSysClockToHSE(void)
 
    if (HSEStatus == (uint32_t)0x01)
    {
-#   if !defined STM32F10X_LD_VL && !defined STM32F10X_MD_VL && !defined STM32F10X_HD_VL
+#if !defined STM32F10X_LD_VL && !defined STM32F10X_MD_VL && !defined STM32F10X_HD_VL
       /* Enable Prefetch Buffer */
       FLASH->ACR |= FLASH_ACR_PRFTBE;
 
       /* Flash 0 wait state */
       FLASH->ACR &= (uint32_t)((uint32_t)~FLASH_ACR_LATENCY);
 
-#      ifndef STM32F10X_CL
+#ifndef STM32F10X_CL
       FLASH->ACR |= (uint32_t)FLASH_ACR_LATENCY_0;
-#      else
+#else
       if (HSE_VALUE <= 24000000)
       {
          FLASH->ACR |= (uint32_t)FLASH_ACR_LATENCY_0;
@@ -556,8 +556,8 @@ static void SetSysClockToHSE(void)
       {
          FLASH->ACR |= (uint32_t)FLASH_ACR_LATENCY_1;
       }
-#      endif /* STM32F10X_CL */
-#   endif
+#endif /* STM32F10X_CL */
+#endif
 
       /* HCLK = SYSCLK */
       RCC->CFGR |= (uint32_t)RCC_CFGR_HPRE_DIV1;
@@ -617,14 +617,14 @@ static void SetSysClockTo24(void)
 
    if (HSEStatus == (uint32_t)0x01)
    {
-#   if !defined STM32F10X_LD_VL && !defined STM32F10X_MD_VL && !defined STM32F10X_HD_VL
+#if !defined STM32F10X_LD_VL && !defined STM32F10X_MD_VL && !defined STM32F10X_HD_VL
       /* Enable Prefetch Buffer */
       FLASH->ACR |= FLASH_ACR_PRFTBE;
 
       /* Flash 0 wait state */
       FLASH->ACR &= (uint32_t)((uint32_t)~FLASH_ACR_LATENCY);
       FLASH->ACR |= (uint32_t)FLASH_ACR_LATENCY_0;
-#   endif
+#endif
 
       /* HCLK = SYSCLK */
       RCC->CFGR |= (uint32_t)RCC_CFGR_HPRE_DIV1;
@@ -635,7 +635,7 @@ static void SetSysClockTo24(void)
       /* PCLK1 = HCLK */
       RCC->CFGR |= (uint32_t)RCC_CFGR_PPRE1_DIV1;
 
-#   ifdef STM32F10X_CL
+#ifdef STM32F10X_CL
       /* Configure PLLs
        * ------------------------------------------------------*/
       /* PLL configuration: PLLCLK = PREDIV1 * 6 = 24 MHz */
@@ -654,15 +654,15 @@ static void SetSysClockTo24(void)
       while ((RCC->CR & RCC_CR_PLL2RDY) == 0)
       {
       }
-#   elif defined(STM32F10X_LD_VL) || defined(STM32F10X_MD_VL) || defined(STM32F10X_HD_VL)
+#elif defined(STM32F10X_LD_VL) || defined(STM32F10X_MD_VL) || defined(STM32F10X_HD_VL)
       /*  PLL configuration:  = (HSE / 2) * 6 = 24 MHz */
       RCC->CFGR &= (uint32_t)((uint32_t) ~(RCC_CFGR_PLLSRC | RCC_CFGR_PLLXTPRE | RCC_CFGR_PLLMULL));
       RCC->CFGR |= (uint32_t)(RCC_CFGR_PLLSRC_PREDIV1 | RCC_CFGR_PLLXTPRE_PREDIV1_Div2 | RCC_CFGR_PLLMULL6);
-#   else
+#else
       /*  PLL configuration:  = (HSE / 2) * 6 = 24 MHz */
       RCC->CFGR &= (uint32_t)((uint32_t) ~(RCC_CFGR_PLLSRC | RCC_CFGR_PLLXTPRE | RCC_CFGR_PLLMULL));
       RCC->CFGR |= (uint32_t)(RCC_CFGR_PLLSRC_HSE | RCC_CFGR_PLLXTPRE_HSE_Div2 | RCC_CFGR_PLLMULL6);
-#   endif /* STM32F10X_CL */
+#endif /* STM32F10X_CL */
 
       /* Enable PLL */
       RCC->CR |= RCC_CR_PLLON;
@@ -737,7 +737,7 @@ static void SetSysClockTo36(void)
       /* PCLK1 = HCLK */
       RCC->CFGR |= (uint32_t)RCC_CFGR_PPRE1_DIV1;
 
-#   ifdef STM32F10X_CL
+#ifdef STM32F10X_CL
       /* Configure PLLs
        * ------------------------------------------------------*/
 
@@ -759,11 +759,11 @@ static void SetSysClockTo36(void)
       {
       }
 
-#   else
+#else
       /*  PLL configuration: PLLCLK = (HSE / 2) * 9 = 36 MHz */
       RCC->CFGR &= (uint32_t)((uint32_t) ~(RCC_CFGR_PLLSRC | RCC_CFGR_PLLXTPRE | RCC_CFGR_PLLMULL));
       RCC->CFGR |= (uint32_t)(RCC_CFGR_PLLSRC_HSE | RCC_CFGR_PLLXTPRE_HSE_Div2 | RCC_CFGR_PLLMULL9);
-#   endif /* STM32F10X_CL */
+#endif /* STM32F10X_CL */
 
       /* Enable PLL */
       RCC->CR |= RCC_CR_PLLON;
@@ -838,7 +838,7 @@ static void SetSysClockTo48(void)
       /* PCLK1 = HCLK */
       RCC->CFGR |= (uint32_t)RCC_CFGR_PPRE1_DIV2;
 
-#   ifdef STM32F10X_CL
+#ifdef STM32F10X_CL
       /* Configure PLLs
        * ------------------------------------------------------*/
       /* PLL2 configuration: PLL2CLK = (HSE / 5) * 8 = 40 MHz */
@@ -858,11 +858,11 @@ static void SetSysClockTo48(void)
       /* PLL configuration: PLLCLK = PREDIV1 * 6 = 48 MHz */
       RCC->CFGR &= (uint32_t) ~(RCC_CFGR_PLLXTPRE | RCC_CFGR_PLLSRC | RCC_CFGR_PLLMULL);
       RCC->CFGR |= (uint32_t)(RCC_CFGR_PLLXTPRE_PREDIV1 | RCC_CFGR_PLLSRC_PREDIV1 | RCC_CFGR_PLLMULL6);
-#   else
+#else
       /*  PLL configuration: PLLCLK = HSE * 6 = 48 MHz */
       RCC->CFGR &= (uint32_t)((uint32_t) ~(RCC_CFGR_PLLSRC | RCC_CFGR_PLLXTPRE | RCC_CFGR_PLLMULL));
       RCC->CFGR |= (uint32_t)(RCC_CFGR_PLLSRC_HSE | RCC_CFGR_PLLMULL6);
-#   endif /* STM32F10X_CL */
+#endif /* STM32F10X_CL */
 
       /* Enable PLL */
       RCC->CR |= RCC_CR_PLLON;
@@ -938,7 +938,7 @@ static void SetSysClockTo56(void)
       /* PCLK1 = HCLK */
       RCC->CFGR |= (uint32_t)RCC_CFGR_PPRE1_DIV2;
 
-#   ifdef STM32F10X_CL
+#ifdef STM32F10X_CL
       /* Configure PLLs
        * ------------------------------------------------------*/
       /* PLL2 configuration: PLL2CLK = (HSE / 5) * 8 = 40 MHz */
@@ -958,12 +958,12 @@ static void SetSysClockTo56(void)
       /* PLL configuration: PLLCLK = PREDIV1 * 7 = 56 MHz */
       RCC->CFGR &= (uint32_t) ~(RCC_CFGR_PLLXTPRE | RCC_CFGR_PLLSRC | RCC_CFGR_PLLMULL);
       RCC->CFGR |= (uint32_t)(RCC_CFGR_PLLXTPRE_PREDIV1 | RCC_CFGR_PLLSRC_PREDIV1 | RCC_CFGR_PLLMULL7);
-#   else
+#else
       /* PLL configuration: PLLCLK = HSE * 7 = 56 MHz */
       RCC->CFGR &= (uint32_t)((uint32_t) ~(RCC_CFGR_PLLSRC | RCC_CFGR_PLLXTPRE | RCC_CFGR_PLLMULL));
       RCC->CFGR |= (uint32_t)(RCC_CFGR_PLLSRC_HSE | RCC_CFGR_PLLMULL7);
 
-#   endif /* STM32F10X_CL */
+#endif /* STM32F10X_CL */
 
       /* Enable PLL */
       RCC->CR |= RCC_CR_PLLON;
@@ -1039,7 +1039,7 @@ static void SetSysClockTo72(void)
       /* PCLK1 = HCLK */
       RCC->CFGR |= (uint32_t)RCC_CFGR_PPRE1_DIV2;
 
-#   ifdef STM32F10X_CL
+#ifdef STM32F10X_CL
       /* Configure PLLs
        * ------------------------------------------------------*/
       /* PLL2 configuration: PLL2CLK = (HSE / 5) * 8 = 40 MHz */
@@ -1059,11 +1059,11 @@ static void SetSysClockTo72(void)
       /* PLL configuration: PLLCLK = PREDIV1 * 9 = 72 MHz */
       RCC->CFGR &= (uint32_t) ~(RCC_CFGR_PLLXTPRE | RCC_CFGR_PLLSRC | RCC_CFGR_PLLMULL);
       RCC->CFGR |= (uint32_t)(RCC_CFGR_PLLXTPRE_PREDIV1 | RCC_CFGR_PLLSRC_PREDIV1 | RCC_CFGR_PLLMULL9);
-#   else
+#else
       /*  PLL configuration: PLLCLK = HSE * 9 = 72 MHz */
       RCC->CFGR &= (uint32_t)((uint32_t) ~(RCC_CFGR_PLLSRC | RCC_CFGR_PLLXTPRE | RCC_CFGR_PLLMULL));
       RCC->CFGR |= (uint32_t)(RCC_CFGR_PLLSRC_HSE | RCC_CFGR_PLLMULL9);
-#   endif /* STM32F10X_CL */
+#endif /* STM32F10X_CL */
 
       /* Enable PLL */
       RCC->CR |= RCC_CR_PLLON;

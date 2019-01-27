@@ -2387,6 +2387,15 @@
             </file>
         </group>
         <group>
+            <name>RTC</name>
+            <file>
+                <name>$PROJ_DIR$\..\Drivers\RTC\rtc.cpp</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\Drivers\RTC\rtc.hpp</name>
+            </file>
+        </group>
+        <group>
             <name>SPI</name>
             <file>
                 <name>$PROJ_DIR$\..\Drivers\SPI\spi.cpp</name>
@@ -2485,6 +2494,9 @@
                 <name>$PROJ_DIR$\..\System Core\Vectors\stm32f10x_it.c</name>
             </file>
         </group>
+        <file>
+            <name>$PROJ_DIR$\..\System Core\system.cpp</name>
+        </file>
         <file>
             <name>$PROJ_DIR$\..\System Core\Startup\system_stm32f10x.c</name>
         </file>

@@ -27,6 +27,10 @@
 
 #ifdef __cplusplus
 
+
+/*
+ * @brief Class Exti
+ */
 class Exti
 {
     public:
@@ -104,4 +108,5 @@ extern "C" {
 }
 
 #endif//__cplusplus
+    
 #endif

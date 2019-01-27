@@ -12,11 +12,13 @@ using namespace std;
 
 
 /* User lib */
+#include "system.hpp"
 #include "board.hpp"
 #include "stm32f10x_conf.h"
 #include "uart.hpp"
 #include "spi.hpp"
 #include "exti.hpp"
+#include "rtc.hpp"
 #include "nrf24l01.hpp"
 
 
@@ -24,8 +26,10 @@ const uint8_t nRF_ADDR[] = { 'E', 'S', 'B' };
 
 
 static void NrfTask();
+static void RtcInterrupt();
 
 volatile Nrf::RXResult_t pipe;
+
 
 /**
  * @brief General functions main
@@ -34,13 +38,13 @@ int main()
 {   
     /* Set NVIC Priority Group (4 bits for preemption priority, 0 bits for
     * subpriority) */
-    Board::SetNvicPriorityGroup(NVIC_PriorityGroup_4);
+    System::SetNvicPriorityGroup(NVIC_PriorityGroup_4);
 
     /* Update System clock Core */
-    Board::ClockUpdate();
+    System::ClockUpdate();
 
     /* Init System Timer */
-    Board::InitSysTick(1000);
+    System::InitSysTick(1000);
 
     /* Initialisation Backup */
     Board::InitBKP();
@@ -48,6 +52,21 @@ int main()
     /* Initialisation Led */
     Board::InitLed();
     Board::LedOn();
+    
+    /* Initialisation RTC */ 
+    Rtc::Init();
+    RTC_t rtc;
+    rtc.Year = 2017;
+    rtc.Month = 7;
+    rtc.Mday = 14;
+    rtc.Hour = 2;
+    rtc.Min = 40;
+    rtc.Sec = 0;
+    const uint32_t time = Rtc::DateToSec(&rtc);
+    Rtc::SetTime(time);
+    
+    Rtc::InitAlarm(RtcInterrupt);
+    Rtc::SetAlarm(time + 1);
     
     /* Initialisation Watchdog Timer */
     Board::InitIWDG();
@@ -92,7 +111,7 @@ int main()
             
     // Wake the transceiver
     rxSingle->Enable();
-    Board::DelayMS(5);
+    System::DelayMS(5);
     
     // Put the transceiver to the RX mode
     rxSingle->RxOn();
@@ -120,7 +139,25 @@ int main()
             memset(buffer, 0, sizeof(buffer));
         }
         IWDG_ReloadCounter();
+        
     }
+}
+
+
+static void RtcInterrupt()
+{
+    static bool toggle = false;
+    const auto time = Rtc::GetTime();
+    Rtc::SetAlarm(time + 1);
+    
+    if(toggle) {
+        Board::LedOn();
+    }
+    else {
+        Board::LedOff();
+    }
+    
+    toggle = !toggle;
 }
 
 

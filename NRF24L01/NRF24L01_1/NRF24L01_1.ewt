@@ -2387,6 +2387,15 @@
             </file>
         </group>
         <group>
+            <name>RTC</name>
+            <file>
+                <name>$PROJ_DIR$\..\Drivers\RTC\rtc.cpp</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\Drivers\RTC\rtc.hpp</name>
+            </file>
+        </group>
+        <group>
             <name>SPI</name>
             <file>
                 <name>$PROJ_DIR$\..\Drivers\SPI\spi.cpp</name>
@@ -2410,15 +2419,6 @@
                 <name>$PROJ_DIR$\..\Drivers\VirtualPort\virtual_port.hpp</name>
             </file>
         </group>
-        <group>
-            <name>RTC</name>
-            <file>
-                <name>$PROJ_DIR$\..\Drivers\RTC\rtc.cpp</name>
-            </file>
-            <file>
-                <name>$PROJ_DIR$\..\Drivers\RTC\rtc.hpp</name>
-            </file>
-        </group>
     </group>
     <group>
         <name>NRF24L01</name>
@@ -2427,6 +2427,15 @@
         </file>
         <file>
             <name>$PROJ_DIR$\..\nrf24l01\nrf24l01.hpp</name>
+        </file>
+    </group>
+    <group>
+        <name>SDCard</name>
+        <file>
+            <name>$PROJ_DIR$\SDСard\sdcard.cpp</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\SDСard\sdcard.hpp</name>
         </file>
     </group>
     <group>
@@ -2491,6 +2500,9 @@
                 <name>$PROJ_DIR$\..\System Core\Vectors\stm32f10x_it.c</name>
             </file>
         </group>
+        <file>
+            <name>$PROJ_DIR$\..\System Core\system.cpp</name>
+        </file>
         <file>
             <name>$PROJ_DIR$\..\System Core\Startup\system_stm32f10x.c</name>
         </file>

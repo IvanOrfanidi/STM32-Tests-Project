@@ -158,4 +158,7 @@ __weak void TIM3_IRQHandler(void)
 {
 }
 
+__weak void RTC_IRQHandler(void)
+{
+}
 /******************* (C) COPYRIGHT 2011 STMicroelectronics *****END OF FILE****/
