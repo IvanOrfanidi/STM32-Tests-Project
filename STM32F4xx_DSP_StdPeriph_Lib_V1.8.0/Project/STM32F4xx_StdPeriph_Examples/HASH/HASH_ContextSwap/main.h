@@ -24,7 +24,7 @@
   *
   ******************************************************************************
   */
-  
+
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __MAIN_H
 #define __MAIN_H
@@ -33,22 +33,22 @@
 #include "stm32f4xx.h"
 #include <stdio.h>
 
-#if defined (USE_STM324xG_EVAL)
-  #include "stm324xg_eval.h"
+#if defined(USE_STM324xG_EVAL)
+#include "stm324xg_eval.h"
 
-#elif defined (USE_STM324x7I_EVAL) 
-  #include "stm324x7i_eval.h"
+#elif defined(USE_STM324x7I_EVAL)
+#include "stm324x7i_eval.h"
 
-#elif defined (USE_STM324x9I_EVAL) 
-  #include "stm324x9i_eval.h"
+#elif defined(USE_STM324x9I_EVAL)
+#include "stm324x9i_eval.h"
 #else
- #error "Please select first the Evaluation board used in your application (in Project Options)"
+#error "Please select first the Evaluation board used in your application (in Project Options)"
 #endif
 
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/
-#define SHA1_INPUT_TAB_SIZE        ((uint32_t)10)
-#define MD5_INPUT_TAB_SIZE         ((uint32_t)261*3)
+#define SHA1_INPUT_TAB_SIZE ((uint32_t)10)
+#define MD5_INPUT_TAB_SIZE ((uint32_t)261 * 3)
 
 /* Exported macro ------------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */

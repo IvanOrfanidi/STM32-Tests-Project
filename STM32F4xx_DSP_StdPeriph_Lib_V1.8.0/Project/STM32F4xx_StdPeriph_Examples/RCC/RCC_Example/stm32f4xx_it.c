@@ -37,7 +37,7 @@
 
 /** @addtogroup RCC_Example
   * @{
-  */ 
+  */
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
@@ -57,26 +57,25 @@
   */
 void NMI_Handler(void)
 {
-  /* This interrupt is generated when HSE clock fails */
+    /* This interrupt is generated when HSE clock fails */
 
-  if (RCC_GetITStatus(RCC_IT_CSS) != RESET)
-  {
-    /* At this stage: HSE, PLL are disabled (but no change on PLL config) and HSI
+    if(RCC_GetITStatus(RCC_IT_CSS) != RESET) {
+        /* At this stage: HSE, PLL are disabled (but no change on PLL config) and HSI
        is selected as system clock source */
 
-    /* Enable HSE */
-    RCC_HSEConfig(RCC_HSE_ON);
+        /* Enable HSE */
+        RCC_HSEConfig(RCC_HSE_ON);
 
-    /* Enable HSE Ready and PLL Ready interrupts */
-    RCC_ITConfig(RCC_IT_HSERDY | RCC_IT_PLLRDY, ENABLE);
+        /* Enable HSE Ready and PLL Ready interrupts */
+        RCC_ITConfig(RCC_IT_HSERDY | RCC_IT_PLLRDY, ENABLE);
 
-    /* Clear Clock Security System interrupt pending bit */
-    RCC_ClearITPendingBit(RCC_IT_CSS);
+        /* Clear Clock Security System interrupt pending bit */
+        RCC_ClearITPendingBit(RCC_IT_CSS);
 
-    /* Once HSE clock recovers, the HSERDY interrupt is generated and in the RCC ISR
+        /* Once HSE clock recovers, the HSERDY interrupt is generated and in the RCC ISR
        routine the system clock will be reconfigured to its previous state (before
        HSE clock failure) */
-  }
+    }
 }
 
 /**
@@ -86,10 +85,9 @@ void NMI_Handler(void)
   */
 void HardFault_Handler(void)
 {
-  /* Go to infinite loop when Hard Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Hard Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -99,10 +97,9 @@ void HardFault_Handler(void)
   */
 void MemManage_Handler(void)
 {
-  /* Go to infinite loop when Memory Manage exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Memory Manage exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -112,10 +109,9 @@ void MemManage_Handler(void)
   */
 void BusFault_Handler(void)
 {
-  /* Go to infinite loop when Bus Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Bus Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -125,10 +121,9 @@ void BusFault_Handler(void)
   */
 void UsageFault_Handler(void)
 {
-  /* Go to infinite loop when Usage Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Usage Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -190,39 +185,35 @@ void SysTick_Handler(void)
   */
 void RCC_IRQHandler(void)
 {
-  if(RCC_GetITStatus(RCC_IT_HSERDY) != RESET)
-  { 
-    /* Clear HSERDY interrupt pending bit */
-    RCC_ClearITPendingBit(RCC_IT_HSERDY);
+    if(RCC_GetITStatus(RCC_IT_HSERDY) != RESET) {
+        /* Clear HSERDY interrupt pending bit */
+        RCC_ClearITPendingBit(RCC_IT_HSERDY);
 
-    /* Check if the HSE clock is still available */
-    if (RCC_GetFlagStatus(RCC_FLAG_HSERDY) != RESET)
-    { 
-      /* Enable PLL: once the PLL is ready the PLLRDY interrupt is generated */ 
-      RCC_PLLCmd(ENABLE);     
+        /* Check if the HSE clock is still available */
+        if(RCC_GetFlagStatus(RCC_FLAG_HSERDY) != RESET) {
+            /* Enable PLL: once the PLL is ready the PLLRDY interrupt is generated */
+            RCC_PLLCmd(ENABLE);
+        }
     }
-  }
 
-  if(RCC_GetITStatus(RCC_IT_PLLRDY) != RESET)
-  { 
-    /* Clear PLLRDY interrupt pending bit */
-    RCC_ClearITPendingBit(RCC_IT_PLLRDY);
+    if(RCC_GetITStatus(RCC_IT_PLLRDY) != RESET) {
+        /* Clear PLLRDY interrupt pending bit */
+        RCC_ClearITPendingBit(RCC_IT_PLLRDY);
 
-    /* Check if the PLL is still locked */
-    if (RCC_GetFlagStatus(RCC_FLAG_PLLRDY) != RESET)
-    { 
-      /* Select PLL as system clock source */
-      RCC_SYSCLKConfig(RCC_SYSCLKSource_PLLCLK);
+        /* Check if the PLL is still locked */
+        if(RCC_GetFlagStatus(RCC_FLAG_PLLRDY) != RESET) {
+            /* Select PLL as system clock source */
+            RCC_SYSCLKConfig(RCC_SYSCLKSource_PLLCLK);
+        }
     }
-  }
 }
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}
-  */ 
+  */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

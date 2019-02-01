@@ -39,35 +39,35 @@
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
 
-#if defined (USE_STM324xG_EVAL)
-  #define MESSAGE1    " Dual ADC Interleaved DMA mode3 example " 
-  #define MESSAGE2   "ADC Ch12 Conv 6Msps " 
-  #define MESSAGE3   " Connect voltage to "
-  #define MESSAGE4   "  ADC Ch12 (PC.02)  "
-  #define MESSAGE5   "   ADC1 = %d,%d V   "
-  #define MESSAGE6   "   ADC2 = %d,%d V   "
-  #define LINENUM            0x13
-  #define FONTSIZE         Font8x12
+#if defined(USE_STM324xG_EVAL)
+#define MESSAGE1 " Dual ADC Interleaved DMA mode3 example "
+#define MESSAGE2 "ADC Ch12 Conv 6Msps "
+#define MESSAGE3 " Connect voltage to "
+#define MESSAGE4 "  ADC Ch12 (PC.02)  "
+#define MESSAGE5 "   ADC1 = %d,%d V   "
+#define MESSAGE6 "   ADC2 = %d,%d V   "
+#define LINENUM 0x13
+#define FONTSIZE Font8x12
 
-#elif defined (USE_STM324x7I_EVAL)
-  #define MESSAGE1    " Dual ADC Interleaved DMA mode3 example " 
-  #define MESSAGE2   "ADC Ch12 Conv 6Msps " 
-  #define MESSAGE3   " Connect voltage to "
-  #define MESSAGE4   "  ADC Ch12 (PC.02)  "
-  #define MESSAGE5   "   ADC1 = %d,%d V   "
-  #define MESSAGE6   "   ADC2 = %d,%d V   "
-  #define LINENUM            0x13
-  #define FONTSIZE         Font8x12
+#elif defined(USE_STM324x7I_EVAL)
+#define MESSAGE1 " Dual ADC Interleaved DMA mode3 example "
+#define MESSAGE2 "ADC Ch12 Conv 6Msps "
+#define MESSAGE3 " Connect voltage to "
+#define MESSAGE4 "  ADC Ch12 (PC.02)  "
+#define MESSAGE5 "   ADC1 = %d,%d V   "
+#define MESSAGE6 "   ADC2 = %d,%d V   "
+#define LINENUM 0x13
+#define FONTSIZE Font8x12
 
-#else 
-  #define MESSAGE1   " Dual ADC Interleaved DMA mode3 example " 
-  #define MESSAGE2   "     ADC Ch12 Conv 6Msps      " 
-  #define MESSAGE3   "      Connect voltage to      "
-  #define MESSAGE4   "       ADC Ch12 (PC.02)       "
-  #define MESSAGE5   "         ADC1 = %d,%d V       "
-  #define MESSAGE6   "         ADC2 = %d,%d V       "
-  #define LINENUM            0x15
-  #define FONTSIZE         Font12x12
+#else
+#define MESSAGE1 " Dual ADC Interleaved DMA mode3 example "
+#define MESSAGE2 "     ADC Ch12 Conv 6Msps      "
+#define MESSAGE3 "      Connect voltage to      "
+#define MESSAGE4 "       ADC Ch12 (PC.02)       "
+#define MESSAGE5 "         ADC1 = %d,%d V       "
+#define MESSAGE6 "         ADC2 = %d,%d V       "
+#define LINENUM 0x15
+#define FONTSIZE Font12x12
 
 #endif
 
@@ -92,7 +92,7 @@ static void Display(void);
   */
 int main(void)
 {
-  /*!< At this stage the microcontroller clock setting is already configured, 
+    /*!< At this stage the microcontroller clock setting is already configured, 
        this is done through SystemInit() function which is called from startup
        files (startup_stm32f40_41xxx.s/startup_stm32f427_437xx.s/startup_stm32f429_439xx.s)
        before to branch to application main. 
@@ -100,23 +100,22 @@ int main(void)
        system_stm32f4xx.c file
      */
 #ifdef USE_LCD
-  /* LCD Display init  */
-  Display_Init();
+    /* LCD Display init  */
+    Display_Init();
 #endif /* USE_LCD */
 
-  /* ADC configuration */
-  ADC_Config();
+    /* ADC configuration */
+    ADC_Config();
 
-  /* Start ADC1 Software Conversion */
-  ADC_SoftwareStartConv(ADC1);
+    /* Start ADC1 Software Conversion */
+    ADC_SoftwareStartConv(ADC1);
 
-  while (1)
-  {
+    while(1) {
 #ifdef USE_LCD
-  /* Display ADCs converted values on LCD */
-    Display();
+        /* Display ADCs converted values on LCD */
+        Display();
 #endif /* USE_LCD */
-  }
+    }
 }
 
 /**
@@ -132,84 +131,83 @@ int main(void)
   */
 static void ADC_Config(void)
 {
+    ADC_InitTypeDef ADC_InitStructure;
+    ADC_CommonInitTypeDef ADC_CommonInitStructure;
+    DMA_InitTypeDef DMA_InitStructure;
+    GPIO_InitTypeDef GPIO_InitStructure;
 
-  ADC_InitTypeDef ADC_InitStructure;
-  ADC_CommonInitTypeDef ADC_CommonInitStructure;
-  DMA_InitTypeDef DMA_InitStructure;
-  GPIO_InitTypeDef GPIO_InitStructure;
+    /* Enable peripheral clocks */
+    RCC_AHB1PeriphClockCmd(ADC1_2_CHANNEL_GPIO_CLK, ENABLE);
+    RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_DMA2, ENABLE);
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC1, ENABLE);
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC2, ENABLE);
 
-  /* Enable peripheral clocks */
-  RCC_AHB1PeriphClockCmd( ADC1_2_CHANNEL_GPIO_CLK , ENABLE);
-  RCC_AHB1PeriphClockCmd( RCC_AHB1Periph_DMA2 , ENABLE);
-  RCC_APB2PeriphClockCmd( RCC_APB2Periph_ADC1 , ENABLE);
-  RCC_APB2PeriphClockCmd( RCC_APB2Periph_ADC2 , ENABLE);
-  
-  /* Configure ADC Channel 12 pin as analog input */
-  GPIO_InitStructure.GPIO_Pin = GPIO_PIN;
-  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AN;
-  GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL ;
-  GPIO_Init(GPIO_PORT, &GPIO_InitStructure);
+    /* Configure ADC Channel 12 pin as analog input */
+    GPIO_InitStructure.GPIO_Pin = GPIO_PIN;
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AN;
+    GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
+    GPIO_Init(GPIO_PORT, &GPIO_InitStructure);
 
-  /* DMA2 Stream0 channel 0 configuration */
-  DMA_InitStructure.DMA_Channel = DMA_CHANNELx;  
-  DMA_InitStructure.DMA_PeripheralBaseAddr = (uint32_t)ADC_CDR_ADDRESS;
-  DMA_InitStructure.DMA_Memory0BaseAddr = (uint32_t)&uhADCDualConvertedValue;
-  DMA_InitStructure.DMA_DIR = DMA_DIR_PeripheralToMemory;
-  DMA_InitStructure.DMA_BufferSize = 1;
-  DMA_InitStructure.DMA_PeripheralInc = DMA_PeripheralInc_Disable;
-  DMA_InitStructure.DMA_MemoryInc = DMA_MemoryInc_Disable;
-  DMA_InitStructure.DMA_PeripheralDataSize = DMA_PeripheralDataSize_HalfWord;
-  DMA_InitStructure.DMA_MemoryDataSize = DMA_MemoryDataSize_HalfWord;
-  DMA_InitStructure.DMA_Mode = DMA_Mode_Circular;
-  DMA_InitStructure.DMA_Priority = DMA_Priority_High;
-  DMA_InitStructure.DMA_FIFOMode = DMA_FIFOMode_Disable;
-  DMA_InitStructure.DMA_FIFOThreshold = DMA_FIFOThreshold_HalfFull;
-  DMA_InitStructure.DMA_MemoryBurst = DMA_MemoryBurst_Single;
-  DMA_InitStructure.DMA_PeripheralBurst = DMA_PeripheralBurst_Single;
-  DMA_Init(DMA_STREAMx, &DMA_InitStructure);
+    /* DMA2 Stream0 channel 0 configuration */
+    DMA_InitStructure.DMA_Channel = DMA_CHANNELx;
+    DMA_InitStructure.DMA_PeripheralBaseAddr = (uint32_t)ADC_CDR_ADDRESS;
+    DMA_InitStructure.DMA_Memory0BaseAddr = (uint32_t)&uhADCDualConvertedValue;
+    DMA_InitStructure.DMA_DIR = DMA_DIR_PeripheralToMemory;
+    DMA_InitStructure.DMA_BufferSize = 1;
+    DMA_InitStructure.DMA_PeripheralInc = DMA_PeripheralInc_Disable;
+    DMA_InitStructure.DMA_MemoryInc = DMA_MemoryInc_Disable;
+    DMA_InitStructure.DMA_PeripheralDataSize = DMA_PeripheralDataSize_HalfWord;
+    DMA_InitStructure.DMA_MemoryDataSize = DMA_MemoryDataSize_HalfWord;
+    DMA_InitStructure.DMA_Mode = DMA_Mode_Circular;
+    DMA_InitStructure.DMA_Priority = DMA_Priority_High;
+    DMA_InitStructure.DMA_FIFOMode = DMA_FIFOMode_Disable;
+    DMA_InitStructure.DMA_FIFOThreshold = DMA_FIFOThreshold_HalfFull;
+    DMA_InitStructure.DMA_MemoryBurst = DMA_MemoryBurst_Single;
+    DMA_InitStructure.DMA_PeripheralBurst = DMA_PeripheralBurst_Single;
+    DMA_Init(DMA_STREAMx, &DMA_InitStructure);
 
-  /* DMA2_Stream 0 enable */
-  DMA_Cmd(DMA_STREAMx, ENABLE);
+    /* DMA2_Stream 0 enable */
+    DMA_Cmd(DMA_STREAMx, ENABLE);
 
-/******************************************************************************/
-/*  ADCs configuration: double interleaved with 6cycles delay to reach 5Msps  */
-/******************************************************************************/
+    /******************************************************************************/
+    /*  ADCs configuration: double interleaved with 6cycles delay to reach 5Msps  */
+    /******************************************************************************/
 
-  /* ADC Common configuration *************************************************/
-  ADC_CommonInitStructure.ADC_Mode = ADC_DualMode_Interl;
-  ADC_CommonInitStructure.ADC_TwoSamplingDelay = ADC_TwoSamplingDelay_6Cycles;
-  ADC_CommonInitStructure.ADC_DMAAccessMode = ADC_DMAAccessMode_3;
-  ADC_CommonInitStructure.ADC_Prescaler = ADC_Prescaler_Div2;
-  ADC_CommonInit(&ADC_CommonInitStructure);  
-  
-  /* DMA mode 3 is used in interleaved mode in 6-bit or 8-bit resolutions */
-  ADC_InitStructure.ADC_Resolution = ADC_Resolution_8b;
+    /* ADC Common configuration *************************************************/
+    ADC_CommonInitStructure.ADC_Mode = ADC_DualMode_Interl;
+    ADC_CommonInitStructure.ADC_TwoSamplingDelay = ADC_TwoSamplingDelay_6Cycles;
+    ADC_CommonInitStructure.ADC_DMAAccessMode = ADC_DMAAccessMode_3;
+    ADC_CommonInitStructure.ADC_Prescaler = ADC_Prescaler_Div2;
+    ADC_CommonInit(&ADC_CommonInitStructure);
 
-  /* ADC1 regular channel 12 configuration ************************************/
-  ADC_InitStructure.ADC_ScanConvMode = DISABLE;
-  ADC_InitStructure.ADC_ContinuousConvMode = ENABLE;
-  ADC_InitStructure.ADC_ExternalTrigConvEdge = ADC_ExternalTrigConvEdge_None;
-  ADC_InitStructure.ADC_ExternalTrigConv = ADC_ExternalTrigConv_T1_CC1;	
-  ADC_InitStructure.ADC_DataAlign = ADC_DataAlign_Right;
-  ADC_InitStructure.ADC_NbrOfConversion = 1;
-  ADC_Init(ADC1, &ADC_InitStructure);
-  /* ADC1 regular channel 12 configuration */ 
-  ADC_RegularChannelConfig(ADC1, ADC_CHANNEL, 1, ADC_SampleTime_3Cycles); 
+    /* DMA mode 3 is used in interleaved mode in 6-bit or 8-bit resolutions */
+    ADC_InitStructure.ADC_Resolution = ADC_Resolution_8b;
 
-  /* ADC2 regular channel 12 configuration ************************************/
-  ADC_Init(ADC2, &ADC_InitStructure);
-  /* ADC2 regular channel 12 configuration */
-  ADC_RegularChannelConfig(ADC2, ADC_CHANNEL, 1, ADC_SampleTime_3Cycles);
+    /* ADC1 regular channel 12 configuration ************************************/
+    ADC_InitStructure.ADC_ScanConvMode = DISABLE;
+    ADC_InitStructure.ADC_ContinuousConvMode = ENABLE;
+    ADC_InitStructure.ADC_ExternalTrigConvEdge = ADC_ExternalTrigConvEdge_None;
+    ADC_InitStructure.ADC_ExternalTrigConv = ADC_ExternalTrigConv_T1_CC1;
+    ADC_InitStructure.ADC_DataAlign = ADC_DataAlign_Right;
+    ADC_InitStructure.ADC_NbrOfConversion = 1;
+    ADC_Init(ADC1, &ADC_InitStructure);
+    /* ADC1 regular channel 12 configuration */
+    ADC_RegularChannelConfig(ADC1, ADC_CHANNEL, 1, ADC_SampleTime_3Cycles);
 
-  /* Enable DMA request after last transfer (multi-ADC mode) ******************/
-  ADC_MultiModeDMARequestAfterLastTransferCmd(ENABLE);
+    /* ADC2 regular channel 12 configuration ************************************/
+    ADC_Init(ADC2, &ADC_InitStructure);
+    /* ADC2 regular channel 12 configuration */
+    ADC_RegularChannelConfig(ADC2, ADC_CHANNEL, 1, ADC_SampleTime_3Cycles);
 
-  /* Enable ADC1 **************************************************************/
-  ADC_Cmd(ADC1, ENABLE);
+    /* Enable DMA request after last transfer (multi-ADC mode) ******************/
+    ADC_MultiModeDMARequestAfterLastTransferCmd(ENABLE);
 
-  /* Enable ADC2 **************************************************************/
-  ADC_Cmd(ADC2, ENABLE);
-}  
+    /* Enable ADC1 **************************************************************/
+    ADC_Cmd(ADC1, ENABLE);
+
+    /* Enable ADC2 **************************************************************/
+    ADC_Cmd(ADC2, ENABLE);
+}
 
 #ifdef USE_LCD
 /**
@@ -219,29 +217,28 @@ static void ADC_Config(void)
   */
 static void Display(void)
 {
-  uint32_t uwVoltage =0, uwMVoltage=0;
-  uint8_t aTextBuffer[50];
-  __IO uint32_t uwADC1ConvertedVoltage;
-  __IO uint32_t uwADC2ConvertedVoltage;
-  __IO uint8_t uwADC1ConvertedValue;
-  __IO uint8_t uwADC2ConvertedValue;
+    uint32_t uwVoltage = 0, uwMVoltage = 0;
+    uint8_t aTextBuffer[50];
+    __IO uint32_t uwADC1ConvertedVoltage;
+    __IO uint32_t uwADC2ConvertedVoltage;
+    __IO uint8_t uwADC1ConvertedValue;
+    __IO uint8_t uwADC2ConvertedValue;
 
-  uwADC1ConvertedValue = (uhADCDualConvertedValue & 0x00FF);
-  uwADC1ConvertedVoltage = uwADC1ConvertedValue *3300/0xFF;
+    uwADC1ConvertedValue = (uhADCDualConvertedValue & 0x00FF);
+    uwADC1ConvertedVoltage = uwADC1ConvertedValue * 3300 / 0xFF;
 
-  uwVoltage = (uwADC1ConvertedVoltage)/1000;
-  uwMVoltage = (uwADC1ConvertedVoltage%1000)/100;
-  sprintf((char*)aTextBuffer, MESSAGE5, uwVoltage, uwMVoltage);
-  LCD_DisplayStringLine(LCD_LINE_6, (uint8_t*)aTextBuffer);
+    uwVoltage = (uwADC1ConvertedVoltage) / 1000;
+    uwMVoltage = (uwADC1ConvertedVoltage % 1000) / 100;
+    sprintf((char*)aTextBuffer, MESSAGE5, uwVoltage, uwMVoltage);
+    LCD_DisplayStringLine(LCD_LINE_6, (uint8_t*)aTextBuffer);
 
+    uwADC2ConvertedValue = (uhADCDualConvertedValue >> 8);
+    uwADC2ConvertedVoltage = uwADC2ConvertedValue * 3300 / 0xFF;
 
-  uwADC2ConvertedValue = (uhADCDualConvertedValue >>8);
-  uwADC2ConvertedVoltage = uwADC2ConvertedValue *3300/0xFF;
-
-  uwVoltage=uwADC2ConvertedVoltage/1000;
-  uwMVoltage = (uwADC2ConvertedVoltage%1000)/100;
-  sprintf((char*)aTextBuffer, MESSAGE6, uwVoltage, uwMVoltage);
-  LCD_DisplayStringLine(LCD_LINE_7, (uint8_t*)aTextBuffer);
+    uwVoltage = uwADC2ConvertedVoltage / 1000;
+    uwMVoltage = (uwADC2ConvertedVoltage % 1000) / 100;
+    sprintf((char*)aTextBuffer, MESSAGE6, uwVoltage, uwMVoltage);
+    LCD_DisplayStringLine(LCD_LINE_7, (uint8_t*)aTextBuffer);
 }
 
 /**
@@ -251,64 +248,61 @@ static void Display(void)
   */
 static void Display_Init(void)
 {
+    /* Initialize the LCD */
+    LCD_Init();
 
-/* Initialize the LCD */
-  LCD_Init();
-  
-  /* Display message on LCD */
-#if defined (USE_STM324x9I_EVAL) 
-  /* Initialize the LCD Layers */
-  LCD_LayerInit();
-  
-  /* Initialize the LCD Layers */
-  LCD_LayerInit();
-  
-  /* Enable The Display */
-  LCD_DisplayOn(); 
- 
-  /* Set LCD Background Layer  */
-  LCD_SetLayer(LCD_BACKGROUND_LAYER);
- 
-  /* Clear the Background Layer */ 
-  LCD_Clear(LCD_COLOR_WHITE);
-  
-  /* Set LCD Foreground Layer  */
-  LCD_SetLayer(LCD_FOREGROUND_LAYER);
+    /* Display message on LCD */
+#if defined(USE_STM324x9I_EVAL)
+    /* Initialize the LCD Layers */
+    LCD_LayerInit();
 
-  /* Configure the transparency for foreground */
-  LCD_SetTransparency(100);
+    /* Initialize the LCD Layers */
+    LCD_LayerInit();
+
+    /* Enable The Display */
+    LCD_DisplayOn();
+
+    /* Set LCD Background Layer  */
+    LCD_SetLayer(LCD_BACKGROUND_LAYER);
+
+    /* Clear the Background Layer */
+    LCD_Clear(LCD_COLOR_WHITE);
+
+    /* Set LCD Foreground Layer  */
+    LCD_SetLayer(LCD_FOREGROUND_LAYER);
+
+    /* Configure the transparency for foreground */
+    LCD_SetTransparency(100);
 #endif /* USE_STM324x9I_EVAL */
-  
-  /* Clear the LCD */ 
-  LCD_Clear(White);
 
-  /* Set the LCD Text size */
-  LCD_SetFont(&FONTSIZE);
+    /* Clear the LCD */
+    LCD_Clear(White);
 
-  /* Set the LCD Back Color and Text Color*/
-  LCD_SetBackColor(Blue);
-  LCD_SetTextColor(White);
+    /* Set the LCD Text size */
+    LCD_SetFont(&FONTSIZE);
 
-  LCD_DisplayStringLine(LINE(LINENUM), (uint8_t*)MESSAGE1);
-  LCD_DisplayStringLine(LINE(0x16), (uint8_t*)"                                        ");
+    /* Set the LCD Back Color and Text Color*/
+    LCD_SetBackColor(Blue);
+    LCD_SetTextColor(White);
 
-  /* Set the LCD Text size */
-  LCD_SetFont(&Font16x24);
+    LCD_DisplayStringLine(LINE(LINENUM), (uint8_t*)MESSAGE1);
+    LCD_DisplayStringLine(LINE(0x16), (uint8_t*)"                                        ");
 
-  LCD_DisplayStringLine(LCD_LINE_0, (uint8_t*)MESSAGE2);
+    /* Set the LCD Text size */
+    LCD_SetFont(&Font16x24);
 
+    LCD_DisplayStringLine(LCD_LINE_0, (uint8_t*)MESSAGE2);
 
-  /* Set the LCD Back Color and Text Color*/
-  LCD_SetBackColor(White);
-  LCD_SetTextColor(Blue); 
+    /* Set the LCD Back Color and Text Color*/
+    LCD_SetBackColor(White);
+    LCD_SetTextColor(Blue);
 
-  LCD_DisplayStringLine(LCD_LINE_2, (uint8_t*)MESSAGE3);
-  LCD_DisplayStringLine(LCD_LINE_3, (uint8_t*)MESSAGE4);
+    LCD_DisplayStringLine(LCD_LINE_2, (uint8_t*)MESSAGE3);
+    LCD_DisplayStringLine(LCD_LINE_3, (uint8_t*)MESSAGE4);
 }
 #endif /* USE_LCD */
 
-
-#ifdef  USE_FULL_ASSERT
+#ifdef USE_FULL_ASSERT
 
 /**
   * @brief  Reports the name of the source file and the source line number
@@ -319,22 +313,21 @@ static void Display_Init(void)
   */
 void assert_failed(uint8_t* file, uint32_t line)
 {
-  /* User can add his own implementation to report the file name and line number,
+    /* User can add his own implementation to report the file name and line number,
      ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
 
-  /* Infinite loop */
-  while (1)
-  {
-  }
+    /* Infinite loop */
+    while(1) {
+    }
 }
 #endif
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}
-  */ 
+  */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

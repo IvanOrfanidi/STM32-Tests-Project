@@ -38,7 +38,7 @@
 /* Exported functions ------------------------------------------------------- */
 
 void IP_Debug(void);
- 
+
 #endif /* __STM32F4XX_IP_DBG_H */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

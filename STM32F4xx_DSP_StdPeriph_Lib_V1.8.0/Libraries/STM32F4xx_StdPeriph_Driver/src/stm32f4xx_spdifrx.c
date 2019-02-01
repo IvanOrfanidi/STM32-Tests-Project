@@ -28,7 +28,7 @@
   * limitations under the License.
   *
   ******************************************************************************
-  */ 
+  */
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f4xx_spdifrx.h"
@@ -41,7 +41,7 @@
 /** @defgroup SPDIFRX 
   * @brief SPDIFRX driver modules
   * @{
-  */ 
+  */
 #if defined(STM32F446xx)
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
@@ -84,10 +84,10 @@
   */
 void SPDIFRX_DeInit(void)
 {
-  /* Enable SPDIFRX reset state */
-  RCC_APB1PeriphResetCmd(RCC_APB1Periph_SPDIFRX, ENABLE);
-  /* Release SPDIFRX from reset state */
-  RCC_APB1PeriphResetCmd(RCC_APB1Periph_SPDIFRX, DISABLE); 
+    /* Enable SPDIFRX reset state */
+    RCC_APB1PeriphResetCmd(RCC_APB1Periph_SPDIFRX, ENABLE);
+    /* Release SPDIFRX from reset state */
+    RCC_APB1PeriphResetCmd(RCC_APB1Periph_SPDIFRX, DISABLE);
 }
 
 /**
@@ -103,37 +103,36 @@ void SPDIFRX_DeInit(void)
   */
 void SPDIFRX_Init(SPDIFRX_InitTypeDef* SPDIFRX_InitStruct)
 {
-  uint32_t tmpreg = 0;
-  
-  /* Check the SPDIFRX parameters */
-  assert_param(IS_STEREO_MODE(SPDIFRX_InitStruct->SPDIFRX_StereoMode));
-  assert_param(IS_SPDIFRX_INPUT_SELECT(SPDIFRX_InitStruct->SPDIFRX_InputSelection));
-  assert_param(IS_SPDIFRX_MAX_RETRIES(SPDIFRX_InitStruct->SPDIFRX_Retries));
-  assert_param(IS_SPDIFRX_WAIT_FOR_ACTIVITY(SPDIFRX_InitStruct->SPDIFRX_WaitForActivity));
-  assert_param(IS_SPDIFRX_CHANNEL(SPDIFRX_InitStruct->SPDIFRX_ChannelSelection));
-  assert_param(IS_SPDIFRX_DATA_FORMAT(SPDIFRX_InitStruct->SPDIFRX_DataFormat));
-  
-  /* SPDIFRX CR Configuration */
-  /* Get the SPDIFRX CR value */
-  tmpreg = SPDIFRX->CR;
-  /* Clear INSEL, WFA, NBTR, CHSEL, DRFMT and RXSTEO bits */
-  tmpreg &= CR_CLEAR_MASK;
-  /* Configure SPDIFRX: Input selection, Maximum allowed re-tries during synchronization phase, 
-  wait for activity, Channel Selection, Data samples format and stereo/mono mode */  
-  /* Set INSEL bits according to SPDIFRX_InputSelection value   */
-  /* Set WFA   bit  according to SPDIFRX_WaitForActivity value  */
-  /* Set NBTR  bit  according to SPDIFRX_Retries value          */
-  /* Set CHSEL bit  according to SPDIFRX_ChannelSelection value */
-  /* Set DRFMT bits according to SPDIFRX_DataFormat value       */
-  /* Set RXSTEO bit according to SPDIFRX_StereoMode value       */
-  
-  tmpreg |= (uint32_t)(SPDIFRX_InitStruct->SPDIFRX_InputSelection   | SPDIFRX_InitStruct->SPDIFRX_WaitForActivity   |
-                       SPDIFRX_InitStruct->SPDIFRX_Retries          | SPDIFRX_InitStruct->SPDIFRX_ChannelSelection  |  
-                       SPDIFRX_InitStruct->SPDIFRX_DataFormat       | SPDIFRX_InitStruct->SPDIFRX_StereoMode
-                       );
-  
-  /* Write to SPDIFRX CR */
-  SPDIFRX->CR = tmpreg;	
+    uint32_t tmpreg = 0;
+
+    /* Check the SPDIFRX parameters */
+    assert_param(IS_STEREO_MODE(SPDIFRX_InitStruct->SPDIFRX_StereoMode));
+    assert_param(IS_SPDIFRX_INPUT_SELECT(SPDIFRX_InitStruct->SPDIFRX_InputSelection));
+    assert_param(IS_SPDIFRX_MAX_RETRIES(SPDIFRX_InitStruct->SPDIFRX_Retries));
+    assert_param(IS_SPDIFRX_WAIT_FOR_ACTIVITY(SPDIFRX_InitStruct->SPDIFRX_WaitForActivity));
+    assert_param(IS_SPDIFRX_CHANNEL(SPDIFRX_InitStruct->SPDIFRX_ChannelSelection));
+    assert_param(IS_SPDIFRX_DATA_FORMAT(SPDIFRX_InitStruct->SPDIFRX_DataFormat));
+
+    /* SPDIFRX CR Configuration */
+    /* Get the SPDIFRX CR value */
+    tmpreg = SPDIFRX->CR;
+    /* Clear INSEL, WFA, NBTR, CHSEL, DRFMT and RXSTEO bits */
+    tmpreg &= CR_CLEAR_MASK;
+    /* Configure SPDIFRX: Input selection, Maximum allowed re-tries during synchronization phase, 
+  wait for activity, Channel Selection, Data samples format and stereo/mono mode */
+    /* Set INSEL bits according to SPDIFRX_InputSelection value   */
+    /* Set WFA   bit  according to SPDIFRX_WaitForActivity value  */
+    /* Set NBTR  bit  according to SPDIFRX_Retries value          */
+    /* Set CHSEL bit  according to SPDIFRX_ChannelSelection value */
+    /* Set DRFMT bits according to SPDIFRX_DataFormat value       */
+    /* Set RXSTEO bit according to SPDIFRX_StereoMode value       */
+
+    tmpreg |= (uint32_t)(SPDIFRX_InitStruct->SPDIFRX_InputSelection | SPDIFRX_InitStruct->SPDIFRX_WaitForActivity |
+                         SPDIFRX_InitStruct->SPDIFRX_Retries | SPDIFRX_InitStruct->SPDIFRX_ChannelSelection |
+                         SPDIFRX_InitStruct->SPDIFRX_DataFormat | SPDIFRX_InitStruct->SPDIFRX_StereoMode);
+
+    /* Write to SPDIFRX CR */
+    SPDIFRX->CR = tmpreg;
 }
 
 /**
@@ -144,19 +143,19 @@ void SPDIFRX_Init(SPDIFRX_InitTypeDef* SPDIFRX_InitStruct)
   */
 void SPDIFRX_StructInit(SPDIFRX_InitTypeDef* SPDIFRX_InitStruct)
 {
-  /* Reset SPDIFRX init structure parameters values */
-  /* Initialize the PDIF_InputSelection member */
-  SPDIFRX_InitStruct->SPDIFRX_InputSelection = SPDIFRX_Input_IN0;
-  /* Initialize the SPDIFRX_WaitForActivity member */
-  SPDIFRX_InitStruct->SPDIFRX_WaitForActivity = SPDIFRX_WaitForActivity_On;
-  /* Initialize the SPDIFRX_Retries member */
-  SPDIFRX_InitStruct->SPDIFRX_Retries = SPDIFRX_16MAX_RETRIES;
-  /* Initialize the SPDIFRX_ChannelSelection member */
-  SPDIFRX_InitStruct->SPDIFRX_ChannelSelection = SPDIFRX_Select_Channel_A;
-  /* Initialize the SPDIFRX_DataFormat member */
-  SPDIFRX_InitStruct->SPDIFRX_DataFormat = SPDIFRX_MSB_DataFormat;
-  /* Initialize the SPDIFRX_StereoMode member */
-  SPDIFRX_InitStruct->SPDIFRX_StereoMode = SPDIFRX_StereoMode_Enabled;
+    /* Reset SPDIFRX init structure parameters values */
+    /* Initialize the PDIF_InputSelection member */
+    SPDIFRX_InitStruct->SPDIFRX_InputSelection = SPDIFRX_Input_IN0;
+    /* Initialize the SPDIFRX_WaitForActivity member */
+    SPDIFRX_InitStruct->SPDIFRX_WaitForActivity = SPDIFRX_WaitForActivity_On;
+    /* Initialize the SPDIFRX_Retries member */
+    SPDIFRX_InitStruct->SPDIFRX_Retries = SPDIFRX_16MAX_RETRIES;
+    /* Initialize the SPDIFRX_ChannelSelection member */
+    SPDIFRX_InitStruct->SPDIFRX_ChannelSelection = SPDIFRX_Select_Channel_A;
+    /* Initialize the SPDIFRX_DataFormat member */
+    SPDIFRX_InitStruct->SPDIFRX_DataFormat = SPDIFRX_MSB_DataFormat;
+    /* Initialize the SPDIFRX_StereoMode member */
+    SPDIFRX_InitStruct->SPDIFRX_StereoMode = SPDIFRX_StereoMode_Enabled;
 }
 
 /**
@@ -167,19 +166,17 @@ void SPDIFRX_StructInit(SPDIFRX_InitTypeDef* SPDIFRX_InitStruct)
   */
 void SPDIFRX_SetPreambleTypeBit(FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
-  
-  if (NewState != DISABLE)
-  {
-    /* Enable the selected SPDIFRX frame bit */
-    SPDIFRX->CR |= SPDIFRX_CR_PTMSK;
-  }
-  else
-  {
-    /* Disable the selected SPDIFRX frame bit */
-    SPDIFRX->CR &= ~(SPDIFRX_CR_PTMSK);
-  }
+    /* Check the parameters */
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
+
+    if(NewState != DISABLE) {
+        /* Enable the selected SPDIFRX frame bit */
+        SPDIFRX->CR |= SPDIFRX_CR_PTMSK;
+    }
+    else {
+        /* Disable the selected SPDIFRX frame bit */
+        SPDIFRX->CR &= ~(SPDIFRX_CR_PTMSK);
+    }
 }
 
 /**
@@ -190,19 +187,17 @@ void SPDIFRX_SetPreambleTypeBit(FunctionalState NewState)
   */
 void SPDIFRX_SetUserDataChannelStatusBits(FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
-  
-  if (NewState != DISABLE)
-  {
-    /* Enable the selected SPDIFRX frame bit */
-    SPDIFRX->CR |= SPDIFRX_CR_CUMSK;
-  }
-  else
-  {
-    /* Disable the selected SPDIFRX frame bit */
-    SPDIFRX->CR &= ~(SPDIFRX_CR_CUMSK);
-  }
+    /* Check the parameters */
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
+
+    if(NewState != DISABLE) {
+        /* Enable the selected SPDIFRX frame bit */
+        SPDIFRX->CR |= SPDIFRX_CR_CUMSK;
+    }
+    else {
+        /* Disable the selected SPDIFRX frame bit */
+        SPDIFRX->CR &= ~(SPDIFRX_CR_CUMSK);
+    }
 }
 
 /**
@@ -213,19 +208,17 @@ void SPDIFRX_SetUserDataChannelStatusBits(FunctionalState NewState)
   */
 void SPDIFRX_SetValidityBit(FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
-  
-  if (NewState != DISABLE)
-  {
-    /* Enable the selected SPDIFRX frame bit */
-    SPDIFRX->CR |= SPDIFRX_CR_VMSK;
-  }
-  else
-  {
-    /* Disable the selected SPDIFRX frame bit */
-    SPDIFRX->CR &= ~(SPDIFRX_CR_VMSK);
-  }
+    /* Check the parameters */
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
+
+    if(NewState != DISABLE) {
+        /* Enable the selected SPDIFRX frame bit */
+        SPDIFRX->CR |= SPDIFRX_CR_VMSK;
+    }
+    else {
+        /* Disable the selected SPDIFRX frame bit */
+        SPDIFRX->CR &= ~(SPDIFRX_CR_VMSK);
+    }
 }
 
 /**
@@ -236,19 +229,17 @@ void SPDIFRX_SetValidityBit(FunctionalState NewState)
   */
 void SPDIFRX_SetParityBit(FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
-  
-  if (NewState != DISABLE)
-  {
-    /* Enable the selected SPDIFRX frame bit */
-    SPDIFRX->CR |= SPDIFRX_CR_PMSK;
-  }
-  else
-  {
-    /* Disable the selected SPDIFRX frame bit */
-    SPDIFRX->CR &= ~(SPDIFRX_CR_PMSK);
-  }
+    /* Check the parameters */
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
+
+    if(NewState != DISABLE) {
+        /* Enable the selected SPDIFRX frame bit */
+        SPDIFRX->CR |= SPDIFRX_CR_PMSK;
+    }
+    else {
+        /* Disable the selected SPDIFRX frame bit */
+        SPDIFRX->CR &= ~(SPDIFRX_CR_PMSK);
+    }
 }
 
 /**
@@ -259,19 +250,17 @@ void SPDIFRX_SetParityBit(FunctionalState NewState)
   */
 void SPDIFRX_RxDMACmd(FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
-  
-  if (NewState != DISABLE)
-  {
-    /* Enable the selected SPDIFRX DMA requests */
-    SPDIFRX->CR |= SPDIFRX_CR_RXDMAEN;
-  }
-  else
-  {
-    /* Disable the selected SPDIFRX DMA requests */
-    SPDIFRX->CR &= ~(SPDIFRX_CR_RXDMAEN);
-  }
+    /* Check the parameters */
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
+
+    if(NewState != DISABLE) {
+        /* Enable the selected SPDIFRX DMA requests */
+        SPDIFRX->CR |= SPDIFRX_CR_RXDMAEN;
+    }
+    else {
+        /* Disable the selected SPDIFRX DMA requests */
+        SPDIFRX->CR &= ~(SPDIFRX_CR_RXDMAEN);
+    }
 }
 
 /**
@@ -282,19 +271,17 @@ void SPDIFRX_RxDMACmd(FunctionalState NewState)
   */
 void SPDIFRX_CbDMACmd(FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
-  
-  if (NewState != DISABLE)
-  {
-    /* Enable the selected SPDIFRX DMA requests */
-    SPDIFRX->CR |= SPDIFRX_CR_CBDMAEN;
-  }
-  else
-  {
-    /* Disable the selected SPDIFRX DMA requests */
-    SPDIFRX->CR &= ~(SPDIFRX_CR_CBDMAEN);
-  }
+    /* Check the parameters */
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
+
+    if(NewState != DISABLE) {
+        /* Enable the selected SPDIFRX DMA requests */
+        SPDIFRX->CR |= SPDIFRX_CR_CBDMAEN;
+    }
+    else {
+        /* Disable the selected SPDIFRX DMA requests */
+        SPDIFRX->CR &= ~(SPDIFRX_CR_CBDMAEN);
+    }
 }
 
 /**
@@ -308,12 +295,12 @@ void SPDIFRX_CbDMACmd(FunctionalState NewState)
   */
 void SPDIFRX_Cmd(uint32_t SPDIFRX_State)
 {
-  /* Check the parameters */
-  assert_param(IS_SPDIFRX_STATE(SPDIFRX_State));
-	
-  /* Clear SPDIFRXEN bits */
+    /* Check the parameters */
+    assert_param(IS_SPDIFRX_STATE(SPDIFRX_State));
+
+    /* Clear SPDIFRXEN bits */
     SPDIFRX->CR &= ~(SPDIFRX_CR_SPDIFEN);
-  /* Set new SPDIFRXEN value */
+    /* Set new SPDIFRXEN value */
     SPDIFRX->CR |= SPDIFRX_State;
 }
 
@@ -333,21 +320,19 @@ void SPDIFRX_Cmd(uint32_t SPDIFRX_State)
   * @retval None
   */
 void SPDIFRX_ITConfig(uint32_t SPDIFRX_IT, FunctionalState NewState)
-{ 
-  /* Check the parameters */
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
-  assert_param(IS_SPDIFRX_CONFIG_IT(SPDIFRX_IT));
+{
+    /* Check the parameters */
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
+    assert_param(IS_SPDIFRX_CONFIG_IT(SPDIFRX_IT));
 
-  if (NewState != DISABLE)
-  {
-    /* Enable the selected SPDIFRX interrupt */
-    SPDIFRX->IMR |= SPDIFRX_IT;
-  }
-  else
-  {
-    /* Disable the selected SPDIFRX interrupt */
-    SPDIFRX->IMR &= ~(SPDIFRX_IT);
-  }
+    if(NewState != DISABLE) {
+        /* Enable the selected SPDIFRX interrupt */
+        SPDIFRX->IMR |= SPDIFRX_IT;
+    }
+    else {
+        /* Disable the selected SPDIFRX interrupt */
+        SPDIFRX->IMR &= ~(SPDIFRX_IT);
+    }
 }
 
 /**
@@ -367,24 +352,22 @@ void SPDIFRX_ITConfig(uint32_t SPDIFRX_IT, FunctionalState NewState)
   */
 FlagStatus SPDIFRX_GetFlagStatus(uint32_t SPDIFRX_FLAG)
 {
-  FlagStatus bitstatus = RESET;
-  
-  /* Check the parameters */
-  assert_param(IS_SPDIFRX_FLAG(SPDIFRX_FLAG));
-  
-  /* Check the status of the specified SPDIFRX flag */
-  if ((SPDIFRX->SR & SPDIFRX_FLAG) != (uint32_t)RESET)
-  {
-    /* SPDIFRX_FLAG is set */
-    bitstatus = SET;
-  }
-  else
-  {
-    /* SPDIFRX_FLAG is reset */
-    bitstatus = RESET;
-  }
-  /* Return the SPDIFRX_FLAG status */
-  return  bitstatus;
+    FlagStatus bitstatus = RESET;
+
+    /* Check the parameters */
+    assert_param(IS_SPDIFRX_FLAG(SPDIFRX_FLAG));
+
+    /* Check the status of the specified SPDIFRX flag */
+    if((SPDIFRX->SR & SPDIFRX_FLAG) != (uint32_t)RESET) {
+        /* SPDIFRX_FLAG is set */
+        bitstatus = SET;
+    }
+    else {
+        /* SPDIFRX_FLAG is reset */
+        bitstatus = RESET;
+    }
+    /* Return the SPDIFRX_FLAG status */
+    return bitstatus;
 }
 
 /**
@@ -400,11 +383,11 @@ FlagStatus SPDIFRX_GetFlagStatus(uint32_t SPDIFRX_FLAG)
   */
 void SPDIFRX_ClearFlag(uint32_t SPDIFRX_FLAG)
 {
-  /* Check the parameters */
-  assert_param(IS_SPDIFRX_CLEAR_FLAG(SPDIFRX_FLAG));
-    
-  /* Clear the selected SPDIFRX Block flag */
-  SPDIFRX->IFCR |= SPDIFRX_FLAG;
+    /* Check the parameters */
+    assert_param(IS_SPDIFRX_CLEAR_FLAG(SPDIFRX_FLAG));
+
+    /* Clear the selected SPDIFRX Block flag */
+    SPDIFRX->IFCR |= SPDIFRX_FLAG;
 }
 
 /**
@@ -422,28 +405,26 @@ void SPDIFRX_ClearFlag(uint32_t SPDIFRX_FLAG)
   */
 ITStatus SPDIFRX_GetITStatus(uint32_t SPDIFRX_IT)
 {
-  ITStatus bitstatus = RESET;
-  uint32_t  enablestatus = 0;
+    ITStatus bitstatus = RESET;
+    uint32_t enablestatus = 0;
 
-  /* Check the parameters */
-  assert_param(IS_SPDIFRX_CONFIG_IT(SPDIFRX_IT));
-  
-  /* Get the SPDIFRX_IT enable bit status */
-  enablestatus = (SPDIFRX->IMR & SPDIFRX_IT) ;
+    /* Check the parameters */
+    assert_param(IS_SPDIFRX_CONFIG_IT(SPDIFRX_IT));
 
-  /* Check the status of the specified SPDIFRX interrupt */
-  if (((SPDIFRX->SR & SPDIFRX_IT) != (uint32_t)RESET) && (enablestatus != (uint32_t)RESET))
-  {
-    /* SPDIFRX_IT is set */
-    bitstatus = SET;
-  }
-  else
-  {
-    /* SPDIFRX_IT is reset */
-    bitstatus = RESET;
-  }
-  /* Return the SPDIFRX_IT status */
-  return bitstatus;
+    /* Get the SPDIFRX_IT enable bit status */
+    enablestatus = (SPDIFRX->IMR & SPDIFRX_IT);
+
+    /* Check the status of the specified SPDIFRX interrupt */
+    if(((SPDIFRX->SR & SPDIFRX_IT) != (uint32_t)RESET) && (enablestatus != (uint32_t)RESET)) {
+        /* SPDIFRX_IT is set */
+        bitstatus = SET;
+    }
+    else {
+        /* SPDIFRX_IT is reset */
+        bitstatus = RESET;
+    }
+    /* Return the SPDIFRX_IT status */
+    return bitstatus;
 }
 
 /**
@@ -467,11 +448,11 @@ ITStatus SPDIFRX_GetITStatus(uint32_t SPDIFRX_IT)
   */
 void SPDIFRX_ClearITPendingBit(uint32_t SPDIFRX_IT)
 {
-  /* Check the parameters */
-  assert_param(IS_SPDIFRX_CLEAR_FLAG(SPDIFRX_IT));
+    /* Check the parameters */
+    assert_param(IS_SPDIFRX_CLEAR_FLAG(SPDIFRX_IT));
 
-  /* Clear the selected SPDIFRX interrupt pending bit */
-  SPDIFRX->IFCR |= SPDIFRX_IT; 
+    /* Clear the selected SPDIFRX interrupt pending bit */
+    SPDIFRX->IFCR |= SPDIFRX_IT;
 }
 
 /**
@@ -480,15 +461,15 @@ void SPDIFRX_ClearITPendingBit(uint32_t SPDIFRX_IT)
 
 /**
   * @}
-  */ 
+  */
 #endif /* STM32F446xx */
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}
-  */ 
+  */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

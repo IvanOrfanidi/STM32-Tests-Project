@@ -34,17 +34,17 @@
 
 /** @addtogroup LTDC_AnimatedPictureFromSDCard
   * @{
-  */ 
+  */
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
-FATFS    microSD_fatfs;
-DIR      directory;
+FATFS microSD_fatfs;
+DIR directory;
 
-char*    pDirectoryFiles[MAX_BMP_FILES];
-uint8_t  ubNumberOfFiles = 0;
+char* pDirectoryFiles[MAX_BMP_FILES];
+uint8_t ubNumberOfFiles = 0;
 uint32_t uwBmplen = 0;
 
 /* Internal Buffer defined in SDRAM memory */
@@ -64,122 +64,107 @@ static void SDCard_Config(void);
   */
 int main(void)
 {
-  uint32_t counter = 0;
-  uint8_t  str[30];
- 
-  /*!< At this stage the microcontroller clock setting is already configured, 
+    uint32_t counter = 0;
+    uint8_t str[30];
+
+    /*!< At this stage the microcontroller clock setting is already configured, 
        this is done through SystemInit() function which is called from startup
        files (startup_stm32f429_439xx.s) before to branch to application main.
-     */  
-  
-  /* Example resources configuration -----------------------------------------*/
-  /* Configure LCD */
-  LCD_Config();
+     */
 
-  /* Configure SD Card */
-  SDCard_Config();
-  
-  /* Configure the File System */
-  FileSystem_Config();
- 
-  /* Display Background picture ----------------------------------------------*/
-  
-  /* Set Background Layer  */
-  LCD_SetLayer(LCD_BACKGROUND_LAYER);
-  
-  /* Open directory */
-  if (f_opendir(&directory, "/BACK") != FR_OK)
-  {
-    /* Set the Text Color */
-    LCD_SetTextColor(LCD_COLOR_RED);
-    
-    LCD_DisplayStringLine(LCD_LINE_8, (uint8_t*)"    Open directory.. fails");
-    while(1)
-    {
-    } 
-  }
+    /* Example resources configuration -----------------------------------------*/
+    /* Configure LCD */
+    LCD_Config();
 
-  if (Storage_CheckBitmapFile("BACK/image.bmp", &uwBmplen) == 0)
-  {
-    /* Format the string */
-    Storage_OpenReadFile(uwInternelBuffer, "BACK/image.bmp");
-    /* Write bmp file on LCD frame buffer */
-    LCD_WriteBMP(uwInternelBuffer);   
-  }
-  else
-  {
-    /* Set the Text Color */
-    LCD_SetTextColor(LCD_COLOR_RED);
-            
-    LCD_DisplayStringLine(LCD_LINE_8, (uint8_t*)"    File type not supported. "); 
-    while(1)
-    {
-    }  
-  }        
-        
+    /* Configure SD Card */
+    SDCard_Config();
 
-  /* Display Foreground pictures ---------------------------------------------*/
-  /* Set Foreground Layer  */
-  LCD_SetLayer(LCD_FOREGROUND_LAYER);
- 
-  /* Decrease the foreground transprency */
-  LCD_SetTransparency(200); 
-  
-  /* Get the BMP file names on root directory */
-  ubNumberOfFiles = Storage_GetDirectoryBitmapFiles("/TOP", pDirectoryFiles);
+    /* Configure the File System */
+    FileSystem_Config();
 
-  if (ubNumberOfFiles == 0)
-  {
-    for (counter = 0; counter < MAX_BMP_FILES; counter++)
-    {
-      free(pDirectoryFiles[counter]);
+    /* Display Background picture ----------------------------------------------*/
+
+    /* Set Background Layer  */
+    LCD_SetLayer(LCD_BACKGROUND_LAYER);
+
+    /* Open directory */
+    if(f_opendir(&directory, "/BACK") != FR_OK) {
+        /* Set the Text Color */
+        LCD_SetTextColor(LCD_COLOR_RED);
+
+        LCD_DisplayStringLine(LCD_LINE_8, (uint8_t*)"    Open directory.. fails");
+        while(1) {
+        }
     }
-    /* Set the Text Color */
-    LCD_SetTextColor(LCD_COLOR_RED);
-    
-    LCD_DisplayStringLine(LCD_LINE_8, (uint8_t*)"    No Bitmap files...      ");
-    while(1)
-    {
-    } 
-  } 
-  
-  while(1)
-  { 
-    counter = 0;
-    
-    while (counter < ubNumberOfFiles)
-    {
-      /* Format the string */
-      sprintf ((char*)str, "TOP/%-11.11s", pDirectoryFiles[counter]); 
-      
-      if (Storage_CheckBitmapFile((const char*)str, &uwBmplen) == 0)
-      {
+
+    if(Storage_CheckBitmapFile("BACK/image.bmp", &uwBmplen) == 0) {
         /* Format the string */
-        sprintf ((char*)str, "TOP/%-11.11s", pDirectoryFiles[counter]);
-        
-        /* Open a file and copy its content to a buffer */
-        Storage_OpenReadFile(uwInternelBuffer, (const char*)str);
-        
+        Storage_OpenReadFile(uwInternelBuffer, "BACK/image.bmp");
         /* Write bmp file on LCD frame buffer */
         LCD_WriteBMP(uwInternelBuffer);
-        
-        /* jump to next image */
-        counter++;   
-      }
-      else
-      {
-
-        /* Set the Text Color */
-        LCD_SetTextColor(LCD_COLOR_RED); 
-        
-        LCD_DisplayStringLine(LCD_LINE_7, (uint8_t *) str);        
-        LCD_DisplayStringLine(LCD_LINE_8, (uint8_t*)"    File type not supported. "); 
-        while(1)
-        {
-        }    
-      }
     }
-  }
+    else {
+        /* Set the Text Color */
+        LCD_SetTextColor(LCD_COLOR_RED);
+
+        LCD_DisplayStringLine(LCD_LINE_8, (uint8_t*)"    File type not supported. ");
+        while(1) {
+        }
+    }
+
+    /* Display Foreground pictures ---------------------------------------------*/
+    /* Set Foreground Layer  */
+    LCD_SetLayer(LCD_FOREGROUND_LAYER);
+
+    /* Decrease the foreground transprency */
+    LCD_SetTransparency(200);
+
+    /* Get the BMP file names on root directory */
+    ubNumberOfFiles = Storage_GetDirectoryBitmapFiles("/TOP", pDirectoryFiles);
+
+    if(ubNumberOfFiles == 0) {
+        for(counter = 0; counter < MAX_BMP_FILES; counter++) {
+            free(pDirectoryFiles[counter]);
+        }
+        /* Set the Text Color */
+        LCD_SetTextColor(LCD_COLOR_RED);
+
+        LCD_DisplayStringLine(LCD_LINE_8, (uint8_t*)"    No Bitmap files...      ");
+        while(1) {
+        }
+    }
+
+    while(1) {
+        counter = 0;
+
+        while(counter < ubNumberOfFiles) {
+            /* Format the string */
+            sprintf((char*)str, "TOP/%-11.11s", pDirectoryFiles[counter]);
+
+            if(Storage_CheckBitmapFile((const char*)str, &uwBmplen) == 0) {
+                /* Format the string */
+                sprintf((char*)str, "TOP/%-11.11s", pDirectoryFiles[counter]);
+
+                /* Open a file and copy its content to a buffer */
+                Storage_OpenReadFile(uwInternelBuffer, (const char*)str);
+
+                /* Write bmp file on LCD frame buffer */
+                LCD_WriteBMP(uwInternelBuffer);
+
+                /* jump to next image */
+                counter++;
+            }
+            else {
+                /* Set the Text Color */
+                LCD_SetTextColor(LCD_COLOR_RED);
+
+                LCD_DisplayStringLine(LCD_LINE_7, (uint8_t*)str);
+                LCD_DisplayStringLine(LCD_LINE_8, (uint8_t*)"    File type not supported. ");
+                while(1) {
+                }
+            }
+        }
+    }
 }
 
 /**
@@ -190,31 +175,30 @@ int main(void)
 
 static void LCD_Config(void)
 {
-  /* LCD Initialization */ 
-  LCD_Init();
+    /* LCD Initialization */
+    LCD_Init();
 
-  /* LCD Layers Initialization */ 
-  LCD_LayerInit();
-  
-  /* Enable the LCD */ 
-  LCD_DisplayOn();
+    /* LCD Layers Initialization */
+    LCD_LayerInit();
 
-  /* Set LCD Background Layer  */
-  LCD_SetLayer(LCD_BACKGROUND_LAYER);
-  /* Clear the Background Layer */
-  LCD_Clear(LCD_COLOR_WHITE);
+    /* Enable the LCD */
+    LCD_DisplayOn();
 
-  /* Set LCD Foreground Layer  */
-  LCD_SetLayer(LCD_FOREGROUND_LAYER);
-  /* Clear the Foreground Layer */ 
-  LCD_Clear(LCD_COLOR_WHITE); 
+    /* Set LCD Background Layer  */
+    LCD_SetLayer(LCD_BACKGROUND_LAYER);
+    /* Clear the Background Layer */
+    LCD_Clear(LCD_COLOR_WHITE);
 
-  /* Configure and enable the Color Keying feature */
-  LCD_SetColorKeying(0); 
+    /* Set LCD Foreground Layer  */
+    LCD_SetLayer(LCD_FOREGROUND_LAYER);
+    /* Clear the Foreground Layer */
+    LCD_Clear(LCD_COLOR_WHITE);
 
-  /* Configure the transparency for foreground : Increase the transprency */
-  LCD_SetTransparency(100);
+    /* Configure and enable the Color Keying feature */
+    LCD_SetColorKeying(0);
 
+    /* Configure the transparency for foreground : Increase the transprency */
+    LCD_SetTransparency(100);
 }
 
 /**
@@ -224,22 +208,20 @@ static void LCD_Config(void)
   */
 static void FileSystem_Config(void)
 {
-  uint32_t counter = 0;
-  
-  /* Check the mounted device */
-  if ( f_mount(0, &microSD_fatfs ) != FR_OK )
-  {
-    /* Set the Text Color */
-    LCD_SetTextColor(LCD_COLOR_RED);
-    
-    LCD_DisplayStringLine(LCD_LINE_8, (uint8_t*)"    Cannot mount FATFS on Drive");
-  }  
-      
-  /* Initialize the Directory Files pointers (heap) */
-  for (counter = 0; counter < MAX_BMP_FILES; counter++)
-  {
-    pDirectoryFiles[counter] = malloc(11); 
-  }
+    uint32_t counter = 0;
+
+    /* Check the mounted device */
+    if(f_mount(0, &microSD_fatfs) != FR_OK) {
+        /* Set the Text Color */
+        LCD_SetTextColor(LCD_COLOR_RED);
+
+        LCD_DisplayStringLine(LCD_LINE_8, (uint8_t*)"    Cannot mount FATFS on Drive");
+    }
+
+    /* Initialize the Directory Files pointers (heap) */
+    for(counter = 0; counter < MAX_BMP_FILES; counter++) {
+        pDirectoryFiles[counter] = malloc(11);
+    }
 }
 
 /**
@@ -249,64 +231,56 @@ static void FileSystem_Config(void)
   */
 static void SDCard_Config(void)
 {
-  uint32_t error = 0;
-  uint32_t counter = 0x100;
-  
-  /* Configure the IO Expander */
-  if (IOE16_Config() != IOE16_OK)
-  {
-    /* Set the Text Color */
-    LCD_SetTextColor(LCD_COLOR_RED);
-      
-    LCD_DisplayStringLine(LCD_LINE_6, (uint8_t*)"    IO Expander FAILED         ");
-    LCD_DisplayStringLine(LCD_LINE_7, (uint8_t*)"    Please Reset the board and ");   
-    LCD_DisplayStringLine(LCD_LINE_8, (uint8_t*)"    Start again...             ");
-    while(1)
-    {
+    uint32_t error = 0;
+    uint32_t counter = 0x100;
+
+    /* Configure the IO Expander */
+    if(IOE16_Config() != IOE16_OK) {
+        /* Set the Text Color */
+        LCD_SetTextColor(LCD_COLOR_RED);
+
+        LCD_DisplayStringLine(LCD_LINE_6, (uint8_t*)"    IO Expander FAILED         ");
+        LCD_DisplayStringLine(LCD_LINE_7, (uint8_t*)"    Please Reset the board and ");
+        LCD_DisplayStringLine(LCD_LINE_8, (uint8_t*)"    Start again...             ");
+        while(1) {
+        }
     }
-  }   
-  
-  /* SDCard initialisation */
-  SD_Init();
-  
-  /* Configure the SD detect pin */
-  IOE16_IOPinConfig(SD_DETECT_PIN, Direction_IN);
 
-  if (SD_Detect() == SD_NOT_PRESENT)
-  {
-    /* Set the Text Color */
-    LCD_SetTextColor(LCD_COLOR_RED);
+    /* SDCard initialisation */
+    SD_Init();
 
-    LCD_DisplayStringLine(LCD_LINE_8, (uint8_t*)"    Please insert SD Card.     ");
+    /* Configure the SD detect pin */
+    IOE16_IOPinConfig(SD_DETECT_PIN, Direction_IN);
 
-    while (SD_Detect() == SD_NOT_PRESENT)
-    {
-    }       
-  }
-  
-  /* FAT Initialization */
-  do
-  {
-    /* SDCARD Initialisation */
-    error = Storage_Init();                                                    
-  }
-  while ((error != 0) && (counter-- != 0));
+    if(SD_Detect() == SD_NOT_PRESENT) {
+        /* Set the Text Color */
+        LCD_SetTextColor(LCD_COLOR_RED);
 
-  /* SD Card not formatted */
-  if (counter == 0)
-  {
-    /* Set the Text Color */
-    LCD_SetTextColor(LCD_COLOR_RED);
+        LCD_DisplayStringLine(LCD_LINE_8, (uint8_t*)"    Please insert SD Card.     ");
 
-    LCD_DisplayStringLine(LCD_LINE_7, (uint8_t*)"    SD Card not formatted.  ");
-    LCD_DisplayStringLine(LCD_LINE_8, (uint8_t*)"    Reprogram your card.    ");
-    while (1)
-    {
+        while(SD_Detect() == SD_NOT_PRESENT) {
+        }
     }
-  }
+
+    /* FAT Initialization */
+    do {
+        /* SDCARD Initialisation */
+        error = Storage_Init();
+    } while((error != 0) && (counter-- != 0));
+
+    /* SD Card not formatted */
+    if(counter == 0) {
+        /* Set the Text Color */
+        LCD_SetTextColor(LCD_COLOR_RED);
+
+        LCD_DisplayStringLine(LCD_LINE_7, (uint8_t*)"    SD Card not formatted.  ");
+        LCD_DisplayStringLine(LCD_LINE_8, (uint8_t*)"    Reprogram your card.    ");
+        while(1) {
+        }
+    }
 }
 
-#ifdef  USE_FULL_ASSERT
+#ifdef USE_FULL_ASSERT
 /**
   * @brief  Reports the name of the source file and the source line number
   *   where the assert_param error has occurred.
@@ -316,12 +290,12 @@ static void SDCard_Config(void)
   */
 void assert_failed(uint8_t* file, uint32_t line)
 {
-  /* User can add his own implementation to report the file name and line number,
+    /* User can add his own implementation to report the file name and line number,
      ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
 
-  /* Infinite loop */
-  while (1)
-  {}
+    /* Infinite loop */
+    while(1) {
+    }
 }
 #endif
 
@@ -331,6 +305,6 @@ void assert_failed(uint8_t* file, uint32_t line)
 
 /**
   * @}
-  */ 
-  
+  */
+
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

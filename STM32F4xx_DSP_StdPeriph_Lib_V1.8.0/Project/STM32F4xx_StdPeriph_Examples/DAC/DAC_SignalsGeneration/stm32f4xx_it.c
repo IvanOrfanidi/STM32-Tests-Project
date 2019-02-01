@@ -35,7 +35,7 @@
   */
 /** @addtogroup DAC_SignalsGeneration
   * @{
-  */ 
+  */
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
 /* Private macro -------------------------------------------------------------*/
@@ -65,10 +65,9 @@ void NMI_Handler(void)
   */
 void HardFault_Handler(void)
 {
-  /* Go to infinite loop when Hard Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Hard Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -78,10 +77,9 @@ void HardFault_Handler(void)
   */
 void MemManage_Handler(void)
 {
-  /* Go to infinite loop when Memory Manage exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Memory Manage exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -91,10 +89,9 @@ void MemManage_Handler(void)
   */
 void BusFault_Handler(void)
 {
-  /* Go to infinite loop when Bus Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Bus Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -104,10 +101,9 @@ void BusFault_Handler(void)
   */
 void UsageFault_Handler(void)
 {
-  /* Go to infinite loop when Usage Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Usage Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -160,23 +156,22 @@ void SysTick_Handler(void)
   */
 void EXTI15_10_IRQHandler(void)
 {
-  if(EXTI_GetITStatus(KEY_BUTTON_EXTI_LINE) != RESET)
-  { 
-    /* Change the wave */
-    ubKeyPressed = 1;
+    if(EXTI_GetITStatus(KEY_BUTTON_EXTI_LINE) != RESET) {
+        /* Change the wave */
+        ubKeyPressed = 1;
 
-    /* Change the selected waves forms */
-    ubSelectedWavesForm = !ubSelectedWavesForm;
+        /* Change the selected waves forms */
+        ubSelectedWavesForm = !ubSelectedWavesForm;
 
-    /* Clear the Right Button EXTI line pending bit */
-    EXTI_ClearITPendingBit(KEY_BUTTON_EXTI_LINE);
-  }
+        /* Clear the Right Button EXTI line pending bit */
+        EXTI_ClearITPendingBit(KEY_BUTTON_EXTI_LINE);
+    }
 }
 /**
   * @}
-  */ 
+  */
 /**
   * @}
-  */ 
+  */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

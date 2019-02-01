@@ -42,8 +42,8 @@
 /* Private define ------------------------------------------------------------*/
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
-RTC_AlarmTypeDef         RTC_AlarmStructure;
-extern RTC_TimeTypeDef   RTC_TimeStructure;
+RTC_AlarmTypeDef RTC_AlarmStructure;
+extern RTC_TimeTypeDef RTC_TimeStructure;
 
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
@@ -68,10 +68,9 @@ void NMI_Handler(void)
   */
 void HardFault_Handler(void)
 {
-  /* Go to infinite loop when Hard Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Hard Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -81,10 +80,9 @@ void HardFault_Handler(void)
   */
 void MemManage_Handler(void)
 {
-  /* Go to infinite loop when Memory Manage exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Memory Manage exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -94,10 +92,9 @@ void MemManage_Handler(void)
   */
 void BusFault_Handler(void)
 {
-  /* Go to infinite loop when Bus Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Bus Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -107,10 +104,9 @@ void BusFault_Handler(void)
   */
 void UsageFault_Handler(void)
 {
-  /* Go to infinite loop when Usage Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Usage Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -147,8 +143,8 @@ void PendSV_Handler(void)
   */
 void SysTick_Handler(void)
 {
-  /* Toggle LED1 */
-  STM_EVAL_LEDToggle(LED1);
+    /* Toggle LED1 */
+    STM_EVAL_LEDToggle(LED1);
 }
 
 /******************************************************************************/
@@ -165,54 +161,52 @@ void SysTick_Handler(void)
   */
 void EXTI15_10_IRQHandler(void)
 {
-  if(EXTI_GetITStatus(KEY_BUTTON_EXTI_LINE) != RESET)
-  {
-   
-    /* Clear the SEL Button EXTI line pending bit */
-    EXTI_ClearITPendingBit(KEY_BUTTON_EXTI_LINE);
+    if(EXTI_GetITStatus(KEY_BUTTON_EXTI_LINE) != RESET) {
+        /* Clear the SEL Button EXTI line pending bit */
+        EXTI_ClearITPendingBit(KEY_BUTTON_EXTI_LINE);
 
-    /* Disable the Alarm A */
-    RTC_AlarmCmd(RTC_Alarm_A, DISABLE);
+        /* Disable the Alarm A */
+        RTC_AlarmCmd(RTC_Alarm_A, DISABLE);
 
-    /* Disable RTC Alarm A Interrupt  */
-    RTC_ITConfig(RTC_IT_ALRA, DISABLE);
+        /* Disable RTC Alarm A Interrupt  */
+        RTC_ITConfig(RTC_IT_ALRA, DISABLE);
 
-    /* Clear Power WakeUp (CWUF) pending flag */
-    PWR_ClearFlag(PWR_FLAG_WU);
+        /* Clear Power WakeUp (CWUF) pending flag */
+        PWR_ClearFlag(PWR_FLAG_WU);
 
-    RTC_GetTime(RTC_Format_BIN, &RTC_TimeStructure);
+        RTC_GetTime(RTC_Format_BIN, &RTC_TimeStructure);
 
-    /* Set the alarm to current time + 5s */
-    RTC_AlarmStructure.RTC_AlarmTime.RTC_H12     = RTC_TimeStructure.RTC_H12;
-    RTC_AlarmStructure.RTC_AlarmTime.RTC_Hours   = RTC_TimeStructure.RTC_Hours;
-    RTC_AlarmStructure.RTC_AlarmTime.RTC_Minutes = RTC_TimeStructure.RTC_Minutes;
-    RTC_AlarmStructure.RTC_AlarmTime.RTC_Seconds = (RTC_TimeStructure.RTC_Seconds + 0x5) % 60;
-    RTC_AlarmStructure.RTC_AlarmDateWeekDay = 0x31;
-    RTC_AlarmStructure.RTC_AlarmDateWeekDaySel = RTC_AlarmDateWeekDaySel_Date;
-    RTC_AlarmStructure.RTC_AlarmMask = RTC_AlarmMask_DateWeekDay | RTC_AlarmMask_Hours | RTC_AlarmMask_Minutes;
-    RTC_SetAlarm(RTC_Format_BIN, RTC_Alarm_A, &RTC_AlarmStructure);
+        /* Set the alarm to current time + 5s */
+        RTC_AlarmStructure.RTC_AlarmTime.RTC_H12 = RTC_TimeStructure.RTC_H12;
+        RTC_AlarmStructure.RTC_AlarmTime.RTC_Hours = RTC_TimeStructure.RTC_Hours;
+        RTC_AlarmStructure.RTC_AlarmTime.RTC_Minutes = RTC_TimeStructure.RTC_Minutes;
+        RTC_AlarmStructure.RTC_AlarmTime.RTC_Seconds = (RTC_TimeStructure.RTC_Seconds + 0x5) % 60;
+        RTC_AlarmStructure.RTC_AlarmDateWeekDay = 0x31;
+        RTC_AlarmStructure.RTC_AlarmDateWeekDaySel = RTC_AlarmDateWeekDaySel_Date;
+        RTC_AlarmStructure.RTC_AlarmMask = RTC_AlarmMask_DateWeekDay | RTC_AlarmMask_Hours | RTC_AlarmMask_Minutes;
+        RTC_SetAlarm(RTC_Format_BIN, RTC_Alarm_A, &RTC_AlarmStructure);
 
-    /* Enable RTC Alarm A Interrupt: this Interrupt will wake-up the system from
+        /* Enable RTC Alarm A Interrupt: this Interrupt will wake-up the system from
        STANDBY mode (RTC Alarm IT not enabled in NVIC) */
-    RTC_ITConfig(RTC_IT_ALRA, ENABLE);
+        RTC_ITConfig(RTC_IT_ALRA, ENABLE);
 
-    /* Enable the Alarm A */
-    RTC_AlarmCmd(RTC_Alarm_A, ENABLE);
+        /* Enable the Alarm A */
+        RTC_AlarmCmd(RTC_Alarm_A, ENABLE);
 
-    /* Clear RTC Alarm Flag */ 
-    RTC_ClearFlag(RTC_FLAG_ALRAF);
+        /* Clear RTC Alarm Flag */
+        RTC_ClearFlag(RTC_FLAG_ALRAF);
 
-    /* Request to enter STANDBY mode (Wake Up flag is cleared in PWR_EnterSTANDBYMode function) */
-    PWR_EnterSTANDBYMode();
-  }
+        /* Request to enter STANDBY mode (Wake Up flag is cleared in PWR_EnterSTANDBYMode function) */
+        PWR_EnterSTANDBYMode();
+    }
 }
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}
-  */ 
+  */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

@@ -24,7 +24,7 @@
   *
   ******************************************************************************
   */
-  
+
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __MAIN_H
 #define __MAIN_H
@@ -32,29 +32,29 @@
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f4xx.h"
 
-#if defined (USE_STM324xG_EVAL)
-  #include "stm324xg_eval.h"
+#if defined(USE_STM324xG_EVAL)
+#include "stm324xg_eval.h"
 
-#elif defined (USE_STM324x7I_EVAL) 
-  #include "stm324x7i_eval.h"
+#elif defined(USE_STM324x7I_EVAL)
+#include "stm324x7i_eval.h"
 
-#elif defined (USE_STM324x9I_EVAL) 
-  #include "stm324x9i_eval.h"
+#elif defined(USE_STM324x9I_EVAL)
+#include "stm324x9i_eval.h"
 #else
- #error "Please select first the Evaluation board used in your application (in Project Options)"
+#error "Please select first the Evaluation board used in your application (in Project Options)"
 #endif
 
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/
 /* Exported macro ------------------------------------------------------------*/
-#if defined (USE_STM324xG_EVAL) 
-  #define ADC_CCR_ADDRESS    ((uint32_t)0x40012308)
+#if defined(USE_STM324xG_EVAL)
+#define ADC_CCR_ADDRESS ((uint32_t)0x40012308)
 
-#elif defined (USE_STM324x7I_EVAL)   
-  #define ADC_CCR_ADDRESS    ((uint32_t)0x40012308)
+#elif defined(USE_STM324x7I_EVAL)
+#define ADC_CCR_ADDRESS ((uint32_t)0x40012308)
 
 #else
-  #define ADC_CCR_ADDRESS    ((uint32_t)0x40012308)
+#define ADC_CCR_ADDRESS ((uint32_t)0x40012308)
 
 #endif
 /* Exported functions ------------------------------------------------------- */

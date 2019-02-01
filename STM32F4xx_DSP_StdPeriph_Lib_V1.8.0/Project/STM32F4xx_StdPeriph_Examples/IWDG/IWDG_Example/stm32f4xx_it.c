@@ -37,7 +37,7 @@
 
 /** @addtogroup IWDG_Example
   * @{
-  */ 
+  */
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
@@ -46,7 +46,7 @@
 extern __IO uint32_t uwTimingDelay;
 extern __IO uint32_t uwPeriodValue;
 extern __IO uint32_t uwCaptureNumber;
-uint16_t tmpCC4[2] = {0, 0};
+uint16_t tmpCC4[2] = { 0, 0 };
 
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
@@ -71,10 +71,9 @@ void NMI_Handler(void)
   */
 void HardFault_Handler(void)
 {
-  /* Go to infinite loop when Hard Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Hard Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -84,10 +83,9 @@ void HardFault_Handler(void)
   */
 void MemManage_Handler(void)
 {
-  /* Go to infinite loop when Memory Manage exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Memory Manage exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -97,10 +95,9 @@ void MemManage_Handler(void)
   */
 void BusFault_Handler(void)
 {
-  /* Go to infinite loop when Bus Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Bus Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -110,10 +107,9 @@ void BusFault_Handler(void)
   */
 void UsageFault_Handler(void)
 {
-  /* Go to infinite loop when Usage Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Usage Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -150,7 +146,7 @@ void PendSV_Handler(void)
   */
 void SysTick_Handler(void)
 {
-  uwTimingDelay--;
+    uwTimingDelay--;
 }
 
 /******************************************************************************/
@@ -175,17 +171,16 @@ void SysTick_Handler(void)
   * @retval None
   */
 void EXTI15_10_IRQHandler(void)
-{ 
-  if(EXTI_GetITStatus(BUTTON_EXTI_LINE) != RESET)
-  {
-    /* Clear the Tamper Button EXTI Line Pending Bit */
-    EXTI_ClearITPendingBit(BUTTON_EXTI_LINE);
-    
-    /* As the following address is invalid (not mapped), a Hardfault exception
+{
+    if(EXTI_GetITStatus(BUTTON_EXTI_LINE) != RESET) {
+        /* Clear the Tamper Button EXTI Line Pending Bit */
+        EXTI_ClearITPendingBit(BUTTON_EXTI_LINE);
+
+        /* As the following address is invalid (not mapped), a Hardfault exception
 	  will be generated with an infinite loop and when the IWDG counter reaches 0
     the IWDG reset occurs */
- 	  *(__IO uint32_t *) 0xA0001000 = 0xFF;
-  } 
+        *(__IO uint32_t*)0xA0001000 = 0xFF;
+    }
 }
 
 /**
@@ -195,28 +190,26 @@ void EXTI15_10_IRQHandler(void)
   */
 void TIM5_IRQHandler(void)
 {
-  if (TIM_GetITStatus(TIM5, TIM_IT_CC4) != RESET)
-  {    
-    /* Get the Input Capture value */
-    tmpCC4[uwCaptureNumber++] = TIM_GetCapture4(TIM5);
-   
-    /* Clear CC4 Interrupt pending bit */
-    TIM_ClearITPendingBit(TIM5, TIM_IT_CC4);
+    if(TIM_GetITStatus(TIM5, TIM_IT_CC4) != RESET) {
+        /* Get the Input Capture value */
+        tmpCC4[uwCaptureNumber++] = TIM_GetCapture4(TIM5);
 
-    if (uwCaptureNumber >= 2)
-    {
-      /* Compute the period length */
-      uwPeriodValue = (uint16_t)(0xFFFF - tmpCC4[0] + tmpCC4[1] + 1);
+        /* Clear CC4 Interrupt pending bit */
+        TIM_ClearITPendingBit(TIM5, TIM_IT_CC4);
+
+        if(uwCaptureNumber >= 2) {
+            /* Compute the period length */
+            uwPeriodValue = (uint16_t)(0xFFFF - tmpCC4[0] + tmpCC4[1] + 1);
+        }
     }
-  }
 }
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}
-  */ 
+  */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

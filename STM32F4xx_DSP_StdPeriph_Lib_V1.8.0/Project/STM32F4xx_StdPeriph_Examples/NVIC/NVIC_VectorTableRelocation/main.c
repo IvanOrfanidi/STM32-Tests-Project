@@ -34,7 +34,7 @@
 
 /** @addtogroup NVIC_VectorTableRelocation
   * @{
-  */ 
+  */
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
@@ -54,29 +54,29 @@ static void Delay(__IO uint32_t nTime);
   */
 int main(void)
 {
-  /*!< At this stage the microcontroller clock setting is already configured, 
+    /*!< At this stage the microcontroller clock setting is already configured, 
        this is done through SystemInit() function which is called from startup
        files (startup_stm32f40_41xxx.s/startup_stm32f427_437xx.s/startup_stm32f429_439xx.s)
        before to branch to application main. 
        To reconfigure the default setting of SystemInit() function, refer to
        system_stm32f4xx.c file
-     */       
+     */
 
-  /* Set the Vector Table base location at 0x08004000 
+    /* Set the Vector Table base location at 0x08004000 
     (this is already done in system_stm32f4xx.c file)  
   NVIC_SetVectorTable(NVIC_VectTab_FLASH, 0x4000);   */
-         
-  /* Initialize LEDs mounted on EVAL board */
-  STM_EVAL_LEDInit(LED1);
-  STM_EVAL_LEDInit(LED2);
-  STM_EVAL_LEDInit(LED3);
-  STM_EVAL_LEDInit(LED4);
 
-  /* Turn on LED1 and LED3 */
-  STM_EVAL_LEDOn(LED1);
-  STM_EVAL_LEDOn(LED3);
+    /* Initialize LEDs mounted on EVAL board */
+    STM_EVAL_LEDInit(LED1);
+    STM_EVAL_LEDInit(LED2);
+    STM_EVAL_LEDInit(LED3);
+    STM_EVAL_LEDInit(LED4);
 
-  /* Setup SysTick Timer for 1 msec interrupts.
+    /* Turn on LED1 and LED3 */
+    STM_EVAL_LEDOn(LED1);
+    STM_EVAL_LEDOn(LED3);
+
+    /* Setup SysTick Timer for 1 msec interrupts.
      ------------------------------------------
     1. The SysTick_Config() function is a CMSIS function which configure:
        - The SysTick Reload register with value passed as function parameter.
@@ -102,28 +102,27 @@ int main(void)
        - Reload Value is the parameter to be passed for SysTick_Config() function
        - Reload Value should not exceed 0xFFFFFF
    */
-  if (SysTick_Config(SystemCoreClock / 1000))
-  { 
-    /* Capture error */ 
-    while (1);
-  }
+    if(SysTick_Config(SystemCoreClock / 1000)) {
+        /* Capture error */
+        while(1)
+            ;
+    }
 
-  while (1)
-  {
-    /* Toggle LED2 and LED4 */
-    STM_EVAL_LEDToggle(LED2);
-    STM_EVAL_LEDToggle(LED4);
+    while(1) {
+        /* Toggle LED2 and LED4 */
+        STM_EVAL_LEDToggle(LED2);
+        STM_EVAL_LEDToggle(LED4);
 
-    /* Insert 50 ms delay */
-    Delay(50);
+        /* Insert 50 ms delay */
+        Delay(50);
 
-    /* Toggle LED1 and LED3 */
-    STM_EVAL_LEDToggle(LED1);
-    STM_EVAL_LEDToggle(LED3);
+        /* Toggle LED1 and LED3 */
+        STM_EVAL_LEDToggle(LED1);
+        STM_EVAL_LEDToggle(LED3);
 
-    /* Insert 100 ms delay */
-    Delay(100);
-  }
+        /* Insert 100 ms delay */
+        Delay(100);
+    }
 }
 
 /**
@@ -132,10 +131,11 @@ int main(void)
   * @retval None
   */
 static void Delay(__IO uint32_t nTime)
-{ 
-  uwTimingDelay = nTime;
+{
+    uwTimingDelay = nTime;
 
-  while(uwTimingDelay != 0);
+    while(uwTimingDelay != 0)
+        ;
 }
 
 /**
@@ -145,13 +145,12 @@ static void Delay(__IO uint32_t nTime)
   */
 void TimingDelay_Decrement(void)
 {
-  if (uwTimingDelay != 0x00)
-  { 
-    uwTimingDelay--;
-  }
+    if(uwTimingDelay != 0x00) {
+        uwTimingDelay--;
+    }
 }
 
-#ifdef  USE_FULL_ASSERT
+#ifdef USE_FULL_ASSERT
 
 /**
   * @brief  Reports the name of the source file and the source line number
@@ -161,23 +160,22 @@ void TimingDelay_Decrement(void)
   * @retval None
   */
 void assert_failed(uint8_t* file, uint32_t line)
-{ 
-  /* User can add his own implementation to report the file name and line number,
+{
+    /* User can add his own implementation to report the file name and line number,
      ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
 
-  /* Infinite loop */
-  while (1)
-  {
-  }
+    /* Infinite loop */
+    while(1) {
+    }
 }
 #endif
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}
-  */ 
+  */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

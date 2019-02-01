@@ -67,10 +67,9 @@ void NMI_Handler(void)
   */
 void HardFault_Handler(void)
 {
-  /* Go to infinite loop when Hard Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Hard Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -80,10 +79,9 @@ void HardFault_Handler(void)
   */
 void MemManage_Handler(void)
 {
-  /* Go to infinite loop when Memory Manage exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Memory Manage exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -93,10 +91,9 @@ void MemManage_Handler(void)
   */
 void BusFault_Handler(void)
 {
-  /* Go to infinite loop when Bus Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Bus Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -106,10 +103,9 @@ void BusFault_Handler(void)
   */
 void UsageFault_Handler(void)
 {
-  /* Go to infinite loop when Usage Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Usage Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -162,14 +158,12 @@ void SysTick_Handler(void)
   */
 void RTC_WKUP_IRQHandler(void)
 {
-  if(RTC_GetITStatus(RTC_IT_WUT) != RESET)
-  {
-    uwTimeDisplay = 1;
-    RTC_ClearITPendingBit(RTC_IT_WUT);
-    EXTI_ClearITPendingBit(EXTI_Line22);
-  }
+    if(RTC_GetITStatus(RTC_IT_WUT) != RESET) {
+        uwTimeDisplay = 1;
+        RTC_ClearITPendingBit(RTC_IT_WUT);
+        EXTI_ClearITPendingBit(EXTI_Line22);
+    }
 }
-
 
 /**
   * @}

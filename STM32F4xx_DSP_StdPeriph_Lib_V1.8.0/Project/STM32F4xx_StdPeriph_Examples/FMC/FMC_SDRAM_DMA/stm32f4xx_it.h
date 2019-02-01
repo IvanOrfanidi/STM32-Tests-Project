@@ -30,13 +30,13 @@
 #define __STM32F4xx_IT_H
 
 #ifdef __cplusplus
- extern "C" {
-#endif 
+extern "C" {
+#endif
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f4xx.h"
 #include "main.h"
-   
+
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/
 /* Exported macro ------------------------------------------------------------*/
@@ -50,7 +50,7 @@ void UsageFault_Handler(void);
 void SVC_Handler(void);
 void DebugMon_Handler(void);
 void PendSV_Handler(void);
-void SysTick_Handler(void); 
+void SysTick_Handler(void);
 void DMA_STREAM_IRQHANDLER(void);
 
 #ifdef __cplusplus

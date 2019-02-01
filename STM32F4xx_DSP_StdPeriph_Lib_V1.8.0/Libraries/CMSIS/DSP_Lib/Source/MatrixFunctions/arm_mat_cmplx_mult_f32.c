@@ -55,7 +55,6 @@
  * matrix equals the outer dimensions of <code>pSrcA</code> and <code>pSrcB</code>.      
  */
 
-
 /**      
  * @addtogroup CmplxMatrixMult      
  * @{      
@@ -71,211 +70,202 @@
  */
 
 arm_status arm_mat_cmplx_mult_f32(
-  const arm_matrix_instance_f32 * pSrcA,
-  const arm_matrix_instance_f32 * pSrcB,
-  arm_matrix_instance_f32 * pDst)
+    const arm_matrix_instance_f32* pSrcA,
+    const arm_matrix_instance_f32* pSrcB,
+    arm_matrix_instance_f32* pDst)
 {
-  float32_t *pIn1 = pSrcA->pData;                /* input data matrix pointer A */
-  float32_t *pIn2 = pSrcB->pData;                /* input data matrix pointer B */
-  float32_t *pInA = pSrcA->pData;                /* input data matrix pointer A  */
-  float32_t *pOut = pDst->pData;                 /* output data matrix pointer */
-  float32_t *px;                                 /* Temporary output data matrix pointer */
-  uint16_t numRowsA = pSrcA->numRows;            /* number of rows of input matrix A */
-  uint16_t numColsB = pSrcB->numCols;            /* number of columns of input matrix B */
-  uint16_t numColsA = pSrcA->numCols;            /* number of columns of input matrix A */
-  float32_t sumReal1, sumImag1;                  /* accumulator */
-  float32_t a0, b0, c0, d0;
-  float32_t a1, b1, c1, d1;
-  float32_t sumReal2, sumImag2;                  /* accumulator */
+    float32_t* pIn1 = pSrcA->pData;     /* input data matrix pointer A */
+    float32_t* pIn2 = pSrcB->pData;     /* input data matrix pointer B */
+    float32_t* pInA = pSrcA->pData;     /* input data matrix pointer A  */
+    float32_t* pOut = pDst->pData;      /* output data matrix pointer */
+    float32_t* px;                      /* Temporary output data matrix pointer */
+    uint16_t numRowsA = pSrcA->numRows; /* number of rows of input matrix A */
+    uint16_t numColsB = pSrcB->numCols; /* number of columns of input matrix B */
+    uint16_t numColsA = pSrcA->numCols; /* number of columns of input matrix A */
+    float32_t sumReal1, sumImag1;       /* accumulator */
+    float32_t a0, b0, c0, d0;
+    float32_t a1, b1, c1, d1;
+    float32_t sumReal2, sumImag2; /* accumulator */
 
+    /* Run the below code for Cortex-M4 and Cortex-M3 */
 
-  /* Run the below code for Cortex-M4 and Cortex-M3 */
-
-  uint16_t col, i = 0u, j, row = numRowsA, colCnt;      /* loop counters */
-  arm_status status;                             /* status of matrix multiplication */
+    uint16_t col, i = 0u, j, row = numRowsA, colCnt; /* loop counters */
+    arm_status status;                               /* status of matrix multiplication */
 
 #ifdef ARM_MATH_MATRIX_CHECK
 
-
-  /* Check for matrix mismatch condition */
-  if((pSrcA->numCols != pSrcB->numRows) ||
-     (pSrcA->numRows != pDst->numRows) || (pSrcB->numCols != pDst->numCols))
-  {
-
-    /* Set status as ARM_MATH_SIZE_MISMATCH */
-    status = ARM_MATH_SIZE_MISMATCH;
-  }
-  else
+    /* Check for matrix mismatch condition */
+    if((pSrcA->numCols != pSrcB->numRows) ||
+        (pSrcA->numRows != pDst->numRows) || (pSrcB->numCols != pDst->numCols)) {
+        /* Set status as ARM_MATH_SIZE_MISMATCH */
+        status = ARM_MATH_SIZE_MISMATCH;
+    }
+    else
 #endif /*      #ifdef ARM_MATH_MATRIX_CHECK    */
 
-  {
-    /* The following loop performs the dot-product of each row in pSrcA with each column in pSrcB */
-    /* row loop */
-    do
     {
-      /* Output pointer is set to starting address of the row being processed */
-      px = pOut + 2 * i;
+        /* The following loop performs the dot-product of each row in pSrcA with each column in pSrcB */
+        /* row loop */
+        do {
+            /* Output pointer is set to starting address of the row being processed */
+            px = pOut + 2 * i;
 
-      /* For every row wise process, the column loop counter is to be initiated */
-      col = numColsB;
+            /* For every row wise process, the column loop counter is to be initiated */
+            col = numColsB;
 
-      /* For every row wise process, the pIn2 pointer is set      
+            /* For every row wise process, the pIn2 pointer is set      
        ** to the starting address of the pSrcB data */
-      pIn2 = pSrcB->pData;
+            pIn2 = pSrcB->pData;
 
-      j = 0u;
+            j = 0u;
 
-      /* column loop */
-      do
-      {
-        /* Set the variable sum, that acts as accumulator, to zero */
-        sumReal1 = 0.0f;
-        sumImag1 = 0.0f;
+            /* column loop */
+            do {
+                /* Set the variable sum, that acts as accumulator, to zero */
+                sumReal1 = 0.0f;
+                sumImag1 = 0.0f;
 
-        sumReal2 = 0.0f;
-        sumImag2 = 0.0f;
+                sumReal2 = 0.0f;
+                sumImag2 = 0.0f;
 
-        /* Initiate the pointer pIn1 to point to the starting address of the column being processed */
-        pIn1 = pInA;
+                /* Initiate the pointer pIn1 to point to the starting address of the column being processed */
+                pIn1 = pInA;
 
-        /* Apply loop unrolling and compute 4 MACs simultaneously. */
-        colCnt = numColsA >> 2;
+                /* Apply loop unrolling and compute 4 MACs simultaneously. */
+                colCnt = numColsA >> 2;
 
-        /* matrix multiplication        */
-        while(colCnt > 0u)
-        {
+                /* matrix multiplication        */
+                while(colCnt > 0u) {
+                    /* Reading real part of complex matrix A */
+                    a0 = *pIn1;
 
-          /* Reading real part of complex matrix A */
-          a0 = *pIn1;
+                    /* Reading real part of complex matrix B */
+                    c0 = *pIn2;
 
-          /* Reading real part of complex matrix B */
-          c0 = *pIn2;
+                    /* Reading imaginary part of complex matrix A */
+                    b0 = *(pIn1 + 1u);
 
-          /* Reading imaginary part of complex matrix A */
-          b0 = *(pIn1 + 1u);
+                    /* Reading imaginary part of complex matrix B */
+                    d0 = *(pIn2 + 1u);
 
-          /* Reading imaginary part of complex matrix B */
-          d0 = *(pIn2 + 1u);
+                    sumReal1 += a0 * c0;
+                    sumImag1 += b0 * c0;
 
-          sumReal1 += a0 * c0;
-          sumImag1 += b0 * c0;
+                    pIn1 += 2u;
+                    pIn2 += 2 * numColsB;
 
-          pIn1 += 2u;
-          pIn2 += 2 * numColsB;
+                    sumReal2 -= b0 * d0;
+                    sumImag2 += a0 * d0;
 
-          sumReal2 -= b0 * d0;
-          sumImag2 += a0 * d0;
+                    /* c(m,n) = a(1,1)*b(1,1) + a(1,2) * b(2,1) + .... + a(m,p)*b(p,n) */
 
-          /* c(m,n) = a(1,1)*b(1,1) + a(1,2) * b(2,1) + .... + a(m,p)*b(p,n) */
+                    a1 = *pIn1;
+                    c1 = *pIn2;
 
-          a1 = *pIn1;
-          c1 = *pIn2;
+                    b1 = *(pIn1 + 1u);
+                    d1 = *(pIn2 + 1u);
 
-          b1 = *(pIn1 + 1u);
-          d1 = *(pIn2 + 1u);
+                    sumReal1 += a1 * c1;
+                    sumImag1 += b1 * c1;
 
-          sumReal1 += a1 * c1;
-          sumImag1 += b1 * c1;
+                    pIn1 += 2u;
+                    pIn2 += 2 * numColsB;
 
-          pIn1 += 2u;
-          pIn2 += 2 * numColsB;
+                    sumReal2 -= b1 * d1;
+                    sumImag2 += a1 * d1;
 
-          sumReal2 -= b1 * d1;
-          sumImag2 += a1 * d1;
+                    a0 = *pIn1;
+                    c0 = *pIn2;
 
-          a0 = *pIn1;
-          c0 = *pIn2;
+                    b0 = *(pIn1 + 1u);
+                    d0 = *(pIn2 + 1u);
 
-          b0 = *(pIn1 + 1u);
-          d0 = *(pIn2 + 1u);
+                    sumReal1 += a0 * c0;
+                    sumImag1 += b0 * c0;
 
-          sumReal1 += a0 * c0;
-          sumImag1 += b0 * c0;
+                    pIn1 += 2u;
+                    pIn2 += 2 * numColsB;
 
-          pIn1 += 2u;
-          pIn2 += 2 * numColsB;
+                    sumReal2 -= b0 * d0;
+                    sumImag2 += a0 * d0;
 
-          sumReal2 -= b0 * d0;
-          sumImag2 += a0 * d0;
+                    /* c(m,n) = a(1,1)*b(1,1) + a(1,2) * b(2,1) + .... + a(m,p)*b(p,n) */
 
-          /* c(m,n) = a(1,1)*b(1,1) + a(1,2) * b(2,1) + .... + a(m,p)*b(p,n) */
+                    a1 = *pIn1;
+                    c1 = *pIn2;
 
-          a1 = *pIn1;
-          c1 = *pIn2;
+                    b1 = *(pIn1 + 1u);
+                    d1 = *(pIn2 + 1u);
 
-          b1 = *(pIn1 + 1u);
-          d1 = *(pIn2 + 1u);
+                    sumReal1 += a1 * c1;
+                    sumImag1 += b1 * c1;
 
-          sumReal1 += a1 * c1;
-          sumImag1 += b1 * c1;
+                    pIn1 += 2u;
+                    pIn2 += 2 * numColsB;
 
-          pIn1 += 2u;
-          pIn2 += 2 * numColsB;
+                    sumReal2 -= b1 * d1;
+                    sumImag2 += a1 * d1;
 
-          sumReal2 -= b1 * d1;
-          sumImag2 += a1 * d1;
+                    /* Decrement the loop count */
+                    colCnt--;
+                }
 
-          /* Decrement the loop count */
-          colCnt--;
-        }
-
-        /* If the columns of pSrcA is not a multiple of 4, compute any remaining MACs here.      
+                /* If the columns of pSrcA is not a multiple of 4, compute any remaining MACs here.      
          ** No loop unrolling is used. */
-        colCnt = numColsA % 0x4u;
+                colCnt = numColsA % 0x4u;
 
-        while(colCnt > 0u)
-        {
-          /* c(m,n) = a(1,1)*b(1,1) + a(1,2) * b(2,1) + .... + a(m,p)*b(p,n) */
-          a1 = *pIn1;
-          c1 = *pIn2;
+                while(colCnt > 0u) {
+                    /* c(m,n) = a(1,1)*b(1,1) + a(1,2) * b(2,1) + .... + a(m,p)*b(p,n) */
+                    a1 = *pIn1;
+                    c1 = *pIn2;
 
-          b1 = *(pIn1 + 1u);
-          d1 = *(pIn2 + 1u);
+                    b1 = *(pIn1 + 1u);
+                    d1 = *(pIn2 + 1u);
 
-          sumReal1 += a1 * c1;
-          sumImag1 += b1 * c1;
+                    sumReal1 += a1 * c1;
+                    sumImag1 += b1 * c1;
 
-          pIn1 += 2u;
-          pIn2 += 2 * numColsB;
+                    pIn1 += 2u;
+                    pIn2 += 2 * numColsB;
 
-          sumReal2 -= b1 * d1;
-          sumImag2 += a1 * d1;
+                    sumReal2 -= b1 * d1;
+                    sumImag2 += a1 * d1;
 
-          /* Decrement the loop counter */
-          colCnt--;
-        }
+                    /* Decrement the loop counter */
+                    colCnt--;
+                }
 
-        sumReal1 += sumReal2;
-        sumImag1 += sumImag2;
+                sumReal1 += sumReal2;
+                sumImag1 += sumImag2;
 
-        /* Store the result in the destination buffer */
-        *px++ = sumReal1;
-        *px++ = sumImag1;
+                /* Store the result in the destination buffer */
+                *px++ = sumReal1;
+                *px++ = sumImag1;
 
-        /* Update the pointer pIn2 to point to the  starting address of the next column */
-        j++;
-        pIn2 = pSrcB->pData + 2u * j;
+                /* Update the pointer pIn2 to point to the  starting address of the next column */
+                j++;
+                pIn2 = pSrcB->pData + 2u * j;
 
-        /* Decrement the column loop counter */
-        col--;
+                /* Decrement the column loop counter */
+                col--;
 
-      } while(col > 0u);
+            } while(col > 0u);
 
-      /* Update the pointer pInA to point to the  starting address of the next row */
-      i = i + numColsB;
-      pInA = pInA + 2 * numColsA;
+            /* Update the pointer pInA to point to the  starting address of the next row */
+            i = i + numColsB;
+            pInA = pInA + 2 * numColsA;
 
-      /* Decrement the row loop counter */
-      row--;
+            /* Decrement the row loop counter */
+            row--;
 
-    } while(row > 0u);
+        } while(row > 0u);
 
-    /* Set status as ARM_MATH_SUCCESS */
-    status = ARM_MATH_SUCCESS;
-  }
+        /* Set status as ARM_MATH_SUCCESS */
+        status = ARM_MATH_SUCCESS;
+    }
 
-  /* Return to application */
-  return (status);
+    /* Return to application */
+    return (status);
 }
 
 /**      

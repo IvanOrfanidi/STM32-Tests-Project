@@ -24,7 +24,7 @@
   *
   ******************************************************************************
   */
-  
+
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __MAIN_H
 #define __MAIN_H
@@ -32,26 +32,26 @@
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f4xx.h"
 
-#if defined (USE_STM324xG_EVAL)
-  #include "stm324xg_eval.h"
+#if defined(USE_STM324xG_EVAL)
+#include "stm324xg_eval.h"
 
-#elif defined (USE_STM324x7I_EVAL) 
-  #include "stm324x7i_eval.h"
+#elif defined(USE_STM324x7I_EVAL)
+#include "stm324x7i_eval.h"
 
 #else
- #error "Please select first the Evaluation board used in your application (in Project Options)"
+#error "Please select first the Evaluation board used in your application (in Project Options)"
 #endif
 
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/
 /* Exported macro ------------------------------------------------------------*/
-#if defined (USE_STM324xG_EVAL)
-  #define DAC_DHR12R2_ADDRESS    0x40007414
-  #define DAC_DHR8R1_ADDRESS     0x40007410
+#if defined(USE_STM324xG_EVAL)
+#define DAC_DHR12R2_ADDRESS 0x40007414
+#define DAC_DHR8R1_ADDRESS 0x40007410
 
-#else /* defined (USE_STM324x7I_EVAL)*/ 
-  #define DAC_DHR12R2_ADDRESS    0x40007414
-  #define DAC_DHR8R1_ADDRESS     0x40007410
+#else /* defined (USE_STM324x7I_EVAL)*/
+#define DAC_DHR12R2_ADDRESS 0x40007414
+#define DAC_DHR8R1_ADDRESS 0x40007410
 
 #endif
 /* Exported functions ------------------------------------------------------- */

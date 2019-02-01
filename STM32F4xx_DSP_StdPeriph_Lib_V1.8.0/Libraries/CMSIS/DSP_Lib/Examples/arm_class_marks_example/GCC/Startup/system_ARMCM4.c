@@ -1,4 +1,4 @@
-/**************************************************************************//**
+/**************************************************************************/ /**
  * @file     system_ARMCM4.c
  * @brief    CMSIS Device System Source File for
  *           ARMCM4 Device Series
@@ -35,37 +35,33 @@
    POSSIBILITY OF SUCH DAMAGE.
    ---------------------------------------------------------------------------*/
 
-#if defined (ARMCM4)
-  #include "ARMCM4.h"
-#elif defined (ARMCM4_FP)
-  #include "ARMCM4_FP.h"
+#if defined(ARMCM4)
+#include "ARMCM4.h"
+#elif defined(ARMCM4_FP)
+#include "ARMCM4_FP.h"
 #else
-  #error device not specified!
+#error device not specified!
 #endif
 
 /*----------------------------------------------------------------------------
   Define clocks
  *----------------------------------------------------------------------------*/
-#define __HSI             ( 8000000UL)
-#define __XTAL            ( 5000000UL)    /* Oscillator frequency             */
+#define __HSI (8000000UL)
+#define __XTAL (5000000UL) /* Oscillator frequency             */
 
-#define __SYSTEM_CLOCK    (5*__XTAL)
-
+#define __SYSTEM_CLOCK (5 * __XTAL)
 
 /*----------------------------------------------------------------------------
   Clock Variable definitions
  *----------------------------------------------------------------------------*/
-uint32_t SystemCoreClock = __SYSTEM_CLOCK;/*!< System Clock Frequency (Core Clock)*/
-
+uint32_t SystemCoreClock = __SYSTEM_CLOCK; /*!< System Clock Frequency (Core Clock)*/
 
 /*----------------------------------------------------------------------------
   Clock functions
  *----------------------------------------------------------------------------*/
-void SystemCoreClockUpdate (void)            /* Get Core Clock Frequency      */
+void SystemCoreClockUpdate(void) /* Get Core Clock Frequency      */
 {
-
-  SystemCoreClock = __SYSTEM_CLOCK;
-
+    SystemCoreClock = __SYSTEM_CLOCK;
 }
 
 /**
@@ -77,17 +73,16 @@ void SystemCoreClockUpdate (void)            /* Get Core Clock Frequency      */
  * @brief  Setup the microcontroller system.
  *         Initialize the System.
  */
-void SystemInit (void)
+void SystemInit(void)
 {
-  #if (__FPU_USED == 1)
-    SCB->CPACR |= ((3UL << 10*2) |                 /* set CP10 Full Access */
-                   (3UL << 11*2)  );               /* set CP11 Full Access */
-  #endif
-
-#ifdef UNALIGNED_SUPPORT_DISABLE
-  SCB->CCR |= SCB_CCR_UNALIGN_TRP_Msk;
+#if(__FPU_USED == 1)
+    SCB->CPACR |= ((3UL << 10 * 2) | /* set CP10 Full Access */
+                   (3UL << 11 * 2)); /* set CP11 Full Access */
 #endif
 
-  SystemCoreClock = __SYSTEM_CLOCK;
+#ifdef UNALIGNED_SUPPORT_DISABLE
+    SCB->CCR |= SCB_CCR_UNALIGN_TRP_Msk;
+#endif
 
+    SystemCoreClock = __SYSTEM_CLOCK;
 }

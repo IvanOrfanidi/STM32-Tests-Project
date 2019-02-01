@@ -31,8 +31,7 @@
 #define __FAT_FS_STORAGE_H
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 /* Includes ------------------------------------------------------------------*/
@@ -40,7 +39,7 @@ extern "C"
 #include <stdio.h>
 #include "diskio.h"
 #include "ff.h"
-#include "stm324x9i_eval_sdio_sd.h" 
+#include "stm324x9i_eval_sdio_sd.h"
 
 /** @addtogroup STM324x9I_EVAL_FAT_FS
   * @{
@@ -74,10 +73,10 @@ extern "C"
 /** @defgroup FAT_FS_STORAGE_Exported_Functions
   * @{
   */
-uint32_t Storage_Init (void);
+uint32_t Storage_Init(void);
 uint32_t Storage_OpenReadFile(uint32_t Address, const char* BmpName);
-uint32_t Storage_GetDirectoryBitmapFiles (const char* DirName, char* Files[]);
-uint32_t Storage_CheckBitmapFile(const char* BmpName, uint32_t *FileLen);
+uint32_t Storage_GetDirectoryBitmapFiles(const char* DirName, char* Files[]);
+uint32_t Storage_CheckBitmapFile(const char* BmpName, uint32_t* FileLen);
 uint8_t Buffercmp(uint8_t* pBuffer1, uint8_t* pBuffer2, uint16_t BufferLength);
 
 #define MAX_BMP_FILES 25

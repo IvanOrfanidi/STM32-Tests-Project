@@ -34,26 +34,26 @@
 
 /** @addtogroup I2S_Audio
   * @{
-  */ 
+  */
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
 
-#if defined (USE_STM324xG_EVAL)
-  #define MESSAGE1   "     STM32F40xx     "
-  #define MESSAGE2   " Device running on  " 
-  #define MESSAGE3   "   STM324xG-EVAL    "
+#if defined(USE_STM324xG_EVAL)
+#define MESSAGE1 "     STM32F40xx     "
+#define MESSAGE2 " Device running on  "
+#define MESSAGE3 "   STM324xG-EVAL    "
 
-#else /* USE_STM324x7I_EVAL */ 
-  #define MESSAGE1   "     STM32F427x     "
-  #define MESSAGE2   " Device running on  " 
-  #define MESSAGE3   "  STM324x7I-EVAL    "
-#endif  
+#else /* USE_STM324x7I_EVAL */
+#define MESSAGE1 "     STM32F427x     "
+#define MESSAGE2 " Device running on  "
+#define MESSAGE3 "  STM324x7I-EVAL    "
+#endif
 
 /* Audio file size and start address are defined here since the audio file is 
    stored in Flash memory as a constant table of 16-bit data */
-#define AUDIO_FILE_SZE          990000
-#define AUDIO_START_ADDRESS     58 /* Offset relative to audio file header size */
+#define AUDIO_FILE_SZE 990000
+#define AUDIO_START_ADDRESS 58 /* Offset relative to audio file header size */
 
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
@@ -76,71 +76,69 @@ uint32_t uwSpHpSwitch = 0;
   * @retval None
   */
 int main(void)
-{ 
-  /*!< At this stage the microcontroller clock setting is already configured, 
+{
+    /*!< At this stage the microcontroller clock setting is already configured, 
        this is done through SystemInit() function which is called from startup
        files (startup_stm32f40_41xxx.s/startup_stm32f42_43xxx.s) before to branch 
        to application main. 
        To reconfigure the default setting of SystemInit() function, refer to
        system_stm32f4xx.c file
      */
-  
-  /* Initialize LEDs, Key Button, LCD available on EVAL board *****************/
-  STM_EVAL_LEDInit(LED1);
-  STM_EVAL_LEDInit(LED2);
-  STM_EVAL_LEDInit(LED3);
-  STM_EVAL_LEDInit(LED4);
 
-  /* Initialize the Push buttons */
-  /* Key button used for Pause/Resume */
-  STM_EVAL_PBInit(BUTTON_KEY, BUTTON_MODE_GPIO); 
-  /* Key button used for Volume High */    
-  STM_EVAL_PBInit(BUTTON_WAKEUP, BUTTON_MODE_GPIO); 
-  /* Key button used for Volume Low */ 
-  STM_EVAL_PBInit(BUTTON_TAMPER, BUTTON_MODE_GPIO);  
-    
-  /* Initialize the LCD */
-  LCD_Init();
-  
-  /* Display message on EVAL LCD **********************************************/
-  /* Clear the LCD */ 
-  LCD_Clear(LCD_COLOR_BLUE);  
+    /* Initialize LEDs, Key Button, LCD available on EVAL board *****************/
+    STM_EVAL_LEDInit(LED1);
+    STM_EVAL_LEDInit(LED2);
+    STM_EVAL_LEDInit(LED3);
+    STM_EVAL_LEDInit(LED4);
 
-  /* Set the LCD Back Color */
-  LCD_SetBackColor(Blue);
-  /* Set the LCD Text Color */
-  LCD_SetTextColor(White);
-  LCD_DisplayStringLine(Line0, (uint8_t *)MESSAGE1);
-  LCD_DisplayStringLine(Line1, (uint8_t *)MESSAGE2);
-  LCD_DisplayStringLine(Line2, (uint8_t *)MESSAGE3);
+    /* Initialize the Push buttons */
+    /* Key button used for Pause/Resume */
+    STM_EVAL_PBInit(BUTTON_KEY, BUTTON_MODE_GPIO);
+    /* Key button used for Volume High */
+    STM_EVAL_PBInit(BUTTON_WAKEUP, BUTTON_MODE_GPIO);
+    /* Key button used for Volume Low */
+    STM_EVAL_PBInit(BUTTON_TAMPER, BUTTON_MODE_GPIO);
 
-  /* Turn on leds available on EVAL *******************************************/
-  STM_EVAL_LEDOn(LED1);
-  STM_EVAL_LEDOn(LED2);
-  STM_EVAL_LEDOn(LED3);
-  STM_EVAL_LEDOn(LED4);
+    /* Initialize the LCD */
+    LCD_Init();
 
-  /* SysTick end of count event each 10ms */
-  RCC_GetClocksFreq(&RCC_Clocks);
-  SysTick_Config(RCC_Clocks.HCLK_Frequency / 100);
+    /* Display message on EVAL LCD **********************************************/
+    /* Clear the LCD */
+    LCD_Clear(LCD_COLOR_BLUE);
 
-  /* Initialize the Audio codec and all related peripherals (I2S, I2C, IOExpander, IOs...) */  
-  if (EVAL_AUDIO_Init(OUTPUT_DEVICE_AUTO, uwVolume, I2S_AudioFreq_48k) == 0)
-  {
-    LCD_DisplayStringLine(Line3, (uint8_t *)"====================");
-    LCD_DisplayStringLine(Line4, (uint8_t *)"Key   : Play/Pause ");
-    LCD_DisplayStringLine(Line5, (uint8_t *)"Tamper: Vol+/Headph");
-    LCD_DisplayStringLine(Line6, (uint8_t *)"Wakeup: Vol-/Spkr  ");
-    LCD_DisplayStringLine(Line7, (uint8_t *)"====================");
-    LCD_DisplayStringLine(Line8, (uint8_t *)"  AUDIO CODEC   OK  ");    
-  }
-  else
-  {
-    LCD_DisplayStringLine(Line4, (uint8_t *)"  AUDIO CODEC  FAIL ");
-    LCD_DisplayStringLine(Line5, (uint8_t *)" Try to reset board ");
-  }
+    /* Set the LCD Back Color */
+    LCD_SetBackColor(Blue);
+    /* Set the LCD Text Color */
+    LCD_SetTextColor(White);
+    LCD_DisplayStringLine(Line0, (uint8_t*)MESSAGE1);
+    LCD_DisplayStringLine(Line1, (uint8_t*)MESSAGE2);
+    LCD_DisplayStringLine(Line2, (uint8_t*)MESSAGE3);
 
-  /* 
+    /* Turn on leds available on EVAL *******************************************/
+    STM_EVAL_LEDOn(LED1);
+    STM_EVAL_LEDOn(LED2);
+    STM_EVAL_LEDOn(LED3);
+    STM_EVAL_LEDOn(LED4);
+
+    /* SysTick end of count event each 10ms */
+    RCC_GetClocksFreq(&RCC_Clocks);
+    SysTick_Config(RCC_Clocks.HCLK_Frequency / 100);
+
+    /* Initialize the Audio codec and all related peripherals (I2S, I2C, IOExpander, IOs...) */
+    if(EVAL_AUDIO_Init(OUTPUT_DEVICE_AUTO, uwVolume, I2S_AudioFreq_48k) == 0) {
+        LCD_DisplayStringLine(Line3, (uint8_t*)"====================");
+        LCD_DisplayStringLine(Line4, (uint8_t*)"Key   : Play/Pause ");
+        LCD_DisplayStringLine(Line5, (uint8_t*)"Tamper: Vol+/Headph");
+        LCD_DisplayStringLine(Line6, (uint8_t*)"Wakeup: Vol-/Spkr  ");
+        LCD_DisplayStringLine(Line7, (uint8_t*)"====================");
+        LCD_DisplayStringLine(Line8, (uint8_t*)"  AUDIO CODEC   OK  ");
+    }
+    else {
+        LCD_DisplayStringLine(Line4, (uint8_t*)"  AUDIO CODEC  FAIL ");
+        LCD_DisplayStringLine(Line5, (uint8_t*)" Try to reset board ");
+    }
+
+    /* 
   Normal mode description:
       Start playing the audio file (using DMA stream) .
       Using this mode, the application can run other tasks in parallel since 
@@ -156,117 +154,110 @@ int main(void)
      In this case the audio data file is smaller than the DMA max buffer 
      size 65535 so there is no need to load buffer continuously or manage the 
      transfer complete or Half transfer interrupts callbacks. */
-  EVAL_AUDIO_Play((uint16_t*)(AUDIO_SAMPLE + AUDIO_START_ADDRESS), (AUDIO_FILE_SZE - AUDIO_START_ADDRESS));
- 
-  /* Display the state on the screen */
-  LCD_DisplayStringLine(Line8, (uint8_t *)"       PLAYING      ");
-  
-  /* Infinite loop */
-  while (1)
-  {    
-    /* Check on the Pause/Resume button */
-    if (STM_EVAL_PBGetState(BUTTON_KEY) != Bit_SET)
-    {
-      /* Wait to avoid rebound */
-      while (STM_EVAL_PBGetState(BUTTON_KEY) != Bit_SET);
-      
-      EVAL_AUDIO_PauseResume(uwCommand);
-      if (uwCommand == AUDIO_PAUSE)
-      {
-        /* Display the current state of the player */
-        LCD_DisplayStringLine(Line8, (uint8_t *)"       PAUSED       ");
-        
-        /* Next time Resume command should be processed */
-        uwCommand = AUDIO_RESUME;
-        
-        /* Push buttons will be used to switch between Speaker and Headphone modes */
-        uwSpHpSwitch = 1;
-      }
-      else
-      {
-        /* Display the current state of the player */
-        LCD_DisplayStringLine(Line8, (uint8_t *)"       PLAYING      ");
-        
-        /* Next time Pause command should be processed */
-        uwCommand = AUDIO_PAUSE;
-        
-        /* Push buttons will be used to control volume level */
-        uwSpHpSwitch = 0;
-      }
+    EVAL_AUDIO_Play((uint16_t*)(AUDIO_SAMPLE + AUDIO_START_ADDRESS), (AUDIO_FILE_SZE - AUDIO_START_ADDRESS));
+
+    /* Display the state on the screen */
+    LCD_DisplayStringLine(Line8, (uint8_t*)"       PLAYING      ");
+
+    /* Infinite loop */
+    while(1) {
+        /* Check on the Pause/Resume button */
+        if(STM_EVAL_PBGetState(BUTTON_KEY) != Bit_SET) {
+            /* Wait to avoid rebound */
+            while(STM_EVAL_PBGetState(BUTTON_KEY) != Bit_SET)
+                ;
+
+            EVAL_AUDIO_PauseResume(uwCommand);
+            if(uwCommand == AUDIO_PAUSE) {
+                /* Display the current state of the player */
+                LCD_DisplayStringLine(Line8, (uint8_t*)"       PAUSED       ");
+
+                /* Next time Resume command should be processed */
+                uwCommand = AUDIO_RESUME;
+
+                /* Push buttons will be used to switch between Speaker and Headphone modes */
+                uwSpHpSwitch = 1;
+            }
+            else {
+                /* Display the current state of the player */
+                LCD_DisplayStringLine(Line8, (uint8_t*)"       PLAYING      ");
+
+                /* Next time Pause command should be processed */
+                uwCommand = AUDIO_PAUSE;
+
+                /* Push buttons will be used to control volume level */
+                uwSpHpSwitch = 0;
+            }
+        }
+
+        /* Check on the Volume high button */
+        if(STM_EVAL_PBGetState(BUTTON_WAKEUP) == Bit_SET) {
+            /* Check if the current state is paused (push buttons are used for volume control or for 
+         speaker/headphone mode switching) */
+            if(uwSpHpSwitch) {
+                /* Set output to Speaker */
+                Codec_SwitchOutput(OUTPUT_DEVICE_SPEAKER);
+
+                /* Display the current state of the player */
+                LCD_DisplayStringLine(Line9, (uint8_t*)"       SPEAKER      ");
+            }
+            else {
+                /* wait to avoid rebound */
+                while(STM_EVAL_PBGetState(BUTTON_WAKEUP) == Bit_SET)
+                    ;
+
+                /* Decrease volume by 5% */
+                if(uwVolume > 5)
+                    uwVolume -= 5;
+                else
+                    uwVolume = 0;
+
+                /* Apply the new volume to the codec */
+                EVAL_AUDIO_VolumeCtl(uwVolume);
+                LCD_DisplayStringLine(Line9, (uint8_t*)"       VOL:   -     ");
+            }
+        }
+
+        /* Check on the Volume high button */
+        if(STM_EVAL_PBGetState(BUTTON_TAMPER) != Bit_SET) {
+            /* Check if the current state is paused (push buttons are used for volume control or for 
+         speaker/headphone mode switching) */
+            if(uwSpHpSwitch) {
+                /* Set output to Headphone */
+                Codec_SwitchOutput(OUTPUT_DEVICE_HEADPHONE);
+
+                /* Display the current state of the player */
+                LCD_DisplayStringLine(Line9, (uint8_t*)"      HEADPHONE     ");
+            }
+            else {
+                /* Wait to avoid rebound */
+                while(STM_EVAL_PBGetState(BUTTON_TAMPER) != Bit_SET)
+                    ;
+
+                /* Increase volume by 5% */
+                if(uwVolume < 95)
+                    uwVolume += 5;
+                else
+                    uwVolume = 100;
+
+                /* Apply the new volume to the codec */
+                EVAL_AUDIO_VolumeCtl(uwVolume);
+                LCD_DisplayStringLine(Line9, (uint8_t*)"       VOL:   +     ");
+            }
+        }
+
+        /* Toggle LED4 */
+        STM_EVAL_LEDToggle(LED3);
+
+        /* Insert 50 ms delay */
+        Delay(5);
+
+        /* Toggle LED2 */
+        STM_EVAL_LEDToggle(LED2);
+
+        /* Insert 50 ms delay */
+        Delay(5);
     }
-    
-    /* Check on the Volume high button */
-    if (STM_EVAL_PBGetState(BUTTON_WAKEUP) == Bit_SET)
-    {
-      /* Check if the current state is paused (push buttons are used for volume control or for 
-         speaker/headphone mode switching) */
-      if (uwSpHpSwitch)
-      {
-        /* Set output to Speaker */
-        Codec_SwitchOutput(OUTPUT_DEVICE_SPEAKER);
-        
-        /* Display the current state of the player */
-        LCD_DisplayStringLine(Line9, (uint8_t *)"       SPEAKER      ");
-      }
-      else
-      {
-        /* wait to avoid rebound */
-        while (STM_EVAL_PBGetState(BUTTON_WAKEUP) == Bit_SET);
-        
-        /* Decrease volume by 5% */
-        if (uwVolume > 5)
-          uwVolume -= 5; 
-        else
-          uwVolume = 0; 
-        
-        /* Apply the new volume to the codec */
-        EVAL_AUDIO_VolumeCtl(uwVolume);
-        LCD_DisplayStringLine(Line9, (uint8_t *)"       VOL:   -     ");
-      }
-    }    
-    
-    /* Check on the Volume high button */
-    if (STM_EVAL_PBGetState(BUTTON_TAMPER) != Bit_SET)
-    {
-      /* Check if the current state is paused (push buttons are used for volume control or for 
-         speaker/headphone mode switching) */
-      if (uwSpHpSwitch)
-      {
-        /* Set output to Headphone */
-        Codec_SwitchOutput(OUTPUT_DEVICE_HEADPHONE);
-        
-        /* Display the current state of the player */
-        LCD_DisplayStringLine(Line9, (uint8_t *)"      HEADPHONE     ");
-      }
-      else
-      {
-        /* Wait to avoid rebound */
-        while (STM_EVAL_PBGetState(BUTTON_TAMPER) != Bit_SET);
-        
-        /* Increase volume by 5% */
-        if (uwVolume < 95)
-          uwVolume += 5; 
-        else
-          uwVolume = 100; 
-        
-        /* Apply the new volume to the codec */
-        EVAL_AUDIO_VolumeCtl(uwVolume);
-        LCD_DisplayStringLine(Line9, (uint8_t *)"       VOL:   +     ");  
-      }
-    }  
-    
-    /* Toggle LED4 */
-    STM_EVAL_LEDToggle(LED3);
-
-    /* Insert 50 ms delay */
-    Delay(5);
-
-    /* Toggle LED2 */
-    STM_EVAL_LEDToggle(LED2);
-
-    /* Insert 50 ms delay */
-    Delay(5);
-  }
 }
 
 /*------------------------------------------------------------------------------
@@ -283,21 +274,21 @@ int main(void)
   */
 void EVAL_AUDIO_TransferComplete_CallBack(uint32_t pBuffer, uint32_t Size)
 {
-  /* Calculate the remaining audio data in the file and the new size 
+    /* Calculate the remaining audio data in the file and the new size 
      for the DMA transfer. If the Audio files size is less than the DMA max 
      data transfer size, so there is no calculation to be done, just restart 
      from the beginning of the file ... */
-  /* Check if the end of file has been reached */
+    /* Check if the end of file has been reached */
 
-#ifdef AUDIO_MAL_MODE_NORMAL  
+#ifdef AUDIO_MAL_MODE_NORMAL
 
-  /* Replay from the beginning */
-  EVAL_AUDIO_Play((uint16_t*)(AUDIO_SAMPLE + AUDIO_START_ADDRESS), (AUDIO_FILE_SZE - AUDIO_START_ADDRESS));
-  
+    /* Replay from the beginning */
+    EVAL_AUDIO_Play((uint16_t*)(AUDIO_SAMPLE + AUDIO_START_ADDRESS), (AUDIO_FILE_SZE - AUDIO_START_ADDRESS));
+
 #else /* #ifdef AUDIO_MAL_MODE_CIRCULAR */
 
-  /* Display message on the LCD screen */
-  LCD_DisplayStringLine(Line8, " All Buffer Reached ");   
+    /* Display message on the LCD screen */
+    LCD_DisplayStringLine(Line8, " All Buffer Reached ");
 
 #endif /* AUDIO_MAL_MODE_CIRCULAR */
 }
@@ -308,20 +299,20 @@ void EVAL_AUDIO_TransferComplete_CallBack(uint32_t pBuffer, uint32_t Size)
   * @retval None
   */
 void EVAL_AUDIO_HalfTransfer_CallBack(uint32_t pBuffer, uint32_t Size)
-{  
+{
 #ifdef AUDIO_MAL_MODE_CIRCULAR
-  
-  /* Display message on the LCD screen */
-  LCD_DisplayStringLine(Line8, " 1/2 Buffer Reached "); 
-  
+
+    /* Display message on the LCD screen */
+    LCD_DisplayStringLine(Line8, " 1/2 Buffer Reached ");
+
 #endif /* AUDIO_MAL_MODE_CIRCULAR */
-  
-  /* Generally this interrupt routine is used to load the buffer when 
+
+    /* Generally this interrupt routine is used to load the buffer when 
   a streaming scheme is used: When first Half buffer is already transferred load 
   the new data to the first half of buffer while DMA is transferring data from 
   the second half. And when Transfer complete occurs, load the second half of 
   the buffer while the DMA is transferring from the first half ... */
-  /* 
+    /* 
     ...........
                    */
 }
@@ -333,16 +324,16 @@ void EVAL_AUDIO_HalfTransfer_CallBack(uint32_t pBuffer, uint32_t Size)
   */
 void EVAL_AUDIO_Error_CallBack(void* pData)
 {
-  /* Display message on the LCD screen */
-  LCD_SetBackColor(Red);
-  LCD_DisplayStringLine(Line8, (uint8_t *)"     DMA  ERROR     ");
-  
-  /* Stop the program with an infinite loop */
-  while (1)
-  {}
-  
-  /* could also generate a system reset to recover from the error */
-  /* .... */
+    /* Display message on the LCD screen */
+    LCD_SetBackColor(Red);
+    LCD_DisplayStringLine(Line8, (uint8_t*)"     DMA  ERROR     ");
+
+    /* Stop the program with an infinite loop */
+    while(1) {
+    }
+
+    /* could also generate a system reset to recover from the error */
+    /* .... */
 }
 
 #ifndef USE_DEFAULT_TIMEOUT_CALLBACK
@@ -353,13 +344,12 @@ void EVAL_AUDIO_Error_CallBack(void* pData)
   */
 uint32_t Codec_TIMEOUT_UserCallback(void)
 {
-  /* Display message on the LCD screen */
-  LCD_DisplayStringLine(Line8, (uint8_t *)"  CODEC I2C  ERROR  ");  
-    
-  /* Block communication and all processes */
-  while (1)
-  {   
-  }
+    /* Display message on the LCD screen */
+    LCD_DisplayStringLine(Line8, (uint8_t*)"  CODEC I2C  ERROR  ");
+
+    /* Block communication and all processes */
+    while(1) {
+    }
 }
 #endif /* USE_DEFAULT_TIMEOUT_CALLBACK */
 /*----------------------------------------------------------------------------*/
@@ -371,9 +361,10 @@ uint32_t Codec_TIMEOUT_UserCallback(void)
   */
 void Delay(__IO uint32_t nTime)
 {
-  uwTimingDelay = nTime;
-  
-  while(uwTimingDelay != 0);
+    uwTimingDelay = nTime;
+
+    while(uwTimingDelay != 0)
+        ;
 }
 
 /**
@@ -383,13 +374,12 @@ void Delay(__IO uint32_t nTime)
   */
 void TimingDelay_Decrement(void)
 {
-  if (uwTimingDelay != 0x00)
-  { 
-    uwTimingDelay--;
-  }
+    if(uwTimingDelay != 0x00) {
+        uwTimingDelay--;
+    }
 }
 
-#ifdef  USE_FULL_ASSERT
+#ifdef USE_FULL_ASSERT
 
 /**
   * @brief  Reports the name of the source file and the source line number
@@ -399,23 +389,22 @@ void TimingDelay_Decrement(void)
   * @retval None
   */
 void assert_failed(uint8_t* file, uint32_t line)
-{ 
-  /* User can add his own implementation to report the file name and line number,
+{
+    /* User can add his own implementation to report the file name and line number,
      ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
 
-  /* Infinite loop */
-  while (1)
-  {
-  }
+    /* Infinite loop */
+    while(1) {
+    }
 }
 #endif
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}
   */
-  
+
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

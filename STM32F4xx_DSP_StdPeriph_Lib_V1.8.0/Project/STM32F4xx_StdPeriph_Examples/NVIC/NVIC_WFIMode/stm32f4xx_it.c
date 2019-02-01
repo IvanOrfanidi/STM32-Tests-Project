@@ -37,14 +37,14 @@
 
 /** @addtogroup NVIC_WFIMode
   * @{
-  */ 
+  */
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
 uint8_t ubTestStatus = 0;
-uint16_t aSrcBuffer[10] = {0x30, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38, 0x39};
+uint16_t aSrcBuffer[10] = { 0x30, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38, 0x39 };
 extern uint16_t aDstBuffer[10];
 extern __IO uint32_t uwLowPowerMode;
 
@@ -71,10 +71,9 @@ void NMI_Handler(void)
   */
 void HardFault_Handler(void)
 {
-  /* Go to infinite loop when Hard Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Hard Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -84,10 +83,9 @@ void HardFault_Handler(void)
   */
 void MemManage_Handler(void)
 {
-  /* Go to infinite loop when Memory Manage exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Memory Manage exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -97,10 +95,9 @@ void MemManage_Handler(void)
   */
 void BusFault_Handler(void)
 {
-  /* Go to infinite loop when Bus Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Bus Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -110,10 +107,9 @@ void BusFault_Handler(void)
   */
 void UsageFault_Handler(void)
 {
-  /* Go to infinite loop when Usage Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Usage Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -168,7 +164,6 @@ void SysTick_Handler(void)
 {
 }*/
 
-
 #ifdef USE_STM324x9I_EVAL
 /**
   * @brief  This function handles DMA2 Stream5 interrupt request.
@@ -177,22 +172,19 @@ void SysTick_Handler(void)
   */
 void DMA2_Stream5_IRQHandler(void)
 {
-  if(DMA_GetITStatus(DMA2_Stream5, DMA_IT_TCIF5))
-  {
-    DMA_ClearITPendingBit(DMA2_Stream5, DMA_IT_TCIF5);
+    if(DMA_GetITStatus(DMA2_Stream5, DMA_IT_TCIF5)) {
+        DMA_ClearITPendingBit(DMA2_Stream5, DMA_IT_TCIF5);
 
-    /* Check the received buffer */
-    ubTestStatus = Buffercmp16(aSrcBuffer, aDstBuffer, 10);
+        /* Check the received buffer */
+        ubTestStatus = Buffercmp16(aSrcBuffer, aDstBuffer, 10);
 
-    if(ubTestStatus == 0)
-    {
-      STM_EVAL_LEDToggle(LED2);
+        if(ubTestStatus == 0) {
+            STM_EVAL_LEDToggle(LED2);
+        }
+        else {
+            STM_EVAL_LEDToggle(LED3);
+        }
     }
-    else
-    {
-      STM_EVAL_LEDToggle(LED3);
-    }
-  }
 }
 #else
 /**
@@ -202,22 +194,19 @@ void DMA2_Stream5_IRQHandler(void)
   */
 void DMA1_Stream1_IRQHandler(void)
 {
-  if(DMA_GetITStatus(DMA1_Stream1, DMA_IT_TCIF1))
-  {
-    DMA_ClearITPendingBit(DMA1_Stream1, DMA_IT_TCIF1);
+    if(DMA_GetITStatus(DMA1_Stream1, DMA_IT_TCIF1)) {
+        DMA_ClearITPendingBit(DMA1_Stream1, DMA_IT_TCIF1);
 
-    /* Check the received buffer */
-    ubTestStatus = Buffercmp16(aSrcBuffer, aDstBuffer, 10);
+        /* Check the received buffer */
+        ubTestStatus = Buffercmp16(aSrcBuffer, aDstBuffer, 10);
 
-    if(ubTestStatus == 0)
-    {
-      STM_EVAL_LEDToggle(LED2);
+        if(ubTestStatus == 0) {
+            STM_EVAL_LEDToggle(LED2);
+        }
+        else {
+            STM_EVAL_LEDToggle(LED3);
+        }
     }
-    else
-    {
-      STM_EVAL_LEDToggle(LED3);
-    }
-  }
 }
 #endif /* USE_STM324x9I_EVAL */
 
@@ -228,20 +217,19 @@ void DMA1_Stream1_IRQHandler(void)
   */
 void EXTI15_10_IRQHandler(void)
 {
-  if(EXTI_GetITStatus(BUTTON_EXTI_LINE) != RESET)
-  {
-    EXTI_ClearITPendingBit(BUTTON_EXTI_LINE);
-  
-    uwLowPowerMode = 1;
-  }  
+    if(EXTI_GetITStatus(BUTTON_EXTI_LINE) != RESET) {
+        EXTI_ClearITPendingBit(BUTTON_EXTI_LINE);
+
+        uwLowPowerMode = 1;
+    }
 }
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}
-  */ 
+  */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

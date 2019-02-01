@@ -34,18 +34,18 @@
 
 /** @addtogroup TIM_DMA
   * @{
-  */ 
+  */
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
-#define TIM1_CCR3_ADDRESS    0x4001003C
+#define TIM1_CCR3_ADDRESS 0x4001003C
 
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
-TIM_TimeBaseInitTypeDef  TIM_TimeBaseStructure;
-TIM_OCInitTypeDef  TIM_OCInitStructure;
+TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure;
+TIM_OCInitTypeDef TIM_OCInitStructure;
 
-uint16_t aSRC_Buffer[3] = {0, 0, 0};
+uint16_t aSRC_Buffer[3] = { 0, 0, 0 };
 uint16_t uhTimerPeriod = 0;
 
 /* Private function prototypes -----------------------------------------------*/
@@ -60,7 +60,7 @@ static void TIM_Config(void);
   */
 int main(void)
 {
-  /*!< At this stage the microcontroller clock setting is already configured, 
+    /*!< At this stage the microcontroller clock setting is already configured, 
        this is done through SystemInit() function which is called from startup
        files (startup_stm32f40_41xxx.s/startup_stm32f427_437xx.s/startup_stm32f429_439xx.s)
        before to branch to application main. 
@@ -68,10 +68,10 @@ int main(void)
        system_stm32f4xx.c file
      */
 
-  /* TIM Configuration */
-  TIM_Config();
+    /* TIM Configuration */
+    TIM_Config();
 
-  /* TIM1 DMA Transfer example -------------------------------------------------
+    /* TIM1 DMA Transfer example -------------------------------------------------
   
   TIM1 input clock (TIM1CLK) is set to 2 * APB2 clock (PCLK2), since APB2 
   prescaler is different from 1.   
@@ -98,59 +98,58 @@ int main(void)
     function to update SystemCoreClock variable value. Otherwise, any configuration
     based on this variable will be incorrect.  
   -----------------------------------------------------------------------------*/
-  
-  /* Compute the value to be set in ARR register to generate signal frequency at 17.57 Khz */
-  uhTimerPeriod = (SystemCoreClock / 17570 ) - 1;
-  /* Compute CCR1 value to generate a duty cycle at 50% */
-  aSRC_Buffer[0] = (uint16_t) (((uint32_t) 5 * (uhTimerPeriod - 1)) / 10);
-  /* Compute CCR1 value to generate a duty cycle at 37.5% */
-  aSRC_Buffer[1] = (uint16_t) (((uint32_t) 375 * (uhTimerPeriod - 1)) / 1000);
-  /* Compute CCR1 value to generate a duty cycle at 25% */
-  aSRC_Buffer[2] = (uint16_t) (((uint32_t) 25 * (uhTimerPeriod - 1)) / 100);
 
-  /* TIM1 Peripheral Configuration -------------------------------------------*/
-  /* TIM1 clock enable */
-  RCC_APB2PeriphClockCmd(RCC_APB2Periph_TIM1, ENABLE);
+    /* Compute the value to be set in ARR register to generate signal frequency at 17.57 Khz */
+    uhTimerPeriod = (SystemCoreClock / 17570) - 1;
+    /* Compute CCR1 value to generate a duty cycle at 50% */
+    aSRC_Buffer[0] = (uint16_t)(((uint32_t)5 * (uhTimerPeriod - 1)) / 10);
+    /* Compute CCR1 value to generate a duty cycle at 37.5% */
+    aSRC_Buffer[1] = (uint16_t)(((uint32_t)375 * (uhTimerPeriod - 1)) / 1000);
+    /* Compute CCR1 value to generate a duty cycle at 25% */
+    aSRC_Buffer[2] = (uint16_t)(((uint32_t)25 * (uhTimerPeriod - 1)) / 100);
 
-  /* Time Base configuration */
-  TIM_TimeBaseStructure.TIM_Prescaler = 0;
-  TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
-  TIM_TimeBaseStructure.TIM_Period = uhTimerPeriod;
-  TIM_TimeBaseStructure.TIM_ClockDivision = 0;
-  TIM_TimeBaseStructure.TIM_RepetitionCounter = 3;
+    /* TIM1 Peripheral Configuration -------------------------------------------*/
+    /* TIM1 clock enable */
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_TIM1, ENABLE);
 
-  TIM_TimeBaseInit(TIM1, &TIM_TimeBaseStructure);
+    /* Time Base configuration */
+    TIM_TimeBaseStructure.TIM_Prescaler = 0;
+    TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
+    TIM_TimeBaseStructure.TIM_Period = uhTimerPeriod;
+    TIM_TimeBaseStructure.TIM_ClockDivision = 0;
+    TIM_TimeBaseStructure.TIM_RepetitionCounter = 3;
 
-  /* Channel 3 Configuration in PWM mode */
-  TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_PWM2;
-  TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
-  TIM_OCInitStructure.TIM_OutputNState = TIM_OutputNState_Enable;
-  TIM_OCInitStructure.TIM_Pulse = aSRC_Buffer[0];
-  TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_Low;
-  TIM_OCInitStructure.TIM_OCNPolarity = TIM_OCNPolarity_Low;
-  TIM_OCInitStructure.TIM_OCIdleState = TIM_OCIdleState_Set;
-  TIM_OCInitStructure.TIM_OCNIdleState = TIM_OCIdleState_Reset;
+    TIM_TimeBaseInit(TIM1, &TIM_TimeBaseStructure);
 
-  TIM_OC3Init(TIM1, &TIM_OCInitStructure);
+    /* Channel 3 Configuration in PWM mode */
+    TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_PWM2;
+    TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
+    TIM_OCInitStructure.TIM_OutputNState = TIM_OutputNState_Enable;
+    TIM_OCInitStructure.TIM_Pulse = aSRC_Buffer[0];
+    TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_Low;
+    TIM_OCInitStructure.TIM_OCNPolarity = TIM_OCNPolarity_Low;
+    TIM_OCInitStructure.TIM_OCIdleState = TIM_OCIdleState_Set;
+    TIM_OCInitStructure.TIM_OCNIdleState = TIM_OCIdleState_Reset;
 
-  /* Enable preload feature */
-  TIM_OC3PreloadConfig(TIM1, TIM_OCPreload_Enable);
-  
-  /* TIM1 counter enable */
-  TIM_Cmd(TIM1, ENABLE);
-  
-  /* DMA enable*/
-  DMA_Cmd(DMA2_Stream6, ENABLE);
-  
-  /* TIM1 Update DMA Request enable */
-  TIM_DMACmd(TIM1, TIM_DMA_CC3, ENABLE);
+    TIM_OC3Init(TIM1, &TIM_OCInitStructure);
 
-  /* Main Output Enable */
-  TIM_CtrlPWMOutputs(TIM1, ENABLE);
+    /* Enable preload feature */
+    TIM_OC3PreloadConfig(TIM1, TIM_OCPreload_Enable);
 
-  while (1)
-  {
-  }
+    /* TIM1 counter enable */
+    TIM_Cmd(TIM1, ENABLE);
+
+    /* DMA enable*/
+    DMA_Cmd(DMA2_Stream6, ENABLE);
+
+    /* TIM1 Update DMA Request enable */
+    TIM_DMACmd(TIM1, TIM_DMA_CC3, ENABLE);
+
+    /* Main Output Enable */
+    TIM_CtrlPWMOutputs(TIM1, ENABLE);
+
+    while(1) {
+    }
 }
 
 /**
@@ -160,50 +159,50 @@ int main(void)
   */
 static void TIM_Config(void)
 {
-  GPIO_InitTypeDef GPIO_InitStructure;
-  DMA_InitTypeDef DMA_InitStructure;
-  
-  /* GPIOA and GPIOB clock enable */
-  RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA | RCC_AHB1Periph_GPIOB, ENABLE);
+    GPIO_InitTypeDef GPIO_InitStructure;
+    DMA_InitTypeDef DMA_InitStructure;
 
-  /* GPIOA Configuration: Channel 3 as alternate function push-pull */
-  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_10 ;
-  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
-  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;
-  GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-  GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP ;
-  GPIO_Init(GPIOA, &GPIO_InitStructure); 
-  GPIO_PinAFConfig(GPIOA, GPIO_PinSource10, GPIO_AF_TIM1);
+    /* GPIOA and GPIOB clock enable */
+    RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA | RCC_AHB1Periph_GPIOB, ENABLE);
 
-  /* GPIOB Configuration: Channel 3N as alternate function push-pull */
-  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_15;
-  GPIO_Init(GPIOB, &GPIO_InitStructure);
-  GPIO_PinAFConfig(GPIOB, GPIO_PinSource15, GPIO_AF_TIM1);
+    /* GPIOA Configuration: Channel 3 as alternate function push-pull */
+    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_10;
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;
+    GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+    GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
+    GPIO_Init(GPIOA, &GPIO_InitStructure);
+    GPIO_PinAFConfig(GPIOA, GPIO_PinSource10, GPIO_AF_TIM1);
 
-  /* DMA clock enable */
-  RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_DMA2 , ENABLE);
+    /* GPIOB Configuration: Channel 3N as alternate function push-pull */
+    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_15;
+    GPIO_Init(GPIOB, &GPIO_InitStructure);
+    GPIO_PinAFConfig(GPIOB, GPIO_PinSource15, GPIO_AF_TIM1);
 
-  DMA_DeInit(DMA2_Stream6);
-  DMA_InitStructure.DMA_Channel = DMA_Channel_6;  
-  DMA_InitStructure.DMA_PeripheralBaseAddr = (uint32_t)(TIM1_CCR3_ADDRESS) ;
-  DMA_InitStructure.DMA_Memory0BaseAddr = (uint32_t)aSRC_Buffer;
-  DMA_InitStructure.DMA_DIR = DMA_DIR_MemoryToPeripheral;
-  DMA_InitStructure.DMA_BufferSize = 3;
-  DMA_InitStructure.DMA_PeripheralInc = DMA_PeripheralInc_Disable;
-  DMA_InitStructure.DMA_MemoryInc = DMA_MemoryInc_Enable;
-  DMA_InitStructure.DMA_PeripheralDataSize = DMA_PeripheralDataSize_HalfWord;
-  DMA_InitStructure.DMA_MemoryDataSize = DMA_PeripheralDataSize_HalfWord;
-  DMA_InitStructure.DMA_Mode = DMA_Mode_Circular;
-  DMA_InitStructure.DMA_Priority = DMA_Priority_High;
-  DMA_InitStructure.DMA_FIFOMode = DMA_FIFOMode_Disable;
-  DMA_InitStructure.DMA_FIFOThreshold = DMA_FIFOThreshold_Full;
-  DMA_InitStructure.DMA_MemoryBurst = DMA_MemoryBurst_Single;
-  DMA_InitStructure.DMA_PeripheralBurst = DMA_PeripheralBurst_Single;
+    /* DMA clock enable */
+    RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_DMA2, ENABLE);
 
-  DMA_Init(DMA2_Stream6, &DMA_InitStructure);
+    DMA_DeInit(DMA2_Stream6);
+    DMA_InitStructure.DMA_Channel = DMA_Channel_6;
+    DMA_InitStructure.DMA_PeripheralBaseAddr = (uint32_t)(TIM1_CCR3_ADDRESS);
+    DMA_InitStructure.DMA_Memory0BaseAddr = (uint32_t)aSRC_Buffer;
+    DMA_InitStructure.DMA_DIR = DMA_DIR_MemoryToPeripheral;
+    DMA_InitStructure.DMA_BufferSize = 3;
+    DMA_InitStructure.DMA_PeripheralInc = DMA_PeripheralInc_Disable;
+    DMA_InitStructure.DMA_MemoryInc = DMA_MemoryInc_Enable;
+    DMA_InitStructure.DMA_PeripheralDataSize = DMA_PeripheralDataSize_HalfWord;
+    DMA_InitStructure.DMA_MemoryDataSize = DMA_PeripheralDataSize_HalfWord;
+    DMA_InitStructure.DMA_Mode = DMA_Mode_Circular;
+    DMA_InitStructure.DMA_Priority = DMA_Priority_High;
+    DMA_InitStructure.DMA_FIFOMode = DMA_FIFOMode_Disable;
+    DMA_InitStructure.DMA_FIFOThreshold = DMA_FIFOThreshold_Full;
+    DMA_InitStructure.DMA_MemoryBurst = DMA_MemoryBurst_Single;
+    DMA_InitStructure.DMA_PeripheralBurst = DMA_PeripheralBurst_Single;
+
+    DMA_Init(DMA2_Stream6, &DMA_InitStructure);
 }
 
-#ifdef  USE_FULL_ASSERT
+#ifdef USE_FULL_ASSERT
 
 /**
   * @brief  Reports the name of the source file and the source line number
@@ -214,20 +213,20 @@ static void TIM_Config(void)
   */
 void assert_failed(uint8_t* file, uint32_t line)
 {
-  /* User can add his own implementation to report the file name and line number,
+    /* User can add his own implementation to report the file name and line number,
      ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
 
-  while (1)
-  {}
+    while(1) {
+    }
 }
 #endif
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}
-  */ 
+  */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

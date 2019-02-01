@@ -29,7 +29,7 @@
 #ifndef __MAIN_H
 #define __MAIN_H
 
-/* Includes ------------------------------------------------------------------*/ 
+/* Includes ------------------------------------------------------------------*/
 #include "stm324x9i_eval.h"
 #include "stm324x9i_eval_lcd.h"
 #include "stm324x9i_eval_ioe8.h"
@@ -40,7 +40,7 @@
 /* Uncomment the line below if you will use the Buttons in polling mode */
 /* #define BUTTON_POLLING_MODE */
 /* Uncomment the line below if you will use the Buttons in interrupt mode */
-#define BUTTON_INTERRUPT_MODE     
+#define BUTTON_INTERRUPT_MODE
 
 /* Uncomment the line below if you will use the IOE in polling mode */
 #define IOE_POLLING_MODE
@@ -48,10 +48,10 @@
 /* #define IOE_INTERRUPT_MODE */
 
 #ifdef BUTTON_POLLING_MODE
-  #define BUTTON_MODE  BUTTON_MODE_GPIO
+#define BUTTON_MODE BUTTON_MODE_GPIO
 #else
-  #define BUTTON_MODE  BUTTON_MODE_EXTI
-#endif 	/* BUTTON_POLLING_MODE */
+#define BUTTON_MODE BUTTON_MODE_EXTI
+#endif /* BUTTON_POLLING_MODE */
 
 /* Exported macro ------------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */

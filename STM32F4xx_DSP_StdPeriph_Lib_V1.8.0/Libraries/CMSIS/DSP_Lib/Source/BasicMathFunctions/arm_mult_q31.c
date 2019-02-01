@@ -64,94 +64,90 @@
  */
 
 void arm_mult_q31(
-  q31_t * pSrcA,
-  q31_t * pSrcB,
-  q31_t * pDst,
-  uint32_t blockSize)
+    q31_t* pSrcA,
+    q31_t* pSrcB,
+    q31_t* pDst,
+    uint32_t blockSize)
 {
-  uint32_t blkCnt;                               /* loop counters */
+    uint32_t blkCnt; /* loop counters */
 
 #ifndef ARM_MATH_CM0_FAMILY
 
-/* Run the below code for Cortex-M4 and Cortex-M3 */
-  q31_t inA1, inA2, inA3, inA4;                  /* temporary input variables */
-  q31_t inB1, inB2, inB3, inB4;                  /* temporary input variables */
-  q31_t out1, out2, out3, out4;                  /* temporary output variables */
+    /* Run the below code for Cortex-M4 and Cortex-M3 */
+    q31_t inA1, inA2, inA3, inA4; /* temporary input variables */
+    q31_t inB1, inB2, inB3, inB4; /* temporary input variables */
+    q31_t out1, out2, out3, out4; /* temporary output variables */
 
-  /* loop Unrolling */
-  blkCnt = blockSize >> 2u;
+    /* loop Unrolling */
+    blkCnt = blockSize >> 2u;
 
-  /* First part of the processing with loop unrolling.  Compute 4 outputs at a time.    
+    /* First part of the processing with loop unrolling.  Compute 4 outputs at a time.    
    ** a second loop below computes the remaining 1 to 3 samples. */
-  while(blkCnt > 0u)
-  {
-    /* C = A * B */
-    /* Multiply the inputs and then store the results in the destination buffer. */
-    inA1 = *pSrcA++;
-    inA2 = *pSrcA++;
-    inA3 = *pSrcA++;
-    inA4 = *pSrcA++;
-    inB1 = *pSrcB++;
-    inB2 = *pSrcB++;
-    inB3 = *pSrcB++;
-    inB4 = *pSrcB++;
+    while(blkCnt > 0u) {
+        /* C = A * B */
+        /* Multiply the inputs and then store the results in the destination buffer. */
+        inA1 = *pSrcA++;
+        inA2 = *pSrcA++;
+        inA3 = *pSrcA++;
+        inA4 = *pSrcA++;
+        inB1 = *pSrcB++;
+        inB2 = *pSrcB++;
+        inB3 = *pSrcB++;
+        inB4 = *pSrcB++;
 
-    out1 = ((q63_t) inA1 * inB1) >> 32;
-    out2 = ((q63_t) inA2 * inB2) >> 32;
-    out3 = ((q63_t) inA3 * inB3) >> 32;
-    out4 = ((q63_t) inA4 * inB4) >> 32;
+        out1 = ((q63_t)inA1 * inB1) >> 32;
+        out2 = ((q63_t)inA2 * inB2) >> 32;
+        out3 = ((q63_t)inA3 * inB3) >> 32;
+        out4 = ((q63_t)inA4 * inB4) >> 32;
 
-    out1 = __SSAT(out1, 31);
-    out2 = __SSAT(out2, 31);
-    out3 = __SSAT(out3, 31);
-    out4 = __SSAT(out4, 31);
+        out1 = __SSAT(out1, 31);
+        out2 = __SSAT(out2, 31);
+        out3 = __SSAT(out3, 31);
+        out4 = __SSAT(out4, 31);
 
-    *pDst++ = out1 << 1u;
-    *pDst++ = out2 << 1u;
-    *pDst++ = out3 << 1u;
-    *pDst++ = out4 << 1u;
+        *pDst++ = out1 << 1u;
+        *pDst++ = out2 << 1u;
+        *pDst++ = out3 << 1u;
+        *pDst++ = out4 << 1u;
 
-    /* Decrement the blockSize loop counter */
-    blkCnt--;
-  }
+        /* Decrement the blockSize loop counter */
+        blkCnt--;
+    }
 
-  /* If the blockSize is not a multiple of 4, compute any remaining output samples here.    
+    /* If the blockSize is not a multiple of 4, compute any remaining output samples here.    
    ** No loop unrolling is used. */
-  blkCnt = blockSize % 0x4u;
-  
-  while(blkCnt > 0u)
-  {
-    /* C = A * B */
-    /* Multiply the inputs and then store the results in the destination buffer. */
-    inA1 = *pSrcA++;
-    inB1 = *pSrcB++;
-    out1 = ((q63_t) inA1 * inB1) >> 32;
-    out1 = __SSAT(out1, 31);
-    *pDst++ = out1 << 1u;
+    blkCnt = blockSize % 0x4u;
 
-    /* Decrement the blockSize loop counter */
-    blkCnt--;
-  }
+    while(blkCnt > 0u) {
+        /* C = A * B */
+        /* Multiply the inputs and then store the results in the destination buffer. */
+        inA1 = *pSrcA++;
+        inB1 = *pSrcB++;
+        out1 = ((q63_t)inA1 * inB1) >> 32;
+        out1 = __SSAT(out1, 31);
+        *pDst++ = out1 << 1u;
+
+        /* Decrement the blockSize loop counter */
+        blkCnt--;
+    }
 
 #else
 
-  /* Run the below code for Cortex-M0 */
+    /* Run the below code for Cortex-M0 */
 
-  /* Initialize blkCnt with number of samples */
-  blkCnt = blockSize;
+    /* Initialize blkCnt with number of samples */
+    blkCnt = blockSize;
 
+    while(blkCnt > 0u) {
+        /* C = A * B */
+        /* Multiply the inputs and then store the results in the destination buffer. */
+        *pDst++ =
+            (q31_t)clip_q63_to_q31(((q63_t)(*pSrcA++) * (*pSrcB++)) >> 31);
 
-  while(blkCnt > 0u)
-  {
-    /* C = A * B */
-    /* Multiply the inputs and then store the results in the destination buffer. */
-    *pDst++ =
-      (q31_t) clip_q63_to_q31(((q63_t) (*pSrcA++) * (*pSrcB++)) >> 31);
+        /* Decrement the blockSize loop counter */
+        blkCnt--;
+    }
 
-    /* Decrement the blockSize loop counter */
-    blkCnt--;
-  }
-  
 #endif /* #ifndef ARM_MATH_CM0_FAMILY */
 }
 

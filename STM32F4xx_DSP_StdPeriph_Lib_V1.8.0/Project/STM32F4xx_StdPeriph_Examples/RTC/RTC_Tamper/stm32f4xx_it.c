@@ -66,10 +66,9 @@ void NMI_Handler(void)
   */
 void HardFault_Handler(void)
 {
-  /* Go to infinite loop when Hard Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Hard Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -79,10 +78,9 @@ void HardFault_Handler(void)
   */
 void MemManage_Handler(void)
 {
-  /* Go to infinite loop when Memory Manage exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Memory Manage exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -92,10 +90,9 @@ void MemManage_Handler(void)
   */
 void BusFault_Handler(void)
 {
-  /* Go to infinite loop when Bus Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Bus Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -105,10 +102,9 @@ void BusFault_Handler(void)
   */
 void UsageFault_Handler(void)
 {
-  /* Go to infinite loop when Usage Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Usage Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -161,32 +157,29 @@ void SysTick_Handler(void)
   */
 void TAMP_STAMP_IRQHandler(void)
 {
-  if(RTC_GetFlagStatus(RTC_FLAG_TAMP1F) != RESET)
-  { 
-    /* Tamper 1 detection event occurred */
-    /* Check if RTC Backup Data registers are cleared */
-    if(IsBackupRegReset() == 0)
-    {
-      /* OK, RTC Backup Data registers are reset as expected */
-      /* Toggle LED2 */
-      STM_EVAL_LEDToggle(LED2);
-    }
-    else
-    {
-      /* RTC Backup Data registers are not reset */
-      /* Toggle LED4 */
-      STM_EVAL_LEDToggle(LED4);
-    }
-    
-    /* Clear Tamper 1 pin Event pending flag */
-    RTC_ClearFlag(RTC_FLAG_TAMP1F);
+    if(RTC_GetFlagStatus(RTC_FLAG_TAMP1F) != RESET) {
+        /* Tamper 1 detection event occurred */
+        /* Check if RTC Backup Data registers are cleared */
+        if(IsBackupRegReset() == 0) {
+            /* OK, RTC Backup Data registers are reset as expected */
+            /* Toggle LED2 */
+            STM_EVAL_LEDToggle(LED2);
+        }
+        else {
+            /* RTC Backup Data registers are not reset */
+            /* Toggle LED4 */
+            STM_EVAL_LEDToggle(LED4);
+        }
 
-    /* Disable Tamper pin 1 */
-    RTC_TamperCmd(RTC_Tamper_1, DISABLE);
+        /* Clear Tamper 1 pin Event pending flag */
+        RTC_ClearFlag(RTC_FLAG_TAMP1F);
 
-    /* Enable Tamper pin */
-    RTC_TamperCmd(RTC_Tamper_1, ENABLE); 
-  }
+        /* Disable Tamper pin 1 */
+        RTC_TamperCmd(RTC_Tamper_1, DISABLE);
+
+        /* Enable Tamper pin */
+        RTC_TamperCmd(RTC_Tamper_1, ENABLE);
+    }
 }
 
 /**

@@ -37,7 +37,7 @@
 
 /** @addtogroup EXTI_Example
   * @{
-  */ 
+  */
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
@@ -66,10 +66,9 @@ void NMI_Handler(void)
   */
 void HardFault_Handler(void)
 {
-  /* Go to infinite loop when Hard Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Hard Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -79,10 +78,9 @@ void HardFault_Handler(void)
   */
 void MemManage_Handler(void)
 {
-  /* Go to infinite loop when Memory Manage exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Memory Manage exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -92,10 +90,9 @@ void MemManage_Handler(void)
   */
 void BusFault_Handler(void)
 {
-  /* Go to infinite loop when Bus Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Bus Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -105,10 +102,9 @@ void BusFault_Handler(void)
   */
 void UsageFault_Handler(void)
 {
-  /* Go to infinite loop when Usage Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Usage Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -170,14 +166,13 @@ void SysTick_Handler(void)
   */
 void EXTI0_IRQHandler(void)
 {
-  if(EXTI_GetITStatus(EXTI_Line0) != RESET)
-  {
-    /* Toggle LED1 */
-    STM_EVAL_LEDToggle(LED1);
-    
-    /* Clear the EXTI line 0 pending bit */
-    EXTI_ClearITPendingBit(EXTI_Line0);
-  }
+    if(EXTI_GetITStatus(EXTI_Line0) != RESET) {
+        /* Toggle LED1 */
+        STM_EVAL_LEDToggle(LED1);
+
+        /* Clear the EXTI line 0 pending bit */
+        EXTI_ClearITPendingBit(EXTI_Line0);
+    }
 }
 
 /**
@@ -187,30 +182,28 @@ void EXTI0_IRQHandler(void)
   */
 void EXTI15_10_IRQHandler(void)
 {
-  if(EXTI_GetITStatus(EXTI_Line15) != RESET)
-  {
-    /* Toggle LED2 */
-    STM_EVAL_LEDToggle(LED2);
-    
-    /* Clear the EXTI line 15 pending bit */
-    EXTI_ClearITPendingBit(EXTI_Line15);
-  }
-  else if(EXTI_GetITStatus(EXTI_Line13) != RESET)
-  {
-    /* Toggle LED2 */
-    STM_EVAL_LEDToggle(LED2);
-    
-    /* Clear the EXTI line 15 pending bit */
-    EXTI_ClearITPendingBit(EXTI_Line13);
-  }
+    if(EXTI_GetITStatus(EXTI_Line15) != RESET) {
+        /* Toggle LED2 */
+        STM_EVAL_LEDToggle(LED2);
+
+        /* Clear the EXTI line 15 pending bit */
+        EXTI_ClearITPendingBit(EXTI_Line15);
+    }
+    else if(EXTI_GetITStatus(EXTI_Line13) != RESET) {
+        /* Toggle LED2 */
+        STM_EVAL_LEDToggle(LED2);
+
+        /* Clear the EXTI line 15 pending bit */
+        EXTI_ClearITPendingBit(EXTI_Line13);
+    }
 }
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}
-  */ 
+  */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

@@ -32,26 +32,26 @@
 
 /** @addtogroup Utilities
   * @{
-  */ 
+  */
 
 /** @addtogroup STM32_EVAL
   * @{
-  */ 
+  */
 
 /** @addtogroup STM324x9I_EVAL
   * @{
   */
-  
+
 /** @addtogroup STM324x9I_EVAL_FMC_SDRAM
   * @brief     This file provides a set of functions needed to drive the 
   *            IS61WV102416BLL SRAM memory mounted on STM324x9I-EVAL board.
   * @{
-  */ 
+  */
 
 /** @defgroup STM324x9I_EVAL_FMC_SRAM_Private_Functions
   * @{
   */
-  
+
 /**
   * @brief  Configures the FMC and GPIOs to interface with the SRAM memory.
   *         This function must be called before any write/read operation
@@ -61,49 +61,48 @@
   */
 void SRAM_Init(void)
 {
-  FMC_NORSRAMInitTypeDef  FMC_NORSRAMInitStructure;
-  FMC_NORSRAMTimingInitTypeDef  NORSRAMTimingStructure;
-  
-  /* GPIO configuration for FMC SRAM bank */
-  SRAM_GPIOConfig();
-  
-  /* Enable FMC clock */
-  RCC_AHB3PeriphClockCmd(RCC_AHB3Periph_FMC, ENABLE); 
+    FMC_NORSRAMInitTypeDef FMC_NORSRAMInitStructure;
+    FMC_NORSRAMTimingInitTypeDef NORSRAMTimingStructure;
 
-/* FMC Configuration ---------------------------------------------------------*/
-  /* SRAM Timing configuration */
-  NORSRAMTimingStructure.FMC_AddressSetupTime = 2;
-  NORSRAMTimingStructure.FMC_AddressHoldTime = 1;
-  NORSRAMTimingStructure.FMC_DataSetupTime = 2;
-  NORSRAMTimingStructure.FMC_BusTurnAroundDuration = 1;
-  NORSRAMTimingStructure.FMC_CLKDivision = 1;
-  NORSRAMTimingStructure.FMC_DataLatency = 0;
-  NORSRAMTimingStructure.FMC_AccessMode = FMC_AccessMode_A; 
+    /* GPIO configuration for FMC SRAM bank */
+    SRAM_GPIOConfig();
 
-  /* FMC SRAM control configuration */
-  FMC_NORSRAMInitStructure.FMC_Bank = FMC_Bank1_NORSRAM2;
-  FMC_NORSRAMInitStructure.FMC_DataAddressMux = FMC_DataAddressMux_Disable;
-  FMC_NORSRAMInitStructure.FMC_MemoryType = FMC_MemoryType_SRAM;
-  FMC_NORSRAMInitStructure.FMC_MemoryDataWidth = SRAM_MEMORY_WIDTH;
-  FMC_NORSRAMInitStructure.FMC_BurstAccessMode = SRAM_BURSTACCESS; 
-  FMC_NORSRAMInitStructure.FMC_AsynchronousWait = FMC_AsynchronousWait_Disable;  
-  FMC_NORSRAMInitStructure.FMC_WaitSignalPolarity = FMC_WaitSignalPolarity_Low;
-  FMC_NORSRAMInitStructure.FMC_WrapMode = FMC_WrapMode_Disable;
-  FMC_NORSRAMInitStructure.FMC_WaitSignalActive = FMC_WaitSignalActive_BeforeWaitState;
-  FMC_NORSRAMInitStructure.FMC_WriteOperation = FMC_WriteOperation_Enable;
-  FMC_NORSRAMInitStructure.FMC_WaitSignal = FMC_WaitSignal_Disable;
-  FMC_NORSRAMInitStructure.FMC_ExtendedMode = FMC_ExtendedMode_Disable;
-  FMC_NORSRAMInitStructure.FMC_WriteBurst = SRAM_WRITEBURST;
-  FMC_NORSRAMInitStructure.FMC_ContinousClock = CONTINUOUSCLOCK_FEATURE;
-  FMC_NORSRAMInitStructure.FMC_ReadWriteTimingStruct = &NORSRAMTimingStructure;
-  FMC_NORSRAMInitStructure.FMC_WriteTimingStruct = &NORSRAMTimingStructure;
+    /* Enable FMC clock */
+    RCC_AHB3PeriphClockCmd(RCC_AHB3Periph_FMC, ENABLE);
 
-  /* SRAM configuration */
-  FMC_NORSRAMInit(&FMC_NORSRAMInitStructure); 
+    /* FMC Configuration ---------------------------------------------------------*/
+    /* SRAM Timing configuration */
+    NORSRAMTimingStructure.FMC_AddressSetupTime = 2;
+    NORSRAMTimingStructure.FMC_AddressHoldTime = 1;
+    NORSRAMTimingStructure.FMC_DataSetupTime = 2;
+    NORSRAMTimingStructure.FMC_BusTurnAroundDuration = 1;
+    NORSRAMTimingStructure.FMC_CLKDivision = 1;
+    NORSRAMTimingStructure.FMC_DataLatency = 0;
+    NORSRAMTimingStructure.FMC_AccessMode = FMC_AccessMode_A;
 
-  /* Enable FMC Bank1_SRAM2 Bank */
-  FMC_NORSRAMCmd(FMC_Bank1_NORSRAM2, ENABLE); 
-  
+    /* FMC SRAM control configuration */
+    FMC_NORSRAMInitStructure.FMC_Bank = FMC_Bank1_NORSRAM2;
+    FMC_NORSRAMInitStructure.FMC_DataAddressMux = FMC_DataAddressMux_Disable;
+    FMC_NORSRAMInitStructure.FMC_MemoryType = FMC_MemoryType_SRAM;
+    FMC_NORSRAMInitStructure.FMC_MemoryDataWidth = SRAM_MEMORY_WIDTH;
+    FMC_NORSRAMInitStructure.FMC_BurstAccessMode = SRAM_BURSTACCESS;
+    FMC_NORSRAMInitStructure.FMC_AsynchronousWait = FMC_AsynchronousWait_Disable;
+    FMC_NORSRAMInitStructure.FMC_WaitSignalPolarity = FMC_WaitSignalPolarity_Low;
+    FMC_NORSRAMInitStructure.FMC_WrapMode = FMC_WrapMode_Disable;
+    FMC_NORSRAMInitStructure.FMC_WaitSignalActive = FMC_WaitSignalActive_BeforeWaitState;
+    FMC_NORSRAMInitStructure.FMC_WriteOperation = FMC_WriteOperation_Enable;
+    FMC_NORSRAMInitStructure.FMC_WaitSignal = FMC_WaitSignal_Disable;
+    FMC_NORSRAMInitStructure.FMC_ExtendedMode = FMC_ExtendedMode_Disable;
+    FMC_NORSRAMInitStructure.FMC_WriteBurst = SRAM_WRITEBURST;
+    FMC_NORSRAMInitStructure.FMC_ContinousClock = CONTINUOUSCLOCK_FEATURE;
+    FMC_NORSRAMInitStructure.FMC_ReadWriteTimingStruct = &NORSRAMTimingStructure;
+    FMC_NORSRAMInitStructure.FMC_WriteTimingStruct = &NORSRAMTimingStructure;
+
+    /* SRAM configuration */
+    FMC_NORSRAMInit(&FMC_NORSRAMInitStructure);
+
+    /* Enable FMC Bank1_SRAM2 Bank */
+    FMC_NORSRAMCmd(FMC_Bank1_NORSRAM2, ENABLE);
 }
 
 /**
@@ -114,14 +113,15 @@ void SRAM_Init(void)
 
 void SRAM_GPIOConfig(void)
 {
-  GPIO_InitTypeDef GPIO_InitStructure; 
-  
-  /* Enable GPIOs clock */
-  RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOD | RCC_AHB1Periph_GPIOE | RCC_AHB1Periph_GPIOF |
-                         RCC_AHB1Periph_GPIOG | RCC_AHB1Periph_GPIOH | RCC_AHB1Periph_GPIOI, ENABLE);
-  
-/*-- GPIOs Configuration -----------------------------------------------------*/
-/*
+    GPIO_InitTypeDef GPIO_InitStructure;
+
+    /* Enable GPIOs clock */
+    RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOD | RCC_AHB1Periph_GPIOE | RCC_AHB1Periph_GPIOF |
+                               RCC_AHB1Periph_GPIOG | RCC_AHB1Periph_GPIOH | RCC_AHB1Periph_GPIOI,
+        ENABLE);
+
+    /*-- GPIOs Configuration -----------------------------------------------------*/
+    /*
  +-------------------+--------------------+--------------------+--------------------+
  +                       SRAM pins assignment                                       +                                
  +-------------------+--------------------+--------------------+--------------------+
@@ -141,89 +141,89 @@ void SRAM_GPIOConfig(void)
  +-------------------+--------------------+   
 		                
 					 
-*/ 
+*/
 
-  /* Common GPIO configuration */
-  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
-  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;
-  GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-  GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_NOPULL;
-  
-  /* GPIOD configuration */
-  GPIO_PinAFConfig(GPIOD, GPIO_PinSource0, GPIO_AF_FMC);
-  GPIO_PinAFConfig(GPIOD, GPIO_PinSource1, GPIO_AF_FMC);
-  GPIO_PinAFConfig(GPIOD, GPIO_PinSource3, GPIO_AF_FMC);  
-  GPIO_PinAFConfig(GPIOD, GPIO_PinSource4, GPIO_AF_FMC);
-  GPIO_PinAFConfig(GPIOD, GPIO_PinSource5, GPIO_AF_FMC); 
-  GPIO_PinAFConfig(GPIOD, GPIO_PinSource8, GPIO_AF_FMC);
-  GPIO_PinAFConfig(GPIOD, GPIO_PinSource9, GPIO_AF_FMC);
-  GPIO_PinAFConfig(GPIOD, GPIO_PinSource10, GPIO_AF_FMC);
-  GPIO_PinAFConfig(GPIOD, GPIO_PinSource11, GPIO_AF_FMC); 
-  GPIO_PinAFConfig(GPIOD, GPIO_PinSource12, GPIO_AF_FMC);
-  GPIO_PinAFConfig(GPIOD, GPIO_PinSource13, GPIO_AF_FMC);
-  GPIO_PinAFConfig(GPIOD, GPIO_PinSource14, GPIO_AF_FMC);
-  GPIO_PinAFConfig(GPIOD, GPIO_PinSource15, GPIO_AF_FMC);
+    /* Common GPIO configuration */
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;
+    GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+    GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
 
-  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0  | GPIO_Pin_1  | GPIO_Pin_3  | GPIO_Pin_4  | 
-                                GPIO_Pin_5  | GPIO_Pin_8  | GPIO_Pin_9  | GPIO_Pin_10 | 
-                                GPIO_Pin_11 | GPIO_Pin_12 | GPIO_Pin_13 | GPIO_Pin_14 | 
-                                GPIO_Pin_15;
+    /* GPIOD configuration */
+    GPIO_PinAFConfig(GPIOD, GPIO_PinSource0, GPIO_AF_FMC);
+    GPIO_PinAFConfig(GPIOD, GPIO_PinSource1, GPIO_AF_FMC);
+    GPIO_PinAFConfig(GPIOD, GPIO_PinSource3, GPIO_AF_FMC);
+    GPIO_PinAFConfig(GPIOD, GPIO_PinSource4, GPIO_AF_FMC);
+    GPIO_PinAFConfig(GPIOD, GPIO_PinSource5, GPIO_AF_FMC);
+    GPIO_PinAFConfig(GPIOD, GPIO_PinSource8, GPIO_AF_FMC);
+    GPIO_PinAFConfig(GPIOD, GPIO_PinSource9, GPIO_AF_FMC);
+    GPIO_PinAFConfig(GPIOD, GPIO_PinSource10, GPIO_AF_FMC);
+    GPIO_PinAFConfig(GPIOD, GPIO_PinSource11, GPIO_AF_FMC);
+    GPIO_PinAFConfig(GPIOD, GPIO_PinSource12, GPIO_AF_FMC);
+    GPIO_PinAFConfig(GPIOD, GPIO_PinSource13, GPIO_AF_FMC);
+    GPIO_PinAFConfig(GPIOD, GPIO_PinSource14, GPIO_AF_FMC);
+    GPIO_PinAFConfig(GPIOD, GPIO_PinSource15, GPIO_AF_FMC);
 
-  GPIO_Init(GPIOD, &GPIO_InitStructure);
+    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0 | GPIO_Pin_1 | GPIO_Pin_3 | GPIO_Pin_4 |
+                                  GPIO_Pin_5 | GPIO_Pin_8 | GPIO_Pin_9 | GPIO_Pin_10 |
+                                  GPIO_Pin_11 | GPIO_Pin_12 | GPIO_Pin_13 | GPIO_Pin_14 |
+                                  GPIO_Pin_15;
 
-  /* GPIOE configuration */
-  GPIO_PinAFConfig(GPIOE, GPIO_PinSource0 , GPIO_AF_FMC);
-  GPIO_PinAFConfig(GPIOE, GPIO_PinSource1 , GPIO_AF_FMC);
-  GPIO_PinAFConfig(GPIOE, GPIO_PinSource3 , GPIO_AF_FMC);
-  GPIO_PinAFConfig(GPIOE, GPIO_PinSource4 , GPIO_AF_FMC);
-  GPIO_PinAFConfig(GPIOE, GPIO_PinSource7 , GPIO_AF_FMC);
-  GPIO_PinAFConfig(GPIOE, GPIO_PinSource8 , GPIO_AF_FMC);
-  GPIO_PinAFConfig(GPIOE, GPIO_PinSource9 , GPIO_AF_FMC);
-  GPIO_PinAFConfig(GPIOE, GPIO_PinSource10 , GPIO_AF_FMC);
-  GPIO_PinAFConfig(GPIOE, GPIO_PinSource11 , GPIO_AF_FMC);
-  GPIO_PinAFConfig(GPIOE, GPIO_PinSource12 , GPIO_AF_FMC);
-  GPIO_PinAFConfig(GPIOE, GPIO_PinSource13 , GPIO_AF_FMC);
-  GPIO_PinAFConfig(GPIOE, GPIO_PinSource14 , GPIO_AF_FMC);
-  GPIO_PinAFConfig(GPIOE, GPIO_PinSource15 , GPIO_AF_FMC);
+    GPIO_Init(GPIOD, &GPIO_InitStructure);
 
-  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0  | GPIO_Pin_1  | GPIO_Pin_3  | GPIO_Pin_4  |
-                                GPIO_Pin_7  | GPIO_Pin_8  | GPIO_Pin_9  | GPIO_Pin_10 | 
-                                GPIO_Pin_11 | GPIO_Pin_12 | GPIO_Pin_13 | GPIO_Pin_14 | 
-                                GPIO_Pin_15;
+    /* GPIOE configuration */
+    GPIO_PinAFConfig(GPIOE, GPIO_PinSource0, GPIO_AF_FMC);
+    GPIO_PinAFConfig(GPIOE, GPIO_PinSource1, GPIO_AF_FMC);
+    GPIO_PinAFConfig(GPIOE, GPIO_PinSource3, GPIO_AF_FMC);
+    GPIO_PinAFConfig(GPIOE, GPIO_PinSource4, GPIO_AF_FMC);
+    GPIO_PinAFConfig(GPIOE, GPIO_PinSource7, GPIO_AF_FMC);
+    GPIO_PinAFConfig(GPIOE, GPIO_PinSource8, GPIO_AF_FMC);
+    GPIO_PinAFConfig(GPIOE, GPIO_PinSource9, GPIO_AF_FMC);
+    GPIO_PinAFConfig(GPIOE, GPIO_PinSource10, GPIO_AF_FMC);
+    GPIO_PinAFConfig(GPIOE, GPIO_PinSource11, GPIO_AF_FMC);
+    GPIO_PinAFConfig(GPIOE, GPIO_PinSource12, GPIO_AF_FMC);
+    GPIO_PinAFConfig(GPIOE, GPIO_PinSource13, GPIO_AF_FMC);
+    GPIO_PinAFConfig(GPIOE, GPIO_PinSource14, GPIO_AF_FMC);
+    GPIO_PinAFConfig(GPIOE, GPIO_PinSource15, GPIO_AF_FMC);
 
-  GPIO_Init(GPIOE, &GPIO_InitStructure);
+    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0 | GPIO_Pin_1 | GPIO_Pin_3 | GPIO_Pin_4 |
+                                  GPIO_Pin_7 | GPIO_Pin_8 | GPIO_Pin_9 | GPIO_Pin_10 |
+                                  GPIO_Pin_11 | GPIO_Pin_12 | GPIO_Pin_13 | GPIO_Pin_14 |
+                                  GPIO_Pin_15;
 
-  /* GPIOF configuration */
-  GPIO_PinAFConfig(GPIOF, GPIO_PinSource0 , GPIO_AF_FMC);
-  GPIO_PinAFConfig(GPIOF, GPIO_PinSource1 , GPIO_AF_FMC);
-  GPIO_PinAFConfig(GPIOF, GPIO_PinSource2 , GPIO_AF_FMC);
-  GPIO_PinAFConfig(GPIOF, GPIO_PinSource3 , GPIO_AF_FMC);
-  GPIO_PinAFConfig(GPIOF, GPIO_PinSource4 , GPIO_AF_FMC);
-  GPIO_PinAFConfig(GPIOF, GPIO_PinSource5 , GPIO_AF_FMC);
-  GPIO_PinAFConfig(GPIOF, GPIO_PinSource12 , GPIO_AF_FMC);
-  GPIO_PinAFConfig(GPIOF, GPIO_PinSource13 , GPIO_AF_FMC);
-  GPIO_PinAFConfig(GPIOF, GPIO_PinSource14 , GPIO_AF_FMC);
-  GPIO_PinAFConfig(GPIOF, GPIO_PinSource15 , GPIO_AF_FMC);
+    GPIO_Init(GPIOE, &GPIO_InitStructure);
 
-  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0  | GPIO_Pin_1  | GPIO_Pin_2  | GPIO_Pin_3 | 
-                                GPIO_Pin_4  | GPIO_Pin_5  | GPIO_Pin_12 | GPIO_Pin_13 |
-                                GPIO_Pin_14 | GPIO_Pin_15;      
+    /* GPIOF configuration */
+    GPIO_PinAFConfig(GPIOF, GPIO_PinSource0, GPIO_AF_FMC);
+    GPIO_PinAFConfig(GPIOF, GPIO_PinSource1, GPIO_AF_FMC);
+    GPIO_PinAFConfig(GPIOF, GPIO_PinSource2, GPIO_AF_FMC);
+    GPIO_PinAFConfig(GPIOF, GPIO_PinSource3, GPIO_AF_FMC);
+    GPIO_PinAFConfig(GPIOF, GPIO_PinSource4, GPIO_AF_FMC);
+    GPIO_PinAFConfig(GPIOF, GPIO_PinSource5, GPIO_AF_FMC);
+    GPIO_PinAFConfig(GPIOF, GPIO_PinSource12, GPIO_AF_FMC);
+    GPIO_PinAFConfig(GPIOF, GPIO_PinSource13, GPIO_AF_FMC);
+    GPIO_PinAFConfig(GPIOF, GPIO_PinSource14, GPIO_AF_FMC);
+    GPIO_PinAFConfig(GPIOF, GPIO_PinSource15, GPIO_AF_FMC);
 
-  GPIO_Init(GPIOF, &GPIO_InitStructure);
+    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0 | GPIO_Pin_1 | GPIO_Pin_2 | GPIO_Pin_3 |
+                                  GPIO_Pin_4 | GPIO_Pin_5 | GPIO_Pin_12 | GPIO_Pin_13 |
+                                  GPIO_Pin_14 | GPIO_Pin_15;
 
-  /* GPIOG configuration */
-  GPIO_PinAFConfig(GPIOG, GPIO_PinSource0 , GPIO_AF_FMC);
-  GPIO_PinAFConfig(GPIOG, GPIO_PinSource1 , GPIO_AF_FMC);
-  GPIO_PinAFConfig(GPIOG, GPIO_PinSource2 , GPIO_AF_FMC);
-  GPIO_PinAFConfig(GPIOG, GPIO_PinSource3 , GPIO_AF_FMC);
-  GPIO_PinAFConfig(GPIOG, GPIO_PinSource4 , GPIO_AF_FMC);
-  GPIO_PinAFConfig(GPIOG, GPIO_PinSource5 , GPIO_AF_FMC);
-  GPIO_PinAFConfig(GPIOG, GPIO_PinSource9 , GPIO_AF_FMC); 
+    GPIO_Init(GPIOF, &GPIO_InitStructure);
 
-  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0 | GPIO_Pin_1 | GPIO_Pin_2 | GPIO_Pin_3 | 
-                                GPIO_Pin_4 | GPIO_Pin_5 | GPIO_Pin_9;      
+    /* GPIOG configuration */
+    GPIO_PinAFConfig(GPIOG, GPIO_PinSource0, GPIO_AF_FMC);
+    GPIO_PinAFConfig(GPIOG, GPIO_PinSource1, GPIO_AF_FMC);
+    GPIO_PinAFConfig(GPIOG, GPIO_PinSource2, GPIO_AF_FMC);
+    GPIO_PinAFConfig(GPIOG, GPIO_PinSource3, GPIO_AF_FMC);
+    GPIO_PinAFConfig(GPIOG, GPIO_PinSource4, GPIO_AF_FMC);
+    GPIO_PinAFConfig(GPIOG, GPIO_PinSource5, GPIO_AF_FMC);
+    GPIO_PinAFConfig(GPIOG, GPIO_PinSource9, GPIO_AF_FMC);
 
-  GPIO_Init(GPIOG, &GPIO_InitStructure);
+    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0 | GPIO_Pin_1 | GPIO_Pin_2 | GPIO_Pin_3 |
+                                  GPIO_Pin_4 | GPIO_Pin_5 | GPIO_Pin_9;
+
+    GPIO_Init(GPIOG, &GPIO_InitStructure);
 }
 
 /**
@@ -236,17 +236,16 @@ void SRAM_GPIOConfig(void)
   */
 void SRAM_WriteBuffer(uint16_t* pBuffer, uint32_t uwWriteAddress, uint32_t uwBufferSize)
 {
-  __IO uint32_t write_pointer = (uint32_t)uwWriteAddress;
-  
-  /* while there is data to write */
-  for (; uwBufferSize != 0; uwBufferSize--) 
-  {
-    /* Transfer data to the memory */
-    *(uint16_t *) (SRAM_BANK_ADDR + write_pointer) = *pBuffer++;
+    __IO uint32_t write_pointer = (uint32_t)uwWriteAddress;
 
-    /* Increment the address*/
-    write_pointer += 2;
-  }
+    /* while there is data to write */
+    for(; uwBufferSize != 0; uwBufferSize--) {
+        /* Transfer data to the memory */
+        *(uint16_t*)(SRAM_BANK_ADDR + write_pointer) = *pBuffer++;
+
+        /* Increment the address*/
+        write_pointer += 2;
+    }
 }
 
 /**
@@ -259,24 +258,19 @@ void SRAM_WriteBuffer(uint16_t* pBuffer, uint32_t uwWriteAddress, uint32_t uwBuf
   */
 void SRAM_ReadBuffer(uint16_t* pBuffer, uint32_t uwReadAddress, uint32_t uwBufferSize)
 {
-  __IO uint32_t write_pointer = (uint32_t)uwReadAddress;
-  
-  for (; uwBufferSize != 0; uwBufferSize--)
-  {
-    /* Read a half-word from the memory */
-    *pBuffer++ = *(__IO uint16_t*) (SRAM_BANK_ADDR + write_pointer);
+    __IO uint32_t write_pointer = (uint32_t)uwReadAddress;
 
-    /* Increment the address*/
-    write_pointer += 2;
-  }
+    for(; uwBufferSize != 0; uwBufferSize--) {
+        /* Read a half-word from the memory */
+        *pBuffer++ = *(__IO uint16_t*)(SRAM_BANK_ADDR + write_pointer);
+
+        /* Increment the address*/
+        write_pointer += 2;
+    }
 }
 /**
   * @}
   */
-  
-/**
-  * @}
-  */
 
 /**
   * @}
@@ -289,7 +283,9 @@ void SRAM_ReadBuffer(uint16_t* pBuffer, uint32_t uwReadAddress, uint32_t uwBuffe
 /**
   * @}
   */
-  
-  
+
+/**
+  * @}
+  */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

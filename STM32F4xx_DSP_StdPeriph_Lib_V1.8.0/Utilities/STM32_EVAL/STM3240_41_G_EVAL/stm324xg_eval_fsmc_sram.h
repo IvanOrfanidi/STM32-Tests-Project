@@ -24,14 +24,14 @@
   * limitations under the License.
   *
   ******************************************************************************
-  */ 
+  */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __STM324xG_EVAL_FSMC_SRAM_H
 #define __STM324xG_EVAL_FSMC_SRAM_H
 
 #ifdef __cplusplus
- extern "C" {
+extern "C" {
 #endif
 
 /* Includes ------------------------------------------------------------------*/
@@ -40,18 +40,18 @@
 /** @addtogroup Utilities
   * @{
   */
-  
+
 /** @addtogroup STM32_EVAL
   * @{
-  */ 
+  */
 
 /** @addtogroup STM324xG_EVAL
   * @{
   */
-  
+
 /** @addtogroup STM324xG_EVAL_FSMC_SRAM
   * @{
-  */  
+  */
 
 /** @defgroup STM324xG_EVAL_FSMC_SRAM_Exported_Types
   * @{
@@ -59,24 +59,24 @@
 /**
   * @}
   */
-  
+
 /** @defgroup STM324xG_EVAL_FSMC_SRAM_Exported_Constants
   * @{
-  */ 
+  */
 /**
   * @}
-  */ 
-  
+  */
+
 /** @defgroup STM324xG_EVAL_FSMC_SRAM_Exported_Macros
   * @{
-  */ 
+  */
 /**
   * @}
-  */ 
+  */
 
 /** @defgroup STM324xG_EVAL_FSMC_SRAM_Exported_Functions
   * @{
-  */      
+  */
 
 void SRAM_Init(void);
 void SRAM_WriteBuffer(uint16_t* pBuffer, uint32_t WriteAddr, uint32_t NumHalfwordToWrite);
@@ -101,10 +101,10 @@ void SRAM_ReadBuffer(uint16_t* pBuffer, uint32_t ReadAddr, uint32_t NumHalfwordT
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}
-  */ 
+  */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

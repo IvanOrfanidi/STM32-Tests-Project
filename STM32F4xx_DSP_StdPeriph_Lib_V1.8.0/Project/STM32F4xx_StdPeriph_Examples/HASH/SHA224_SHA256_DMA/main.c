@@ -34,15 +34,15 @@
 
 /** @addtogroup SHA224_SHA256_DMA
   * @{
-  */ 
+  */
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
 HASH_MsgDigest MsgDigest;
-static uint8_t MessageToHash[SIZE_MSG_TO_HASH_IN_BYTES]= 
-"The STM32 F4 series is the result of a perfect symbiosis of the real-time control capabilities of an MCU and the signal processing performance of a DSP, and thus complements the STM32 portfolio with a new class of devices, digital signal controllers (DSC).";
+static uint8_t MessageToHash[SIZE_MSG_TO_HASH_IN_BYTES] =
+    "The STM32 F4 series is the result of a perfect symbiosis of the real-time control capabilities of an MCU and the signal processing performance of a DSP, and thus complements the STM32 portfolio with a new class of devices, digital signal controllers (DSC).";
 
 /* Private function prototypes -----------------------------------------------*/
 static void HASH_SHA224_DMA(void);
@@ -53,11 +53,11 @@ static void Display_SHA256Digest(void);
 static void USART_Config(void);
 
 #ifdef __GNUC__
-  /* With GCC/RAISONANCE, small printf (option LD Linker->Libraries->Small printf
+/* With GCC/RAISONANCE, small printf (option LD Linker->Libraries->Small printf
      set to 'Yes') calls __io_putchar() */
-  #define PUTCHAR_PROTOTYPE int __io_putchar(int ch)
+#define PUTCHAR_PROTOTYPE int __io_putchar(int ch)
 #else
-  #define PUTCHAR_PROTOTYPE int fputc(int ch, FILE *f)
+#define PUTCHAR_PROTOTYPE int fputc(int ch, FILE* f)
 #endif /* __GNUC__ */
 
 /* Private functions ---------------------------------------------------------*/
@@ -69,45 +69,46 @@ static void USART_Config(void);
   */
 int main(void)
 {
-  /*!< At this stage the microcontroller clock setting is already configured, 
+    /*!< At this stage the microcontroller clock setting is already configured, 
        this is done through SystemInit() function which is called from startup
        files (startup_stm32f40_41xxx.s/startup_stm32f427_437xx.s/startup_stm32f429_439xx.s)
        before to branch to application main.
      */
 
-  /* USART configuration */
-  USART_Config();
+    /* USART configuration */
+    USART_Config();
 
-  /***********************************************************************/
-  /* !!!! This example runs only on STM32F437x/STM32F439x Devices !!!    */
-  /***********************************************************************/
-  
-  /* Enable HASH and DMA clocks */
-  RCC_AHB2PeriphClockCmd(RCC_AHB2Periph_HASH, ENABLE);
-  RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_DMA2, ENABLE);
+    /***********************************************************************/
+    /* !!!! This example runs only on STM32F437x/STM32F439x Devices !!!    */
+    /***********************************************************************/
 
-  /* Display the original message */
-  Display_MainMessage();
+    /* Enable HASH and DMA clocks */
+    RCC_AHB2PeriphClockCmd(RCC_AHB2Periph_HASH, ENABLE);
+    RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_DMA2, ENABLE);
 
-/*=============================================================================
+    /* Display the original message */
+    Display_MainMessage();
+
+    /*=============================================================================
   SHA224 Digest Computation
 ==============================================================================*/
-  /* HASH SHA224 Digest computation (using DMA for data transfer) */
-  HASH_SHA224_DMA();
+    /* HASH SHA224 Digest computation (using DMA for data transfer) */
+    HASH_SHA224_DMA();
 
-  /* Display the SHA224 digest */
-  Display_SHA224Digest();
+    /* Display the SHA224 digest */
+    Display_SHA224Digest();
 
-/*=============================================================================
+    /*=============================================================================
   SHA256 Digest Computation
 ==============================================================================*/
-  /* HASH SHA256 Digest computation (using DMA for data transfer) */
-  HASH_SHA256_DMA();
+    /* HASH SHA256 Digest computation (using DMA for data transfer) */
+    HASH_SHA256_DMA();
 
-  /*  Display the SHA256 digest */
-  Display_SHA256Digest();
+    /*  Display the SHA256 digest */
+    Display_SHA256Digest();
 
-  while(1);
+    while(1)
+        ;
 }
 
 /**
@@ -119,58 +120,59 @@ int main(void)
   */
 static void HASH_SHA224_DMA(void)
 {
-  HASH_InitTypeDef HASH_InitStructure;
-  DMA_InitTypeDef DMA_InitStructure;
+    HASH_InitTypeDef HASH_InitStructure;
+    DMA_InitTypeDef DMA_InitStructure;
 
-  /* HASH Configuration */
-  HASH_StructInit(&HASH_InitStructure);
-  HASH_InitStructure.HASH_AlgoSelection = HASH_AlgoSelection_SHA224;
-  HASH_InitStructure.HASH_AlgoMode = HASH_AlgoMode_HASH;
-  HASH_InitStructure.HASH_DataType = HASH_DataType_8b;
-  HASH_Init(&HASH_InitStructure);
+    /* HASH Configuration */
+    HASH_StructInit(&HASH_InitStructure);
+    HASH_InitStructure.HASH_AlgoSelection = HASH_AlgoSelection_SHA224;
+    HASH_InitStructure.HASH_AlgoMode = HASH_AlgoMode_HASH;
+    HASH_InitStructure.HASH_DataType = HASH_DataType_8b;
+    HASH_Init(&HASH_InitStructure);
 
-  /*DMA Configuration*/
-  DMA_DeInit(DMA2_Stream7);
-  DMA_InitStructure.DMA_Channel = DMA_Channel_2;
-  DMA_InitStructure.DMA_PeripheralBaseAddr = HASH_DIN_REG_ADDR;
-  DMA_InitStructure.DMA_Memory0BaseAddr = (uint32_t)MessageToHash;
-  DMA_InitStructure.DMA_DIR = DMA_DIR_MemoryToPeripheral;
-  DMA_InitStructure.DMA_BufferSize = SIZE_MSG_TO_HASH_IN_WORDS;
-  DMA_InitStructure.DMA_PeripheralInc = DMA_PeripheralInc_Disable;
-  DMA_InitStructure.DMA_MemoryInc = DMA_MemoryInc_Enable;
-  DMA_InitStructure.DMA_PeripheralDataSize = DMA_PeripheralDataSize_Word;
-  DMA_InitStructure.DMA_MemoryDataSize = DMA_MemoryDataSize_Word;
-  DMA_InitStructure.DMA_Mode = DMA_Mode_Normal;
-  DMA_InitStructure.DMA_Priority = DMA_Priority_High;
-  DMA_InitStructure.DMA_FIFOMode = DMA_FIFOMode_Disable;
-  DMA_InitStructure.DMA_FIFOThreshold = DMA_FIFOThreshold_Full;
-  DMA_InitStructure.DMA_MemoryBurst = DMA_MemoryBurst_Single;
-  DMA_InitStructure.DMA_PeripheralBurst = DMA_PeripheralBurst_Single;
+    /*DMA Configuration*/
+    DMA_DeInit(DMA2_Stream7);
+    DMA_InitStructure.DMA_Channel = DMA_Channel_2;
+    DMA_InitStructure.DMA_PeripheralBaseAddr = HASH_DIN_REG_ADDR;
+    DMA_InitStructure.DMA_Memory0BaseAddr = (uint32_t)MessageToHash;
+    DMA_InitStructure.DMA_DIR = DMA_DIR_MemoryToPeripheral;
+    DMA_InitStructure.DMA_BufferSize = SIZE_MSG_TO_HASH_IN_WORDS;
+    DMA_InitStructure.DMA_PeripheralInc = DMA_PeripheralInc_Disable;
+    DMA_InitStructure.DMA_MemoryInc = DMA_MemoryInc_Enable;
+    DMA_InitStructure.DMA_PeripheralDataSize = DMA_PeripheralDataSize_Word;
+    DMA_InitStructure.DMA_MemoryDataSize = DMA_MemoryDataSize_Word;
+    DMA_InitStructure.DMA_Mode = DMA_Mode_Normal;
+    DMA_InitStructure.DMA_Priority = DMA_Priority_High;
+    DMA_InitStructure.DMA_FIFOMode = DMA_FIFOMode_Disable;
+    DMA_InitStructure.DMA_FIFOThreshold = DMA_FIFOThreshold_Full;
+    DMA_InitStructure.DMA_MemoryBurst = DMA_MemoryBurst_Single;
+    DMA_InitStructure.DMA_PeripheralBurst = DMA_PeripheralBurst_Single;
 
-  /* Configure the DMA Stream */
-  DMA_Init(DMA2_Stream7, &DMA_InitStructure);
+    /* Configure the DMA Stream */
+    DMA_Init(DMA2_Stream7, &DMA_InitStructure);
 
-  /* Enable HASH DMA */
-  HASH_DMACmd(ENABLE);
+    /* Enable HASH DMA */
+    HASH_DMACmd(ENABLE);
 
-  /* Enable DMA2 Transfer */
-  DMA_Cmd(DMA2_Stream7, ENABLE);
+    /* Enable DMA2 Transfer */
+    DMA_Cmd(DMA2_Stream7, ENABLE);
 
-  /* Note :  When the DMA is enabled, it provides the information to the hash 
+    /* Note :  When the DMA is enabled, it provides the information to the hash 
              processor when it is transferring the last data word. Then the 
              padding and digest computation are performed automatically as if 
              DCAL had been written to 1.*/
 
-  /* Wait until DMA Transfer completed */
-  while (DMA_GetFlagStatus(DMA2_Stream7, DMA_FLAG_TCIF7) == RESET);
+    /* Wait until DMA Transfer completed */
+    while(DMA_GetFlagStatus(DMA2_Stream7, DMA_FLAG_TCIF7) == RESET)
+        ;
 
-  /* Wait until the Busy flag is RESET */
-  while (HASH_GetFlagStatus(HASH_FLAG_BUSY) != RESET);
+    /* Wait until the Busy flag is RESET */
+    while(HASH_GetFlagStatus(HASH_FLAG_BUSY) != RESET)
+        ;
 
-  /* Get the SHA-224 Digest */
-  HASH_GetDigest(&MsgDigest);
+    /* Get the SHA-224 Digest */
+    HASH_GetDigest(&MsgDigest);
 }
-
 
 /**
   * @brief  HASH SHA256 Digest computation (using DMA for data transfer) 
@@ -181,56 +183,58 @@ static void HASH_SHA224_DMA(void)
   */
 static void HASH_SHA256_DMA(void)
 {
-  HASH_InitTypeDef HASH_InitStructure;
-  DMA_InitTypeDef DMA_InitStructure;
+    HASH_InitTypeDef HASH_InitStructure;
+    DMA_InitTypeDef DMA_InitStructure;
 
-  /* HASH Configuration */
-  HASH_InitStructure.HASH_AlgoSelection = HASH_AlgoSelection_SHA256;
-  HASH_InitStructure.HASH_AlgoMode = HASH_AlgoMode_HASH;
-  HASH_InitStructure.HASH_DataType = HASH_DataType_8b;
-  HASH_InitStructure.HASH_HMACKeyType = HASH_HMACKeyType_ShortKey;
-  HASH_Init(&HASH_InitStructure);
+    /* HASH Configuration */
+    HASH_InitStructure.HASH_AlgoSelection = HASH_AlgoSelection_SHA256;
+    HASH_InitStructure.HASH_AlgoMode = HASH_AlgoMode_HASH;
+    HASH_InitStructure.HASH_DataType = HASH_DataType_8b;
+    HASH_InitStructure.HASH_HMACKeyType = HASH_HMACKeyType_ShortKey;
+    HASH_Init(&HASH_InitStructure);
 
-  /*DMA Configuration*/
-  DMA_DeInit(DMA2_Stream7);
-  DMA_InitStructure.DMA_Channel = DMA_Channel_2;
-  DMA_InitStructure.DMA_PeripheralBaseAddr = HASH_DIN_REG_ADDR;
-  DMA_InitStructure.DMA_Memory0BaseAddr = (uint32_t)MessageToHash;
-  DMA_InitStructure.DMA_DIR = DMA_DIR_MemoryToPeripheral;
-  DMA_InitStructure.DMA_BufferSize = SIZE_MSG_TO_HASH_IN_WORDS;
-  DMA_InitStructure.DMA_PeripheralInc = DMA_PeripheralInc_Disable;
-  DMA_InitStructure.DMA_MemoryInc = DMA_MemoryInc_Enable;
-  DMA_InitStructure.DMA_PeripheralDataSize = DMA_PeripheralDataSize_Word;
-  DMA_InitStructure.DMA_MemoryDataSize = DMA_MemoryDataSize_Word;
-  DMA_InitStructure.DMA_Mode = DMA_Mode_Normal;
-  DMA_InitStructure.DMA_Priority = DMA_Priority_High;
-  DMA_InitStructure.DMA_FIFOMode = DMA_FIFOMode_Disable;
-  DMA_InitStructure.DMA_FIFOThreshold = DMA_FIFOThreshold_Full;
-  DMA_InitStructure.DMA_MemoryBurst = DMA_MemoryBurst_Single;
-  DMA_InitStructure.DMA_PeripheralBurst = DMA_PeripheralBurst_Single;
+    /*DMA Configuration*/
+    DMA_DeInit(DMA2_Stream7);
+    DMA_InitStructure.DMA_Channel = DMA_Channel_2;
+    DMA_InitStructure.DMA_PeripheralBaseAddr = HASH_DIN_REG_ADDR;
+    DMA_InitStructure.DMA_Memory0BaseAddr = (uint32_t)MessageToHash;
+    DMA_InitStructure.DMA_DIR = DMA_DIR_MemoryToPeripheral;
+    DMA_InitStructure.DMA_BufferSize = SIZE_MSG_TO_HASH_IN_WORDS;
+    DMA_InitStructure.DMA_PeripheralInc = DMA_PeripheralInc_Disable;
+    DMA_InitStructure.DMA_MemoryInc = DMA_MemoryInc_Enable;
+    DMA_InitStructure.DMA_PeripheralDataSize = DMA_PeripheralDataSize_Word;
+    DMA_InitStructure.DMA_MemoryDataSize = DMA_MemoryDataSize_Word;
+    DMA_InitStructure.DMA_Mode = DMA_Mode_Normal;
+    DMA_InitStructure.DMA_Priority = DMA_Priority_High;
+    DMA_InitStructure.DMA_FIFOMode = DMA_FIFOMode_Disable;
+    DMA_InitStructure.DMA_FIFOThreshold = DMA_FIFOThreshold_Full;
+    DMA_InitStructure.DMA_MemoryBurst = DMA_MemoryBurst_Single;
+    DMA_InitStructure.DMA_PeripheralBurst = DMA_PeripheralBurst_Single;
 
-  /* Configure the DMA Stream */
-  DMA_Init(DMA2_Stream7, &DMA_InitStructure);
+    /* Configure the DMA Stream */
+    DMA_Init(DMA2_Stream7, &DMA_InitStructure);
 
-  /* Enable HASH DMA */
-  HASH_DMACmd(ENABLE);
+    /* Enable HASH DMA */
+    HASH_DMACmd(ENABLE);
 
-  /* Enable DMA2 Transfer */
-  DMA_Cmd(DMA2_Stream7, ENABLE);
+    /* Enable DMA2 Transfer */
+    DMA_Cmd(DMA2_Stream7, ENABLE);
 
-  /* Note :  When the DMA is enabled, it provides the information to the hash 
+    /* Note :  When the DMA is enabled, it provides the information to the hash 
              processor when it is transferring the last data word. Then the 
              padding and digest computation are performed automatically as if 
              DCAL had been written to 1.*/
 
-  /* wait until DMA Transfer completed */
-  while (DMA_GetFlagStatus(DMA2_Stream7, DMA_FLAG_TCIF7) == RESET);
+    /* wait until DMA Transfer completed */
+    while(DMA_GetFlagStatus(DMA2_Stream7, DMA_FLAG_TCIF7) == RESET)
+        ;
 
-  /* wait until the Busy flag is RESET */
-  while (HASH_GetFlagStatus(HASH_FLAG_BUSY) != RESET);
+    /* wait until the Busy flag is RESET */
+    while(HASH_GetFlagStatus(HASH_FLAG_BUSY) != RESET)
+        ;
 
-  /* Get the SHA256 Digest */
-  HASH_GetDigest(&MsgDigest);
+    /* Get the SHA256 Digest */
+    HASH_GetDigest(&MsgDigest);
 }
 
 /**
@@ -240,24 +244,22 @@ static void HASH_SHA256_DMA(void)
   */
 static void Display_MainMessage(void)
 {
-  uint32_t buffercounter=0;
-  
-  printf("\n\r ======================================\n\r");
-  printf(" ====    HASH Using DMA Example    ====\n\r");
-  printf(" ======================================\n\r");
-  printf(" ---------------------------------------\n\r");
-  printf(" Text to be Hashed (%d bits):\n\r", SIZE_MSG_TO_HASH_IN_BYTES*8);
-  printf(" ---------------------------------------\n\r");
+    uint32_t buffercounter = 0;
 
-  for(buffercounter = 0; buffercounter <SIZE_MSG_TO_HASH_IN_BYTES; buffercounter++)
-  {
-    printf("%c", MessageToHash[buffercounter]);
-    
-    if(((buffercounter%31) == 0) && (buffercounter != 0))
-    {
-      printf("\n\r");
+    printf("\n\r ======================================\n\r");
+    printf(" ====    HASH Using DMA Example    ====\n\r");
+    printf(" ======================================\n\r");
+    printf(" ---------------------------------------\n\r");
+    printf(" Text to be Hashed (%d bits):\n\r", SIZE_MSG_TO_HASH_IN_BYTES * 8);
+    printf(" ---------------------------------------\n\r");
+
+    for(buffercounter = 0; buffercounter < SIZE_MSG_TO_HASH_IN_BYTES; buffercounter++) {
+        printf("%c", MessageToHash[buffercounter]);
+
+        if(((buffercounter % 31) == 0) && (buffercounter != 0)) {
+            printf("\n\r");
+        }
     }
-  }
 }
 
 /**
@@ -267,16 +269,16 @@ static void Display_MainMessage(void)
   */
 static void Display_SHA224Digest(void)
 {
-  printf("\n\r ---------------------------------------\n\r");
-  printf(" SHA224 Message Digest (224 bits):\n\r");
-  printf(" ---------------------------------------\n\r");
-  printf(" H0 = [0x%08x]  \n\r", MsgDigest.Data[0]);
-  printf(" H1 = [0x%08x]  \n\r", MsgDigest.Data[1]);
-  printf(" H2 = [0x%08x]  \n\r", MsgDigest.Data[2]);
-  printf(" H3 = [0x%08x]  \n\r", MsgDigest.Data[3]);
-  printf(" H4 = [0x%08x]  \n\r", MsgDigest.Data[4]);
-  printf(" H5 = [0x%08x]  \n\r", MsgDigest.Data[5]);
-  printf(" H6 = [0x%08x]  \n\r", MsgDigest.Data[6]);
+    printf("\n\r ---------------------------------------\n\r");
+    printf(" SHA224 Message Digest (224 bits):\n\r");
+    printf(" ---------------------------------------\n\r");
+    printf(" H0 = [0x%08x]  \n\r", MsgDigest.Data[0]);
+    printf(" H1 = [0x%08x]  \n\r", MsgDigest.Data[1]);
+    printf(" H2 = [0x%08x]  \n\r", MsgDigest.Data[2]);
+    printf(" H3 = [0x%08x]  \n\r", MsgDigest.Data[3]);
+    printf(" H4 = [0x%08x]  \n\r", MsgDigest.Data[4]);
+    printf(" H5 = [0x%08x]  \n\r", MsgDigest.Data[5]);
+    printf(" H6 = [0x%08x]  \n\r", MsgDigest.Data[6]);
 }
 
 /**
@@ -286,17 +288,17 @@ static void Display_SHA224Digest(void)
   */
 static void Display_SHA256Digest(void)
 {
-  printf("\n\r ---------------------------------------\n\r");
-  printf(" SHA256 Message Digest (256 bits):\n\r");
-  printf(" ---------------------------------------\n\r");
-  printf(" H0 = [0x%08x]  \n\r", MsgDigest.Data[0]);
-  printf(" H1 = [0x%08x]  \n\r", MsgDigest.Data[1]);
-  printf(" H2 = [0x%08x]  \n\r", MsgDigest.Data[2]);
-  printf(" H3 = [0x%08x]  \n\r", MsgDigest.Data[3]);
-  printf(" H4 = [0x%08x]  \n\r", MsgDigest.Data[4]);
-  printf(" H5 = [0x%08x]  \n\r", MsgDigest.Data[5]);
-  printf(" H6 = [0x%08x]  \n\r", MsgDigest.Data[6]);
-  printf(" H7 = [0x%08x]  \n\r", MsgDigest.Data[7]);
+    printf("\n\r ---------------------------------------\n\r");
+    printf(" SHA256 Message Digest (256 bits):\n\r");
+    printf(" ---------------------------------------\n\r");
+    printf(" H0 = [0x%08x]  \n\r", MsgDigest.Data[0]);
+    printf(" H1 = [0x%08x]  \n\r", MsgDigest.Data[1]);
+    printf(" H2 = [0x%08x]  \n\r", MsgDigest.Data[2]);
+    printf(" H3 = [0x%08x]  \n\r", MsgDigest.Data[3]);
+    printf(" H4 = [0x%08x]  \n\r", MsgDigest.Data[4]);
+    printf(" H5 = [0x%08x]  \n\r", MsgDigest.Data[5]);
+    printf(" H6 = [0x%08x]  \n\r", MsgDigest.Data[6]);
+    printf(" H7 = [0x%08x]  \n\r", MsgDigest.Data[7]);
 }
 
 /**
@@ -306,7 +308,7 @@ static void Display_SHA256Digest(void)
   */
 static void USART_Config(void)
 {
-  /* USARTx configured as follows:
+    /* USARTx configured as follows:
         - BaudRate = 115200 baud  
         - Word Length = 8 Bits
         - One Stop Bit
@@ -314,16 +316,16 @@ static void USART_Config(void)
         - Hardware flow control disabled (RTS and CTS signals)
         - Receive and transmit enabled
   */
-  USART_InitTypeDef USART_InitStructure;
+    USART_InitTypeDef USART_InitStructure;
 
-  USART_InitStructure.USART_BaudRate = 115200;
-  USART_InitStructure.USART_WordLength = USART_WordLength_8b;
-  USART_InitStructure.USART_StopBits = USART_StopBits_1;
-  USART_InitStructure.USART_Parity = USART_Parity_No;
-  USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;
-  USART_InitStructure.USART_Mode = USART_Mode_Rx | USART_Mode_Tx;
+    USART_InitStructure.USART_BaudRate = 115200;
+    USART_InitStructure.USART_WordLength = USART_WordLength_8b;
+    USART_InitStructure.USART_StopBits = USART_StopBits_1;
+    USART_InitStructure.USART_Parity = USART_Parity_No;
+    USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;
+    USART_InitStructure.USART_Mode = USART_Mode_Rx | USART_Mode_Tx;
 
-  STM_EVAL_COMInit(COM1, &USART_InitStructure);
+    STM_EVAL_COMInit(COM1, &USART_InitStructure);
 }
 
 /**
@@ -333,19 +335,18 @@ static void USART_Config(void)
   */
 PUTCHAR_PROTOTYPE
 {
-  /* Place your implementation of fputc here */
-  /* e.g. write a character to the USART */
-  USART_SendData(EVAL_COM1, (uint8_t) ch);
+    /* Place your implementation of fputc here */
+    /* e.g. write a character to the USART */
+    USART_SendData(EVAL_COM1, (uint8_t)ch);
 
-  /* Loop until the end of transmission */
-  while (USART_GetFlagStatus(EVAL_COM1, USART_FLAG_TC) == RESET)
-  {}
+    /* Loop until the end of transmission */
+    while(USART_GetFlagStatus(EVAL_COM1, USART_FLAG_TC) == RESET) {
+    }
 
-  return ch;
+    return ch;
 }
 
-
-#ifdef  USE_FULL_ASSERT
+#ifdef USE_FULL_ASSERT
 
 /**
   * @brief  Reports the name of the source file and the source line number
@@ -355,23 +356,22 @@ PUTCHAR_PROTOTYPE
   * @retval None
   */
 void assert_failed(uint8_t* file, uint32_t line)
-{ 
-  /* User can add his own implementation to report the file name and line number,
+{
+    /* User can add his own implementation to report the file name and line number,
      ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
 
-  /* Infinite loop */
-  while (1)
-  {
-  }
+    /* Infinite loop */
+    while(1) {
+    }
 }
 #endif
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}
-  */ 
+  */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

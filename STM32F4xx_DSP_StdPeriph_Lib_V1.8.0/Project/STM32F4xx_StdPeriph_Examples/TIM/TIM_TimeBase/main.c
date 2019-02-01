@@ -35,14 +35,14 @@
 
 /** @addtogroup TIM_TimeBase
   * @{
-  */ 
+  */
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
-TIM_TimeBaseInitTypeDef  TIM_TimeBaseStructure;
-TIM_OCInitTypeDef  TIM_OCInitStructure;
+TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure;
+TIM_OCInitTypeDef TIM_OCInitStructure;
 __IO uint16_t CCR1_Val = 40961;
 __IO uint16_t CCR2_Val = 27309;
 __IO uint16_t CCR3_Val = 13654;
@@ -61,7 +61,7 @@ void TIM_Config(void);
   */
 int main(void)
 {
-  /*!< At this stage the microcontroller clock setting is already configured, 
+    /*!< At this stage the microcontroller clock setting is already configured, 
        this is done through SystemInit() function which is called from startup
        files (startup_stm32f40_41xxx.s/startup_stm32f427_437xx.s/startup_stm32f429_439xx.s)
        before to branch to application main. 
@@ -69,10 +69,10 @@ int main(void)
        system_stm32f4xx.c file
      */
 
-  /* TIM Configuration */
-  TIM_Config();
-  
-  /* -----------------------------------------------------------------------
+    /* TIM Configuration */
+    TIM_Config();
+
+    /* -----------------------------------------------------------------------
     TIM3 Configuration: Output Compare Timing Mode:
     
     In this example TIM3 input clock (TIM3CLK) is set to 2 * APB1 clock (PCLK1), 
@@ -102,64 +102,64 @@ int main(void)
      Each time the core clock (HCLK) changes, user had to call SystemCoreClockUpdate()
      function to update SystemCoreClock variable value. Otherwise, any configuration
      based on this variable will be incorrect.    
-  ----------------------------------------------------------------------- */   
+  ----------------------------------------------------------------------- */
 
+    /* Compute the prescaler value */
+    PrescalerValue = (uint16_t)((SystemCoreClock / 2) / 6000000) - 1;
 
-  /* Compute the prescaler value */
-  PrescalerValue = (uint16_t) ((SystemCoreClock / 2) / 6000000) - 1;
+    /* Time base configuration */
+    TIM_TimeBaseStructure.TIM_Period = 65535;
+    TIM_TimeBaseStructure.TIM_Prescaler = 0;
+    TIM_TimeBaseStructure.TIM_ClockDivision = 0;
+    TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
 
-  /* Time base configuration */
-  TIM_TimeBaseStructure.TIM_Period = 65535;
-  TIM_TimeBaseStructure.TIM_Prescaler = 0;
-  TIM_TimeBaseStructure.TIM_ClockDivision = 0;
-  TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
+    TIM_TimeBaseInit(TIM3, &TIM_TimeBaseStructure);
 
-  TIM_TimeBaseInit(TIM3, &TIM_TimeBaseStructure);
+    /* Prescaler configuration */
+    TIM_PrescalerConfig(TIM3, PrescalerValue, TIM_PSCReloadMode_Immediate);
 
-  /* Prescaler configuration */
-  TIM_PrescalerConfig(TIM3, PrescalerValue, TIM_PSCReloadMode_Immediate);
+    /* Output Compare Timing Mode configuration: Channel1 */
+    TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_Timing;
+    TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
+    TIM_OCInitStructure.TIM_Pulse = CCR1_Val;
+    TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_High;
 
-  /* Output Compare Timing Mode configuration: Channel1 */
-  TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_Timing;
-  TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
-  TIM_OCInitStructure.TIM_Pulse = CCR1_Val;
-  TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_High;
+    TIM_OC1Init(TIM3, &TIM_OCInitStructure);
 
-  TIM_OC1Init(TIM3, &TIM_OCInitStructure);
+    TIM_OC1PreloadConfig(TIM3, TIM_OCPreload_Disable);
 
-  TIM_OC1PreloadConfig(TIM3, TIM_OCPreload_Disable);
+    /* Output Compare Timing Mode configuration: Channel2 */
+    TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
+    TIM_OCInitStructure.TIM_Pulse = CCR2_Val;
 
-  /* Output Compare Timing Mode configuration: Channel2 */
-  TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
-  TIM_OCInitStructure.TIM_Pulse = CCR2_Val;
+    TIM_OC2Init(TIM3, &TIM_OCInitStructure);
 
-  TIM_OC2Init(TIM3, &TIM_OCInitStructure);
+    TIM_OC2PreloadConfig(TIM3, TIM_OCPreload_Disable);
 
-  TIM_OC2PreloadConfig(TIM3, TIM_OCPreload_Disable);
+    /* Output Compare Timing Mode configuration: Channel3 */
+    TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
+    TIM_OCInitStructure.TIM_Pulse = CCR3_Val;
 
-  /* Output Compare Timing Mode configuration: Channel3 */
-  TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
-  TIM_OCInitStructure.TIM_Pulse = CCR3_Val;
+    TIM_OC3Init(TIM3, &TIM_OCInitStructure);
 
-  TIM_OC3Init(TIM3, &TIM_OCInitStructure);
+    TIM_OC3PreloadConfig(TIM3, TIM_OCPreload_Disable);
 
-  TIM_OC3PreloadConfig(TIM3, TIM_OCPreload_Disable);
+    /* Output Compare Timing Mode configuration: Channel4 */
+    TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
+    TIM_OCInitStructure.TIM_Pulse = CCR4_Val;
 
-  /* Output Compare Timing Mode configuration: Channel4 */
-  TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
-  TIM_OCInitStructure.TIM_Pulse = CCR4_Val;
+    TIM_OC4Init(TIM3, &TIM_OCInitStructure);
 
-  TIM_OC4Init(TIM3, &TIM_OCInitStructure);
+    TIM_OC4PreloadConfig(TIM3, TIM_OCPreload_Disable);
 
-  TIM_OC4PreloadConfig(TIM3, TIM_OCPreload_Disable);
-   
-  /* TIM Interrupts enable */
-  TIM_ITConfig(TIM3, TIM_IT_CC1 | TIM_IT_CC2 | TIM_IT_CC3 | TIM_IT_CC4, ENABLE);
+    /* TIM Interrupts enable */
+    TIM_ITConfig(TIM3, TIM_IT_CC1 | TIM_IT_CC2 | TIM_IT_CC3 | TIM_IT_CC4, ENABLE);
 
-  /* TIM3 enable counter */
-  TIM_Cmd(TIM3, ENABLE);
+    /* TIM3 enable counter */
+    TIM_Cmd(TIM3, ENABLE);
 
-  while (1);
+    while(1)
+        ;
 }
 
 /**
@@ -169,32 +169,32 @@ int main(void)
   */
 void TIM_Config(void)
 {
-  NVIC_InitTypeDef NVIC_InitStructure;
+    NVIC_InitTypeDef NVIC_InitStructure;
 
-  /* TIM3 clock enable */
-  RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM3, ENABLE);
+    /* TIM3 clock enable */
+    RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM3, ENABLE);
 
-  /* Enable the TIM3 global Interrupt */
-  NVIC_InitStructure.NVIC_IRQChannel = TIM3_IRQn;
-  NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
-  NVIC_InitStructure.NVIC_IRQChannelSubPriority = 1;
-  NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
-  NVIC_Init(&NVIC_InitStructure);
+    /* Enable the TIM3 global Interrupt */
+    NVIC_InitStructure.NVIC_IRQChannel = TIM3_IRQn;
+    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
+    NVIC_InitStructure.NVIC_IRQChannelSubPriority = 1;
+    NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+    NVIC_Init(&NVIC_InitStructure);
 
-  /* Initialize Leds mounted on STM324xG-EVAL board */
-  STM_EVAL_LEDInit(LED1);
-  STM_EVAL_LEDInit(LED2);
-  STM_EVAL_LEDInit(LED3);
-  STM_EVAL_LEDInit(LED4);
+    /* Initialize Leds mounted on STM324xG-EVAL board */
+    STM_EVAL_LEDInit(LED1);
+    STM_EVAL_LEDInit(LED2);
+    STM_EVAL_LEDInit(LED3);
+    STM_EVAL_LEDInit(LED4);
 
-  /* Turn on LED1, LED2, LED3 and LED4 */
-  STM_EVAL_LEDOn(LED1);
-  STM_EVAL_LEDOn(LED2);
-  STM_EVAL_LEDOn(LED3);
-  STM_EVAL_LEDOn(LED4);
+    /* Turn on LED1, LED2, LED3 and LED4 */
+    STM_EVAL_LEDOn(LED1);
+    STM_EVAL_LEDOn(LED2);
+    STM_EVAL_LEDOn(LED3);
+    STM_EVAL_LEDOn(LED4);
 }
 
-#ifdef  USE_FULL_ASSERT
+#ifdef USE_FULL_ASSERT
 
 /**
   * @brief  Reports the name of the source file and the source line number
@@ -205,20 +205,20 @@ void TIM_Config(void)
   */
 void assert_failed(uint8_t* file, uint32_t line)
 {
-  /* User can add his own implementation to report the file name and line number,
+    /* User can add his own implementation to report the file name and line number,
      ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
 
-  while (1)
-  {}
+    while(1) {
+    }
 }
 #endif
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}
-  */ 
+  */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

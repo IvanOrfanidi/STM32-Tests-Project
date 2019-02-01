@@ -57,35 +57,35 @@
 /** @defgroup SYSCFG 
   * @brief SYSCFG driver modules
   * @{
-  */ 
+  */
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
 /* ------------ RCC registers bit address in the alias region ----------- */
-#define SYSCFG_OFFSET             (SYSCFG_BASE - PERIPH_BASE)
-/* ---  MEMRMP Register ---*/ 
-/* Alias word address of UFB_MODE bit */ 
-#define MEMRMP_OFFSET             SYSCFG_OFFSET 
-#define UFB_MODE_BitNumber        ((uint8_t)0x8) 
-#define UFB_MODE_BB               (PERIPH_BB_BASE + (MEMRMP_OFFSET * 32) + (UFB_MODE_BitNumber * 4)) 
-    
-/* ---  PMC Register ---*/ 
-/* Alias word address of MII_RMII_SEL bit */ 
-#define PMC_OFFSET                (SYSCFG_OFFSET + 0x04) 
-#define MII_RMII_SEL_BitNumber    ((uint8_t)0x17) 
-#define PMC_MII_RMII_SEL_BB       (PERIPH_BB_BASE + (PMC_OFFSET * 32) + (MII_RMII_SEL_BitNumber * 4)) 
-    
-/* ---  CMPCR Register ---*/ 
-/* Alias word address of CMP_PD bit */ 
-#define CMPCR_OFFSET              (SYSCFG_OFFSET + 0x20) 
-#define CMP_PD_BitNumber          ((uint8_t)0x00) 
-#define CMPCR_CMP_PD_BB           (PERIPH_BB_BASE + (CMPCR_OFFSET * 32) + (CMP_PD_BitNumber * 4)) 
+#define SYSCFG_OFFSET (SYSCFG_BASE - PERIPH_BASE)
+/* ---  MEMRMP Register ---*/
+/* Alias word address of UFB_MODE bit */
+#define MEMRMP_OFFSET SYSCFG_OFFSET
+#define UFB_MODE_BitNumber ((uint8_t)0x8)
+#define UFB_MODE_BB (PERIPH_BB_BASE + (MEMRMP_OFFSET * 32) + (UFB_MODE_BitNumber * 4))
 
-/* ---  MCHDLYCR Register ---*/ 
-/* Alias word address of BSCKSEL bit */ 
-#define MCHDLYCR_OFFSET            (SYSCFG_OFFSET + 0x30) 
-#define BSCKSEL_BIT_NUMBER         POSITION_VAL(SYSCFG_MCHDLYCR_BSCKSEL)
-#define MCHDLYCR_BSCKSEL_BB        (uint32_t)(PERIPH_BB_BASE + (MCHDLYCR_OFFSET * 32) + (BSCKSEL_BIT_NUMBER * 4))
+/* ---  PMC Register ---*/
+/* Alias word address of MII_RMII_SEL bit */
+#define PMC_OFFSET (SYSCFG_OFFSET + 0x04)
+#define MII_RMII_SEL_BitNumber ((uint8_t)0x17)
+#define PMC_MII_RMII_SEL_BB (PERIPH_BB_BASE + (PMC_OFFSET * 32) + (MII_RMII_SEL_BitNumber * 4))
+
+/* ---  CMPCR Register ---*/
+/* Alias word address of CMP_PD bit */
+#define CMPCR_OFFSET (SYSCFG_OFFSET + 0x20)
+#define CMP_PD_BitNumber ((uint8_t)0x00)
+#define CMPCR_CMP_PD_BB (PERIPH_BB_BASE + (CMPCR_OFFSET * 32) + (CMP_PD_BitNumber * 4))
+
+/* ---  MCHDLYCR Register ---*/
+/* Alias word address of BSCKSEL bit */
+#define MCHDLYCR_OFFSET (SYSCFG_OFFSET + 0x30)
+#define BSCKSEL_BIT_NUMBER POSITION_VAL(SYSCFG_MCHDLYCR_BSCKSEL)
+#define MCHDLYCR_BSCKSEL_BB (uint32_t)(PERIPH_BB_BASE + (MCHDLYCR_OFFSET * 32) + (BSCKSEL_BIT_NUMBER * 4))
 
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
@@ -94,7 +94,7 @@
 
 /** @defgroup SYSCFG_Private_Functions
   * @{
-  */ 
+  */
 
 /**
   * @brief  Deinitializes the Alternate Functions (remap and EXTI configuration)
@@ -104,8 +104,8 @@
   */
 void SYSCFG_DeInit(void)
 {
-   RCC_APB2PeriphResetCmd(RCC_APB2Periph_SYSCFG, ENABLE);
-   RCC_APB2PeriphResetCmd(RCC_APB2Periph_SYSCFG, DISABLE);
+    RCC_APB2PeriphResetCmd(RCC_APB2Periph_SYSCFG, ENABLE);
+    RCC_APB2PeriphResetCmd(RCC_APB2Periph_SYSCFG, DISABLE);
 }
 
 /**
@@ -123,10 +123,10 @@ void SYSCFG_DeInit(void)
   */
 void SYSCFG_MemoryRemapConfig(uint8_t SYSCFG_MemoryRemap)
 {
-  /* Check the parameters */
-  assert_param(IS_SYSCFG_MEMORY_REMAP_CONFING(SYSCFG_MemoryRemap));
+    /* Check the parameters */
+    assert_param(IS_SYSCFG_MEMORY_REMAP_CONFING(SYSCFG_MemoryRemap));
 
-  SYSCFG->MEMRMP = SYSCFG_MemoryRemap;
+    SYSCFG->MEMRMP = SYSCFG_MemoryRemap;
 }
 
 /**
@@ -144,10 +144,10 @@ void SYSCFG_MemoryRemapConfig(uint8_t SYSCFG_MemoryRemap)
   */
 void SYSCFG_MemorySwappingBank(FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
+    /* Check the parameters */
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-  *(__IO uint32_t *) UFB_MODE_BB = (uint32_t)NewState;
+    *(__IO uint32_t*)UFB_MODE_BB = (uint32_t)NewState;
 }
 
 /**
@@ -167,15 +167,15 @@ void SYSCFG_MemorySwappingBank(FunctionalState NewState)
   */
 void SYSCFG_EXTILineConfig(uint8_t EXTI_PortSourceGPIOx, uint8_t EXTI_PinSourcex)
 {
-  uint32_t tmp = 0x00;
+    uint32_t tmp = 0x00;
 
-  /* Check the parameters */
-  assert_param(IS_EXTI_PORT_SOURCE(EXTI_PortSourceGPIOx));
-  assert_param(IS_EXTI_PIN_SOURCE(EXTI_PinSourcex));
+    /* Check the parameters */
+    assert_param(IS_EXTI_PORT_SOURCE(EXTI_PortSourceGPIOx));
+    assert_param(IS_EXTI_PIN_SOURCE(EXTI_PinSourcex));
 
-  tmp = ((uint32_t)0x0F) << (0x04 * (EXTI_PinSourcex & (uint8_t)0x03));
-  SYSCFG->EXTICR[EXTI_PinSourcex >> 0x02] &= ~tmp;
-  SYSCFG->EXTICR[EXTI_PinSourcex >> 0x02] |= (((uint32_t)EXTI_PortSourceGPIOx) << (0x04 * (EXTI_PinSourcex & (uint8_t)0x03)));
+    tmp = ((uint32_t)0x0F) << (0x04 * (EXTI_PinSourcex & (uint8_t)0x03));
+    SYSCFG->EXTICR[EXTI_PinSourcex >> 0x02] &= ~tmp;
+    SYSCFG->EXTICR[EXTI_PinSourcex >> 0x02] |= (((uint32_t)EXTI_PortSourceGPIOx) << (0x04 * (EXTI_PinSourcex & (uint8_t)0x03)));
 }
 
 /**
@@ -186,11 +186,11 @@ void SYSCFG_EXTILineConfig(uint8_t EXTI_PortSourceGPIOx, uint8_t EXTI_PinSourcex
   *            @arg SYSCFG_ETH_MediaInterface_RMII: RMII mode selected 
   * @retval None 
   */
-void SYSCFG_ETH_MediaInterfaceConfig(uint32_t SYSCFG_ETH_MediaInterface) 
-{ 
-  assert_param(IS_SYSCFG_ETH_MEDIA_INTERFACE(SYSCFG_ETH_MediaInterface)); 
-  /* Configure MII_RMII selection bit */ 
-  *(__IO uint32_t *) PMC_MII_RMII_SEL_BB = SYSCFG_ETH_MediaInterface; 
+void SYSCFG_ETH_MediaInterfaceConfig(uint32_t SYSCFG_ETH_MediaInterface)
+{
+    assert_param(IS_SYSCFG_ETH_MEDIA_INTERFACE(SYSCFG_ETH_MediaInterface));
+    /* Configure MII_RMII selection bit */
+    *(__IO uint32_t*)PMC_MII_RMII_SEL_BB = SYSCFG_ETH_MediaInterface;
 }
 
 /**
@@ -205,10 +205,10 @@ void SYSCFG_ETH_MediaInterfaceConfig(uint32_t SYSCFG_ETH_MediaInterface)
   */
 void SYSCFG_CompensationCellCmd(FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
+    /* Check the parameters */
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-  *(__IO uint32_t *) CMPCR_CMP_PD_BB = (uint32_t)NewState;
+    *(__IO uint32_t*)CMPCR_CMP_PD_BB = (uint32_t)NewState;
 }
 
 /**
@@ -218,17 +218,15 @@ void SYSCFG_CompensationCellCmd(FunctionalState NewState)
   */
 FlagStatus SYSCFG_GetCompensationCellStatus(void)
 {
-  FlagStatus bitstatus = RESET;
-    
-  if ((SYSCFG->CMPCR & SYSCFG_CMPCR_READY ) != (uint32_t)RESET)
-  {
-    bitstatus = SET;
-  }
-  else
-  {
-    bitstatus = RESET;
-  }
-  return bitstatus;
+    FlagStatus bitstatus = RESET;
+
+    if((SYSCFG->CMPCR & SYSCFG_CMPCR_READY) != (uint32_t)RESET) {
+        bitstatus = SET;
+    }
+    else {
+        bitstatus = RESET;
+    }
+    return bitstatus;
 }
 
 #if defined(STM32F410xx) || defined(STM32F412xG) || defined(STM32F413_423xx)
@@ -244,10 +242,10 @@ FlagStatus SYSCFG_GetCompensationCellStatus(void)
   */
 void SYSCFG_BreakConfig(uint32_t SYSCFG_Break)
 {
-  /* Check the parameter */
-  assert_param(IS_SYSCFG_LOCK_CONFIG(SYSCFG_Break));
+    /* Check the parameter */
+    assert_param(IS_SYSCFG_LOCK_CONFIG(SYSCFG_Break));
 
-  SYSCFG->CFGR2 |= (uint32_t) SYSCFG_Break;
+    SYSCFG->CFGR2 |= (uint32_t)SYSCFG_Break;
 }
 #endif /* STM32F410xx || STM32F412xG || STM32F413_423xx */
 
@@ -260,12 +258,12 @@ void SYSCFG_BreakConfig(uint32_t SYSCFG_Break)
   */
 void DFSDM_BitstreamClock_SourceSelection(uint32_t source)
 {
-  uint32_t tmp = 0; 
-  
-  tmp = SYSCFG->MCHDLYCR;
-  tmp = (tmp &(~SYSCFG_MCHDLYCR_BSCKSEL));
+    uint32_t tmp = 0;
 
-  SYSCFG->MCHDLYCR  = (tmp|source);
+    tmp = SYSCFG->MCHDLYCR;
+    tmp = (tmp & (~SYSCFG_MCHDLYCR_BSCKSEL));
+
+    SYSCFG->MCHDLYCR = (tmp | source);
 }
 
 /**
@@ -276,19 +274,17 @@ void DFSDM_BitstreamClock_SourceSelection(uint32_t source)
   */
 void DFSDM_DisableDelayClock(uint32_t MCHDLY)
 {
-  uint32_t tmp = 0; 
-  
-  tmp = SYSCFG->MCHDLYCR;
-  if(MCHDLY == MCHDLY_CLOCK_DFSDM2)
-  {
-    tmp =tmp &(~SYSCFG_MCHDLYCR_MCHDLY2EN);
-  }
-  else
-  {
-    tmp =tmp &(~SYSCFG_MCHDLYCR_MCHDLY1EN);
-  }
+    uint32_t tmp = 0;
 
-  SYSCFG->MCHDLYCR  = tmp;
+    tmp = SYSCFG->MCHDLYCR;
+    if(MCHDLY == MCHDLY_CLOCK_DFSDM2) {
+        tmp = tmp & (~SYSCFG_MCHDLYCR_MCHDLY2EN);
+    }
+    else {
+        tmp = tmp & (~SYSCFG_MCHDLYCR_MCHDLY1EN);
+    }
+
+    SYSCFG->MCHDLYCR = tmp;
 }
 
 /**
@@ -299,12 +295,12 @@ void DFSDM_DisableDelayClock(uint32_t MCHDLY)
   */
 void DFSDM_EnableDelayClock(uint32_t MCHDLY)
 {
-  uint32_t tmp = 0; 
-  
-  tmp = SYSCFG->MCHDLYCR;
-  tmp = tmp & ~MCHDLY;
+    uint32_t tmp = 0;
 
-  SYSCFG->MCHDLYCR  = (tmp|MCHDLY);
+    tmp = SYSCFG->MCHDLYCR;
+    tmp = tmp & ~MCHDLY;
+
+    SYSCFG->MCHDLYCR = (tmp | MCHDLY);
 }
 
 /**
@@ -317,19 +313,17 @@ void DFSDM_EnableDelayClock(uint32_t MCHDLY)
   */
 void DFSDM_ClockIn_SourceSelection(uint32_t source)
 {
-  uint32_t tmp = 0; 
-  
-  tmp = SYSCFG->MCHDLYCR;
-  if((source == DFSDM2_CKIN_PAD) || (source == DFSDM2_CKIN_DM))
-  {
-    tmp =  (tmp & ~SYSCFG_MCHDLYCR_DFSDM2CFG);
-  }
-  else
-  {
-    tmp =  (tmp & ~SYSCFG_MCHDLYCR_DFSDM1CFG);
-  }
+    uint32_t tmp = 0;
 
-  SYSCFG->MCHDLYCR |= (source|tmp);
+    tmp = SYSCFG->MCHDLYCR;
+    if((source == DFSDM2_CKIN_PAD) || (source == DFSDM2_CKIN_DM)) {
+        tmp = (tmp & ~SYSCFG_MCHDLYCR_DFSDM2CFG);
+    }
+    else {
+        tmp = (tmp & ~SYSCFG_MCHDLYCR_DFSDM1CFG);
+    }
+
+    SYSCFG->MCHDLYCR |= (source | tmp);
 }
 
 /**
@@ -342,20 +336,18 @@ void DFSDM_ClockIn_SourceSelection(uint32_t source)
   */
 void DFSDM_ClockOut_SourceSelection(uint32_t source)
 {
-  uint32_t tmp = 0; 
-  
-  tmp = SYSCFG->MCHDLYCR;
+    uint32_t tmp = 0;
 
-  if((source == DFSDM2_CKOUT_DFSDM2) || (source == DFSDM2_CKOUT_M27))
-  {
-    tmp =  (tmp & ~SYSCFG_MCHDLYCR_DFSDM2CKOSEL);
-  }
-  else
-  {
-    tmp =  (tmp & ~SYSCFG_MCHDLYCR_DFSDM1CKOSEL);
-  }
+    tmp = SYSCFG->MCHDLYCR;
 
-  SYSCFG->MCHDLYCR |= (source|tmp);
+    if((source == DFSDM2_CKOUT_DFSDM2) || (source == DFSDM2_CKOUT_M27)) {
+        tmp = (tmp & ~SYSCFG_MCHDLYCR_DFSDM2CKOSEL);
+    }
+    else {
+        tmp = (tmp & ~SYSCFG_MCHDLYCR_DFSDM1CKOSEL);
+    }
+
+    SYSCFG->MCHDLYCR |= (source | tmp);
 }
 
 /**
@@ -368,19 +360,17 @@ void DFSDM_ClockOut_SourceSelection(uint32_t source)
   */
 void DFSDM_DataIn0_SourceSelection(uint32_t source)
 {
-  uint32_t tmp = 0; 
-  
-  tmp = SYSCFG->MCHDLYCR;
-  
-  if((source == DATAIN0_DFSDM2_PAD)|| (source == DATAIN0_DFSDM2_DATAIN1))
-  {
-    tmp =  (tmp & ~SYSCFG_MCHDLYCR_DFSDM2D0SEL);
-  }
-  else
-  {
-    tmp =  (tmp & ~SYSCFG_MCHDLYCR_DFSDM1D0SEL);
-  }
-  SYSCFG->MCHDLYCR |= (source|tmp);
+    uint32_t tmp = 0;
+
+    tmp = SYSCFG->MCHDLYCR;
+
+    if((source == DATAIN0_DFSDM2_PAD) || (source == DATAIN0_DFSDM2_DATAIN1)) {
+        tmp = (tmp & ~SYSCFG_MCHDLYCR_DFSDM2D0SEL);
+    }
+    else {
+        tmp = (tmp & ~SYSCFG_MCHDLYCR_DFSDM1D0SEL);
+    }
+    SYSCFG->MCHDLYCR |= (source | tmp);
 }
 
 /**
@@ -393,19 +383,17 @@ void DFSDM_DataIn0_SourceSelection(uint32_t source)
   */
 void DFSDM_DataIn2_SourceSelection(uint32_t source)
 {
-  uint32_t tmp = 0; 
-  
-  tmp = SYSCFG->MCHDLYCR;
-  
-  if((source == DATAIN2_DFSDM2_PAD)|| (source == DATAIN2_DFSDM2_DATAIN3))
-  {
-    tmp =  (tmp & ~SYSCFG_MCHDLYCR_DFSDM2D2SEL);
-  }
-  else
-  {
-    tmp =  (tmp & ~SYSCFG_MCHDLYCR_DFSDM1D2SEL);
-  }
-  SYSCFG->MCHDLYCR |= (source|tmp);
+    uint32_t tmp = 0;
+
+    tmp = SYSCFG->MCHDLYCR;
+
+    if((source == DATAIN2_DFSDM2_PAD) || (source == DATAIN2_DFSDM2_DATAIN3)) {
+        tmp = (tmp & ~SYSCFG_MCHDLYCR_DFSDM2D2SEL);
+    }
+    else {
+        tmp = (tmp & ~SYSCFG_MCHDLYCR_DFSDM1D2SEL);
+    }
+    SYSCFG->MCHDLYCR |= (source | tmp);
 }
 
 /**
@@ -416,12 +404,12 @@ void DFSDM_DataIn2_SourceSelection(uint32_t source)
   */
 void DFSDM_DataIn4_SourceSelection(uint32_t source)
 {
-  uint32_t tmp = 0; 
-  
-  tmp = SYSCFG->MCHDLYCR;
-  tmp =  (tmp & ~SYSCFG_MCHDLYCR_DFSDM2D4SEL);
+    uint32_t tmp = 0;
 
-  SYSCFG->MCHDLYCR |= (source|tmp);
+    tmp = SYSCFG->MCHDLYCR;
+    tmp = (tmp & ~SYSCFG_MCHDLYCR_DFSDM2D4SEL);
+
+    SYSCFG->MCHDLYCR |= (source | tmp);
 }
 
 /**
@@ -432,13 +420,13 @@ void DFSDM_DataIn4_SourceSelection(uint32_t source)
   */
 void DFSDM_DataIn6_SourceSelection(uint32_t source)
 {
-  uint32_t tmp = 0; 
-  
-  tmp = SYSCFG->MCHDLYCR;
-  
-  tmp =  (tmp & ~SYSCFG_MCHDLYCR_DFSDM2D6SEL);
+    uint32_t tmp = 0;
 
-  SYSCFG->MCHDLYCR |= (source|tmp);
+    tmp = SYSCFG->MCHDLYCR;
+
+    tmp = (tmp & ~SYSCFG_MCHDLYCR_DFSDM2D6SEL);
+
+    SYSCFG->MCHDLYCR |= (source | tmp);
 }
 
 /**
@@ -451,20 +439,18 @@ void DFSDM_DataIn6_SourceSelection(uint32_t source)
   */
 void DFSDM1_BitStreamClk_Config(uint32_t source)
 {
-  uint32_t tmp = 0; 
-  
-  tmp = SYSCFG->MCHDLYCR;
+    uint32_t tmp = 0;
 
-  if ((source == DFSDM1_CLKIN0_TIM4OC2) || (source == DFSDM1_CLKIN2_TIM4OC2))
-  {
-    tmp =  (tmp & ~SYSCFG_MCHDLYCR_DFSDM1CK02SEL);
-  }
-  else
-  {
-    tmp =  (tmp & ~SYSCFG_MCHDLYCR_DFSDM1CK13SEL);
-  }
+    tmp = SYSCFG->MCHDLYCR;
 
-  SYSCFG->MCHDLYCR |= (source|tmp);
+    if((source == DFSDM1_CLKIN0_TIM4OC2) || (source == DFSDM1_CLKIN2_TIM4OC2)) {
+        tmp = (tmp & ~SYSCFG_MCHDLYCR_DFSDM1CK02SEL);
+    }
+    else {
+        tmp = (tmp & ~SYSCFG_MCHDLYCR_DFSDM1CK13SEL);
+    }
+
+    SYSCFG->MCHDLYCR |= (source | tmp);
 }
 
 /**
@@ -481,28 +467,24 @@ void DFSDM1_BitStreamClk_Config(uint32_t source)
   */
 void DFSDM2_BitStreamClk_Config(uint32_t source)
 {
-  uint32_t tmp = 0; 
-  
-  tmp = SYSCFG->MCHDLYCR;
+    uint32_t tmp = 0;
 
-  if ((source == DFSDM2_CLKIN0_TIM3OC4) || (source == DFSDM2_CLKIN4_TIM3OC4))
-  {
-    tmp =  (tmp & ~SYSCFG_MCHDLYCR_DFSDM2CK04SEL);
-  }
-  else if ((source == DFSDM2_CLKIN1_TIM3OC3) || (source == DFSDM2_CLKIN5_TIM3OC3))
-  {
-    tmp =  (tmp & ~SYSCFG_MCHDLYCR_DFSDM2CK15SEL);
-    
-  }else  if ((source == DFSDM2_CLKIN2_TIM3OC2) || (source == DFSDM2_CLKIN6_TIM3OC2))
-  {
-    tmp =  (tmp & ~SYSCFG_MCHDLYCR_DFSDM2CK26SEL);
-  }
-  else
-  {
-    tmp =  (tmp & ~SYSCFG_MCHDLYCR_DFSDM2CK37SEL);
-  }
+    tmp = SYSCFG->MCHDLYCR;
 
-  SYSCFG->MCHDLYCR |= (source|tmp);
+    if((source == DFSDM2_CLKIN0_TIM3OC4) || (source == DFSDM2_CLKIN4_TIM3OC4)) {
+        tmp = (tmp & ~SYSCFG_MCHDLYCR_DFSDM2CK04SEL);
+    }
+    else if((source == DFSDM2_CLKIN1_TIM3OC3) || (source == DFSDM2_CLKIN5_TIM3OC3)) {
+        tmp = (tmp & ~SYSCFG_MCHDLYCR_DFSDM2CK15SEL);
+    }
+    else if((source == DFSDM2_CLKIN2_TIM3OC2) || (source == DFSDM2_CLKIN6_TIM3OC2)) {
+        tmp = (tmp & ~SYSCFG_MCHDLYCR_DFSDM2CK26SEL);
+    }
+    else {
+        tmp = (tmp & ~SYSCFG_MCHDLYCR_DFSDM2CK37SEL);
+    }
+
+    SYSCFG->MCHDLYCR |= (source | tmp);
 }
 
 #endif /* STM32F413_423xx */
@@ -518,4 +500,4 @@ void DFSDM2_BitStreamClk_Config(uint32_t source)
   * @}
   */
 
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/   
+/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

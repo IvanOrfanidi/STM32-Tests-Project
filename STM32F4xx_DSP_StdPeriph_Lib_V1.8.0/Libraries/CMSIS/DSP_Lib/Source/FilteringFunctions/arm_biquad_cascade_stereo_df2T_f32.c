@@ -150,87 +150,83 @@
 * @return none.      
 */
 
-
 LOW_OPTIMIZATION_ENTER
 void arm_biquad_cascade_stereo_df2T_f32(
-const arm_biquad_cascade_stereo_df2T_instance_f32 * S,
-float32_t * pSrc,
-float32_t * pDst,
-uint32_t blockSize)
+    const arm_biquad_cascade_stereo_df2T_instance_f32* S,
+    float32_t* pSrc,
+    float32_t* pDst,
+    uint32_t blockSize)
 {
-
-    float32_t *pIn = pSrc;                         /*  source pointer            */
-    float32_t *pOut = pDst;                        /*  destination pointer       */
-    float32_t *pState = S->pState;                 /*  State pointer             */
-    float32_t *pCoeffs = S->pCoeffs;               /*  coefficient pointer       */
-    float32_t acc1a, acc1b;                        /*  accumulator               */
-    float32_t b0, b1, b2, a1, a2;                  /*  Filter coefficients       */
-    float32_t Xn1a, Xn1b;                          /*  temporary input           */
-    float32_t d1a, d2a, d1b, d2b;                  /*  state variables           */
-    uint32_t sample, stage = S->numStages;         /*  loop counters             */
+    float32_t* pIn = pSrc;                 /*  source pointer            */
+    float32_t* pOut = pDst;                /*  destination pointer       */
+    float32_t* pState = S->pState;         /*  State pointer             */
+    float32_t* pCoeffs = S->pCoeffs;       /*  coefficient pointer       */
+    float32_t acc1a, acc1b;                /*  accumulator               */
+    float32_t b0, b1, b2, a1, a2;          /*  Filter coefficients       */
+    float32_t Xn1a, Xn1b;                  /*  temporary input           */
+    float32_t d1a, d2a, d1b, d2b;          /*  state variables           */
+    uint32_t sample, stage = S->numStages; /*  loop counters             */
 
 #if defined(ARM_MATH_CM7)
-	
-    float32_t Xn2a, Xn3a, Xn4a, Xn5a, Xn6a, Xn7a, Xn8a;         /*  Input State variables     */
-    float32_t Xn2b, Xn3b, Xn4b, Xn5b, Xn6b, Xn7b, Xn8b;         /*  Input State variables     */
-    float32_t acc2a, acc3a, acc4a, acc5a, acc6a, acc7a, acc8a;  /*  Simulates the accumulator */
-    float32_t acc2b, acc3b, acc4b, acc5b, acc6b, acc7b, acc8b;  /*  Simulates the accumulator */
 
-    do
-    {
-        /* Reading the coefficients */ 
-        b0 = pCoeffs[0]; 
-        b1 = pCoeffs[1]; 
-        b2 = pCoeffs[2]; 
-        a1 = pCoeffs[3]; 
-        /* Apply loop unrolling and compute 8 output values simultaneously. */ 
-        sample = blockSize >> 3u; 
-        a2 = pCoeffs[4]; 
+    float32_t Xn2a, Xn3a, Xn4a, Xn5a, Xn6a, Xn7a, Xn8a;        /*  Input State variables     */
+    float32_t Xn2b, Xn3b, Xn4b, Xn5b, Xn6b, Xn7b, Xn8b;        /*  Input State variables     */
+    float32_t acc2a, acc3a, acc4a, acc5a, acc6a, acc7a, acc8a; /*  Simulates the accumulator */
+    float32_t acc2b, acc3b, acc4b, acc5b, acc6b, acc7b, acc8b; /*  Simulates the accumulator */
 
-        /*Reading the state values */ 
-        d1a = pState[0]; 
-        d2a = pState[1]; 
-        d1b = pState[2]; 
-        d2b = pState[3]; 
+    do {
+        /* Reading the coefficients */
+        b0 = pCoeffs[0];
+        b1 = pCoeffs[1];
+        b2 = pCoeffs[2];
+        a1 = pCoeffs[3];
+        /* Apply loop unrolling and compute 8 output values simultaneously. */
+        sample = blockSize >> 3u;
+        a2 = pCoeffs[4];
+
+        /*Reading the state values */
+        d1a = pState[0];
+        d2a = pState[1];
+        d1b = pState[2];
+        d2b = pState[3];
 
         pCoeffs += 5u;
 
         /* First part of the processing with loop unrolling.  Compute 8 outputs at a time.       
         ** a second loop below computes the remaining 1 to 7 samples. */
         while(sample > 0u) {
-
             /* y[n] = b0 * x[n] + d1 */
             /* d1 = b1 * x[n] + a1 * y[n] + d2 */
             /* d2 = b2 * x[n] + a2 * y[n] */
 
             /* Read the first 2 inputs. 2 cycles */
-            Xn1a  = pIn[0 ];
-            Xn1b  = pIn[1 ];
+            Xn1a = pIn[0];
+            Xn1b = pIn[1];
 
             /* Sample 1. 5 cycles */
-            Xn2a  = pIn[2 ];
+            Xn2a = pIn[2];
             acc1a = b0 * Xn1a + d1a;
 
-            Xn2b  = pIn[3 ];
+            Xn2b = pIn[3];
             d1a = b1 * Xn1a + d2a;
 
-            Xn3a  = pIn[4 ];
+            Xn3a = pIn[4];
             d2a = b2 * Xn1a;
 
-            Xn3b  = pIn[5 ];
+            Xn3b = pIn[5];
             d1a += a1 * acc1a;
 
-            Xn4a  = pIn[6 ];
+            Xn4a = pIn[6];
             d2a += a2 * acc1a;
 
             /* Sample 2. 5 cycles */
-            Xn4b  = pIn[7 ];
+            Xn4b = pIn[7];
             acc1b = b0 * Xn1b + d1b;
 
-            Xn5a  = pIn[8 ];
+            Xn5a = pIn[8];
             d1b = b1 * Xn1b + d2b;
 
-            Xn5b = pIn[9 ];
+            Xn5b = pIn[9];
             d2b = b2 * Xn1b;
 
             Xn6a = pIn[10];
@@ -319,42 +315,42 @@ uint32_t blockSize)
             d2b += a2 * acc6b;
 
             /* Sample 13. 5 cycles */
-            acc7a = b0 * Xn7a + d1a;         
-            d1a = b1 * Xn7a + d2a;   
-            
-            pOut[0 ] = acc1a ;      
+            acc7a = b0 * Xn7a + d1a;
+            d1a = b1 * Xn7a + d2a;
+
+            pOut[0] = acc1a;
             d2a = b2 * Xn7a;
 
-            pOut[1 ] = acc1b ;	
+            pOut[1] = acc1b;
             d1a += a1 * acc7a;
 
-            pOut[2 ] = acc2a ;	
+            pOut[2] = acc2a;
             d2a += a2 * acc7a;
 
             /* Sample 14. 5 cycles */
-            pOut[3 ] = acc2b ;
+            pOut[3] = acc2b;
             acc7b = b0 * Xn7b + d1b;
 
-            pOut[4 ] = acc3a ; 
+            pOut[4] = acc3a;
             d1b = b1 * Xn7b + d2b;
 
-            pOut[5 ] = acc3b ;	
+            pOut[5] = acc3b;
             d2b = b2 * Xn7b;
 
-            pOut[6 ] = acc4a ;	  
+            pOut[6] = acc4a;
             d1b += a1 * acc7b;
 
-            pOut[7 ] = acc4b ;
+            pOut[7] = acc4b;
             d2b += a2 * acc7b;
 
             /* Sample 15. 5 cycles */
-            pOut[8 ] = acc5a ;  
+            pOut[8] = acc5a;
             acc8a = b0 * Xn8a + d1a;
 
-            pOut[9 ] = acc5b;	
+            pOut[9] = acc5b;
             d1a = b1 * Xn8a + d2a;
 
-            pOut[10] = acc6a;	
+            pOut[10] = acc6a;
             d2a = b2 * Xn8a;
 
             pOut[11] = acc6b;
@@ -364,16 +360,16 @@ uint32_t blockSize)
             d2a += a2 * acc8a;
 
             /* Sample 16. 5 cycles */
-            pOut[13] = acc7b;	
+            pOut[13] = acc7b;
             acc8b = b0 * Xn8b + d1b;
 
-            pOut[14] = acc8a;	
+            pOut[14] = acc8a;
             d1b = b1 * Xn8b + d2b;
 
             pOut[15] = acc8b;
             d2b = b2 * Xn8b;
 
-            sample--;	 
+            sample--;
             d1b += a1 * acc8b;
 
             pOut += 16;
@@ -383,8 +379,8 @@ uint32_t blockSize)
         sample = blockSize & 0x7u;
         while(sample > 0u) {
             /* Read the input */
-            Xn1a = *pIn++; //Channel a
-            Xn1b = *pIn++; //Channel b
+            Xn1a = *pIn++;    //Channel a
+            Xn1b = *pIn++;    //Channel b
 
             /* y[n] = b0 * x[n] + d1 */
             acc1a = (b0 * Xn1a) + d1a;
@@ -403,33 +399,32 @@ uint32_t blockSize)
             d2a = (b2 * Xn1a) + (a2 * acc1a);
             d2b = (b2 * Xn1b) + (a2 * acc1b);
 
-            sample--;	
+            sample--;
         }
 
-        /* Store the updated state variables back into the state array */ 
-        pState[0] = d1a; 
-        pState[1] = d2a;         
+        /* Store the updated state variables back into the state array */
+        pState[0] = d1a;
+        pState[1] = d2a;
 
-        pState[2] = d1b; 
-        pState[3] = d2b; 
-        
-        /* The current stage input is given as the output to the next stage */ 
-        pIn = pDst; 
-        /* decrement the loop counter */ 
-        stage--; 
+        pState[2] = d1b;
+        pState[3] = d2b;
+
+        /* The current stage input is given as the output to the next stage */
+        pIn = pDst;
+        /* decrement the loop counter */
+        stage--;
 
         pState += 4u;
-        /*Reset the output working pointer */ 
-        pOut = pDst; 
+        /*Reset the output working pointer */
+        pOut = pDst;
 
     } while(stage > 0u);
-	
+
 #elif defined(ARM_MATH_CM0_FAMILY)
 
     /* Run the below code for Cortex-M0 */
 
-    do
-    {
+    do {
         /* Reading the coefficients */
         b0 = *pCoeffs++;
         b1 = *pCoeffs++;
@@ -443,14 +438,12 @@ uint32_t blockSize)
         d1b = pState[2];
         d2b = pState[3];
 
-
         sample = blockSize;
 
-        while(sample > 0u)
-        {
+        while(sample > 0u) {
             /* Read the input */
-            Xn1a = *pIn++; //Channel a
-            Xn1b = *pIn++; //Channel b
+            Xn1a = *pIn++;    //Channel a
+            Xn1b = *pIn++;    //Channel b
 
             /* y[n] = b0 * x[n] + d1 */
             acc1a = (b0 * Xn1a) + d1a;
@@ -489,25 +482,24 @@ uint32_t blockSize)
         stage--;
 
     } while(stage > 0u);
-	 
+
 #else
 
-    float32_t Xn2a, Xn3a, Xn4a;                          /*  Input State variables     */
-    float32_t Xn2b, Xn3b, Xn4b;                          /*  Input State variables     */
-    float32_t acc2a, acc3a, acc4a;                       /*  accumulator               */
-    float32_t acc2b, acc3b, acc4b;                       /*  accumulator               */
+    float32_t Xn2a, Xn3a, Xn4a;    /*  Input State variables     */
+    float32_t Xn2b, Xn3b, Xn4b;    /*  Input State variables     */
+    float32_t acc2a, acc3a, acc4a; /*  accumulator               */
+    float32_t acc2b, acc3b, acc4b; /*  accumulator               */
     float32_t p0a, p1a, p2a, p3a, p4a, A1a;
     float32_t p0b, p1b, p2b, p3b, p4b, A1b;
 
     /* Run the below code for Cortex-M4 and Cortex-M3 */
-    do
-    {
-        /* Reading the coefficients */     
+    do {
+        /* Reading the coefficients */
         b0 = *pCoeffs++;
         b1 = *pCoeffs++;
         b2 = *pCoeffs++;
         a1 = *pCoeffs++;
-        a2 = *pCoeffs++;      
+        a2 = *pCoeffs++;
 
         /*Reading the state values */
         d1a = pState[0];
@@ -521,7 +513,6 @@ uint32_t blockSize)
         /* First part of the processing with loop unrolling.  Compute 4 outputs at a time.       
         ** a second loop below computes the remaining 1 to 3 samples. */
         while(sample > 0u) {
-
             /* y[n] = b0 * x[n] + d1 */
             /* d1 = b1 * x[n] + a1 * y[n] + d2 */
             /* d2 = b2 * x[n] + a2 * y[n] */
@@ -535,16 +526,16 @@ uint32_t blockSize)
             Xn3b = pIn[5];
             Xn4a = pIn[6];
             Xn4b = pIn[7];
-            pIn += 8;     
-            
-            p0a = b0 * Xn1a; 
-            p0b = b0 * Xn1b; 
+            pIn += 8;
+
+            p0a = b0 * Xn1a;
+            p0b = b0 * Xn1b;
             p1a = b1 * Xn1a;
             p1b = b1 * Xn1b;
             acc1a = p0a + d1a;
             acc1b = p0b + d1b;
-            p0a = b0 * Xn2a; 
-            p0b = b0 * Xn2b; 
+            p0a = b0 * Xn2a;
+            p0b = b0 * Xn2b;
             p3a = a1 * acc1a;
             p3b = a1 * acc1b;
             p2a = b2 * Xn1a;
@@ -557,13 +548,13 @@ uint32_t blockSize)
             d1b = A1b + d2b;
             d2a = p2a + p4a;
             d2b = p2b + p4b;
-            
+
             p1a = b1 * Xn2a;
             p1b = b1 * Xn2b;
             acc2a = p0a + d1a;
             acc2b = p0b + d1b;
-            p0a = b0 * Xn3a; 
-            p0b = b0 * Xn3b; 
+            p0a = b0 * Xn3a;
+            p0b = b0 * Xn3b;
             p3a = a1 * acc2a;
             p3b = a1 * acc2b;
             p2a = b2 * Xn2a;
@@ -576,13 +567,13 @@ uint32_t blockSize)
             d1b = A1b + d2b;
             d2a = p2a + p4a;
             d2b = p2b + p4b;
-            
+
             p1a = b1 * Xn3a;
             p1b = b1 * Xn3b;
             acc3a = p0a + d1a;
             acc3b = p0b + d1b;
-            p0a = b0 * Xn4a; 
-            p0b = b0 * Xn4b; 
+            p0a = b0 * Xn4a;
+            p0b = b0 * Xn4b;
             p3a = a1 * acc3a;
             p3b = a1 * acc3b;
             p2a = b2 * Xn3a;
@@ -595,7 +586,7 @@ uint32_t blockSize)
             d1b = A1b + d2b;
             d2a = p2a + p4a;
             d2b = p2b + p4b;
-            
+
             acc4a = p0a + d1a;
             acc4b = p0b + d1b;
             p1a = b1 * Xn4a;
@@ -613,17 +604,17 @@ uint32_t blockSize)
             d2a = p2a + p4a;
             d2b = p2b + p4b;
 
-            pOut[0] = acc1a;	
-            pOut[1] = acc1b;	
-            pOut[2] = acc2a;	
+            pOut[0] = acc1a;
+            pOut[1] = acc1b;
+            pOut[2] = acc2a;
             pOut[3] = acc2b;
-            pOut[4] = acc3a;	
-            pOut[5] = acc3b;	
-            pOut[6] = acc4a;	
+            pOut[4] = acc3a;
+            pOut[5] = acc3b;
+            pOut[6] = acc4a;
             pOut[7] = acc4b;
             pOut += 8;
-             
-            sample--;	       
+
+            sample--;
         }
 
         sample = blockSize & 0x3u;
@@ -631,8 +622,8 @@ uint32_t blockSize)
             Xn1a = *pIn++;
             Xn1b = *pIn++;
 
-            p0a = b0 * Xn1a; 
-            p0b = b0 * Xn1b; 
+            p0a = b0 * Xn1a;
+            p0b = b0 * Xn1b;
             p1a = b1 * Xn1a;
             p1b = b1 * Xn1b;
             acc1a = p0a + d1a;
@@ -653,7 +644,7 @@ uint32_t blockSize)
             *pOut++ = acc1a;
             *pOut++ = acc1b;
 
-            sample--;	       
+            sample--;
         }
 
         /* Store the updated state variables back into the state array */
@@ -673,8 +664,7 @@ uint32_t blockSize)
 
     } while(stage > 0u);
 
-#endif 
-
+#endif
 }
 LOW_OPTIMIZATION_EXIT
 

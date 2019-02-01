@@ -87,15 +87,15 @@
   * @brief FMPI2C driver modules
   * @{
   */
-#if defined(STM32F410xx) || defined(STM32F412xG)|| defined(STM32F413_423xx) || defined(STM32F446xx)
+#if defined(STM32F410xx) || defined(STM32F412xG) || defined(STM32F413_423xx) || defined(STM32F446xx)
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
 
-#define CR1_CLEAR_MASK          ((uint32_t)0x00CFE0FF)  /*<! FMPI2C CR1 clear register Mask */
-#define CR2_CLEAR_MASK          ((uint32_t)0x07FF7FFF)  /*<! FMPI2C CR2 clear register Mask */
-#define TIMING_CLEAR_MASK       ((uint32_t)0xF0FFFFFF)  /*<! FMPI2C TIMING clear register Mask */
-#define ERROR_IT_MASK           ((uint32_t)0x00003F00)  /*<! FMPI2C Error interrupt register Mask */
-#define TC_IT_MASK              ((uint32_t)0x000000C0)  /*<! FMPI2C TC interrupt register Mask */
+#define CR1_CLEAR_MASK ((uint32_t)0x00CFE0FF)    /*<! FMPI2C CR1 clear register Mask */
+#define CR2_CLEAR_MASK ((uint32_t)0x07FF7FFF)    /*<! FMPI2C CR2 clear register Mask */
+#define TIMING_CLEAR_MASK ((uint32_t)0xF0FFFFFF) /*<! FMPI2C TIMING clear register Mask */
+#define ERROR_IT_MASK ((uint32_t)0x00003F00)     /*<! FMPI2C Error interrupt register Mask */
+#define TC_IT_MASK ((uint32_t)0x000000C0)        /*<! FMPI2C TC interrupt register Mask */
 
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
@@ -105,7 +105,6 @@
 /** @defgroup FMPI2C_Private_Functions
   * @{
   */
-
 
 /** @defgroup FMPI2C_Group1 Initialization and Configuration functions
  *  @brief   Initialization and Configuration functions 
@@ -144,16 +143,15 @@
   */
 void FMPI2C_DeInit(FMPI2C_TypeDef* FMPI2Cx)
 {
-  /* Check the parameters */
-  assert_param(IS_FMPI2C_ALL_PERIPH(FMPI2Cx));
+    /* Check the parameters */
+    assert_param(IS_FMPI2C_ALL_PERIPH(FMPI2Cx));
 
-  if (FMPI2Cx == FMPI2C1)
-  {
-    /* Enable FMPI2C1 reset state */
-    RCC_APB1PeriphResetCmd(RCC_APB1Periph_FMPI2C1, ENABLE);
-    /* Release FMPI2C1 from reset state */
-    RCC_APB1PeriphResetCmd(RCC_APB1Periph_FMPI2C1, DISABLE);      
-  }
+    if(FMPI2Cx == FMPI2C1) {
+        /* Enable FMPI2C1 reset state */
+        RCC_APB1PeriphResetCmd(RCC_APB1Periph_FMPI2C1, ENABLE);
+        /* Release FMPI2C1 from reset state */
+        RCC_APB1PeriphResetCmd(RCC_APB1Periph_FMPI2C1, DISABLE);
+    }
 }
 
 /**
@@ -166,76 +164,76 @@ void FMPI2C_DeInit(FMPI2C_TypeDef* FMPI2Cx)
   */
 void FMPI2C_Init(FMPI2C_TypeDef* FMPI2Cx, FMPI2C_InitTypeDef* FMPI2C_InitStruct)
 {
-  uint32_t tmpreg = 0;
+    uint32_t tmpreg = 0;
 
-  /* Check the parameters */
-  assert_param(IS_FMPI2C_ALL_PERIPH(FMPI2Cx));
-  assert_param(IS_FMPI2C_ANALOG_FILTER(FMPI2C_InitStruct->FMPI2C_AnalogFilter));
-  assert_param(IS_FMPI2C_DIGITAL_FILTER(FMPI2C_InitStruct->FMPI2C_DigitalFilter));
-  assert_param(IS_FMPI2C_MODE(FMPI2C_InitStruct->FMPI2C_Mode));
-  assert_param(IS_FMPI2C_OWN_ADDRESS1(FMPI2C_InitStruct->FMPI2C_OwnAddress1));
-  assert_param(IS_FMPI2C_ACK(FMPI2C_InitStruct->FMPI2C_Ack));
-  assert_param(IS_FMPI2C_ACKNOWLEDGE_ADDRESS(FMPI2C_InitStruct->FMPI2C_AcknowledgedAddress));
+    /* Check the parameters */
+    assert_param(IS_FMPI2C_ALL_PERIPH(FMPI2Cx));
+    assert_param(IS_FMPI2C_ANALOG_FILTER(FMPI2C_InitStruct->FMPI2C_AnalogFilter));
+    assert_param(IS_FMPI2C_DIGITAL_FILTER(FMPI2C_InitStruct->FMPI2C_DigitalFilter));
+    assert_param(IS_FMPI2C_MODE(FMPI2C_InitStruct->FMPI2C_Mode));
+    assert_param(IS_FMPI2C_OWN_ADDRESS1(FMPI2C_InitStruct->FMPI2C_OwnAddress1));
+    assert_param(IS_FMPI2C_ACK(FMPI2C_InitStruct->FMPI2C_Ack));
+    assert_param(IS_FMPI2C_ACKNOWLEDGE_ADDRESS(FMPI2C_InitStruct->FMPI2C_AcknowledgedAddress));
 
-  /* Disable FMPI2Cx Peripheral */
-  FMPI2Cx->CR1 &= (uint32_t)~((uint32_t)FMPI2C_CR1_PE);
+    /* Disable FMPI2Cx Peripheral */
+    FMPI2Cx->CR1 &= (uint32_t) ~((uint32_t)FMPI2C_CR1_PE);
 
-  /*---------------------------- FMPI2Cx FILTERS Configuration ------------------*/
-  /* Get the FMPI2Cx CR1 value */
-  tmpreg = FMPI2Cx->CR1;
-  /* Clear FMPI2Cx CR1 register */
-  tmpreg &= CR1_CLEAR_MASK;
-  /* Configure FMPI2Cx: analog and digital filter */
-  /* Set ANFOFF bit according to FMPI2C_AnalogFilter value */
-  /* Set DFN bits according to FMPI2C_DigitalFilter value */
-  tmpreg |= (uint32_t)FMPI2C_InitStruct->FMPI2C_AnalogFilter |(FMPI2C_InitStruct->FMPI2C_DigitalFilter << 8);
-  
-  /* Write to FMPI2Cx CR1 */
-  FMPI2Cx->CR1 = tmpreg;
+    /*---------------------------- FMPI2Cx FILTERS Configuration ------------------*/
+    /* Get the FMPI2Cx CR1 value */
+    tmpreg = FMPI2Cx->CR1;
+    /* Clear FMPI2Cx CR1 register */
+    tmpreg &= CR1_CLEAR_MASK;
+    /* Configure FMPI2Cx: analog and digital filter */
+    /* Set ANFOFF bit according to FMPI2C_AnalogFilter value */
+    /* Set DFN bits according to FMPI2C_DigitalFilter value */
+    tmpreg |= (uint32_t)FMPI2C_InitStruct->FMPI2C_AnalogFilter | (FMPI2C_InitStruct->FMPI2C_DigitalFilter << 8);
 
-  /*---------------------------- FMPI2Cx TIMING Configuration -------------------*/
-  /* Configure FMPI2Cx: Timing */
-  /* Set TIMINGR bits according to FMPI2C_Timing */
-  /* Write to FMPI2Cx TIMING */
-  FMPI2Cx->TIMINGR = FMPI2C_InitStruct->FMPI2C_Timing & TIMING_CLEAR_MASK;
+    /* Write to FMPI2Cx CR1 */
+    FMPI2Cx->CR1 = tmpreg;
 
-  /* Enable FMPI2Cx Peripheral */
-  FMPI2Cx->CR1 |= FMPI2C_CR1_PE;
+    /*---------------------------- FMPI2Cx TIMING Configuration -------------------*/
+    /* Configure FMPI2Cx: Timing */
+    /* Set TIMINGR bits according to FMPI2C_Timing */
+    /* Write to FMPI2Cx TIMING */
+    FMPI2Cx->TIMINGR = FMPI2C_InitStruct->FMPI2C_Timing & TIMING_CLEAR_MASK;
 
-  /*---------------------------- FMPI2Cx OAR1 Configuration ---------------------*/
-  /* Clear tmpreg local variable */
-  tmpreg = 0;
-  /* Clear OAR1 register */
-  FMPI2Cx->OAR1 = (uint32_t)tmpreg;
-  /* Clear OAR2 register */
-  FMPI2Cx->OAR2 = (uint32_t)tmpreg;
-  /* Configure FMPI2Cx: Own Address1 and acknowledged address */
-  /* Set OA1MODE bit according to FMPI2C_AcknowledgedAddress value */
-  /* Set OA1 bits according to FMPI2C_OwnAddress1 value */
-  tmpreg = (uint32_t)((uint32_t)FMPI2C_InitStruct->FMPI2C_AcknowledgedAddress | \
-                      (uint32_t)FMPI2C_InitStruct->FMPI2C_OwnAddress1);
-  /* Write to FMPI2Cx OAR1 */
-  FMPI2Cx->OAR1 = tmpreg;
-  /* Enable Own Address1 acknowledgement */
-  FMPI2Cx->OAR1 |= FMPI2C_OAR1_OA1EN;
+    /* Enable FMPI2Cx Peripheral */
+    FMPI2Cx->CR1 |= FMPI2C_CR1_PE;
 
-  /*---------------------------- FMPI2Cx MODE Configuration ---------------------*/
-  /* Configure FMPI2Cx: mode */
-  /* Set SMBDEN and SMBHEN bits according to FMPI2C_Mode value */
-  tmpreg = FMPI2C_InitStruct->FMPI2C_Mode;
-  /* Write to FMPI2Cx CR1 */
-  FMPI2Cx->CR1 |= tmpreg;
+    /*---------------------------- FMPI2Cx OAR1 Configuration ---------------------*/
+    /* Clear tmpreg local variable */
+    tmpreg = 0;
+    /* Clear OAR1 register */
+    FMPI2Cx->OAR1 = (uint32_t)tmpreg;
+    /* Clear OAR2 register */
+    FMPI2Cx->OAR2 = (uint32_t)tmpreg;
+    /* Configure FMPI2Cx: Own Address1 and acknowledged address */
+    /* Set OA1MODE bit according to FMPI2C_AcknowledgedAddress value */
+    /* Set OA1 bits according to FMPI2C_OwnAddress1 value */
+    tmpreg = (uint32_t)((uint32_t)FMPI2C_InitStruct->FMPI2C_AcknowledgedAddress |
+                        (uint32_t)FMPI2C_InitStruct->FMPI2C_OwnAddress1);
+    /* Write to FMPI2Cx OAR1 */
+    FMPI2Cx->OAR1 = tmpreg;
+    /* Enable Own Address1 acknowledgement */
+    FMPI2Cx->OAR1 |= FMPI2C_OAR1_OA1EN;
 
-  /*---------------------------- FMPI2Cx ACK Configuration ----------------------*/
-  /* Get the FMPI2Cx CR2 value */
-  tmpreg = FMPI2Cx->CR2;
-  /* Clear FMPI2Cx CR2 register */
-  tmpreg &= CR2_CLEAR_MASK;
-  /* Configure FMPI2Cx: acknowledgement */
-  /* Set NACK bit according to FMPI2C_Ack value */
-  tmpreg |= FMPI2C_InitStruct->FMPI2C_Ack;
-  /* Write to FMPI2Cx CR2 */
-  FMPI2Cx->CR2 = tmpreg;
+    /*---------------------------- FMPI2Cx MODE Configuration ---------------------*/
+    /* Configure FMPI2Cx: mode */
+    /* Set SMBDEN and SMBHEN bits according to FMPI2C_Mode value */
+    tmpreg = FMPI2C_InitStruct->FMPI2C_Mode;
+    /* Write to FMPI2Cx CR1 */
+    FMPI2Cx->CR1 |= tmpreg;
+
+    /*---------------------------- FMPI2Cx ACK Configuration ----------------------*/
+    /* Get the FMPI2Cx CR2 value */
+    tmpreg = FMPI2Cx->CR2;
+    /* Clear FMPI2Cx CR2 register */
+    tmpreg &= CR2_CLEAR_MASK;
+    /* Configure FMPI2Cx: acknowledgement */
+    /* Set NACK bit according to FMPI2C_Ack value */
+    tmpreg |= FMPI2C_InitStruct->FMPI2C_Ack;
+    /* Write to FMPI2Cx CR2 */
+    FMPI2Cx->CR2 = tmpreg;
 }
 
 /**
@@ -245,21 +243,21 @@ void FMPI2C_Init(FMPI2C_TypeDef* FMPI2Cx, FMPI2C_InitTypeDef* FMPI2C_InitStruct)
   */
 void FMPI2C_StructInit(FMPI2C_InitTypeDef* FMPI2C_InitStruct)
 {
-  /*---------------- Reset FMPI2C init structure parameters values --------------*/
-  /* Initialize the FMPI2C_Timing member */
-  FMPI2C_InitStruct->FMPI2C_Timing = 0;
-  /* Initialize the FMPI2C_AnalogFilter member */
-  FMPI2C_InitStruct->FMPI2C_AnalogFilter = FMPI2C_AnalogFilter_Enable;
-  /* Initialize the FMPI2C_DigitalFilter member */
-  FMPI2C_InitStruct->FMPI2C_DigitalFilter = 0;
-  /* Initialize the FMPI2C_Mode member */
-  FMPI2C_InitStruct->FMPI2C_Mode = FMPI2C_Mode_FMPI2C;
-  /* Initialize the FMPI2C_OwnAddress1 member */
-  FMPI2C_InitStruct->FMPI2C_OwnAddress1 = 0;
-  /* Initialize the FMPI2C_Ack member */
-  FMPI2C_InitStruct->FMPI2C_Ack = FMPI2C_Ack_Disable;
-  /* Initialize the FMPI2C_AcknowledgedAddress member */
-  FMPI2C_InitStruct->FMPI2C_AcknowledgedAddress = FMPI2C_AcknowledgedAddress_7bit;
+    /*---------------- Reset FMPI2C init structure parameters values --------------*/
+    /* Initialize the FMPI2C_Timing member */
+    FMPI2C_InitStruct->FMPI2C_Timing = 0;
+    /* Initialize the FMPI2C_AnalogFilter member */
+    FMPI2C_InitStruct->FMPI2C_AnalogFilter = FMPI2C_AnalogFilter_Enable;
+    /* Initialize the FMPI2C_DigitalFilter member */
+    FMPI2C_InitStruct->FMPI2C_DigitalFilter = 0;
+    /* Initialize the FMPI2C_Mode member */
+    FMPI2C_InitStruct->FMPI2C_Mode = FMPI2C_Mode_FMPI2C;
+    /* Initialize the FMPI2C_OwnAddress1 member */
+    FMPI2C_InitStruct->FMPI2C_OwnAddress1 = 0;
+    /* Initialize the FMPI2C_Ack member */
+    FMPI2C_InitStruct->FMPI2C_Ack = FMPI2C_Ack_Disable;
+    /* Initialize the FMPI2C_AcknowledgedAddress member */
+    FMPI2C_InitStruct->FMPI2C_AcknowledgedAddress = FMPI2C_AcknowledgedAddress_7bit;
 }
 
 /**
@@ -271,21 +269,18 @@ void FMPI2C_StructInit(FMPI2C_InitTypeDef* FMPI2C_InitStruct)
   */
 void FMPI2C_Cmd(FMPI2C_TypeDef* FMPI2Cx, FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_FMPI2C_ALL_PERIPH(FMPI2Cx));
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
-  if (NewState != DISABLE)
-  {
-    /* Enable the selected FMPI2C peripheral */
-    FMPI2Cx->CR1 |= FMPI2C_CR1_PE;
-  }
-  else
-  {
-    /* Disable the selected FMPI2C peripheral */
-    FMPI2Cx->CR1 &= (uint32_t)~((uint32_t)FMPI2C_CR1_PE);
-  }
+    /* Check the parameters */
+    assert_param(IS_FMPI2C_ALL_PERIPH(FMPI2Cx));
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
+    if(NewState != DISABLE) {
+        /* Enable the selected FMPI2C peripheral */
+        FMPI2Cx->CR1 |= FMPI2C_CR1_PE;
+    }
+    else {
+        /* Disable the selected FMPI2C peripheral */
+        FMPI2Cx->CR1 &= (uint32_t) ~((uint32_t)FMPI2C_CR1_PE);
+    }
 }
-
 
 /**
   * @brief  Enables or disables the specified FMPI2C software reset.
@@ -294,18 +289,18 @@ void FMPI2C_Cmd(FMPI2C_TypeDef* FMPI2Cx, FunctionalState NewState)
   */
 void FMPI2C_SoftwareResetCmd(FMPI2C_TypeDef* FMPI2Cx)
 {
-  /* Check the parameters */
-  assert_param(IS_FMPI2C_ALL_PERIPH(FMPI2Cx));
+    /* Check the parameters */
+    assert_param(IS_FMPI2C_ALL_PERIPH(FMPI2Cx));
 
-  /* Disable peripheral */
-  FMPI2Cx->CR1 &= (uint32_t)~((uint32_t)FMPI2C_CR1_PE);
+    /* Disable peripheral */
+    FMPI2Cx->CR1 &= (uint32_t) ~((uint32_t)FMPI2C_CR1_PE);
 
-  /* Perform a dummy read to delay the disable of peripheral for minimum
+    /* Perform a dummy read to delay the disable of peripheral for minimum
      3 APB clock cycles to perform the software reset functionality */
-  *(__IO uint32_t *)(uint32_t)FMPI2Cx; 
+    *(__IO uint32_t*)(uint32_t)FMPI2Cx;
 
-  /* Enable peripheral */
-  FMPI2Cx->CR1 |= FMPI2C_CR1_PE;
+    /* Enable peripheral */
+    FMPI2Cx->CR1 |= FMPI2C_CR1_PE;
 }
 
 /**
@@ -326,21 +321,19 @@ void FMPI2C_SoftwareResetCmd(FMPI2C_TypeDef* FMPI2Cx)
   */
 void FMPI2C_ITConfig(FMPI2C_TypeDef* FMPI2Cx, uint32_t FMPI2C_IT, FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_FMPI2C_ALL_PERIPH(FMPI2Cx));
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
-  assert_param(IS_FMPI2C_CONFIG_IT(FMPI2C_IT));
-  
-  if (NewState != DISABLE)
-  {
-    /* Enable the selected FMPI2C interrupts */
-    FMPI2Cx->CR1 |= FMPI2C_IT;
-  }
-  else
-  {
-    /* Disable the selected FMPI2C interrupts */
-    FMPI2Cx->CR1 &= (uint32_t)~((uint32_t)FMPI2C_IT);
-  }
+    /* Check the parameters */
+    assert_param(IS_FMPI2C_ALL_PERIPH(FMPI2Cx));
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
+    assert_param(IS_FMPI2C_CONFIG_IT(FMPI2C_IT));
+
+    if(NewState != DISABLE) {
+        /* Enable the selected FMPI2C interrupts */
+        FMPI2Cx->CR1 |= FMPI2C_IT;
+    }
+    else {
+        /* Disable the selected FMPI2C interrupts */
+        FMPI2Cx->CR1 &= (uint32_t) ~((uint32_t)FMPI2C_IT);
+    }
 }
 
 /**
@@ -352,20 +345,18 @@ void FMPI2C_ITConfig(FMPI2C_TypeDef* FMPI2Cx, uint32_t FMPI2C_IT, FunctionalStat
   */
 void FMPI2C_StretchClockCmd(FMPI2C_TypeDef* FMPI2Cx, FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_FMPI2C_ALL_PERIPH(FMPI2Cx));
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
-  
-  if (NewState != DISABLE)
-  {
-    /* Enable clock stretching */
-    FMPI2Cx->CR1 &= (uint32_t)~((uint32_t)FMPI2C_CR1_NOSTRETCH);    
-  }
-  else
-  {
-    /* Disable clock stretching  */
-    FMPI2Cx->CR1 |= FMPI2C_CR1_NOSTRETCH;
-  }
+    /* Check the parameters */
+    assert_param(IS_FMPI2C_ALL_PERIPH(FMPI2Cx));
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
+
+    if(NewState != DISABLE) {
+        /* Enable clock stretching */
+        FMPI2Cx->CR1 &= (uint32_t) ~((uint32_t)FMPI2C_CR1_NOSTRETCH);
+    }
+    else {
+        /* Disable clock stretching  */
+        FMPI2Cx->CR1 |= FMPI2C_CR1_NOSTRETCH;
+    }
 }
 
 /**
@@ -377,21 +368,19 @@ void FMPI2C_StretchClockCmd(FMPI2C_TypeDef* FMPI2Cx, FunctionalState NewState)
   */
 void FMPI2C_DualAddressCmd(FMPI2C_TypeDef* FMPI2Cx, FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_FMPI2C_ALL_PERIPH(FMPI2Cx));
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
-  
-  if (NewState != DISABLE)
-  {
-    /* Enable own address 2 */
-    FMPI2Cx->OAR2 |= FMPI2C_OAR2_OA2EN;
-  }
-  else
-  {
-    /* Disable own address 2 */
-    FMPI2Cx->OAR2 &= (uint32_t)~((uint32_t)FMPI2C_OAR2_OA2EN);
-  }
-}    
+    /* Check the parameters */
+    assert_param(IS_FMPI2C_ALL_PERIPH(FMPI2Cx));
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
+
+    if(NewState != DISABLE) {
+        /* Enable own address 2 */
+        FMPI2Cx->OAR2 |= FMPI2C_OAR2_OA2EN;
+    }
+    else {
+        /* Disable own address 2 */
+        FMPI2Cx->OAR2 &= (uint32_t) ~((uint32_t)FMPI2C_OAR2_OA2EN);
+    }
+}
 
 /**
   * @brief  Configures the FMPI2C slave own address 2 and mask.
@@ -411,25 +400,25 @@ void FMPI2C_DualAddressCmd(FMPI2C_TypeDef* FMPI2Cx, FunctionalState NewState)
   */
 void FMPI2C_OwnAddress2Config(FMPI2C_TypeDef* FMPI2Cx, uint16_t Address, uint8_t Mask)
 {
-  uint32_t tmpreg = 0;
+    uint32_t tmpreg = 0;
 
-  /* Check the parameters */
-  assert_param(IS_FMPI2C_ALL_PERIPH(FMPI2Cx));
-  assert_param(IS_FMPI2C_OWN_ADDRESS2(Address));
-  assert_param(IS_FMPI2C_OWN_ADDRESS2_MASK(Mask));
-  
-  /* Get the old register value */
-  tmpreg = FMPI2Cx->OAR2;
+    /* Check the parameters */
+    assert_param(IS_FMPI2C_ALL_PERIPH(FMPI2Cx));
+    assert_param(IS_FMPI2C_OWN_ADDRESS2(Address));
+    assert_param(IS_FMPI2C_OWN_ADDRESS2_MASK(Mask));
 
-  /* Reset FMPI2Cx OA2 bit [7:1] and OA2MSK bit [1:0]  */
-  tmpreg &= (uint32_t)~((uint32_t)(FMPI2C_OAR2_OA2 | FMPI2C_OAR2_OA2MSK));
+    /* Get the old register value */
+    tmpreg = FMPI2Cx->OAR2;
 
-  /* Set FMPI2Cx SADD */
-  tmpreg |= (uint32_t)(((uint32_t)Address & FMPI2C_OAR2_OA2) | \
-            (((uint32_t)Mask << 8) & FMPI2C_OAR2_OA2MSK)) ;
+    /* Reset FMPI2Cx OA2 bit [7:1] and OA2MSK bit [1:0]  */
+    tmpreg &= (uint32_t) ~((uint32_t)(FMPI2C_OAR2_OA2 | FMPI2C_OAR2_OA2MSK));
 
-  /* Store the new register value */
-  FMPI2Cx->OAR2 = tmpreg;
+    /* Set FMPI2Cx SADD */
+    tmpreg |= (uint32_t)(((uint32_t)Address & FMPI2C_OAR2_OA2) |
+                         (((uint32_t)Mask << 8) & FMPI2C_OAR2_OA2MSK));
+
+    /* Store the new register value */
+    FMPI2Cx->OAR2 = tmpreg;
 }
 
 /**
@@ -441,21 +430,19 @@ void FMPI2C_OwnAddress2Config(FMPI2C_TypeDef* FMPI2Cx, uint16_t Address, uint8_t
   */
 void FMPI2C_GeneralCallCmd(FMPI2C_TypeDef* FMPI2Cx, FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_FMPI2C_ALL_PERIPH(FMPI2Cx));
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
-  
-  if (NewState != DISABLE)
-  {
-    /* Enable general call mode */
-    FMPI2Cx->CR1 |= FMPI2C_CR1_GCEN;
-  }
-  else
-  {
-    /* Disable general call mode */
-    FMPI2Cx->CR1 &= (uint32_t)~((uint32_t)FMPI2C_CR1_GCEN);
-  }
-} 
+    /* Check the parameters */
+    assert_param(IS_FMPI2C_ALL_PERIPH(FMPI2Cx));
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
+
+    if(NewState != DISABLE) {
+        /* Enable general call mode */
+        FMPI2Cx->CR1 |= FMPI2C_CR1_GCEN;
+    }
+    else {
+        /* Disable general call mode */
+        FMPI2Cx->CR1 &= (uint32_t) ~((uint32_t)FMPI2C_CR1_GCEN);
+    }
+}
 
 /**
   * @brief  Enables or disables the FMPI2C slave byte control.
@@ -466,20 +453,18 @@ void FMPI2C_GeneralCallCmd(FMPI2C_TypeDef* FMPI2Cx, FunctionalState NewState)
   */
 void FMPI2C_SlaveByteControlCmd(FMPI2C_TypeDef* FMPI2Cx, FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_FMPI2C_ALL_PERIPH(FMPI2Cx));
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
-  
-  if (NewState != DISABLE)
-  {
-    /* Enable slave byte control */
-    FMPI2Cx->CR1 |= FMPI2C_CR1_SBC;
-  }
-  else
-  {
-    /* Disable slave byte control */
-    FMPI2Cx->CR1 &= (uint32_t)~((uint32_t)FMPI2C_CR1_SBC);
-  }
+    /* Check the parameters */
+    assert_param(IS_FMPI2C_ALL_PERIPH(FMPI2Cx));
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
+
+    if(NewState != DISABLE) {
+        /* Enable slave byte control */
+        FMPI2Cx->CR1 |= FMPI2C_CR1_SBC;
+    }
+    else {
+        /* Disable slave byte control */
+        FMPI2Cx->CR1 &= (uint32_t) ~((uint32_t)FMPI2C_CR1_SBC);
+    }
 }
 
 /**
@@ -491,25 +476,25 @@ void FMPI2C_SlaveByteControlCmd(FMPI2C_TypeDef* FMPI2Cx, FunctionalState NewStat
   */
 void FMPI2C_SlaveAddressConfig(FMPI2C_TypeDef* FMPI2Cx, uint16_t Address)
 {
-  uint32_t tmpreg = 0;
+    uint32_t tmpreg = 0;
 
-  /* Check the parameters */
-  assert_param(IS_FMPI2C_ALL_PERIPH(FMPI2Cx));
-  assert_param(IS_FMPI2C_SLAVE_ADDRESS(Address));
-               
-  /* Get the old register value */
-  tmpreg = FMPI2Cx->CR2;
+    /* Check the parameters */
+    assert_param(IS_FMPI2C_ALL_PERIPH(FMPI2Cx));
+    assert_param(IS_FMPI2C_SLAVE_ADDRESS(Address));
 
-  /* Reset FMPI2Cx SADD bit [9:0] */
-  tmpreg &= (uint32_t)~((uint32_t)FMPI2C_CR2_SADD);
+    /* Get the old register value */
+    tmpreg = FMPI2Cx->CR2;
 
-  /* Set FMPI2Cx SADD */
-  tmpreg |= (uint32_t)((uint32_t)Address & FMPI2C_CR2_SADD);
+    /* Reset FMPI2Cx SADD bit [9:0] */
+    tmpreg &= (uint32_t) ~((uint32_t)FMPI2C_CR2_SADD);
 
-  /* Store the new register value */
-  FMPI2Cx->CR2 = tmpreg;
+    /* Set FMPI2Cx SADD */
+    tmpreg |= (uint32_t)((uint32_t)Address & FMPI2C_CR2_SADD);
+
+    /* Store the new register value */
+    FMPI2Cx->CR2 = tmpreg;
 }
-  
+
 /**
   * @brief  Enables or disables the FMPI2C 10-bit addressing mode for the master.
   * @param  FMPI2Cx: where x can be 1 to select the FMPI2C peripheral.
@@ -520,26 +505,23 @@ void FMPI2C_SlaveAddressConfig(FMPI2C_TypeDef* FMPI2Cx, uint16_t Address)
   */
 void FMPI2C_10BitAddressingModeCmd(FMPI2C_TypeDef* FMPI2Cx, FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_FMPI2C_ALL_PERIPH(FMPI2Cx));
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
-  
-  if (NewState != DISABLE)
-  {
-    /* Enable 10-bit addressing mode */
-    FMPI2Cx->CR2 |= FMPI2C_CR2_ADD10;
-  }
-  else
-  {
-    /* Disable 10-bit addressing mode */
-    FMPI2Cx->CR2 &= (uint32_t)~((uint32_t)FMPI2C_CR2_ADD10);
-  }
-} 
+    /* Check the parameters */
+    assert_param(IS_FMPI2C_ALL_PERIPH(FMPI2Cx));
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
+
+    if(NewState != DISABLE) {
+        /* Enable 10-bit addressing mode */
+        FMPI2Cx->CR2 |= FMPI2C_CR2_ADD10;
+    }
+    else {
+        /* Disable 10-bit addressing mode */
+        FMPI2Cx->CR2 &= (uint32_t) ~((uint32_t)FMPI2C_CR2_ADD10);
+    }
+}
 
 /**
   * @}
   */
-
 
 /** @defgroup FMPI2C_Group2 Communications handling functions
  *  @brief   Communications handling functions 
@@ -573,7 +555,7 @@ void FMPI2C_10BitAddressingModeCmd(FMPI2C_TypeDef* FMPI2Cx, FunctionalState NewS
 @endverbatim
   * @{
   */
-  
+
 /**
   * @brief  Enables or disables the FMPI2C automatic end mode (stop condition is 
   *         automatically sent when nbytes data are transferred).
@@ -585,21 +567,19 @@ void FMPI2C_10BitAddressingModeCmd(FMPI2C_TypeDef* FMPI2Cx, FunctionalState NewS
   */
 void FMPI2C_AutoEndCmd(FMPI2C_TypeDef* FMPI2Cx, FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_FMPI2C_ALL_PERIPH(FMPI2Cx));
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
-  
-  if (NewState != DISABLE)
-  {
-    /* Enable Auto end mode */
-    FMPI2Cx->CR2 |= FMPI2C_CR2_AUTOEND;
-  }
-  else
-  {
-    /* Disable Auto end mode */
-    FMPI2Cx->CR2 &= (uint32_t)~((uint32_t)FMPI2C_CR2_AUTOEND);
-  }
-} 
+    /* Check the parameters */
+    assert_param(IS_FMPI2C_ALL_PERIPH(FMPI2Cx));
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
+
+    if(NewState != DISABLE) {
+        /* Enable Auto end mode */
+        FMPI2Cx->CR2 |= FMPI2C_CR2_AUTOEND;
+    }
+    else {
+        /* Disable Auto end mode */
+        FMPI2Cx->CR2 &= (uint32_t) ~((uint32_t)FMPI2C_CR2_AUTOEND);
+    }
+}
 
 /**
   * @brief  Enables or disables the FMPI2C nbytes reload mode.
@@ -610,20 +590,18 @@ void FMPI2C_AutoEndCmd(FMPI2C_TypeDef* FMPI2Cx, FunctionalState NewState)
   */
 void FMPI2C_ReloadCmd(FMPI2C_TypeDef* FMPI2Cx, FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_FMPI2C_ALL_PERIPH(FMPI2Cx));
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
-  
-  if (NewState != DISABLE)
-  {
-    /* Enable Auto Reload mode */
-    FMPI2Cx->CR2 |= FMPI2C_CR2_RELOAD;
-  }
-  else
-  {
-    /* Disable Auto Reload mode */
-    FMPI2Cx->CR2 &= (uint32_t)~((uint32_t)FMPI2C_CR2_RELOAD);
-  }
+    /* Check the parameters */
+    assert_param(IS_FMPI2C_ALL_PERIPH(FMPI2Cx));
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
+
+    if(NewState != DISABLE) {
+        /* Enable Auto Reload mode */
+        FMPI2Cx->CR2 |= FMPI2C_CR2_RELOAD;
+    }
+    else {
+        /* Disable Auto Reload mode */
+        FMPI2Cx->CR2 &= (uint32_t) ~((uint32_t)FMPI2C_CR2_RELOAD);
+    }
 }
 
 /**
@@ -634,24 +612,24 @@ void FMPI2C_ReloadCmd(FMPI2C_TypeDef* FMPI2Cx, FunctionalState NewState)
   */
 void FMPI2C_NumberOfBytesConfig(FMPI2C_TypeDef* FMPI2Cx, uint8_t Number_Bytes)
 {
-  uint32_t tmpreg = 0;
+    uint32_t tmpreg = 0;
 
-  /* Check the parameters */
-  assert_param(IS_FMPI2C_ALL_PERIPH(FMPI2Cx));
+    /* Check the parameters */
+    assert_param(IS_FMPI2C_ALL_PERIPH(FMPI2Cx));
 
-  /* Get the old register value */
-  tmpreg = FMPI2Cx->CR2;
+    /* Get the old register value */
+    tmpreg = FMPI2Cx->CR2;
 
-  /* Reset FMPI2Cx Nbytes bit [7:0] */
-  tmpreg &= (uint32_t)~((uint32_t)FMPI2C_CR2_NBYTES);
+    /* Reset FMPI2Cx Nbytes bit [7:0] */
+    tmpreg &= (uint32_t) ~((uint32_t)FMPI2C_CR2_NBYTES);
 
-  /* Set FMPI2Cx Nbytes */
-  tmpreg |= (uint32_t)(((uint32_t)Number_Bytes << 16 ) & FMPI2C_CR2_NBYTES);
+    /* Set FMPI2Cx Nbytes */
+    tmpreg |= (uint32_t)(((uint32_t)Number_Bytes << 16) & FMPI2C_CR2_NBYTES);
 
-  /* Store the new register value */
-  FMPI2Cx->CR2 = tmpreg;
-}  
-  
+    /* Store the new register value */
+    FMPI2Cx->CR2 = tmpreg;
+}
+
 /**
   * @brief  Configures the type of transfer request for the master.
   * @param  FMPI2Cx: where x can be 1 to select the FMPI2C peripheral.
@@ -663,23 +641,21 @@ void FMPI2C_NumberOfBytesConfig(FMPI2C_TypeDef* FMPI2Cx, uint8_t Number_Bytes)
   */
 void FMPI2C_MasterRequestConfig(FMPI2C_TypeDef* FMPI2Cx, uint16_t FMPI2C_Direction)
 {
-/* Check the parameters */
-  assert_param(IS_FMPI2C_ALL_PERIPH(FMPI2Cx));
-  assert_param(IS_FMPI2C_DIRECTION(FMPI2C_Direction));
-  
-  /* Test on the direction to set/reset the read/write bit */
-  if (FMPI2C_Direction == FMPI2C_Direction_Transmitter)
-  {
-    /* Request a write Transfer */
-    FMPI2Cx->CR2 &= (uint32_t)~((uint32_t)FMPI2C_CR2_RD_WRN);
-  }
-  else
-  {
-    /* Request a read Transfer */
-    FMPI2Cx->CR2 |= FMPI2C_CR2_RD_WRN;
-  }
-}  
-  
+    /* Check the parameters */
+    assert_param(IS_FMPI2C_ALL_PERIPH(FMPI2Cx));
+    assert_param(IS_FMPI2C_DIRECTION(FMPI2C_Direction));
+
+    /* Test on the direction to set/reset the read/write bit */
+    if(FMPI2C_Direction == FMPI2C_Direction_Transmitter) {
+        /* Request a write Transfer */
+        FMPI2Cx->CR2 &= (uint32_t) ~((uint32_t)FMPI2C_CR2_RD_WRN);
+    }
+    else {
+        /* Request a read Transfer */
+        FMPI2Cx->CR2 |= FMPI2C_CR2_RD_WRN;
+    }
+}
+
 /**
   * @brief  Generates FMPI2Cx communication START condition.
   * @param  FMPI2Cx: where x can be 1 to select the FMPI2C peripheral.
@@ -689,22 +665,20 @@ void FMPI2C_MasterRequestConfig(FMPI2C_TypeDef* FMPI2Cx, uint16_t FMPI2C_Directi
   */
 void FMPI2C_GenerateSTART(FMPI2C_TypeDef* FMPI2Cx, FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_FMPI2C_ALL_PERIPH(FMPI2Cx));
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
-  
-  if (NewState != DISABLE)
-  {
-    /* Generate a START condition */
-    FMPI2Cx->CR2 |= FMPI2C_CR2_START;
-  }
-  else
-  {
-    /* Disable the START condition generation */
-    FMPI2Cx->CR2 &= (uint32_t)~((uint32_t)FMPI2C_CR2_START);
-  }
-}  
-  
+    /* Check the parameters */
+    assert_param(IS_FMPI2C_ALL_PERIPH(FMPI2Cx));
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
+
+    if(NewState != DISABLE) {
+        /* Generate a START condition */
+        FMPI2Cx->CR2 |= FMPI2C_CR2_START;
+    }
+    else {
+        /* Disable the START condition generation */
+        FMPI2Cx->CR2 &= (uint32_t) ~((uint32_t)FMPI2C_CR2_START);
+    }
+}
+
 /**
   * @brief  Generates FMPI2Cx communication STOP condition.
   * @param  FMPI2Cx: where x can be 1 to select the FMPI2C peripheral.
@@ -714,21 +688,19 @@ void FMPI2C_GenerateSTART(FMPI2C_TypeDef* FMPI2Cx, FunctionalState NewState)
   */
 void FMPI2C_GenerateSTOP(FMPI2C_TypeDef* FMPI2Cx, FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_FMPI2C_ALL_PERIPH(FMPI2Cx));
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
-  
-  if (NewState != DISABLE)
-  {
-    /* Generate a STOP condition */
-    FMPI2Cx->CR2 |= FMPI2C_CR2_STOP;
-  }
-  else
-  {
-    /* Disable the STOP condition generation */
-    FMPI2Cx->CR2 &= (uint32_t)~((uint32_t)FMPI2C_CR2_STOP);
-  }
-}  
+    /* Check the parameters */
+    assert_param(IS_FMPI2C_ALL_PERIPH(FMPI2Cx));
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
+
+    if(NewState != DISABLE) {
+        /* Generate a STOP condition */
+        FMPI2Cx->CR2 |= FMPI2C_CR2_STOP;
+    }
+    else {
+        /* Disable the STOP condition generation */
+        FMPI2Cx->CR2 &= (uint32_t) ~((uint32_t)FMPI2C_CR2_STOP);
+    }
+}
 
 /**
   * @brief  Enables or disables the FMPI2C 10-bit header only mode with read direction.
@@ -741,21 +713,19 @@ void FMPI2C_GenerateSTOP(FMPI2C_TypeDef* FMPI2Cx, FunctionalState NewState)
   */
 void FMPI2C_10BitAddressHeaderCmd(FMPI2C_TypeDef* FMPI2Cx, FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_FMPI2C_ALL_PERIPH(FMPI2Cx));
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
-  
-  if (NewState != DISABLE)
-  {
-    /* Enable 10-bit header only mode */
-    FMPI2Cx->CR2 |= FMPI2C_CR2_HEAD10R;
-  }
-  else
-  {
-    /* Disable 10-bit header only mode */
-    FMPI2Cx->CR2 &= (uint32_t)~((uint32_t)FMPI2C_CR2_HEAD10R);
-  }
-}    
+    /* Check the parameters */
+    assert_param(IS_FMPI2C_ALL_PERIPH(FMPI2Cx));
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
+
+    if(NewState != DISABLE) {
+        /* Enable 10-bit header only mode */
+        FMPI2Cx->CR2 |= FMPI2C_CR2_HEAD10R;
+    }
+    else {
+        /* Disable 10-bit header only mode */
+        FMPI2Cx->CR2 &= (uint32_t) ~((uint32_t)FMPI2C_CR2_HEAD10R);
+    }
+}
 
 /**
   * @brief  Generates FMPI2C communication Acknowledge.
@@ -766,20 +736,18 @@ void FMPI2C_10BitAddressHeaderCmd(FMPI2C_TypeDef* FMPI2Cx, FunctionalState NewSt
   */
 void FMPI2C_AcknowledgeConfig(FMPI2C_TypeDef* FMPI2Cx, FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_FMPI2C_ALL_PERIPH(FMPI2Cx));
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
-  
-  if (NewState != DISABLE)
-  {
-    /* Enable ACK generation */
-    FMPI2Cx->CR2 &= (uint32_t)~((uint32_t)FMPI2C_CR2_NACK);    
-  }
-  else
-  {
-    /* Enable NACK generation */
-    FMPI2Cx->CR2 |= FMPI2C_CR2_NACK;
-  }
+    /* Check the parameters */
+    assert_param(IS_FMPI2C_ALL_PERIPH(FMPI2Cx));
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
+
+    if(NewState != DISABLE) {
+        /* Enable ACK generation */
+        FMPI2Cx->CR2 &= (uint32_t) ~((uint32_t)FMPI2C_CR2_NACK);
+    }
+    else {
+        /* Enable NACK generation */
+        FMPI2Cx->CR2 |= FMPI2C_CR2_NACK;
+    }
 }
 
 /**
@@ -789,11 +757,11 @@ void FMPI2C_AcknowledgeConfig(FMPI2C_TypeDef* FMPI2Cx, FunctionalState NewState)
   */
 uint8_t FMPI2C_GetAddressMatched(FMPI2C_TypeDef* FMPI2Cx)
 {
-  /* Check the parameters */
-  assert_param(IS_FMPI2C_ALL_PERIPH(FMPI2Cx));
-  
-  /* Return the slave matched address in the SR1 register */
-  return (uint8_t)(((uint32_t)FMPI2Cx->ISR & FMPI2C_ISR_ADDCODE) >> 16) ;
+    /* Check the parameters */
+    assert_param(IS_FMPI2C_ALL_PERIPH(FMPI2Cx));
+
+    /* Return the slave matched address in the SR1 register */
+    return (uint8_t)(((uint32_t)FMPI2Cx->ISR & FMPI2C_ISR_ADDCODE) >> 16);
 }
 
 /**
@@ -803,27 +771,25 @@ uint8_t FMPI2C_GetAddressMatched(FMPI2C_TypeDef* FMPI2Cx)
   */
 uint16_t FMPI2C_GetTransferDirection(FMPI2C_TypeDef* FMPI2Cx)
 {
-  uint32_t tmpreg = 0;
-  uint16_t direction = 0;
-  
-  /* Check the parameters */
-  assert_param(IS_FMPI2C_ALL_PERIPH(FMPI2Cx));
-  
-  /* Return the slave matched address in the SR1 register */
-  tmpreg = (uint32_t)(FMPI2Cx->ISR & FMPI2C_ISR_DIR);
-  
-  /* If write transfer is requested */
-  if (tmpreg == 0)
-  {
-    /* write transfer is requested */
-    direction = FMPI2C_Direction_Transmitter;
-  }
-  else
-  {
-    /* Read transfer is requested */
-    direction = FMPI2C_Direction_Receiver;
-  }  
-  return direction;
+    uint32_t tmpreg = 0;
+    uint16_t direction = 0;
+
+    /* Check the parameters */
+    assert_param(IS_FMPI2C_ALL_PERIPH(FMPI2Cx));
+
+    /* Return the slave matched address in the SR1 register */
+    tmpreg = (uint32_t)(FMPI2Cx->ISR & FMPI2C_ISR_DIR);
+
+    /* If write transfer is requested */
+    if(tmpreg == 0) {
+        /* write transfer is requested */
+        direction = FMPI2C_Direction_Transmitter;
+    }
+    else {
+        /* Read transfer is requested */
+        direction = FMPI2C_Direction_Receiver;
+    }
+    return direction;
 }
 
 /**
@@ -847,32 +813,31 @@ uint16_t FMPI2C_GetTransferDirection(FMPI2C_TypeDef* FMPI2Cx)
   */
 void FMPI2C_TransferHandling(FMPI2C_TypeDef* FMPI2Cx, uint16_t Address, uint8_t Number_Bytes, uint32_t ReloadEndMode, uint32_t StartStopMode)
 {
-  uint32_t tmpreg = 0;
-  
-  /* Check the parameters */
-  assert_param(IS_FMPI2C_ALL_PERIPH(FMPI2Cx));
-  assert_param(IS_FMPI2C_SLAVE_ADDRESS(Address));  
-  assert_param(IS_RELOAD_END_MODE(ReloadEndMode));
-  assert_param(IS_START_STOP_MODE(StartStopMode));
-    
-  /* Get the CR2 register value */
-  tmpreg = FMPI2Cx->CR2;
-  
-  /* clear tmpreg specific bits */
-  tmpreg &= (uint32_t)~((uint32_t)(FMPI2C_CR2_SADD | FMPI2C_CR2_NBYTES | FMPI2C_CR2_RELOAD | FMPI2C_CR2_AUTOEND | FMPI2C_CR2_RD_WRN | FMPI2C_CR2_START | FMPI2C_CR2_STOP));
-  
-  /* update tmpreg */
-  tmpreg |= (uint32_t)(((uint32_t)Address & FMPI2C_CR2_SADD) | (((uint32_t)Number_Bytes << 16 ) & FMPI2C_CR2_NBYTES) | \
-            (uint32_t)ReloadEndMode | (uint32_t)StartStopMode);
-  
-  /* update CR2 register */
-  FMPI2Cx->CR2 = tmpreg;  
-}  
+    uint32_t tmpreg = 0;
+
+    /* Check the parameters */
+    assert_param(IS_FMPI2C_ALL_PERIPH(FMPI2Cx));
+    assert_param(IS_FMPI2C_SLAVE_ADDRESS(Address));
+    assert_param(IS_RELOAD_END_MODE(ReloadEndMode));
+    assert_param(IS_START_STOP_MODE(StartStopMode));
+
+    /* Get the CR2 register value */
+    tmpreg = FMPI2Cx->CR2;
+
+    /* clear tmpreg specific bits */
+    tmpreg &= (uint32_t) ~((uint32_t)(FMPI2C_CR2_SADD | FMPI2C_CR2_NBYTES | FMPI2C_CR2_RELOAD | FMPI2C_CR2_AUTOEND | FMPI2C_CR2_RD_WRN | FMPI2C_CR2_START | FMPI2C_CR2_STOP));
+
+    /* update tmpreg */
+    tmpreg |= (uint32_t)(((uint32_t)Address & FMPI2C_CR2_SADD) | (((uint32_t)Number_Bytes << 16) & FMPI2C_CR2_NBYTES) |
+                         (uint32_t)ReloadEndMode | (uint32_t)StartStopMode);
+
+    /* update CR2 register */
+    FMPI2Cx->CR2 = tmpreg;
+}
 
 /**
   * @}
   */
-
 
 /** @defgroup FMPI2C_Group3 SMBUS management functions
  *  @brief   SMBUS management functions 
@@ -918,20 +883,18 @@ void FMPI2C_TransferHandling(FMPI2C_TypeDef* FMPI2Cx, uint16_t Address, uint8_t 
   */
 void FMPI2C_SMBusAlertCmd(FMPI2C_TypeDef* FMPI2Cx, FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_FMPI2C_ALL_PERIPH(FMPI2Cx));
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
-  
-  if (NewState != DISABLE)
-  {
-    /* Enable SMBus alert */
-    FMPI2Cx->CR1 |= FMPI2C_CR1_ALERTEN;   
-  }
-  else
-  {
-    /* Disable SMBus alert */    
-    FMPI2Cx->CR1 &= (uint32_t)~((uint32_t)FMPI2C_CR1_ALERTEN); 
-  }
+    /* Check the parameters */
+    assert_param(IS_FMPI2C_ALL_PERIPH(FMPI2Cx));
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
+
+    if(NewState != DISABLE) {
+        /* Enable SMBus alert */
+        FMPI2Cx->CR1 |= FMPI2C_CR1_ALERTEN;
+    }
+    else {
+        /* Disable SMBus alert */
+        FMPI2Cx->CR1 &= (uint32_t) ~((uint32_t)FMPI2C_CR1_ALERTEN);
+    }
 }
 
 /**
@@ -943,20 +906,18 @@ void FMPI2C_SMBusAlertCmd(FMPI2C_TypeDef* FMPI2Cx, FunctionalState NewState)
   */
 void FMPI2C_ClockTimeoutCmd(FMPI2C_TypeDef* FMPI2Cx, FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_FMPI2C_ALL_PERIPH(FMPI2Cx));
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
-  
-  if (NewState != DISABLE)
-  {
-    /* Enable Clock Timeout */
-    FMPI2Cx->TIMEOUTR |= FMPI2C_TIMEOUTR_TIMOUTEN;   
-  }
-  else
-  {
-    /* Disable Clock Timeout */    
-    FMPI2Cx->TIMEOUTR &= (uint32_t)~((uint32_t)FMPI2C_TIMEOUTR_TIMOUTEN); 
-  }
+    /* Check the parameters */
+    assert_param(IS_FMPI2C_ALL_PERIPH(FMPI2Cx));
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
+
+    if(NewState != DISABLE) {
+        /* Enable Clock Timeout */
+        FMPI2Cx->TIMEOUTR |= FMPI2C_TIMEOUTR_TIMOUTEN;
+    }
+    else {
+        /* Disable Clock Timeout */
+        FMPI2Cx->TIMEOUTR &= (uint32_t) ~((uint32_t)FMPI2C_TIMEOUTR_TIMOUTEN);
+    }
 }
 
 /**
@@ -968,20 +929,18 @@ void FMPI2C_ClockTimeoutCmd(FMPI2C_TypeDef* FMPI2Cx, FunctionalState NewState)
   */
 void FMPI2C_ExtendedClockTimeoutCmd(FMPI2C_TypeDef* FMPI2Cx, FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_FMPI2C_ALL_PERIPH(FMPI2Cx));
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
-  
-  if (NewState != DISABLE)
-  {
-    /* Enable Clock Timeout */
-    FMPI2Cx->TIMEOUTR |= FMPI2C_TIMEOUTR_TEXTEN;   
-  }
-  else
-  {
-    /* Disable Clock Timeout */    
-    FMPI2Cx->TIMEOUTR &= (uint32_t)~((uint32_t)FMPI2C_TIMEOUTR_TEXTEN); 
-  }
+    /* Check the parameters */
+    assert_param(IS_FMPI2C_ALL_PERIPH(FMPI2Cx));
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
+
+    if(NewState != DISABLE) {
+        /* Enable Clock Timeout */
+        FMPI2Cx->TIMEOUTR |= FMPI2C_TIMEOUTR_TEXTEN;
+    }
+    else {
+        /* Disable Clock Timeout */
+        FMPI2Cx->TIMEOUTR &= (uint32_t) ~((uint32_t)FMPI2C_TIMEOUTR_TEXTEN);
+    }
 }
 
 /**
@@ -994,20 +953,18 @@ void FMPI2C_ExtendedClockTimeoutCmd(FMPI2C_TypeDef* FMPI2Cx, FunctionalState New
   */
 void FMPI2C_IdleClockTimeoutCmd(FMPI2C_TypeDef* FMPI2Cx, FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_FMPI2C_ALL_PERIPH(FMPI2Cx));
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
-  
-  if (NewState != DISABLE)
-  {
-    /* Enable Clock Timeout */
-    FMPI2Cx->TIMEOUTR |= FMPI2C_TIMEOUTR_TIDLE;   
-  }
-  else
-  {
-    /* Disable Clock Timeout */    
-    FMPI2Cx->TIMEOUTR &= (uint32_t)~((uint32_t)FMPI2C_TIMEOUTR_TIDLE); 
-  }
+    /* Check the parameters */
+    assert_param(IS_FMPI2C_ALL_PERIPH(FMPI2Cx));
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
+
+    if(NewState != DISABLE) {
+        /* Enable Clock Timeout */
+        FMPI2Cx->TIMEOUTR |= FMPI2C_TIMEOUTR_TIDLE;
+    }
+    else {
+        /* Disable Clock Timeout */
+        FMPI2Cx->TIMEOUTR &= (uint32_t) ~((uint32_t)FMPI2C_TIMEOUTR_TIDLE);
+    }
 }
 
 /**
@@ -1019,23 +976,23 @@ void FMPI2C_IdleClockTimeoutCmd(FMPI2C_TypeDef* FMPI2Cx, FunctionalState NewStat
   */
 void FMPI2C_TimeoutAConfig(FMPI2C_TypeDef* FMPI2Cx, uint16_t Timeout)
 {
-  uint32_t tmpreg = 0;
+    uint32_t tmpreg = 0;
 
-  /* Check the parameters */
-  assert_param(IS_FMPI2C_ALL_PERIPH(FMPI2Cx));
-  assert_param(IS_FMPI2C_TIMEOUT(Timeout));
-    
-  /* Get the old register value */
-  tmpreg = FMPI2Cx->TIMEOUTR;
+    /* Check the parameters */
+    assert_param(IS_FMPI2C_ALL_PERIPH(FMPI2Cx));
+    assert_param(IS_FMPI2C_TIMEOUT(Timeout));
 
-  /* Reset FMPI2Cx TIMEOUTA bit [11:0] */
-  tmpreg &= (uint32_t)~((uint32_t)FMPI2C_TIMEOUTR_TIMEOUTA);
+    /* Get the old register value */
+    tmpreg = FMPI2Cx->TIMEOUTR;
 
-  /* Set FMPI2Cx TIMEOUTA */
-  tmpreg |= (uint32_t)((uint32_t)Timeout & FMPI2C_TIMEOUTR_TIMEOUTA) ;
+    /* Reset FMPI2Cx TIMEOUTA bit [11:0] */
+    tmpreg &= (uint32_t) ~((uint32_t)FMPI2C_TIMEOUTR_TIMEOUTA);
 
-  /* Store the new register value */
-  FMPI2Cx->TIMEOUTR = tmpreg;
+    /* Set FMPI2Cx TIMEOUTA */
+    tmpreg |= (uint32_t)((uint32_t)Timeout & FMPI2C_TIMEOUTR_TIMEOUTA);
+
+    /* Store the new register value */
+    FMPI2Cx->TIMEOUTR = tmpreg;
 }
 
 /**
@@ -1046,23 +1003,23 @@ void FMPI2C_TimeoutAConfig(FMPI2C_TypeDef* FMPI2Cx, uint16_t Timeout)
   */
 void FMPI2C_TimeoutBConfig(FMPI2C_TypeDef* FMPI2Cx, uint16_t Timeout)
 {
-  uint32_t tmpreg = 0;
+    uint32_t tmpreg = 0;
 
-  /* Check the parameters */
-  assert_param(IS_FMPI2C_ALL_PERIPH(FMPI2Cx));
-  assert_param(IS_FMPI2C_TIMEOUT(Timeout));
+    /* Check the parameters */
+    assert_param(IS_FMPI2C_ALL_PERIPH(FMPI2Cx));
+    assert_param(IS_FMPI2C_TIMEOUT(Timeout));
 
-  /* Get the old register value */
-  tmpreg = FMPI2Cx->TIMEOUTR;
+    /* Get the old register value */
+    tmpreg = FMPI2Cx->TIMEOUTR;
 
-  /* Reset FMPI2Cx TIMEOUTB bit [11:0] */
-  tmpreg &= (uint32_t)~((uint32_t)FMPI2C_TIMEOUTR_TIMEOUTB);
+    /* Reset FMPI2Cx TIMEOUTB bit [11:0] */
+    tmpreg &= (uint32_t) ~((uint32_t)FMPI2C_TIMEOUTR_TIMEOUTB);
 
-  /* Set FMPI2Cx TIMEOUTB */
-  tmpreg |= (uint32_t)(((uint32_t)Timeout << 16) & FMPI2C_TIMEOUTR_TIMEOUTB) ;
+    /* Set FMPI2Cx TIMEOUTB */
+    tmpreg |= (uint32_t)(((uint32_t)Timeout << 16) & FMPI2C_TIMEOUTR_TIMEOUTB);
 
-  /* Store the new register value */
-  FMPI2Cx->TIMEOUTR = tmpreg;
+    /* Store the new register value */
+    FMPI2Cx->TIMEOUTR = tmpreg;
 }
 
 /**
@@ -1074,20 +1031,18 @@ void FMPI2C_TimeoutBConfig(FMPI2C_TypeDef* FMPI2Cx, uint16_t Timeout)
   */
 void FMPI2C_CalculatePEC(FMPI2C_TypeDef* FMPI2Cx, FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_FMPI2C_ALL_PERIPH(FMPI2Cx));
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
-  
-  if (NewState != DISABLE)
-  {
-    /* Enable PEC calculation */
-    FMPI2Cx->CR1 |= FMPI2C_CR1_PECEN;   
-  }
-  else
-  {
-    /* Disable PEC calculation */    
-    FMPI2Cx->CR1 &= (uint32_t)~((uint32_t)FMPI2C_CR1_PECEN); 
-  }
+    /* Check the parameters */
+    assert_param(IS_FMPI2C_ALL_PERIPH(FMPI2Cx));
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
+
+    if(NewState != DISABLE) {
+        /* Enable PEC calculation */
+        FMPI2Cx->CR1 |= FMPI2C_CR1_PECEN;
+    }
+    else {
+        /* Disable PEC calculation */
+        FMPI2Cx->CR1 &= (uint32_t) ~((uint32_t)FMPI2C_CR1_PECEN);
+    }
 }
 
 /**
@@ -1099,20 +1054,18 @@ void FMPI2C_CalculatePEC(FMPI2C_TypeDef* FMPI2Cx, FunctionalState NewState)
   */
 void FMPI2C_PECRequestCmd(FMPI2C_TypeDef* FMPI2Cx, FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_FMPI2C_ALL_PERIPH(FMPI2Cx));
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
-  
-  if (NewState != DISABLE)
-  {
-    /* Enable PEC transmission/reception request */
-    FMPI2Cx->CR1 |= FMPI2C_CR2_PECBYTE;   
-  }
-  else
-  {
-    /* Disable PEC transmission/reception request */    
-    FMPI2Cx->CR1 &= (uint32_t)~((uint32_t)FMPI2C_CR2_PECBYTE); 
-  }
+    /* Check the parameters */
+    assert_param(IS_FMPI2C_ALL_PERIPH(FMPI2Cx));
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
+
+    if(NewState != DISABLE) {
+        /* Enable PEC transmission/reception request */
+        FMPI2Cx->CR1 |= FMPI2C_CR2_PECBYTE;
+    }
+    else {
+        /* Disable PEC transmission/reception request */
+        FMPI2Cx->CR1 &= (uint32_t) ~((uint32_t)FMPI2C_CR2_PECBYTE);
+    }
 }
 
 /**
@@ -1122,18 +1075,17 @@ void FMPI2C_PECRequestCmd(FMPI2C_TypeDef* FMPI2Cx, FunctionalState NewState)
   */
 uint8_t FMPI2C_GetPEC(FMPI2C_TypeDef* FMPI2Cx)
 {
-  /* Check the parameters */
-  assert_param(IS_FMPI2C_ALL_PERIPH(FMPI2Cx));
-  
-  /* Return the slave matched address in the SR1 register */
-  return (uint8_t)((uint32_t)FMPI2Cx->PECR & FMPI2C_PECR_PEC);
+    /* Check the parameters */
+    assert_param(IS_FMPI2C_ALL_PERIPH(FMPI2Cx));
+
+    /* Return the slave matched address in the SR1 register */
+    return (uint8_t)((uint32_t)FMPI2Cx->PECR & FMPI2C_PECR_PEC);
 }
 
 /**
   * @}
-  */  
-  
-  
+  */
+
 /** @defgroup FMPI2C_Group4 FMPI2C registers management functions
  *  @brief   FMPI2C registers management functions 
  *
@@ -1148,7 +1100,7 @@ uint8_t FMPI2C_GetPEC(FMPI2C_TypeDef* FMPI2Cx)
   * @{
   */
 
-  /**
+/**
   * @brief  Reads the specified FMPI2C register and returns its value.
   * @param  FMPI2Cx: where x can be 1 to select the FMPI2C peripheral.
   * @param  FMPI2C_Register: specifies the register to read.
@@ -1168,23 +1120,23 @@ uint8_t FMPI2C_GetPEC(FMPI2C_TypeDef* FMPI2Cx)
   */
 uint32_t FMPI2C_ReadRegister(FMPI2C_TypeDef* FMPI2Cx, uint8_t FMPI2C_Register)
 {
-  __IO uint32_t tmp = 0;
+    __IO uint32_t tmp = 0;
 
-  /* Check the parameters */
-  assert_param(IS_FMPI2C_ALL_PERIPH(FMPI2Cx));
-  assert_param(IS_FMPI2C_REGISTER(FMPI2C_Register));
+    /* Check the parameters */
+    assert_param(IS_FMPI2C_ALL_PERIPH(FMPI2Cx));
+    assert_param(IS_FMPI2C_REGISTER(FMPI2C_Register));
 
-  tmp = (uint32_t)FMPI2Cx;
-  tmp += FMPI2C_Register;
+    tmp = (uint32_t)FMPI2Cx;
+    tmp += FMPI2C_Register;
 
-  /* Return the selected register value */
-  return (*(__IO uint32_t *) tmp);
+    /* Return the selected register value */
+    return (*(__IO uint32_t*)tmp);
 }
 
 /**
   * @}
-  */  
-  
+  */
+
 /** @defgroup FMPI2C_Group5 Data transfers management functions
  *  @brief   Data transfers management functions 
  *
@@ -1201,8 +1153,8 @@ uint32_t FMPI2C_ReadRegister(FMPI2C_TypeDef* FMPI2Cx, uint8_t FMPI2C_Register)
          function and stores the written data into TXDR.
 @endverbatim
   * @{
-  */  
-  
+  */
+
 /**
   * @brief  Sends a data byte through the FMPI2Cx peripheral.
   * @param  FMPI2Cx: where x can be 1 to select the FMPI2C peripheral.
@@ -1211,11 +1163,11 @@ uint32_t FMPI2C_ReadRegister(FMPI2C_TypeDef* FMPI2Cx, uint8_t FMPI2C_Register)
   */
 void FMPI2C_SendData(FMPI2C_TypeDef* FMPI2Cx, uint8_t Data)
 {
-  /* Check the parameters */
-  assert_param(IS_FMPI2C_ALL_PERIPH(FMPI2Cx));
-  
-  /* Write in the DR register the data to be sent */
-  FMPI2Cx->TXDR = (uint8_t)Data;
+    /* Check the parameters */
+    assert_param(IS_FMPI2C_ALL_PERIPH(FMPI2Cx));
+
+    /* Write in the DR register the data to be sent */
+    FMPI2Cx->TXDR = (uint8_t)Data;
 }
 
 /**
@@ -1225,18 +1177,17 @@ void FMPI2C_SendData(FMPI2C_TypeDef* FMPI2Cx, uint8_t Data)
   */
 uint8_t FMPI2C_ReceiveData(FMPI2C_TypeDef* FMPI2Cx)
 {
-  /* Check the parameters */
-  assert_param(IS_FMPI2C_ALL_PERIPH(FMPI2Cx));
-  
-  /* Return the data in the DR register */
-  return (uint8_t)FMPI2Cx->RXDR;
-}  
+    /* Check the parameters */
+    assert_param(IS_FMPI2C_ALL_PERIPH(FMPI2Cx));
+
+    /* Return the data in the DR register */
+    return (uint8_t)FMPI2Cx->RXDR;
+}
 
 /**
   * @}
-  */ 
-  
-  
+  */
+
 /** @defgroup FMPI2C_Group6 DMA transfers management functions
  *  @brief   DMA transfers management functions 
  *
@@ -1253,8 +1204,8 @@ uint8_t FMPI2C_ReceiveData(FMPI2C_TypeDef* FMPI2Cx)
          (+) FMPI2C_DMACmd(FMPI2C_TypeDef* FMPI2Cx, uint32_t FMPI2C_DMAReq, FunctionalState NewState);
 @endverbatim
   * @{
-  */  
-    
+  */
+
 /**
   * @brief  Enables or disables the FMPI2C DMA interface.
   * @param  FMPI2Cx: where x can be 1 to select the FMPI2C peripheral.
@@ -1268,26 +1219,23 @@ uint8_t FMPI2C_ReceiveData(FMPI2C_TypeDef* FMPI2Cx)
   */
 void FMPI2C_DMACmd(FMPI2C_TypeDef* FMPI2Cx, uint32_t FMPI2C_DMAReq, FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_FMPI2C_ALL_PERIPH(FMPI2Cx));
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
-  assert_param(IS_FMPI2C_DMA_REQ(FMPI2C_DMAReq));
+    /* Check the parameters */
+    assert_param(IS_FMPI2C_ALL_PERIPH(FMPI2Cx));
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
+    assert_param(IS_FMPI2C_DMA_REQ(FMPI2C_DMAReq));
 
-  if (NewState != DISABLE)
-  {
-    /* Enable the selected FMPI2C DMA requests */
-    FMPI2Cx->CR1 |= FMPI2C_DMAReq;
-  }
-  else
-  {
-    /* Disable the selected FMPI2C DMA requests */
-    FMPI2Cx->CR1 &= (uint32_t)~FMPI2C_DMAReq;
-  }
+    if(NewState != DISABLE) {
+        /* Enable the selected FMPI2C DMA requests */
+        FMPI2Cx->CR1 |= FMPI2C_DMAReq;
+    }
+    else {
+        /* Disable the selected FMPI2C DMA requests */
+        FMPI2Cx->CR1 &= (uint32_t)~FMPI2C_DMAReq;
+    }
 }
 /**
   * @}
-  */  
-
+  */
 
 /** @defgroup FMPI2C_Group7 Interrupts and flags management functions
  *  @brief   Interrupts and flags management functions 
@@ -1362,7 +1310,7 @@ void FMPI2C_DMACmd(FMPI2C_TypeDef* FMPI2Cx, uint32_t FMPI2C_DMAReq, FunctionalSt
 
 @endverbatim
   * @{
-  */  
+  */
 
 /**
   * @brief  Checks whether the specified FMPI2C flag is set or not.
@@ -1388,32 +1336,30 @@ void FMPI2C_DMACmd(FMPI2C_TypeDef* FMPI2Cx, uint32_t FMPI2C_DMAReq, FunctionalSt
   */
 FlagStatus FMPI2C_GetFlagStatus(FMPI2C_TypeDef* FMPI2Cx, uint32_t FMPI2C_FLAG)
 {
-  uint32_t tmpreg = 0;
-  FlagStatus bitstatus = RESET;
-  
-  /* Check the parameters */
-  assert_param(IS_FMPI2C_ALL_PERIPH(FMPI2Cx));
-  assert_param(IS_FMPI2C_GET_FLAG(FMPI2C_FLAG));
-  
-  /* Get the ISR register value */
-  tmpreg = FMPI2Cx->ISR;
-  
-  /* Get flag status */
-  tmpreg &= FMPI2C_FLAG;
-  
-  if(tmpreg != 0)
-  {
-    /* FMPI2C_FLAG is set */
-    bitstatus = SET;
-  }
-  else
-  {
-    /* FMPI2C_FLAG is reset */
-    bitstatus = RESET;
-  }
-  return bitstatus;
-}  
-  
+    uint32_t tmpreg = 0;
+    FlagStatus bitstatus = RESET;
+
+    /* Check the parameters */
+    assert_param(IS_FMPI2C_ALL_PERIPH(FMPI2Cx));
+    assert_param(IS_FMPI2C_GET_FLAG(FMPI2C_FLAG));
+
+    /* Get the ISR register value */
+    tmpreg = FMPI2Cx->ISR;
+
+    /* Get flag status */
+    tmpreg &= FMPI2C_FLAG;
+
+    if(tmpreg != 0) {
+        /* FMPI2C_FLAG is set */
+        bitstatus = SET;
+    }
+    else {
+        /* FMPI2C_FLAG is reset */
+        bitstatus = RESET;
+    }
+    return bitstatus;
+}
+
 /**
   * @brief  Clears the FMPI2Cx's pending flags.
   * @param  FMPI2Cx: where x can be 1 to select the FMPI2C peripheral.
@@ -1431,14 +1377,14 @@ FlagStatus FMPI2C_GetFlagStatus(FMPI2C_TypeDef* FMPI2Cx, uint32_t FMPI2C_FLAG)
   * @retval The new state of FMPI2C_FLAG (SET or RESET).
   */
 void FMPI2C_ClearFlag(FMPI2C_TypeDef* FMPI2Cx, uint32_t FMPI2C_FLAG)
-{ 
-  /* Check the parameters */
-  assert_param(IS_FMPI2C_ALL_PERIPH(FMPI2Cx));
-  assert_param(IS_FMPI2C_CLEAR_FLAG(FMPI2C_FLAG));
+{
+    /* Check the parameters */
+    assert_param(IS_FMPI2C_ALL_PERIPH(FMPI2Cx));
+    assert_param(IS_FMPI2C_CLEAR_FLAG(FMPI2C_FLAG));
 
-  /* Clear the selected flag */
-  FMPI2Cx->ICR = FMPI2C_FLAG;
-  }
+    /* Clear the selected flag */
+    FMPI2Cx->ICR = FMPI2C_FLAG;
+}
 
 /**
   * @brief  Checks whether the specified FMPI2C interrupt has occurred or not.
@@ -1462,52 +1408,47 @@ void FMPI2C_ClearFlag(FMPI2C_TypeDef* FMPI2Cx, uint32_t FMPI2C_FLAG)
   */
 ITStatus FMPI2C_GetITStatus(FMPI2C_TypeDef* FMPI2Cx, uint32_t FMPI2C_IT)
 {
-  uint32_t tmpreg = 0;
-  ITStatus bitstatus = RESET;
-  uint32_t enablestatus = 0;
+    uint32_t tmpreg = 0;
+    ITStatus bitstatus = RESET;
+    uint32_t enablestatus = 0;
 
-  /* Check the parameters */
-  assert_param(IS_FMPI2C_ALL_PERIPH(FMPI2Cx));
-  assert_param(IS_FMPI2C_GET_IT(FMPI2C_IT));
+    /* Check the parameters */
+    assert_param(IS_FMPI2C_ALL_PERIPH(FMPI2Cx));
+    assert_param(IS_FMPI2C_GET_IT(FMPI2C_IT));
 
-  /* Check if the interrupt source is enabled or not */
-  /* If Error interrupt */
-  if((uint32_t)(FMPI2C_IT & ERROR_IT_MASK))
-  {
-    enablestatus = (uint32_t)((FMPI2C_CR1_ERRIE) & (FMPI2Cx->CR1));
-  }
-  /* If TC interrupt */
-  else if((uint32_t)(FMPI2C_IT & TC_IT_MASK))
-  {
-    enablestatus = (uint32_t)((FMPI2C_CR1_TCIE) & (FMPI2Cx->CR1));
-  }
-  else
-  {
-    enablestatus = (uint32_t)((FMPI2C_IT) & (FMPI2Cx->CR1));
-  }
-  
-  /* Get the ISR register value */
-  tmpreg = FMPI2Cx->ISR;
+    /* Check if the interrupt source is enabled or not */
+    /* If Error interrupt */
+    if((uint32_t)(FMPI2C_IT & ERROR_IT_MASK)) {
+        enablestatus = (uint32_t)((FMPI2C_CR1_ERRIE) & (FMPI2Cx->CR1));
+    }
+    /* If TC interrupt */
+    else if((uint32_t)(FMPI2C_IT & TC_IT_MASK)) {
+        enablestatus = (uint32_t)((FMPI2C_CR1_TCIE) & (FMPI2Cx->CR1));
+    }
+    else {
+        enablestatus = (uint32_t)((FMPI2C_IT) & (FMPI2Cx->CR1));
+    }
 
-  /* Get flag status */
-  tmpreg &= FMPI2C_IT;
+    /* Get the ISR register value */
+    tmpreg = FMPI2Cx->ISR;
 
-  /* Check the status of the specified FMPI2C flag */
-  if((tmpreg != RESET) && enablestatus)
-  {
-    /* FMPI2C_IT is set */
-    bitstatus = SET;
-  }
-  else
-  {
-    /* FMPI2C_IT is reset */
-    bitstatus = RESET;
-  }
+    /* Get flag status */
+    tmpreg &= FMPI2C_IT;
 
-  /* Return the FMPI2C_IT status */
-  return bitstatus;
+    /* Check the status of the specified FMPI2C flag */
+    if((tmpreg != RESET) && enablestatus) {
+        /* FMPI2C_IT is set */
+        bitstatus = SET;
+    }
+    else {
+        /* FMPI2C_IT is reset */
+        bitstatus = RESET;
+    }
+
+    /* Return the FMPI2C_IT status */
+    return bitstatus;
 }
-  
+
 /**
   * @brief  Clears the FMPI2Cx's interrupt pending bits.
   * @param  FMPI2Cx: where x can be 1 to select the FMPI2C peripheral.
@@ -1526,18 +1467,18 @@ ITStatus FMPI2C_GetITStatus(FMPI2C_TypeDef* FMPI2Cx, uint32_t FMPI2C_IT)
   */
 void FMPI2C_ClearITPendingBit(FMPI2C_TypeDef* FMPI2Cx, uint32_t FMPI2C_IT)
 {
-  /* Check the parameters */
-  assert_param(IS_FMPI2C_ALL_PERIPH(FMPI2Cx));
-  assert_param(IS_FMPI2C_CLEAR_IT(FMPI2C_IT));
+    /* Check the parameters */
+    assert_param(IS_FMPI2C_ALL_PERIPH(FMPI2Cx));
+    assert_param(IS_FMPI2C_CLEAR_IT(FMPI2C_IT));
 
-  /* Clear the selected flag */
-  FMPI2Cx->ICR = FMPI2C_IT;
+    /* Clear the selected flag */
+    FMPI2Cx->ICR = FMPI2C_IT;
 }
 
 /**
   * @}
-  */  
-  
+  */
+
 /**
   * @}
   */

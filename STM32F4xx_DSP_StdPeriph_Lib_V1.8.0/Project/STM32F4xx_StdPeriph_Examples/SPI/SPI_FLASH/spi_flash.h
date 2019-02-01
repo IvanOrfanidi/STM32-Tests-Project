@@ -31,7 +31,7 @@
 #define __SPI_FLASH_H
 
 #ifdef __cplusplus
- extern "C" {
+extern "C" {
 #endif
 
 /* Includes ------------------------------------------------------------------*/
@@ -40,56 +40,56 @@
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/
 
-/* M25P SPI Flash supported commands */  
-#define sFLASH_CMD_WRITE          0x02  /* Write to Memory instruction */
-#define sFLASH_CMD_WRSR           0x01  /* Write Status Register instruction */
-#define sFLASH_CMD_WREN           0x06  /* Write enable instruction */
-#define sFLASH_CMD_READ           0x03  /* Read from Memory instruction */
-#define sFLASH_CMD_RDSR           0x05  /* Read Status Register instruction  */
-#define sFLASH_CMD_RDID           0x9F  /* Read identification */
-#define sFLASH_CMD_SE             0xD8  /* Sector Erase instruction */
-#define sFLASH_CMD_BE             0xC7  /* Bulk Erase instruction */
+/* M25P SPI Flash supported commands */
+#define sFLASH_CMD_WRITE 0x02 /* Write to Memory instruction */
+#define sFLASH_CMD_WRSR 0x01  /* Write Status Register instruction */
+#define sFLASH_CMD_WREN 0x06  /* Write enable instruction */
+#define sFLASH_CMD_READ 0x03  /* Read from Memory instruction */
+#define sFLASH_CMD_RDSR 0x05  /* Read Status Register instruction  */
+#define sFLASH_CMD_RDID 0x9F  /* Read identification */
+#define sFLASH_CMD_SE 0xD8    /* Sector Erase instruction */
+#define sFLASH_CMD_BE 0xC7    /* Bulk Erase instruction */
 
-#define sFLASH_WIP_FLAG           0x01  /* Write In Progress (WIP) flag */
+#define sFLASH_WIP_FLAG 0x01 /* Write In Progress (WIP) flag */
 
-#define sFLASH_DUMMY_BYTE         0xA5
-#define sFLASH_SPI_PAGESIZE       0x100
+#define sFLASH_DUMMY_BYTE 0xA5
+#define sFLASH_SPI_PAGESIZE 0x100
 
-#define sFLASH_M25P128_ID         0x202018
-#define sFLASH_M25P64_ID          0x202017
-  
-/* M25P FLASH SPI Interface pins  */  
-#define sFLASH_SPI                           SPI2
-#define sFLASH_SPI_CLK                       RCC_APB1Periph_SPI2
-#define sFLASH_SPI_CLK_INIT                  RCC_APB1PeriphClockCmd
+#define sFLASH_M25P128_ID 0x202018
+#define sFLASH_M25P64_ID 0x202017
 
-#define sFLASH_SPI_SCK_PIN                   GPIO_Pin_1
-#define sFLASH_SPI_SCK_GPIO_PORT             GPIOI
-#define sFLASH_SPI_SCK_GPIO_CLK              RCC_AHB1Periph_GPIOI
-#define sFLASH_SPI_SCK_SOURCE                GPIO_PinSource1
-#define sFLASH_SPI_SCK_AF                    GPIO_AF_SPI2
+/* M25P FLASH SPI Interface pins  */
+#define sFLASH_SPI SPI2
+#define sFLASH_SPI_CLK RCC_APB1Periph_SPI2
+#define sFLASH_SPI_CLK_INIT RCC_APB1PeriphClockCmd
 
-#define sFLASH_SPI_MISO_PIN                  GPIO_Pin_2
-#define sFLASH_SPI_MISO_GPIO_PORT            GPIOI
-#define sFLASH_SPI_MISO_GPIO_CLK             RCC_AHB1Periph_GPIOI
-#define sFLASH_SPI_MISO_SOURCE               GPIO_PinSource2
-#define sFLASH_SPI_MISO_AF                   GPIO_AF_SPI2
+#define sFLASH_SPI_SCK_PIN GPIO_Pin_1
+#define sFLASH_SPI_SCK_GPIO_PORT GPIOI
+#define sFLASH_SPI_SCK_GPIO_CLK RCC_AHB1Periph_GPIOI
+#define sFLASH_SPI_SCK_SOURCE GPIO_PinSource1
+#define sFLASH_SPI_SCK_AF GPIO_AF_SPI2
 
-#define sFLASH_SPI_MOSI_PIN                  GPIO_Pin_3
-#define sFLASH_SPI_MOSI_GPIO_PORT            GPIOI
-#define sFLASH_SPI_MOSI_GPIO_CLK             RCC_AHB1Periph_GPIOI
-#define sFLASH_SPI_MOSI_SOURCE               GPIO_PinSource3
-#define sFLASH_SPI_MOSI_AF                   GPIO_AF_SPI2
+#define sFLASH_SPI_MISO_PIN GPIO_Pin_2
+#define sFLASH_SPI_MISO_GPIO_PORT GPIOI
+#define sFLASH_SPI_MISO_GPIO_CLK RCC_AHB1Periph_GPIOI
+#define sFLASH_SPI_MISO_SOURCE GPIO_PinSource2
+#define sFLASH_SPI_MISO_AF GPIO_AF_SPI2
 
-#define sFLASH_CS_PIN                        GPIO_Pin_0
-#define sFLASH_CS_GPIO_PORT                  GPIOI
-#define sFLASH_CS_GPIO_CLK                   RCC_AHB1Periph_GPIOI
+#define sFLASH_SPI_MOSI_PIN GPIO_Pin_3
+#define sFLASH_SPI_MOSI_GPIO_PORT GPIOI
+#define sFLASH_SPI_MOSI_GPIO_CLK RCC_AHB1Periph_GPIOI
+#define sFLASH_SPI_MOSI_SOURCE GPIO_PinSource3
+#define sFLASH_SPI_MOSI_AF GPIO_AF_SPI2
+
+#define sFLASH_CS_PIN GPIO_Pin_0
+#define sFLASH_CS_GPIO_PORT GPIOI
+#define sFLASH_CS_GPIO_CLK RCC_AHB1Periph_GPIOI
 
 /* Exported macro ------------------------------------------------------------*/
 /* Select sFLASH: Chip Select pin low */
-#define sFLASH_CS_LOW()       GPIO_ResetBits(sFLASH_CS_GPIO_PORT, sFLASH_CS_PIN)
+#define sFLASH_CS_LOW() GPIO_ResetBits(sFLASH_CS_GPIO_PORT, sFLASH_CS_PIN)
 /* Deselect sFLASH: Chip Select pin high */
-#define sFLASH_CS_HIGH()      GPIO_SetBits(sFLASH_CS_GPIO_PORT, sFLASH_CS_PIN)   
+#define sFLASH_CS_HIGH() GPIO_SetBits(sFLASH_CS_GPIO_PORT, sFLASH_CS_PIN)
 
 /* Exported functions ------------------------------------------------------- */
 
@@ -116,6 +116,5 @@ void sFLASH_WaitForWriteEnd(void);
 #endif
 
 #endif /* __SPI_FLASH_H */
-
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

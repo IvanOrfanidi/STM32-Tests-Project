@@ -34,7 +34,7 @@
 
 /** @addtogroup DMA2D_RegToMemWithLCD
   * @{
-  */ 
+  */
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
@@ -56,31 +56,29 @@ static void DMA2D_Config(void);
   */
 int main(void)
 {
-  /*!< At this stage the microcontroller clock setting is already configured, 
+    /*!< At this stage the microcontroller clock setting is already configured, 
        this is done through SystemInit() function which is called from startup
        files (startup_stm32f429_439xx.s) before to branch to application main.
-     */       
+     */
 
-  /* DMA2D configuration */
-  DMA2D_Config();
-  
-  /* Start Transfer */ 
-  DMA2D_StartTransfer();
-  
-  /* Wait for TC Flag activation */
-  while(DMA2D_GetFlagStatus(DMA2D_FLAG_TC) == RESET)
-  {
-  } 
+    /* DMA2D configuration */
+    DMA2D_Config();
 
-  /* Configure LCD */
-  LCD_Config();
+    /* Start Transfer */
+    DMA2D_StartTransfer();
 
-  /* LCD Display */
-  LCD_DisplayOn();
+    /* Wait for TC Flag activation */
+    while(DMA2D_GetFlagStatus(DMA2D_FLAG_TC) == RESET) {
+    }
 
-  while (1)
-  {
-  }
+    /* Configure LCD */
+    LCD_Config();
+
+    /* LCD Display */
+    LCD_DisplayOn();
+
+    while(1) {
+    }
 }
 
 /**
@@ -96,31 +94,31 @@ int main(void)
 
 static void DMA2D_Config(void)
 {
-  DMA2D_InitTypeDef      DMA2D_InitStruct; 
+    DMA2D_InitTypeDef DMA2D_InitStruct;
 
-  /* Enable the DMA2D Clock */
-  RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_DMA2D, ENABLE);
+    /* Enable the DMA2D Clock */
+    RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_DMA2D, ENABLE);
 
-  DMA2D_DeInit();
-  /* Configure transfer mode */
-  DMA2D_InitStruct.DMA2D_Mode = DMA2D_R2M;
-  /* Configure color mode */       
-  DMA2D_InitStruct.DMA2D_CMode = DMA2D_ARGB4444; 
-  /* Configure A,R,G,B value : color to be used to fill user defined area */     
-  DMA2D_InitStruct.DMA2D_OutputGreen = 0;      
-  DMA2D_InitStruct.DMA2D_OutputBlue = 15;     
-  DMA2D_InitStruct.DMA2D_OutputRed = 15;                
-  DMA2D_InitStruct.DMA2D_OutputAlpha = 15;
-  /* Configure output Address */                  
-  DMA2D_InitStruct.DMA2D_OutputMemoryAdd = (uint32_t)&aBufferResult;
-  /* Configure output offset */                
-  DMA2D_InitStruct.DMA2D_OutputOffset = 0;
-  /* Configure number of lines : height */                
-  DMA2D_InitStruct.DMA2D_NumberOfLine = 100;
-  /* Configure number of pixel per line : width */            
-  DMA2D_InitStruct.DMA2D_PixelPerLine = 100;
-  
-  DMA2D_Init(&DMA2D_InitStruct);
+    DMA2D_DeInit();
+    /* Configure transfer mode */
+    DMA2D_InitStruct.DMA2D_Mode = DMA2D_R2M;
+    /* Configure color mode */
+    DMA2D_InitStruct.DMA2D_CMode = DMA2D_ARGB4444;
+    /* Configure A,R,G,B value : color to be used to fill user defined area */
+    DMA2D_InitStruct.DMA2D_OutputGreen = 0;
+    DMA2D_InitStruct.DMA2D_OutputBlue = 15;
+    DMA2D_InitStruct.DMA2D_OutputRed = 15;
+    DMA2D_InitStruct.DMA2D_OutputAlpha = 15;
+    /* Configure output Address */
+    DMA2D_InitStruct.DMA2D_OutputMemoryAdd = (uint32_t)&aBufferResult;
+    /* Configure output offset */
+    DMA2D_InitStruct.DMA2D_OutputOffset = 0;
+    /* Configure number of lines : height */
+    DMA2D_InitStruct.DMA2D_NumberOfLine = 100;
+    /* Configure number of pixel per line : width */
+    DMA2D_InitStruct.DMA2D_PixelPerLine = 100;
+
+    DMA2D_Init(&DMA2D_InitStruct);
 }
 
 /**
@@ -138,30 +136,29 @@ static void DMA2D_Config(void)
 
 static void LCD_Config(void)
 {
-  
-  /* Initialize the LCD */
-  LCD_Init();
-  
-  /* Initialize the LCD Layers */
-  LCD_LayerInit();
-  
-  /* Clear the Hole LCD */
-  LCD_Clear(LCD_COLOR_WHITE);   
-  
-  /* Set the Foreground as active Layer */
-  LCD_SetLayer(LCD_FOREGROUND_LAYER);
-  
-  /* Configure the window size and position */
-  LCD_SetDisplayWindow(0, 0, 100, 100);
-  
-  /* Configure the LCD frame Buffer Address */
-  LCD_SetAddress((uint32_t)&aBufferResult);
+    /* Initialize the LCD */
+    LCD_Init();
 
-  /* Configure the LCD Pixel Format */
-  LCD_SetPixelFormat(LTDC_Pixelformat_ARGB4444);   
+    /* Initialize the LCD Layers */
+    LCD_LayerInit();
+
+    /* Clear the Hole LCD */
+    LCD_Clear(LCD_COLOR_WHITE);
+
+    /* Set the Foreground as active Layer */
+    LCD_SetLayer(LCD_FOREGROUND_LAYER);
+
+    /* Configure the window size and position */
+    LCD_SetDisplayWindow(0, 0, 100, 100);
+
+    /* Configure the LCD frame Buffer Address */
+    LCD_SetAddress((uint32_t)&aBufferResult);
+
+    /* Configure the LCD Pixel Format */
+    LCD_SetPixelFormat(LTDC_Pixelformat_ARGB4444);
 }
 
-#ifdef  USE_FULL_ASSERT
+#ifdef USE_FULL_ASSERT
 
 /**
   * @brief  Reports the name of the source file and the source line number
@@ -171,14 +168,13 @@ static void LCD_Config(void)
   * @retval None
   */
 void assert_failed(uint8_t* file, uint32_t line)
-{ 
-  /* User can add his own implementation to report the file name and line number,
+{
+    /* User can add his own implementation to report the file name and line number,
      ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
 
-  /* Infinite loop */
-  while (1)
-  {
-  }
+    /* Infinite loop */
+    while(1) {
+    }
 }
 #endif
 
@@ -189,6 +185,5 @@ void assert_failed(uint8_t* file, uint32_t line)
 /**
   * @}
   */
-
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

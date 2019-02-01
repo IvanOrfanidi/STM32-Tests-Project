@@ -24,7 +24,7 @@
   *
   ******************************************************************************
   */
-  
+
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __MAIN_H
 #define __MAIN_H
@@ -33,13 +33,13 @@
 #include "stm32f4xx.h"
 #include <stdio.h>
 
-#if defined (USE_STM324x7I_EVAL) 
-  #include "stm324x7i_eval.h"
+#if defined(USE_STM324x7I_EVAL)
+#include "stm324x7i_eval.h"
 
-#elif defined (USE_STM324x9I_EVAL) 
-  #include "stm324x9i_eval.h"
+#elif defined(USE_STM324x9I_EVAL)
+#include "stm324x9i_eval.h"
 #else
- #error "Please select first the Evaluation board used in your application (in Project Options)"
+#error "Please select first the Evaluation board used in your application (in Project Options)"
 #endif
 
 /* Exported types ------------------------------------------------------------*/
@@ -47,13 +47,13 @@
 /* Exported macro ------------------------------------------------------------*/
 /* The size of the plain text in bytes. It must be a multiple of 16.
    AES is a block cipher algorithm. The plain text must be multiple of 128 bits = 16 bytes */
-#define PLAINTEXT_SIZE    16
+#define PLAINTEXT_SIZE 16
 /* The size of the key in bits must be 128 bits (16 bytes), 192 bits (24 bytes)
    or 256 bits (32 bytes) */
-#define KEY_SIZE          128 /* Key size in bits */
+#define KEY_SIZE 128 /* Key size in bits */
 /* The header size must be multiple of 16 bytes whatever the key size */
-#define HEADER_SIZE       16
-#define AES_MODE_GCM      1
+#define HEADER_SIZE 16
+#define AES_MODE_GCM 1
 
 /* Exported functions --------------------------------------------------------*/
 

@@ -66,9 +66,9 @@ void NMI_Handler(void)
   */
 void HardFault_Handler(void)
 {
-  /* Go to infinite loop when Hard Fault exception occurs */
-  while (1)
-  {}
+    /* Go to infinite loop when Hard Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -78,9 +78,9 @@ void HardFault_Handler(void)
   */
 void MemManage_Handler(void)
 {
-  /* Go to infinite loop when Memory Manage exception occurs */
-  while (1)
-  {}
+    /* Go to infinite loop when Memory Manage exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -90,9 +90,9 @@ void MemManage_Handler(void)
   */
 void BusFault_Handler(void)
 {
-  /* Go to infinite loop when Bus Fault exception occurs */
-  while (1)
-  {}
+    /* Go to infinite loop when Bus Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -102,9 +102,9 @@ void BusFault_Handler(void)
   */
 void UsageFault_Handler(void)
 {
-  /* Go to infinite loop when Usage Fault exception occurs */
-  while (1)
-  {}
+    /* Go to infinite loop when Usage Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -153,8 +153,8 @@ void SysTick_Handler(void)
   */
 void SDIO_IRQHandler(void)
 {
-  /* Process All SDIO Interrupt Sources */
-  SD_ProcessIRQSrc();
+    /* Process All SDIO Interrupt Sources */
+    SD_ProcessIRQSrc();
 }
 
 /**
@@ -165,8 +165,8 @@ void SDIO_IRQHandler(void)
   */
 void SD_SDIO_DMA_IRQHANDLER(void)
 {
-  /* Process DMA2 Stream3 or DMA2 Stream6 Interrupt Sources */
-  SD_ProcessDMAIRQ();
+    /* Process DMA2 Stream3 or DMA2 Stream6 Interrupt Sources */
+    SD_ProcessDMAIRQ();
 }
 
 /******************************************************************************/
@@ -187,10 +187,10 @@ void SD_SDIO_DMA_IRQHANDLER(void)
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}
-  */ 
+  */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

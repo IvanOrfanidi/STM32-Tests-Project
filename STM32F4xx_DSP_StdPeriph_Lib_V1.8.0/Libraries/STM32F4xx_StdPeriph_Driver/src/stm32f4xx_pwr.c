@@ -32,7 +32,7 @@
   * limitations under the License.
   *
   ******************************************************************************
-  */ 
+  */
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f4xx_pwr.h"
@@ -45,91 +45,91 @@
 /** @defgroup PWR 
   * @brief PWR driver modules
   * @{
-  */ 
+  */
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
 /* --------- PWR registers bit address in the alias region ---------- */
-#define PWR_OFFSET               (PWR_BASE - PERIPH_BASE)
+#define PWR_OFFSET (PWR_BASE - PERIPH_BASE)
 
 /* --- CR Register ---*/
 
 /* Alias word address of DBP bit */
-#define CR_OFFSET                (PWR_OFFSET + 0x00)
-#define DBP_BitNumber            0x08
-#define CR_DBP_BB                (PERIPH_BB_BASE + (CR_OFFSET * 32) + (DBP_BitNumber * 4))
+#define CR_OFFSET (PWR_OFFSET + 0x00)
+#define DBP_BitNumber 0x08
+#define CR_DBP_BB (PERIPH_BB_BASE + (CR_OFFSET * 32) + (DBP_BitNumber * 4))
 
 /* Alias word address of PVDE bit */
-#define PVDE_BitNumber           0x04
-#define CR_PVDE_BB               (PERIPH_BB_BASE + (CR_OFFSET * 32) + (PVDE_BitNumber * 4))
+#define PVDE_BitNumber 0x04
+#define CR_PVDE_BB (PERIPH_BB_BASE + (CR_OFFSET * 32) + (PVDE_BitNumber * 4))
 
 /* Alias word address of FPDS bit */
-#define FPDS_BitNumber           0x09
-#define CR_FPDS_BB               (PERIPH_BB_BASE + (CR_OFFSET * 32) + (FPDS_BitNumber * 4))
+#define FPDS_BitNumber 0x09
+#define CR_FPDS_BB (PERIPH_BB_BASE + (CR_OFFSET * 32) + (FPDS_BitNumber * 4))
 
 /* Alias word address of PMODE bit */
-#define PMODE_BitNumber           0x0E
-#define CR_PMODE_BB               (PERIPH_BB_BASE + (CR_OFFSET * 32) + (PMODE_BitNumber * 4))
+#define PMODE_BitNumber 0x0E
+#define CR_PMODE_BB (PERIPH_BB_BASE + (CR_OFFSET * 32) + (PMODE_BitNumber * 4))
 
 /* Alias word address of ODEN bit */
-#define ODEN_BitNumber           0x10
-#define CR_ODEN_BB               (PERIPH_BB_BASE + (CR_OFFSET * 32) + (ODEN_BitNumber * 4))
+#define ODEN_BitNumber 0x10
+#define CR_ODEN_BB (PERIPH_BB_BASE + (CR_OFFSET * 32) + (ODEN_BitNumber * 4))
 
 /* Alias word address of ODSWEN bit */
-#define ODSWEN_BitNumber         0x11
-#define CR_ODSWEN_BB             (PERIPH_BB_BASE + (CR_OFFSET * 32) + (ODSWEN_BitNumber * 4))
+#define ODSWEN_BitNumber 0x11
+#define CR_ODSWEN_BB (PERIPH_BB_BASE + (CR_OFFSET * 32) + (ODSWEN_BitNumber * 4))
 
 #if defined(STM32F427_437xx) || defined(STM32F429_439xx) || defined(STM32F446xx)
 /* Alias word address of MRUDS bit */
-#define MRUDS_BitNumber         0x0B
-#define CR_MRUDS_BB             (PERIPH_BB_BASE + (CR_OFFSET * 32) + (MRUDS_BitNumber * 4))
+#define MRUDS_BitNumber 0x0B
+#define CR_MRUDS_BB (PERIPH_BB_BASE + (CR_OFFSET * 32) + (MRUDS_BitNumber * 4))
 
 /* Alias word address of LPUDS bit */
-#define LPUDS_BitNumber         0x0A
-#define CR_LPUDS_BB             (PERIPH_BB_BASE + (CR_OFFSET * 32) + (LPUDS_BitNumber * 4))
+#define LPUDS_BitNumber 0x0A
+#define CR_LPUDS_BB (PERIPH_BB_BASE + (CR_OFFSET * 32) + (LPUDS_BitNumber * 4))
 #endif /* STM32F427_437xx || STM32F429_439xx || STM32F446xx */
 
 #if defined(STM32F401xx) || defined(STM32F410xx) || defined(STM32F411xE) || defined(STM32F412xG) || defined(STM32F413_423xx)
 /* Alias word address of MRLVDS bit */
-#define MRLVDS_BitNumber         0x0B
-#define CR_MRLVDS_BB             (PERIPH_BB_BASE + (CR_OFFSET * 32) + (MRLVDS_BitNumber * 4))
+#define MRLVDS_BitNumber 0x0B
+#define CR_MRLVDS_BB (PERIPH_BB_BASE + (CR_OFFSET * 32) + (MRLVDS_BitNumber * 4))
 
 /* Alias word address of LPLVDS bit */
-#define LPLVDS_BitNumber         0x0A
-#define CR_LPLVDS_BB             (PERIPH_BB_BASE + (CR_OFFSET * 32) + (LPLVDS_BitNumber * 4))
+#define LPLVDS_BitNumber 0x0A
+#define CR_LPLVDS_BB (PERIPH_BB_BASE + (CR_OFFSET * 32) + (LPLVDS_BitNumber * 4))
 #endif /* STM32F401xx || STM32F410xx || STM32F411xE || STM32F412xG || STM32F413_423xx */
 
 /* --- CSR Register ---*/
 #if defined(STM32F40_41xxx) || defined(STM32F427_437xx) || defined(STM32F429_439xx) || defined(STM32F401xx) || defined(STM32F410xx) || defined(STM32F411xE) || defined(STM32F469_479xx)
 /* Alias word address of EWUP bit */
-#define CSR_OFFSET               (PWR_OFFSET + 0x04)
-#define EWUP_BitNumber           0x08
-#define CSR_EWUP_BB              (PERIPH_BB_BASE + (CSR_OFFSET * 32) + (EWUP_BitNumber * 4))
+#define CSR_OFFSET (PWR_OFFSET + 0x04)
+#define EWUP_BitNumber 0x08
+#define CSR_EWUP_BB (PERIPH_BB_BASE + (CSR_OFFSET * 32) + (EWUP_BitNumber * 4))
 #endif /* STM32F40_41xxx || STM32F427_437xx || STM32F429_439xx || STM32F401xx || STM32F410xx || STM32F411xE || STM32F469_479xx */
 
 #if defined(STM32F410xx) || defined(STM32F412xG) || defined(STM32F413_423xx) || defined(STM32F446xx)
 /* Alias word address of EWUP2 bit */
-#define CSR_OFFSET               (PWR_OFFSET + 0x04)
-#define EWUP1_BitNumber           0x08
-#define CSR_EWUP1_BB              (PERIPH_BB_BASE + (CSR_OFFSET * 32) + (EWUP1_BitNumber * 4))
-#define EWUP2_BitNumber           0x07
-#define CSR_EWUP2_BB              (PERIPH_BB_BASE + (CSR_OFFSET * 32) + (EWUP2_BitNumber * 4))
+#define CSR_OFFSET (PWR_OFFSET + 0x04)
+#define EWUP1_BitNumber 0x08
+#define CSR_EWUP1_BB (PERIPH_BB_BASE + (CSR_OFFSET * 32) + (EWUP1_BitNumber * 4))
+#define EWUP2_BitNumber 0x07
+#define CSR_EWUP2_BB (PERIPH_BB_BASE + (CSR_OFFSET * 32) + (EWUP2_BitNumber * 4))
 #if defined(STM32F410xx) || defined(STM32F412xG) || defined(STM32F413_423xx)
-#define EWUP3_BitNumber           0x06
-#define CSR_EWUP3_BB              (PERIPH_BB_BASE + (CSR_OFFSET * 32) + (EWUP2_BitNumber * 4))
+#define EWUP3_BitNumber 0x06
+#define CSR_EWUP3_BB (PERIPH_BB_BASE + (CSR_OFFSET * 32) + (EWUP2_BitNumber * 4))
 #endif /* STM32F410xx || STM32F412xG || STM32F413_423xx */
 #endif /* STM32F410xx || STM32F412xG || STM32F413_423xx || STM32F446xx */
 
 /* Alias word address of BRE bit */
-#define BRE_BitNumber            0x09
-#define CSR_BRE_BB              (PERIPH_BB_BASE + (CSR_OFFSET * 32) + (BRE_BitNumber * 4))
+#define BRE_BitNumber 0x09
+#define CSR_BRE_BB (PERIPH_BB_BASE + (CSR_OFFSET * 32) + (BRE_BitNumber * 4))
 
 /* ------------------ PWR registers bit mask ------------------------ */
 
 /* CR register bit mask */
-#define CR_DS_MASK               ((uint32_t)0xFFFFF3FC)
-#define CR_PLS_MASK              ((uint32_t)0xFFFFFF1F)
-#define CR_VOS_MASK              ((uint32_t)0xFFFF3FFF)
+#define CR_DS_MASK ((uint32_t)0xFFFFF3FC)
+#define CR_PLS_MASK ((uint32_t)0xFFFFFF1F)
+#define CR_VOS_MASK ((uint32_t)0xFFFF3FFF)
 
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
@@ -167,8 +167,8 @@
   */
 void PWR_DeInit(void)
 {
-  RCC_APB1PeriphResetCmd(RCC_APB1Periph_PWR, ENABLE);
-  RCC_APB1PeriphResetCmd(RCC_APB1Periph_PWR, DISABLE);
+    RCC_APB1PeriphResetCmd(RCC_APB1Periph_PWR, ENABLE);
+    RCC_APB1PeriphResetCmd(RCC_APB1Periph_PWR, DISABLE);
 }
 
 /**
@@ -182,10 +182,10 @@ void PWR_DeInit(void)
   */
 void PWR_BackupAccessCmd(FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
-  
-  *(__IO uint32_t *) CR_DBP_BB = (uint32_t)NewState;
+    /* Check the parameters */
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
+
+    *(__IO uint32_t*)CR_DBP_BB = (uint32_t)NewState;
 }
 
 /**
@@ -230,21 +230,21 @@ void PWR_BackupAccessCmd(FunctionalState NewState)
   */
 void PWR_PVDLevelConfig(uint32_t PWR_PVDLevel)
 {
-  uint32_t tmpreg = 0;
-  
-  /* Check the parameters */
-  assert_param(IS_PWR_PVD_LEVEL(PWR_PVDLevel));
-  
-  tmpreg = PWR->CR;
-  
-  /* Clear PLS[7:5] bits */
-  tmpreg &= CR_PLS_MASK;
-  
-  /* Set PLS[7:5] bits according to PWR_PVDLevel value */
-  tmpreg |= PWR_PVDLevel;
-  
-  /* Store the new value */
-  PWR->CR = tmpreg;
+    uint32_t tmpreg = 0;
+
+    /* Check the parameters */
+    assert_param(IS_PWR_PVD_LEVEL(PWR_PVDLevel));
+
+    tmpreg = PWR->CR;
+
+    /* Clear PLS[7:5] bits */
+    tmpreg &= CR_PLS_MASK;
+
+    /* Set PLS[7:5] bits according to PWR_PVDLevel value */
+    tmpreg |= PWR_PVDLevel;
+
+    /* Store the new value */
+    PWR->CR = tmpreg;
 }
 
 /**
@@ -255,10 +255,10 @@ void PWR_PVDLevelConfig(uint32_t PWR_PVDLevel)
   */
 void PWR_PVDCmd(FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
-  
-  *(__IO uint32_t *) CR_PVDE_BB = (uint32_t)NewState;
+    /* Check the parameters */
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
+
+    *(__IO uint32_t*)CR_PVDE_BB = (uint32_t)NewState;
 }
 
 /**
@@ -290,10 +290,10 @@ void PWR_PVDCmd(FunctionalState NewState)
   */
 void PWR_WakeUpPinCmd(FunctionalState NewState)
 {
-  /* Check the parameters */  
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
+    /* Check the parameters */
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-  *(__IO uint32_t *) CSR_EWUP_BB = (uint32_t)NewState;
+    *(__IO uint32_t*)CSR_EWUP_BB = (uint32_t)NewState;
 }
 #endif /* STM32F40_41xxx || STM32F427_437xx || STM32F429_439xx || STM32F401xx || STM32F411xE */
 
@@ -311,23 +311,23 @@ void PWR_WakeUpPinCmd(FunctionalState NewState)
   */
 void PWR_WakeUpPinCmd(uint32_t PWR_WakeUpPinx, FunctionalState NewState)
 {
-  /* Check the parameters */  
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
-  assert_param(IS_PWR_WAKEUP_PIN(NewState));
-  if(PWR_WakeUpPinx == PWR_WakeUp_Pin1) /* PWR_WakeUp_Pin1 */
-  {
-    *(__IO uint32_t *) CSR_EWUP1_BB = (uint32_t)NewState;
-  }
-#if defined(STM32F410xx)|| defined(STM32F412xG) || defined(STM32F413_423xx)  
-  else if(PWR_WakeUpPinx == PWR_WakeUp_Pin3) /* PWR_WakeUp_Pin3 */
-  {
-    *(__IO uint32_t *) CSR_EWUP3_BB = (uint32_t)NewState;
-  }
-#endif /* STM32F410xx */  
-  else /* PWR_WakeUp_Pin2 */
-  {
-    *(__IO uint32_t *) CSR_EWUP2_BB = (uint32_t)NewState;
-  }
+    /* Check the parameters */
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
+    assert_param(IS_PWR_WAKEUP_PIN(NewState));
+    if(PWR_WakeUpPinx == PWR_WakeUp_Pin1) /* PWR_WakeUp_Pin1 */
+    {
+        *(__IO uint32_t*)CSR_EWUP1_BB = (uint32_t)NewState;
+    }
+#if defined(STM32F410xx) || defined(STM32F412xG) || defined(STM32F413_423xx)
+    else if(PWR_WakeUpPinx == PWR_WakeUp_Pin3) /* PWR_WakeUp_Pin3 */
+    {
+        *(__IO uint32_t*)CSR_EWUP3_BB = (uint32_t)NewState;
+    }
+#endif   /* STM32F410xx */
+    else /* PWR_WakeUp_Pin2 */
+    {
+        *(__IO uint32_t*)CSR_EWUP2_BB = (uint32_t)NewState;
+    }
 }
 #endif /* STM32F410xx || STM32F412xG || STM32F413_423xx || STM32F446xx */
 
@@ -422,10 +422,10 @@ void PWR_WakeUpPinCmd(uint32_t PWR_WakeUpPinx, FunctionalState NewState)
   */
 void PWR_BackupRegulatorCmd(FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
+    /* Check the parameters */
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-  *(__IO uint32_t *) CSR_BRE_BB = (uint32_t)NewState;
+    *(__IO uint32_t*)CSR_BRE_BB = (uint32_t)NewState;
 }
 
 /**
@@ -444,21 +444,21 @@ void PWR_BackupRegulatorCmd(FunctionalState NewState)
   */
 void PWR_MainRegulatorModeConfig(uint32_t PWR_Regulator_Voltage)
 {
-  uint32_t tmpreg = 0;
-	
-  /* Check the parameters */
-  assert_param(IS_PWR_REGULATOR_VOLTAGE(PWR_Regulator_Voltage));
+    uint32_t tmpreg = 0;
 
-  tmpreg = PWR->CR;
-  
-  /* Clear VOS[15:14] bits */
-  tmpreg &= CR_VOS_MASK;
-  
-  /* Set VOS[15:14] bits according to PWR_Regulator_Voltage value */
-  tmpreg |= PWR_Regulator_Voltage;
-  
-  /* Store the new value */
-  PWR->CR = tmpreg;
+    /* Check the parameters */
+    assert_param(IS_PWR_REGULATOR_VOLTAGE(PWR_Regulator_Voltage));
+
+    tmpreg = PWR->CR;
+
+    /* Clear VOS[15:14] bits */
+    tmpreg &= CR_VOS_MASK;
+
+    /* Set VOS[15:14] bits according to PWR_Regulator_Voltage value */
+    tmpreg |= PWR_Regulator_Voltage;
+
+    /* Store the new value */
+    PWR->CR = tmpreg;
 }
 
 /**
@@ -479,11 +479,11 @@ void PWR_MainRegulatorModeConfig(uint32_t PWR_Regulator_Voltage)
   */
 void PWR_OverDriveCmd(FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
-  
-  /* Set/Reset the ODEN bit to enable/disable the Over Drive mode */
-  *(__IO uint32_t *) CR_ODEN_BB = (uint32_t)NewState;
+    /* Check the parameters */
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
+
+    /* Set/Reset the ODEN bit to enable/disable the Over Drive mode */
+    *(__IO uint32_t*)CR_ODEN_BB = (uint32_t)NewState;
 }
 
 /**
@@ -497,11 +497,11 @@ void PWR_OverDriveCmd(FunctionalState NewState)
   */
 void PWR_OverDriveSWCmd(FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
+    /* Check the parameters */
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-  /* Set/Reset the ODSWEN bit to enable/disable the Over Drive switching mode */
-  *(__IO uint32_t *) CR_ODSWEN_BB = (uint32_t)NewState;
+    /* Set/Reset the ODSWEN bit to enable/disable the Over Drive switching mode */
+    *(__IO uint32_t*)CR_ODSWEN_BB = (uint32_t)NewState;
 }
 
 /**
@@ -524,19 +524,17 @@ void PWR_OverDriveSWCmd(FunctionalState NewState)
   */
 void PWR_UnderDriveCmd(FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
+    /* Check the parameters */
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-  if (NewState != DISABLE)
-  {
-    /* Set the UDEN[1:0] bits to enable the Under Drive mode */
-    PWR->CR |= (uint32_t)PWR_CR_UDEN;
-  }
-  else
-  {
-    /* Reset the UDEN[1:0] bits to disable the Under Drive mode */
-    PWR->CR &= (uint32_t)(~PWR_CR_UDEN);
-  }
+    if(NewState != DISABLE) {
+        /* Set the UDEN[1:0] bits to enable the Under Drive mode */
+        PWR->CR |= (uint32_t)PWR_CR_UDEN;
+    }
+    else {
+        /* Reset the UDEN[1:0] bits to disable the Under Drive mode */
+        PWR->CR &= (uint32_t)(~PWR_CR_UDEN);
+    }
 }
 
 #if defined(STM32F427_437xx) || defined(STM32F429_439xx) || defined(STM32F446xx)
@@ -550,18 +548,16 @@ void PWR_UnderDriveCmd(FunctionalState NewState)
   * @retval None
   */
 void PWR_MainRegulatorUnderDriveCmd(FunctionalState NewState)
-{ 
-  /* Check the parameters */
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
-  
-  if (NewState != DISABLE)
-  {
-    *(__IO uint32_t *) CR_MRUDS_BB = (uint32_t)ENABLE;
-  }
-  else
-  {
-    *(__IO uint32_t *) CR_MRUDS_BB = (uint32_t)DISABLE;
-  }
+{
+    /* Check the parameters */
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
+
+    if(NewState != DISABLE) {
+        *(__IO uint32_t*)CR_MRUDS_BB = (uint32_t)ENABLE;
+    }
+    else {
+        *(__IO uint32_t*)CR_MRUDS_BB = (uint32_t)DISABLE;
+    }
 }
 
 /**
@@ -575,17 +571,15 @@ void PWR_MainRegulatorUnderDriveCmd(FunctionalState NewState)
   */
 void PWR_LowRegulatorUnderDriveCmd(FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
-  
-  if (NewState != DISABLE)
-  {
-    *(__IO uint32_t *) CR_LPUDS_BB = (uint32_t)ENABLE;
-  }
-  else
-  {
-    *(__IO uint32_t *) CR_LPUDS_BB = (uint32_t)DISABLE;
-  }
+    /* Check the parameters */
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
+
+    if(NewState != DISABLE) {
+        *(__IO uint32_t*)CR_LPUDS_BB = (uint32_t)ENABLE;
+    }
+    else {
+        *(__IO uint32_t*)CR_LPUDS_BB = (uint32_t)DISABLE;
+    }
 }
 #endif /* STM32F427_437xx || STM32F429_439xx || STM32F446xx */
 
@@ -600,18 +594,16 @@ void PWR_LowRegulatorUnderDriveCmd(FunctionalState NewState)
   * @retval None
   */
 void PWR_MainRegulatorLowVoltageCmd(FunctionalState NewState)
-{ 
-  /* Check the parameters */
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
-  
-  if (NewState != DISABLE)
-  {
-    *(__IO uint32_t *) CR_MRLVDS_BB = (uint32_t)ENABLE;
-  }
-  else
-  {
-    *(__IO uint32_t *) CR_MRLVDS_BB = (uint32_t)DISABLE;
-  }
+{
+    /* Check the parameters */
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
+
+    if(NewState != DISABLE) {
+        *(__IO uint32_t*)CR_MRLVDS_BB = (uint32_t)ENABLE;
+    }
+    else {
+        *(__IO uint32_t*)CR_MRLVDS_BB = (uint32_t)DISABLE;
+    }
 }
 
 /**
@@ -625,17 +617,15 @@ void PWR_MainRegulatorLowVoltageCmd(FunctionalState NewState)
   */
 void PWR_LowRegulatorLowVoltageCmd(FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
-  
-  if (NewState != DISABLE)
-  {
-    *(__IO uint32_t *) CR_LPLVDS_BB = (uint32_t)ENABLE;
-  }
-  else
-  {
-    *(__IO uint32_t *) CR_LPLVDS_BB = (uint32_t)DISABLE;
-  }
+    /* Check the parameters */
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
+
+    if(NewState != DISABLE) {
+        *(__IO uint32_t*)CR_LPLVDS_BB = (uint32_t)ENABLE;
+    }
+    else {
+        *(__IO uint32_t*)CR_LPLVDS_BB = (uint32_t)DISABLE;
+    }
 }
 #endif /* STM32F401xx || STM32F410xx || STM32F411xE || STM32F412xG || STM32F413_423xx */
 
@@ -668,10 +658,10 @@ void PWR_LowRegulatorLowVoltageCmd(FunctionalState NewState)
   */
 void PWR_FlashPowerDownCmd(FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
+    /* Check the parameters */
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-  *(__IO uint32_t *) CR_FPDS_BB = (uint32_t)NewState;
+    *(__IO uint32_t*)CR_FPDS_BB = (uint32_t)NewState;
 }
 
 /**
@@ -814,39 +804,37 @@ void PWR_FlashPowerDownCmd(FunctionalState NewState)
   */
 void PWR_EnterSTOPMode(uint32_t PWR_Regulator, uint8_t PWR_STOPEntry)
 {
-  uint32_t tmpreg = 0;
-  
-  /* Check the parameters */
-  assert_param(IS_PWR_REGULATOR(PWR_Regulator));
-  assert_param(IS_PWR_STOP_ENTRY(PWR_STOPEntry));
-  
-  /* Select the regulator state in STOP mode ---------------------------------*/
-  tmpreg = PWR->CR;
-  /* Clear PDDS and LPDS bits */
-  tmpreg &= CR_DS_MASK;
-  
-  /* Set LPDS, MRLVDS and LPLVDS bits according to PWR_Regulator value */
-  tmpreg |= PWR_Regulator;
-  
-  /* Store the new value */
-  PWR->CR = tmpreg;
-  
-  /* Set SLEEPDEEP bit of Cortex System Control Register */
-  SCB->SCR |= SCB_SCR_SLEEPDEEP_Msk;
-  
-  /* Select STOP mode entry --------------------------------------------------*/
-  if(PWR_STOPEntry == PWR_STOPEntry_WFI)
-  {   
-    /* Request Wait For Interrupt */
-    __WFI();
-  }
-  else
-  {
-    /* Request Wait For Event */
-    __WFE();
-  }
-  /* Reset SLEEPDEEP bit of Cortex System Control Register */
-  SCB->SCR &= (uint32_t)~((uint32_t)SCB_SCR_SLEEPDEEP_Msk);  
+    uint32_t tmpreg = 0;
+
+    /* Check the parameters */
+    assert_param(IS_PWR_REGULATOR(PWR_Regulator));
+    assert_param(IS_PWR_STOP_ENTRY(PWR_STOPEntry));
+
+    /* Select the regulator state in STOP mode ---------------------------------*/
+    tmpreg = PWR->CR;
+    /* Clear PDDS and LPDS bits */
+    tmpreg &= CR_DS_MASK;
+
+    /* Set LPDS, MRLVDS and LPLVDS bits according to PWR_Regulator value */
+    tmpreg |= PWR_Regulator;
+
+    /* Store the new value */
+    PWR->CR = tmpreg;
+
+    /* Set SLEEPDEEP bit of Cortex System Control Register */
+    SCB->SCR |= SCB_SCR_SLEEPDEEP_Msk;
+
+    /* Select STOP mode entry --------------------------------------------------*/
+    if(PWR_STOPEntry == PWR_STOPEntry_WFI) {
+        /* Request Wait For Interrupt */
+        __WFI();
+    }
+    else {
+        /* Request Wait For Event */
+        __WFE();
+    }
+    /* Reset SLEEPDEEP bit of Cortex System Control Register */
+    SCB->SCR &= (uint32_t) ~((uint32_t)SCB_SCR_SLEEPDEEP_Msk);
 }
 
 /**
@@ -878,39 +866,37 @@ void PWR_EnterSTOPMode(uint32_t PWR_Regulator, uint8_t PWR_STOPEntry)
   */
 void PWR_EnterUnderDriveSTOPMode(uint32_t PWR_Regulator, uint8_t PWR_STOPEntry)
 {
-  uint32_t tmpreg = 0;
-  
-  /* Check the parameters */
-  assert_param(IS_PWR_REGULATOR_UNDERDRIVE(PWR_Regulator));
-  assert_param(IS_PWR_STOP_ENTRY(PWR_STOPEntry));
-  
-  /* Select the regulator state in STOP mode ---------------------------------*/
-  tmpreg = PWR->CR;
-  /* Clear PDDS and LPDS bits */
-  tmpreg &= CR_DS_MASK;
-  
-  /* Set LPDS, MRLUDS and LPLUDS bits according to PWR_Regulator value */
-  tmpreg |= PWR_Regulator;
-  
-  /* Store the new value */
-  PWR->CR = tmpreg;
-  
-  /* Set SLEEPDEEP bit of Cortex System Control Register */
-  SCB->SCR |= SCB_SCR_SLEEPDEEP_Msk;
-  
-  /* Select STOP mode entry --------------------------------------------------*/
-  if(PWR_STOPEntry == PWR_STOPEntry_WFI)
-  {   
-    /* Request Wait For Interrupt */
-    __WFI();
-  }
-  else
-  {
-    /* Request Wait For Event */
-    __WFE();
-  }
-  /* Reset SLEEPDEEP bit of Cortex System Control Register */
-  SCB->SCR &= (uint32_t)~((uint32_t)SCB_SCR_SLEEPDEEP_Msk);  
+    uint32_t tmpreg = 0;
+
+    /* Check the parameters */
+    assert_param(IS_PWR_REGULATOR_UNDERDRIVE(PWR_Regulator));
+    assert_param(IS_PWR_STOP_ENTRY(PWR_STOPEntry));
+
+    /* Select the regulator state in STOP mode ---------------------------------*/
+    tmpreg = PWR->CR;
+    /* Clear PDDS and LPDS bits */
+    tmpreg &= CR_DS_MASK;
+
+    /* Set LPDS, MRLUDS and LPLUDS bits according to PWR_Regulator value */
+    tmpreg |= PWR_Regulator;
+
+    /* Store the new value */
+    PWR->CR = tmpreg;
+
+    /* Set SLEEPDEEP bit of Cortex System Control Register */
+    SCB->SCR |= SCB_SCR_SLEEPDEEP_Msk;
+
+    /* Select STOP mode entry --------------------------------------------------*/
+    if(PWR_STOPEntry == PWR_STOPEntry_WFI) {
+        /* Request Wait For Interrupt */
+        __WFI();
+    }
+    else {
+        /* Request Wait For Event */
+        __WFE();
+    }
+    /* Reset SLEEPDEEP bit of Cortex System Control Register */
+    SCB->SCR &= (uint32_t) ~((uint32_t)SCB_SCR_SLEEPDEEP_Msk);
 }
 
 /**
@@ -927,18 +913,18 @@ void PWR_EnterUnderDriveSTOPMode(uint32_t PWR_Regulator, uint8_t PWR_STOPEntry)
   */
 void PWR_EnterSTANDBYMode(void)
 {
-  /* Select STANDBY mode */
-  PWR->CR |= PWR_CR_PDDS;
-  
-  /* Set SLEEPDEEP bit of Cortex System Control Register */
-  SCB->SCR |= SCB_SCR_SLEEPDEEP_Msk;
-  
-  /* This option is used to ensure that store operations are completed */
-#if defined ( __CC_ARM   )
-  __force_stores();
+    /* Select STANDBY mode */
+    PWR->CR |= PWR_CR_PDDS;
+
+    /* Set SLEEPDEEP bit of Cortex System Control Register */
+    SCB->SCR |= SCB_SCR_SLEEPDEEP_Msk;
+
+    /* This option is used to ensure that store operations are completed */
+#if defined(__CC_ARM)
+    __force_stores();
 #endif
-  /* Request Wait For Interrupt */
-  __WFI();
+    /* Request Wait For Interrupt */
+    __WFI();
 }
 
 /**
@@ -987,21 +973,19 @@ void PWR_EnterSTANDBYMode(void)
   */
 FlagStatus PWR_GetFlagStatus(uint32_t PWR_FLAG)
 {
-  FlagStatus bitstatus = RESET;
-  
-  /* Check the parameters */
-  assert_param(IS_PWR_GET_FLAG(PWR_FLAG));
-  
-  if ((PWR->CSR & PWR_FLAG) != (uint32_t)RESET)
-  {
-    bitstatus = SET;
-  }
-  else
-  {
-    bitstatus = RESET;
-  }
-  /* Return the flag status */
-  return bitstatus;
+    FlagStatus bitstatus = RESET;
+
+    /* Check the parameters */
+    assert_param(IS_PWR_GET_FLAG(PWR_FLAG));
+
+    if((PWR->CSR & PWR_FLAG) != (uint32_t)RESET) {
+        bitstatus = SET;
+    }
+    else {
+        bitstatus = RESET;
+    }
+    /* Return the flag status */
+    return bitstatus;
 }
 
 /**
@@ -1015,22 +999,20 @@ FlagStatus PWR_GetFlagStatus(uint32_t PWR_FLAG)
   */
 void PWR_ClearFlag(uint32_t PWR_FLAG)
 {
-  /* Check the parameters */
-  assert_param(IS_PWR_CLEAR_FLAG(PWR_FLAG));
-  
-#if defined (STM32F427_437xx) || defined (STM32F429_439xx)
-  if (PWR_FLAG != PWR_FLAG_UDRDY)
-  {
-    PWR->CR |=  PWR_FLAG << 2;
-  }
-  else
-  {
-    PWR->CSR |= PWR_FLAG_UDRDY;
-  }
+    /* Check the parameters */
+    assert_param(IS_PWR_CLEAR_FLAG(PWR_FLAG));
+
+#if defined(STM32F427_437xx) || defined(STM32F429_439xx)
+    if(PWR_FLAG != PWR_FLAG_UDRDY) {
+        PWR->CR |= PWR_FLAG << 2;
+    }
+    else {
+        PWR->CSR |= PWR_FLAG_UDRDY;
+    }
 #endif /* STM32F427_437xx ||  STM32F429_439xx */
 
-#if defined (STM32F40_41xxx) || defined (STM32F401xx) || defined (STM32F410xx) || defined (STM32F411xE) || defined(STM32F412xG) || defined(STM32F413_423xx)
-  PWR->CR |=  PWR_FLAG << 2;
+#if defined(STM32F40_41xxx) || defined(STM32F401xx) || defined(STM32F410xx) || defined(STM32F411xE) || defined(STM32F412xG) || defined(STM32F413_423xx)
+    PWR->CR |= PWR_FLAG << 2;
 #endif /* STM32F40_41xxx  || STM32F401xx || STM32F410xx || STM32F411xE || STM32F412xG || STM32F413_423xx */
 }
 

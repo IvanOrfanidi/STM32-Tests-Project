@@ -1,4 +1,4 @@
-/**************************************************************************//**
+/**************************************************************************/ /**
  * @file     system_ARMCM3.c
  * @brief    CMSIS Device System Source File for
  *           ARMCM3 Device Series
@@ -35,32 +35,27 @@
    POSSIBILITY OF SUCH DAMAGE.
    ---------------------------------------------------------------------------*/
 
-
 #include "ARMCM3.h"
 
 /*----------------------------------------------------------------------------
   Define clocks
  *----------------------------------------------------------------------------*/
-#define __HSI             ( 8000000UL)
-#define __XTAL            ( 5000000UL)    /* Oscillator frequency             */
+#define __HSI (8000000UL)
+#define __XTAL (5000000UL) /* Oscillator frequency             */
 
-#define __SYSTEM_CLOCK    (5*__XTAL)
-
+#define __SYSTEM_CLOCK (5 * __XTAL)
 
 /*----------------------------------------------------------------------------
   Clock Variable definitions
  *----------------------------------------------------------------------------*/
-uint32_t SystemCoreClock = __SYSTEM_CLOCK;/*!< System Clock Frequency (Core Clock)*/
-
+uint32_t SystemCoreClock = __SYSTEM_CLOCK; /*!< System Clock Frequency (Core Clock)*/
 
 /*----------------------------------------------------------------------------
   Clock functions
  *----------------------------------------------------------------------------*/
-void SystemCoreClockUpdate (void)            /* Get Core Clock Frequency      */
+void SystemCoreClockUpdate(void) /* Get Core Clock Frequency      */
 {
-
-  SystemCoreClock = __SYSTEM_CLOCK;
-
+    SystemCoreClock = __SYSTEM_CLOCK;
 }
 
 /**
@@ -72,13 +67,11 @@ void SystemCoreClockUpdate (void)            /* Get Core Clock Frequency      */
  * @brief  Setup the microcontroller system.
  *         Initialize the System.
  */
-void SystemInit (void)
+void SystemInit(void)
 {
-
 #ifdef UNALIGNED_SUPPORT_DISABLE
-  SCB->CCR |= SCB_CCR_UNALIGN_TRP_Msk;
+    SCB->CCR |= SCB_CCR_UNALIGN_TRP_Msk;
 #endif
 
-  SystemCoreClock = __SYSTEM_CLOCK;
-
+    SystemCoreClock = __SYSTEM_CLOCK;
 }

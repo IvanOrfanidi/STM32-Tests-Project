@@ -66,116 +66,112 @@
  */
 
 arm_status arm_mat_scale_q15(
-  const arm_matrix_instance_q15 * pSrc,
-  q15_t scaleFract,
-  int32_t shift,
-  arm_matrix_instance_q15 * pDst)
+    const arm_matrix_instance_q15* pSrc,
+    q15_t scaleFract,
+    int32_t shift,
+    arm_matrix_instance_q15* pDst)
 {
-  q15_t *pIn = pSrc->pData;                      /* input data matrix pointer */
-  q15_t *pOut = pDst->pData;                     /* output data matrix pointer */
-  uint32_t numSamples;                           /* total number of elements in the matrix */
-  int32_t totShift = 15 - shift;                 /* total shift to apply after scaling */
-  uint32_t blkCnt;                               /* loop counters */
-  arm_status status;                             /* status of matrix scaling     */
+    q15_t* pIn = pSrc->pData;      /* input data matrix pointer */
+    q15_t* pOut = pDst->pData;     /* output data matrix pointer */
+    uint32_t numSamples;           /* total number of elements in the matrix */
+    int32_t totShift = 15 - shift; /* total shift to apply after scaling */
+    uint32_t blkCnt;               /* loop counters */
+    arm_status status;             /* status of matrix scaling     */
 
 #ifndef ARM_MATH_CM0_FAMILY
 
-  q15_t in1, in2, in3, in4;
-  q31_t out1, out2, out3, out4;
-  q31_t inA1, inA2;
+    q15_t in1, in2, in3, in4;
+    q31_t out1, out2, out3, out4;
+    q31_t inA1, inA2;
 
-#endif //     #ifndef ARM_MATH_CM0_FAMILY
+#endif    //     #ifndef ARM_MATH_CM0_FAMILY
 
 #ifdef ARM_MATH_MATRIX_CHECK
-  /* Check for matrix mismatch */
-  if((pSrc->numRows != pDst->numRows) || (pSrc->numCols != pDst->numCols))
-  {
-    /* Set status as ARM_MATH_SIZE_MISMATCH */
-    status = ARM_MATH_SIZE_MISMATCH;
-  }
-  else
-#endif //    #ifdef ARM_MATH_MATRIX_CHECK
-  {
-    /* Total number of samples in the input matrix */
-    numSamples = (uint32_t) pSrc->numRows * pSrc->numCols;
+    /* Check for matrix mismatch */
+    if((pSrc->numRows != pDst->numRows) || (pSrc->numCols != pDst->numCols)) {
+        /* Set status as ARM_MATH_SIZE_MISMATCH */
+        status = ARM_MATH_SIZE_MISMATCH;
+    }
+    else
+#endif    //    #ifdef ARM_MATH_MATRIX_CHECK
+    {
+        /* Total number of samples in the input matrix */
+        numSamples = (uint32_t)pSrc->numRows * pSrc->numCols;
 
 #ifndef ARM_MATH_CM0_FAMILY
 
-    /* Run the below code for Cortex-M4 and Cortex-M3 */
-    /* Loop Unrolling */
-    blkCnt = numSamples >> 2;
+        /* Run the below code for Cortex-M4 and Cortex-M3 */
+        /* Loop Unrolling */
+        blkCnt = numSamples >> 2;
 
-    /* First part of the processing with loop unrolling.  Compute 4 outputs at a time.    
+        /* First part of the processing with loop unrolling.  Compute 4 outputs at a time.    
      ** a second loop below computes the remaining 1 to 3 samples. */
-    while(blkCnt > 0u)
-    {
-      /* C(m,n) = A(m,n) * k */
-      /* Scale, saturate and then store the results in the destination buffer. */
-      /* Reading 2 inputs from memory */
-      inA1 = _SIMD32_OFFSET(pIn);
-      inA2 = _SIMD32_OFFSET(pIn + 2);
+        while(blkCnt > 0u) {
+            /* C(m,n) = A(m,n) * k */
+            /* Scale, saturate and then store the results in the destination buffer. */
+            /* Reading 2 inputs from memory */
+            inA1 = _SIMD32_OFFSET(pIn);
+            inA2 = _SIMD32_OFFSET(pIn + 2);
 
-      /* C = A * scale */
-      /* Scale the inputs and then store the 2 results in the destination buffer        
+            /* C = A * scale */
+            /* Scale the inputs and then store the 2 results in the destination buffer        
        * in single cycle by packing the outputs */
-      out1 = (q31_t) ((q15_t) (inA1 >> 16) * scaleFract);
-      out2 = (q31_t) ((q15_t) inA1 * scaleFract);
-      out3 = (q31_t) ((q15_t) (inA2 >> 16) * scaleFract);
-      out4 = (q31_t) ((q15_t) inA2 * scaleFract);
+            out1 = (q31_t)((q15_t)(inA1 >> 16) * scaleFract);
+            out2 = (q31_t)((q15_t)inA1 * scaleFract);
+            out3 = (q31_t)((q15_t)(inA2 >> 16) * scaleFract);
+            out4 = (q31_t)((q15_t)inA2 * scaleFract);
 
-      out1 = out1 >> totShift;
-      inA1 = _SIMD32_OFFSET(pIn + 4);
-      out2 = out2 >> totShift;
-      inA2 = _SIMD32_OFFSET(pIn + 6);
-      out3 = out3 >> totShift;
-      out4 = out4 >> totShift;
+            out1 = out1 >> totShift;
+            inA1 = _SIMD32_OFFSET(pIn + 4);
+            out2 = out2 >> totShift;
+            inA2 = _SIMD32_OFFSET(pIn + 6);
+            out3 = out3 >> totShift;
+            out4 = out4 >> totShift;
 
-      in1 = (q15_t) (__SSAT(out1, 16));
-      in2 = (q15_t) (__SSAT(out2, 16));
-      in3 = (q15_t) (__SSAT(out3, 16));
-      in4 = (q15_t) (__SSAT(out4, 16));
+            in1 = (q15_t)(__SSAT(out1, 16));
+            in2 = (q15_t)(__SSAT(out2, 16));
+            in3 = (q15_t)(__SSAT(out3, 16));
+            in4 = (q15_t)(__SSAT(out4, 16));
 
-      _SIMD32_OFFSET(pOut) = __PKHBT(in2, in1, 16);
-      _SIMD32_OFFSET(pOut + 2) = __PKHBT(in4, in3, 16);
+            _SIMD32_OFFSET(pOut) = __PKHBT(in2, in1, 16);
+            _SIMD32_OFFSET(pOut + 2) = __PKHBT(in4, in3, 16);
 
-      /* update pointers to process next sampels */
-      pIn += 4u;
-      pOut += 4u;
+            /* update pointers to process next sampels */
+            pIn += 4u;
+            pOut += 4u;
 
+            /* Decrement the numSamples loop counter */
+            blkCnt--;
+        }
 
-      /* Decrement the numSamples loop counter */
-      blkCnt--;
-    }
-
-    /* If the numSamples is not a multiple of 4, compute any remaining output samples here.        
+        /* If the numSamples is not a multiple of 4, compute any remaining output samples here.        
      ** No loop unrolling is used. */
-    blkCnt = numSamples % 0x4u;
+        blkCnt = numSamples % 0x4u;
 
 #else
 
-    /* Run the below code for Cortex-M0 */
+        /* Run the below code for Cortex-M0 */
 
-    /* Initialize blkCnt with number of samples */
-    blkCnt = numSamples;
+        /* Initialize blkCnt with number of samples */
+        blkCnt = numSamples;
 
 #endif /* #ifndef ARM_MATH_CM0_FAMILY */
 
-    while(blkCnt > 0u)
-    {
-      /* C(m,n) = A(m,n) * k */
-      /* Scale, saturate and then store the results in the destination buffer. */
-      *pOut++ =
-        (q15_t) (__SSAT(((q31_t) (*pIn++) * scaleFract) >> totShift, 16));
+        while(blkCnt > 0u) {
+            /* C(m,n) = A(m,n) * k */
+            /* Scale, saturate and then store the results in the destination buffer. */
+            *pOut++ =
+                (q15_t)(__SSAT(((q31_t)(*pIn++) * scaleFract) >> totShift, 16));
 
-      /* Decrement the numSamples loop counter */
-      blkCnt--;
+            /* Decrement the numSamples loop counter */
+            blkCnt--;
+        }
+        /* Set status as ARM_MATH_SUCCESS */
+        status = ARM_MATH_SUCCESS;
     }
-    /* Set status as ARM_MATH_SUCCESS */
-    status = ARM_MATH_SUCCESS;
-  }
 
-  /* Return to application */
-  return (status);
+    /* Return to application */
+    return (status);
 }
 
 /**        

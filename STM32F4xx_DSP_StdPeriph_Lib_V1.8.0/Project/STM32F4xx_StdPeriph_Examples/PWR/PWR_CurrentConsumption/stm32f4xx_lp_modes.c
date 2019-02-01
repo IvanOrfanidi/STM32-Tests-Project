@@ -40,14 +40,14 @@
 
 /** @addtogroup PWR_CurrentConsumption
   * @{
-  */ 
+  */
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
 /* Uncomment the corresponding line to select the RTC Clock source */
-#define RTC_CLOCK_SOURCE_LSE   /* LSE used as RTC source clock */
+#define RTC_CLOCK_SOURCE_LSE       /* LSE used as RTC source clock */
 /* #define RTC_CLOCK_SOURCE_LSI */ /* LSI used as RTC source clock. The RTC Clock
-                                      may varies due to LSI frequency dispersion. */ 
+                                      may varies due to LSI frequency dispersion. */
 
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
@@ -71,52 +71,54 @@
   */
 void SleepMode_Measure(void)
 {
-  __IO uint32_t index = 0;
-  GPIO_InitTypeDef GPIO_InitStructure;
+    __IO uint32_t index = 0;
+    GPIO_InitTypeDef GPIO_InitStructure;
 
-  /* Configure all GPIO as analog to reduce current consumption on non used IOs */
-  /* Enable GPIOs clock */
-  RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA | RCC_AHB1Periph_GPIOB | RCC_AHB1Periph_GPIOC |
-                         RCC_AHB1Periph_GPIOD | RCC_AHB1Periph_GPIOE | RCC_AHB1Periph_GPIOF |
-                         RCC_AHB1Periph_GPIOG | RCC_AHB1Periph_GPIOH | RCC_AHB1Periph_GPIOI, ENABLE);
+    /* Configure all GPIO as analog to reduce current consumption on non used IOs */
+    /* Enable GPIOs clock */
+    RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA | RCC_AHB1Periph_GPIOB | RCC_AHB1Periph_GPIOC |
+                               RCC_AHB1Periph_GPIOD | RCC_AHB1Periph_GPIOE | RCC_AHB1Periph_GPIOF |
+                               RCC_AHB1Periph_GPIOG | RCC_AHB1Periph_GPIOH | RCC_AHB1Periph_GPIOI,
+        ENABLE);
 
-  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AN;
-  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;
-  GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
-  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_All;
-  GPIO_Init(GPIOC, &GPIO_InitStructure);
-  GPIO_Init(GPIOD, &GPIO_InitStructure);
-  GPIO_Init(GPIOE, &GPIO_InitStructure);
-  GPIO_Init(GPIOF, &GPIO_InitStructure);
-  GPIO_Init(GPIOG, &GPIO_InitStructure);
-  GPIO_Init(GPIOH, &GPIO_InitStructure);
-  GPIO_Init(GPIOI, &GPIO_InitStructure);
-  GPIO_Init(GPIOA, &GPIO_InitStructure); 
-  GPIO_Init(GPIOB, &GPIO_InitStructure);
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AN;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;
+    GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
+    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_All;
+    GPIO_Init(GPIOC, &GPIO_InitStructure);
+    GPIO_Init(GPIOD, &GPIO_InitStructure);
+    GPIO_Init(GPIOE, &GPIO_InitStructure);
+    GPIO_Init(GPIOF, &GPIO_InitStructure);
+    GPIO_Init(GPIOG, &GPIO_InitStructure);
+    GPIO_Init(GPIOH, &GPIO_InitStructure);
+    GPIO_Init(GPIOI, &GPIO_InitStructure);
+    GPIO_Init(GPIOA, &GPIO_InitStructure);
+    GPIO_Init(GPIOB, &GPIO_InitStructure);
 
-  /* Disable GPIOs clock */
-  RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA | RCC_AHB1Periph_GPIOB | RCC_AHB1Periph_GPIOC |
-                         RCC_AHB1Periph_GPIOD | RCC_AHB1Periph_GPIOE | RCC_AHB1Periph_GPIOF |
-                         RCC_AHB1Periph_GPIOG | RCC_AHB1Periph_GPIOH | RCC_AHB1Periph_GPIOI, DISABLE);
+    /* Disable GPIOs clock */
+    RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA | RCC_AHB1Periph_GPIOB | RCC_AHB1Periph_GPIOC |
+                               RCC_AHB1Periph_GPIOD | RCC_AHB1Periph_GPIOE | RCC_AHB1Periph_GPIOF |
+                               RCC_AHB1Periph_GPIOG | RCC_AHB1Periph_GPIOH | RCC_AHB1Periph_GPIOI,
+        DISABLE);
 
-  /* Configure Key Button */
-  STM_EVAL_PBInit(BUTTON_KEY, BUTTON_MODE_EXTI);
+    /* Configure Key Button */
+    STM_EVAL_PBInit(BUTTON_KEY, BUTTON_MODE_EXTI);
 
-  /* Request to enter SLEEP mode */
-  __WFI();
+    /* Request to enter SLEEP mode */
+    __WFI();
 
-  /* Initialize LED1 on EVAL board */
-  STM_EVAL_LEDInit(LED1);
+    /* Initialize LED1 on EVAL board */
+    STM_EVAL_LEDInit(LED1);
 
-  /* Infinite loop */
-  while (1)
-  {
-    /* Toggle The LED1 */
-    STM_EVAL_LEDToggle(LED1);
+    /* Infinite loop */
+    while(1) {
+        /* Toggle The LED1 */
+        STM_EVAL_LEDToggle(LED1);
 
-    /* Inserted Delay */
-    for(index = 0; index < 0x5FFFF; index++);
-  }
+        /* Inserted Delay */
+        for(index = 0; index < 0x5FFFF; index++)
+            ;
+    }
 }
 
 /**
@@ -135,122 +137,121 @@ void SleepMode_Measure(void)
   */
 void StopMode_Measure(void)
 {
-  __IO uint32_t index = 0;
-  GPIO_InitTypeDef GPIO_InitStructure;
-  NVIC_InitTypeDef  NVIC_InitStructure;
-  EXTI_InitTypeDef  EXTI_InitStructure;
-  
-  /* Allow access to RTC */
-  PWR_BackupAccessCmd(ENABLE);
+    __IO uint32_t index = 0;
+    GPIO_InitTypeDef GPIO_InitStructure;
+    NVIC_InitTypeDef NVIC_InitStructure;
+    EXTI_InitTypeDef EXTI_InitStructure;
 
-#if defined (RTC_CLOCK_SOURCE_LSI)  /* LSI used as RTC source clock*/
-/* The RTC Clock may varies due to LSI frequency dispersion. */   
-  /* Enable the LSI OSC */ 
-  RCC_LSICmd(ENABLE);
+    /* Allow access to RTC */
+    PWR_BackupAccessCmd(ENABLE);
 
-  /* Wait till LSI is ready */  
-  while(RCC_GetFlagStatus(RCC_FLAG_LSIRDY) == RESET)
-  {
-  }
+#if defined(RTC_CLOCK_SOURCE_LSI) /* LSI used as RTC source clock*/
+                                  /* The RTC Clock may varies due to LSI frequency dispersion. */
+    /* Enable the LSI OSC */
+    RCC_LSICmd(ENABLE);
 
-  /* Select the RTC Clock Source */
-  RCC_RTCCLKConfig(RCC_RTCCLKSource_LSI);
+    /* Wait till LSI is ready */
+    while(RCC_GetFlagStatus(RCC_FLAG_LSIRDY) == RESET) {
+    }
 
-#elif defined (RTC_CLOCK_SOURCE_LSE) /* LSE used as RTC source clock */
-  /* Enable the LSE OSC */
-  RCC_LSEConfig(RCC_LSE_ON);
+    /* Select the RTC Clock Source */
+    RCC_RTCCLKConfig(RCC_RTCCLKSource_LSI);
 
-  /* Wait till LSE is ready */  
-  while(RCC_GetFlagStatus(RCC_FLAG_LSERDY) == RESET)
-  {
-  }
+#elif defined(RTC_CLOCK_SOURCE_LSE) /* LSE used as RTC source clock */
+    /* Enable the LSE OSC */
+    RCC_LSEConfig(RCC_LSE_ON);
 
-  /* Select the RTC Clock Source */
-  RCC_RTCCLKConfig(RCC_RTCCLKSource_LSE);
-  
+    /* Wait till LSE is ready */
+    while(RCC_GetFlagStatus(RCC_FLAG_LSERDY) == RESET) {
+    }
+
+    /* Select the RTC Clock Source */
+    RCC_RTCCLKConfig(RCC_RTCCLKSource_LSE);
+
 #else
-  #error Please select the RTC Clock source inside the main.c file
+#error Please select the RTC Clock source inside the main.c file
 #endif /* RTC_CLOCK_SOURCE_LSI */
 
+    /* Enable the RTC Clock */
+    RCC_RTCCLKCmd(ENABLE);
 
-  /* Enable the RTC Clock */
-  RCC_RTCCLKCmd(ENABLE);
+    /* Wait for RTC APB registers synchronisation */
+    RTC_WaitForSynchro();
 
-  /* Wait for RTC APB registers synchronisation */
-  RTC_WaitForSynchro();
+    /* Configure all GPIO as analog to reduce current consumption on non used IOs */
+    /* Enable GPIOs clock */
+    RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA | RCC_AHB1Periph_GPIOB | RCC_AHB1Periph_GPIOC |
+                               RCC_AHB1Periph_GPIOD | RCC_AHB1Periph_GPIOE | RCC_AHB1Periph_GPIOF |
+                               RCC_AHB1Periph_GPIOG | RCC_AHB1Periph_GPIOH | RCC_AHB1Periph_GPIOI,
+        ENABLE);
 
-  /* Configure all GPIO as analog to reduce current consumption on non used IOs */
-  /* Enable GPIOs clock */
-  RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA | RCC_AHB1Periph_GPIOB | RCC_AHB1Periph_GPIOC |
-                         RCC_AHB1Periph_GPIOD | RCC_AHB1Periph_GPIOE | RCC_AHB1Periph_GPIOF |
-                         RCC_AHB1Periph_GPIOG | RCC_AHB1Periph_GPIOH | RCC_AHB1Periph_GPIOI, ENABLE);
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AN;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;
+    GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
+    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_All;
+    GPIO_Init(GPIOC, &GPIO_InitStructure);
+    GPIO_Init(GPIOD, &GPIO_InitStructure);
+    GPIO_Init(GPIOE, &GPIO_InitStructure);
+    GPIO_Init(GPIOF, &GPIO_InitStructure);
+    GPIO_Init(GPIOG, &GPIO_InitStructure);
+    GPIO_Init(GPIOH, &GPIO_InitStructure);
+    GPIO_Init(GPIOI, &GPIO_InitStructure);
+    GPIO_Init(GPIOA, &GPIO_InitStructure);
+    GPIO_Init(GPIOB, &GPIO_InitStructure);
 
-  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AN;
-  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;
-  GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
-  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_All;
-  GPIO_Init(GPIOC, &GPIO_InitStructure);
-  GPIO_Init(GPIOD, &GPIO_InitStructure);
-  GPIO_Init(GPIOE, &GPIO_InitStructure);
-  GPIO_Init(GPIOF, &GPIO_InitStructure);
-  GPIO_Init(GPIOG, &GPIO_InitStructure);
-  GPIO_Init(GPIOH, &GPIO_InitStructure);
-  GPIO_Init(GPIOI, &GPIO_InitStructure);
-  GPIO_Init(GPIOA, &GPIO_InitStructure);
-  GPIO_Init(GPIOB, &GPIO_InitStructure);
+    /* Disable GPIOs clock */
+    RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA | RCC_AHB1Periph_GPIOB | RCC_AHB1Periph_GPIOC |
+                               RCC_AHB1Periph_GPIOD | RCC_AHB1Periph_GPIOE | RCC_AHB1Periph_GPIOF |
+                               RCC_AHB1Periph_GPIOG | RCC_AHB1Periph_GPIOH | RCC_AHB1Periph_GPIOI,
+        DISABLE);
 
-  /* Disable GPIOs clock */
-  RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA | RCC_AHB1Periph_GPIOB | RCC_AHB1Periph_GPIOC |
-                         RCC_AHB1Periph_GPIOD | RCC_AHB1Periph_GPIOE | RCC_AHB1Periph_GPIOF |
-                         RCC_AHB1Periph_GPIOG | RCC_AHB1Periph_GPIOH | RCC_AHB1Periph_GPIOI, DISABLE);
- 
-  /* EXTI configuration *******************************************************/
-  EXTI_ClearITPendingBit(EXTI_Line22);
-  EXTI_InitStructure.EXTI_Line = EXTI_Line22;
-  EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt;
-  EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Rising;
-  EXTI_InitStructure.EXTI_LineCmd = ENABLE;
-  EXTI_Init(&EXTI_InitStructure);
-  
-  /* Enable the RTC Wakeup Interrupt */
-  NVIC_InitStructure.NVIC_IRQChannel = RTC_WKUP_IRQn;
-  NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
-  NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
-  NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
-  NVIC_Init(&NVIC_InitStructure);
-  
-  /* RTC Wakeup Interrupt Generation: Clock Source: RTCCLK_Div16, Wakeup Time Base: ~20s
+    /* EXTI configuration *******************************************************/
+    EXTI_ClearITPendingBit(EXTI_Line22);
+    EXTI_InitStructure.EXTI_Line = EXTI_Line22;
+    EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt;
+    EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Rising;
+    EXTI_InitStructure.EXTI_LineCmd = ENABLE;
+    EXTI_Init(&EXTI_InitStructure);
+
+    /* Enable the RTC Wakeup Interrupt */
+    NVIC_InitStructure.NVIC_IRQChannel = RTC_WKUP_IRQn;
+    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
+    NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
+    NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+    NVIC_Init(&NVIC_InitStructure);
+
+    /* RTC Wakeup Interrupt Generation: Clock Source: RTCCLK_Div16, Wakeup Time Base: ~20s
      RTC Clock Source LSE 32.768KHz or LSI ~32KHz  
 
      Wakeup Time Base = (16 / (LSE or LSI)) * WakeUpCounter
   */
-  RTC_WakeUpClockConfig(RTC_WakeUpClock_RTCCLK_Div16);
-  RTC_SetWakeUpCounter(0xA000-1);
+    RTC_WakeUpClockConfig(RTC_WakeUpClock_RTCCLK_Div16);
+    RTC_SetWakeUpCounter(0xA000 - 1);
 
-  /* Enable the Wakeup Interrupt */
-  RTC_ITConfig(RTC_IT_WUT, ENABLE);
+    /* Enable the Wakeup Interrupt */
+    RTC_ITConfig(RTC_IT_WUT, ENABLE);
 
-  /* Enable Wakeup Counter */
-  RTC_WakeUpCmd(ENABLE);
+    /* Enable Wakeup Counter */
+    RTC_WakeUpCmd(ENABLE);
 
-  /* FLASH Deep Power Down Mode enabled */
-  PWR_FlashPowerDownCmd(ENABLE);
+    /* FLASH Deep Power Down Mode enabled */
+    PWR_FlashPowerDownCmd(ENABLE);
 
-  /* Enter Stop Mode */
-  PWR_EnterSTOPMode(PWR_Regulator_LowPower, PWR_STOPEntry_WFI);
+    /* Enter Stop Mode */
+    PWR_EnterSTOPMode(PWR_Regulator_LowPower, PWR_STOPEntry_WFI);
 
-  /* Initialize LED1 on EVAL board */
-  STM_EVAL_LEDInit(LED1);
+    /* Initialize LED1 on EVAL board */
+    STM_EVAL_LEDInit(LED1);
 
-  /* Infinite loop */
-  while (1)
-  {
-    /* Toggle The LED1 */
-    STM_EVAL_LEDToggle(LED1);
+    /* Infinite loop */
+    while(1) {
+        /* Toggle The LED1 */
+        STM_EVAL_LEDToggle(LED1);
 
-    /* Inserted Delay */
-    for(index = 0; index < 0x5FF; index++);
-  }
+        /* Inserted Delay */
+        for(index = 0; index < 0x5FF; index++)
+            ;
+    }
 }
 
 /**
@@ -266,19 +267,18 @@ void StopMode_Measure(void)
   */
 void StandbyMode_Measure(void)
 {
-  /* Enable WKUP pin 1 */
-  PWR_WakeUpPinCmd(ENABLE);
+    /* Enable WKUP pin 1 */
+    PWR_WakeUpPinCmd(ENABLE);
 
-  /* Clear Power WakeUp (CWUF) pending flag */
-  PWR_ClearFlag(PWR_FLAG_WU);
+    /* Clear Power WakeUp (CWUF) pending flag */
+    PWR_ClearFlag(PWR_FLAG_WU);
 
-  /* Request to enter STANDBY mode (Wake Up flag is cleared in PWR_EnterSTANDBYMode function) */
-  PWR_EnterSTANDBYMode();
+    /* Request to enter STANDBY mode (Wake Up flag is cleared in PWR_EnterSTANDBYMode function) */
+    PWR_EnterSTANDBYMode();
 
-  /* Infinite loop */
-  while (1)
-  {
-  }
+    /* Infinite loop */
+    while(1) {
+    }
 }
 
 /**
@@ -295,74 +295,71 @@ void StandbyMode_Measure(void)
   */
 void StandbyRTCMode_Measure(void)
 {
-  /* Allow access to RTC */
-  PWR_BackupAccessCmd(ENABLE);
+    /* Allow access to RTC */
+    PWR_BackupAccessCmd(ENABLE);
 
-#if defined (RTC_CLOCK_SOURCE_LSI)  /* LSI used as RTC source clock*/
-/* The RTC Clock may varies due to LSI frequency dispersion. */   
-  /* Enable the LSI OSC */ 
-  RCC_LSICmd(ENABLE);
+#if defined(RTC_CLOCK_SOURCE_LSI) /* LSI used as RTC source clock*/
+                                  /* The RTC Clock may varies due to LSI frequency dispersion. */
+    /* Enable the LSI OSC */
+    RCC_LSICmd(ENABLE);
 
-  /* Wait till LSI is ready */  
-  while(RCC_GetFlagStatus(RCC_FLAG_LSIRDY) == RESET)
-  {
-  }
+    /* Wait till LSI is ready */
+    while(RCC_GetFlagStatus(RCC_FLAG_LSIRDY) == RESET) {
+    }
 
-  /* Select the RTC Clock Source */
-  RCC_RTCCLKConfig(RCC_RTCCLKSource_LSI);
+    /* Select the RTC Clock Source */
+    RCC_RTCCLKConfig(RCC_RTCCLKSource_LSI);
 
-#elif defined (RTC_CLOCK_SOURCE_LSE) /* LSE used as RTC source clock */
-  /* Enable the LSE OSC */
-  RCC_LSEConfig(RCC_LSE_ON);
+#elif defined(RTC_CLOCK_SOURCE_LSE) /* LSE used as RTC source clock */
+    /* Enable the LSE OSC */
+    RCC_LSEConfig(RCC_LSE_ON);
 
-  /* Wait till LSE is ready */  
-  while(RCC_GetFlagStatus(RCC_FLAG_LSERDY) == RESET)
-  {
-  }
+    /* Wait till LSE is ready */
+    while(RCC_GetFlagStatus(RCC_FLAG_LSERDY) == RESET) {
+    }
 
-  /* Select the RTC Clock Source */
-  RCC_RTCCLKConfig(RCC_RTCCLKSource_LSE);
-  
+    /* Select the RTC Clock Source */
+    RCC_RTCCLKConfig(RCC_RTCCLKSource_LSE);
+
 #else
-  #error Please select the RTC Clock source inside the main.c file
+#error Please select the RTC Clock source inside the main.c file
 #endif /* RTC_CLOCK_SOURCE_LSI */
 
-  /* Enable the RTC Clock */
-  RCC_RTCCLKCmd(ENABLE);
+    /* Enable the RTC Clock */
+    RCC_RTCCLKCmd(ENABLE);
 
-  /* Wait for RTC APB registers synchronisation */
-  RTC_WaitForSynchro();
+    /* Wait for RTC APB registers synchronisation */
+    RTC_WaitForSynchro();
 
-  /* RTC Wakeup Interrupt Generation: Clock Source: RTCCLK_Div16, Wakeup Time Base: ~20s
+    /* RTC Wakeup Interrupt Generation: Clock Source: RTCCLK_Div16, Wakeup Time Base: ~20s
      RTC Clock Source LSE 32.768KHz or LSI ~32KHz 
 
      Wakeup Time Base = (16 / (LSE or LSI)) * WakeUpCounter
   */
-  RTC_WakeUpClockConfig(RTC_WakeUpClock_RTCCLK_Div16);
-  RTC_SetWakeUpCounter(0xA000-1);
+    RTC_WakeUpClockConfig(RTC_WakeUpClock_RTCCLK_Div16);
+    RTC_SetWakeUpCounter(0xA000 - 1);
 
-  /* Disable the Wakeup Interrupt */
-  RTC_ITConfig(RTC_IT_WUT, DISABLE);
+    /* Disable the Wakeup Interrupt */
+    RTC_ITConfig(RTC_IT_WUT, DISABLE);
 
-  /* Clear Power WakeUp (CWUF) pending flag */
-  PWR_ClearFlag(PWR_FLAG_WU);
+    /* Clear Power WakeUp (CWUF) pending flag */
+    PWR_ClearFlag(PWR_FLAG_WU);
 
-  /* Enable the Wakeup Interrupt */
-  RTC_ITConfig(RTC_IT_WUT, ENABLE); 
+    /* Enable the Wakeup Interrupt */
+    RTC_ITConfig(RTC_IT_WUT, ENABLE);
 
-  /* Enable Wakeup Counter */
-  RTC_WakeUpCmd(ENABLE);
+    /* Enable Wakeup Counter */
+    RTC_WakeUpCmd(ENABLE);
 
-  /* Clear WakeUp (WUTF) pending flag */
-  RTC_ClearFlag(RTC_FLAG_WUTF);
-    
-  /* Request to enter STANDBY mode (Wake Up flag is cleared in PWR_EnterSTANDBYMode function) */
-  PWR_EnterSTANDBYMode();
-  
-  /* Infinite loop */
-  while (1)
-  {
-  }
+    /* Clear WakeUp (WUTF) pending flag */
+    RTC_ClearFlag(RTC_FLAG_WUTF);
+
+    /* Request to enter STANDBY mode (Wake Up flag is cleared in PWR_EnterSTANDBYMode function) */
+    PWR_EnterSTANDBYMode();
+
+    /* Infinite loop */
+    while(1) {
+    }
 }
 
 /**
@@ -379,96 +376,91 @@ void StandbyRTCMode_Measure(void)
   * @retval None
   */
 void StandbyRTCBKPSRAMMode_Measure(void)
-{   
-  /* Allow access to RTC */
-  PWR_BackupAccessCmd(ENABLE);
+{
+    /* Allow access to RTC */
+    PWR_BackupAccessCmd(ENABLE);
 
-#if defined (RTC_CLOCK_SOURCE_LSI)  /* LSI used as RTC source clock*/
-/* The RTC Clock may varies due to LSI frequency dispersion. */   
-  /* Enable the LSI OSC */ 
-  RCC_LSICmd(ENABLE);
+#if defined(RTC_CLOCK_SOURCE_LSI) /* LSI used as RTC source clock*/
+                                  /* The RTC Clock may varies due to LSI frequency dispersion. */
+    /* Enable the LSI OSC */
+    RCC_LSICmd(ENABLE);
 
-  /* Wait till LSI is ready */  
-  while(RCC_GetFlagStatus(RCC_FLAG_LSIRDY) == RESET)
-  {
-  }
+    /* Wait till LSI is ready */
+    while(RCC_GetFlagStatus(RCC_FLAG_LSIRDY) == RESET) {
+    }
 
-  /* Select the RTC Clock Source */
-  RCC_RTCCLKConfig(RCC_RTCCLKSource_LSI);
+    /* Select the RTC Clock Source */
+    RCC_RTCCLKConfig(RCC_RTCCLKSource_LSI);
 
-#elif defined (RTC_CLOCK_SOURCE_LSE) /* LSE used as RTC source clock */
-  /* Enable the LSE OSC */
-  RCC_LSEConfig(RCC_LSE_ON);
+#elif defined(RTC_CLOCK_SOURCE_LSE) /* LSE used as RTC source clock */
+    /* Enable the LSE OSC */
+    RCC_LSEConfig(RCC_LSE_ON);
 
-  /* Wait till LSE is ready */  
-  while(RCC_GetFlagStatus(RCC_FLAG_LSERDY) == RESET)
-  {
-  }
+    /* Wait till LSE is ready */
+    while(RCC_GetFlagStatus(RCC_FLAG_LSERDY) == RESET) {
+    }
 
-  /* Select the RTC Clock Source */
-  RCC_RTCCLKConfig(RCC_RTCCLKSource_LSE);
-  
+    /* Select the RTC Clock Source */
+    RCC_RTCCLKConfig(RCC_RTCCLKSource_LSE);
+
 #else
-  #error Please select the RTC Clock source inside the main.c file
+#error Please select the RTC Clock source inside the main.c file
 #endif /* RTC_CLOCK_SOURCE_LSI */
 
-  /* Enable the RTC Clock */
-  RCC_RTCCLKCmd(ENABLE);
+    /* Enable the RTC Clock */
+    RCC_RTCCLKCmd(ENABLE);
 
-  /* Wait for RTC APB registers synchronisation */
-  RTC_WaitForSynchro();
+    /* Wait for RTC APB registers synchronisation */
+    RTC_WaitForSynchro();
 
-/*  Backup SRAM ***************************************************************/
-  /* Enable BKPRAM Clock */
-  RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_BKPSRAM, ENABLE);
-  
-  /* Enable the Backup SRAM low power Regulator */
-  PWR_BackupRegulatorCmd(ENABLE);
+    /*  Backup SRAM ***************************************************************/
+    /* Enable BKPRAM Clock */
+    RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_BKPSRAM, ENABLE);
 
-  /* Wait until the Backup SRAM low power Regulator is ready */
-  while(PWR_GetFlagStatus(PWR_FLAG_BRR) == RESET)
-  {
-  }
-  
-  /* RTC Wakeup Interrupt Generation: Clock Source: RTCCLK_Div16, Wakeup Time Base: ~20s 
+    /* Enable the Backup SRAM low power Regulator */
+    PWR_BackupRegulatorCmd(ENABLE);
+
+    /* Wait until the Backup SRAM low power Regulator is ready */
+    while(PWR_GetFlagStatus(PWR_FLAG_BRR) == RESET) {
+    }
+
+    /* RTC Wakeup Interrupt Generation: Clock Source: RTCCLK_Div16, Wakeup Time Base: ~20s 
      RTC Clock Source LSE 32.768KHz or LSI ~32KHz  
 
      Wakeup Time Base = (16 / (LSE or LSI)) * WakeUpCounter
   */
-  RTC_WakeUpClockConfig(RTC_WakeUpClock_RTCCLK_Div16);
-  RTC_SetWakeUpCounter(0xA000-1);
+    RTC_WakeUpClockConfig(RTC_WakeUpClock_RTCCLK_Div16);
+    RTC_SetWakeUpCounter(0xA000 - 1);
 
-  /* Disable the Wakeup Interrupt */
-  RTC_ITConfig(RTC_IT_WUT, DISABLE);
+    /* Disable the Wakeup Interrupt */
+    RTC_ITConfig(RTC_IT_WUT, DISABLE);
 
-  /* Clear Power WakeUp (CWUF) pending flag */
-  PWR_ClearFlag(PWR_FLAG_WU);
+    /* Clear Power WakeUp (CWUF) pending flag */
+    PWR_ClearFlag(PWR_FLAG_WU);
 
-  /* Enable the Wakeup Interrupt */
-  RTC_ITConfig(RTC_IT_WUT, ENABLE);
+    /* Enable the Wakeup Interrupt */
+    RTC_ITConfig(RTC_IT_WUT, ENABLE);
 
-  /* Enable Wakeup Counter */
-  RTC_WakeUpCmd(ENABLE); 
+    /* Enable Wakeup Counter */
+    RTC_WakeUpCmd(ENABLE);
 
-  /* Clear WakeUp (WUTF) pending flag */
-  RTC_ClearFlag(RTC_FLAG_WUTF);
+    /* Clear WakeUp (WUTF) pending flag */
+    RTC_ClearFlag(RTC_FLAG_WUTF);
 
-  /* Request to enter STANDBY mode (Wake Up flag is cleared in PWR_EnterSTANDBYMode function) */
-  PWR_EnterSTANDBYMode();
-  
-  /* Infinite loop */
-  while (1)
-  {
-  }
+    /* Request to enter STANDBY mode (Wake Up flag is cleared in PWR_EnterSTANDBYMode function) */
+    PWR_EnterSTANDBYMode();
+
+    /* Infinite loop */
+    while(1) {
+    }
 }
 
+/**
+  * @}
+  */
 
 /**
   * @}
-  */ 
-
-/**
-  * @}
-  */ 
+  */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

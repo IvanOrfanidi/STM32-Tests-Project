@@ -24,7 +24,7 @@
   *
   ******************************************************************************
   */
-  
+
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __MAIN_H
 #define __MAIN_H
@@ -35,13 +35,13 @@
 
 /* Private defines -----------------------------------------------------------*/
 /* DMA configurations for transfer with FMC */
-#define DMA_STREAM               DMA2_Stream0
-#define DMA_CHANNEL              DMA_Channel_0
-#define DMA_STREAM_CLOCK         RCC_AHB1Periph_DMA2 
-#define DMA_STREAM_IRQ           DMA2_Stream0_IRQn
-#define DMA_IT_TCIF              DMA_IT_TCIF0
-#define DMA_FLAG_TCIF            DMA_FLAG_TCIF0
-#define DMA_STREAM_IRQHANDLER    DMA2_Stream0_IRQHandler
+#define DMA_STREAM DMA2_Stream0
+#define DMA_CHANNEL DMA_Channel_0
+#define DMA_STREAM_CLOCK RCC_AHB1Periph_DMA2
+#define DMA_STREAM_IRQ DMA2_Stream0_IRQn
+#define DMA_IT_TCIF DMA_IT_TCIF0
+#define DMA_FLAG_TCIF DMA_FLAG_TCIF0
+#define DMA_STREAM_IRQHANDLER DMA2_Stream0_IRQHandler
 
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/

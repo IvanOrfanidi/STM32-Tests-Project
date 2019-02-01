@@ -24,28 +24,28 @@
   *
   ******************************************************************************
   */
-  
+
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __MAIN_H
 #define __MAIN_H
 
 /* Includes ------------------------------------------------------------------*/
-#if defined (USE_STM324xG_EVAL)
-  #include "stm324xg_eval_lcd.h"
-  #include "stm324xg_eval_i2c_ee.h"
+#if defined(USE_STM324xG_EVAL)
+#include "stm324xg_eval_lcd.h"
+#include "stm324xg_eval_i2c_ee.h"
 
-#elif defined (USE_STM324x7I_EVAL) 
-  #include "stm324x7i_eval_lcd.h"
-  #include "stm324x7i_eval_i2c_ee.h"
+#elif defined(USE_STM324x7I_EVAL)
+#include "stm324x7i_eval_lcd.h"
+#include "stm324x7i_eval_i2c_ee.h"
 
 #else
- #error "Please select first the Evaluation board used in your application (in Project Options)"
+#error "Please select first the Evaluation board used in your application (in Project Options)"
 #endif
 
 /* Private define ------------------------------------------------------------*/
 /* Used to display the transfer status on LCD */
 #define USE_LCD
-  
+
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/
 /* Exported macro ------------------------------------------------------------*/

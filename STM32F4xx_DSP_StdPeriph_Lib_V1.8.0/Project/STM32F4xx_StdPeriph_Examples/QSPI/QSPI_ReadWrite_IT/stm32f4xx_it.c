@@ -31,7 +31,6 @@
 #include "main.h"
 #include "stm32f4xx_it.h"
 
-
 /** @addtogroup STM32F4xx_StdPeriph_Examples
   * @{
   */
@@ -44,7 +43,7 @@
 /* Private define ------------------------------------------------------------*/
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
-extern __IO int8_t ubRxIndex,ubTxIndex;
+extern __IO int8_t ubRxIndex, ubTxIndex;
 extern uint8_t aRxBuffer[];
 extern uint8_t aTxBuffer[];
 extern __IO uint8_t CmdCplt, RxCplt, TxCplt, StatusMatch;
@@ -72,10 +71,9 @@ void NMI_Handler(void)
   */
 void HardFault_Handler(void)
 {
-  /* Go to infinite loop when Hard Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Hard Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -85,10 +83,9 @@ void HardFault_Handler(void)
   */
 void MemManage_Handler(void)
 {
-  /* Go to infinite loop when Memory Manage exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Memory Manage exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -98,10 +95,9 @@ void MemManage_Handler(void)
   */
 void BusFault_Handler(void)
 {
-  /* Go to infinite loop when Bus Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Bus Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -111,10 +107,9 @@ void BusFault_Handler(void)
   */
 void UsageFault_Handler(void)
 {
-  /* Go to infinite loop when Usage Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Usage Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -165,128 +160,109 @@ void SysTick_Handler(void)
   * @retval None
   */
 void QUADSPI_IRQHandler(void)
-{  
-  /* QSPI Fifo Threshold interrupt occurred ----------------------------------*/
-  if(QSPI_GetITStatus(QSPI_IT_FT) != RESET)
-  {
-    if(QSPI_GetFMode() == QSPI_ComConfig_FMode_Indirect_Write)
-    {
-      /* Transmission process */
-      ubTxIndex=0;
-      while(QSPI_GetFlagStatus(QSPI_FLAG_FT))
-      {
-        if(ubTxIndex < NbrOfDataToTransfer)
-        {
-          /* Fill the FIFO until it is full */
-          QSPI_SendData8(aTxBuffer[ubTxIndex]);
-          ubTxIndex++;
+{
+    /* QSPI Fifo Threshold interrupt occurred ----------------------------------*/
+    if(QSPI_GetITStatus(QSPI_IT_FT) != RESET) {
+        if(QSPI_GetFMode() == QSPI_ComConfig_FMode_Indirect_Write) {
+            /* Transmission process */
+            ubTxIndex = 0;
+            while(QSPI_GetFlagStatus(QSPI_FLAG_FT)) {
+                if(ubTxIndex < NbrOfDataToTransfer) {
+                    /* Fill the FIFO until it is full */
+                    QSPI_SendData8(aTxBuffer[ubTxIndex]);
+                    ubTxIndex++;
+                }
+                else {
+                    QSPI_AbortRequest();
+                    /* No more data available for the transfer */
+                    break;
+                }
+            }
         }
-        else
-        {
-          QSPI_AbortRequest();
-          /* No more data available for the transfer */
-          break;
+        else if(QSPI_GetFMode() == QSPI_ComConfig_FMode_Indirect_Read) {
+            ubRxIndex = 0;
+            /* Receiving Process */
+            while(QSPI_GetITStatus(QSPI_IT_FT)) {
+                if(ubRxIndex < NbrOfDataToTransfer) {
+                    /* Read the FIFO until it is empty */
+                    aRxBuffer[ubRxIndex] = QSPI_ReceiveData8();
+                    ubRxIndex++;
+                }
+                else {
+                    /* All data have been received for the transfer */
+                    QSPI_AbortRequest();
+                    break;
+                }
+            }
         }
-      }
     }
-    else if(QSPI_GetFMode() == QSPI_ComConfig_FMode_Indirect_Read)
-    {
-      ubRxIndex=0;
-      /* Receiving Process */
-      while(QSPI_GetITStatus(QSPI_IT_FT))
-      {
-        if(ubRxIndex < NbrOfDataToTransfer)
-        {
-          /* Read the FIFO until it is empty */
-          aRxBuffer[ubRxIndex] = QSPI_ReceiveData8();
-          ubRxIndex++;
+    /* QSPI Transfer Complete interrupt occurred -------------------------------*/
+    if(QSPI_GetITStatus(QSPI_IT_TC) != RESET) {
+        /* Clear interrupt */
+        QSPI_ClearITPendingBit(QSPI_IT_TC);
+
+        /* Disable the QSPI FIFO Threshold, Transfer Error and Transfer complete Interrupts */
+        QSPI_ITConfig(QSPI_IT_TC | QSPI_IT_TE | QSPI_IT_FT, DISABLE);
+
+        /* Transfer complete callback */
+        if(QSPI_GetFMode() == QSPI_ComConfig_FMode_Indirect_Write) {
+            /* Clear Busy bit */
+            QSPI_AbortRequest();
+
+            /* TX Complete callback */
+            TxCplt++;
+            CmdCplt++;
         }
-        else
-        {
-          /* All data have been received for the transfer */
-          QSPI_AbortRequest();
-          break;
+        else if(QSPI_GetFMode() == QSPI_ComConfig_FMode_Indirect_Read) {
+            while(QSPI_GetFIFOLevel() != 0) {
+                if(ubRxIndex < NbrOfDataToTransfer) {
+                    /* Read the the last data received in the FIFO until it is empty */
+                    aRxBuffer[ubRxIndex] = QSPI_ReceiveData8();
+                    ubRxIndex++;
+                }
+                else {
+                    /* All data have been received for the transfer */
+                    QSPI_AbortRequest();
+                    break;
+                }
+            }
+            /* Workaround - Extra data written in the FIFO at the end of a read transfer */
+            QSPI_AbortRequest();
+
+            /* RX Complete callback */
+            RxCplt++;
+            CmdCplt++;
         }
-      }
-    }   
-  } 
-  /* QSPI Transfer Complete interrupt occurred -------------------------------*/
-  if(QSPI_GetITStatus(QSPI_IT_TC) != RESET)
-  {
-    /* Clear interrupt */
-    QSPI_ClearITPendingBit(QSPI_IT_TC);
-    
-    /* Disable the QSPI FIFO Threshold, Transfer Error and Transfer complete Interrupts */
-    QSPI_ITConfig(QSPI_IT_TC | QSPI_IT_TE | QSPI_IT_FT,DISABLE);
-    
-    /* Transfer complete callback */
-    if(QSPI_GetFMode() == QSPI_ComConfig_FMode_Indirect_Write)
-    {
-      /* Clear Busy bit */
-      QSPI_AbortRequest();
-      
-      /* TX Complete callback */
-      TxCplt++;
-      CmdCplt++;
+        else if(QSPI_GetFIFOLevel() != 0) {
+            /* Command Complete callback */
+            CmdCplt++;
+        }
     }
-    else if(QSPI_GetFMode() == QSPI_ComConfig_FMode_Indirect_Read)
-    {
-      while(QSPI_GetFIFOLevel() != 0)
-      {
-        if(ubRxIndex < NbrOfDataToTransfer)
-        {
-          /* Read the the last data received in the FIFO until it is empty */
-          aRxBuffer[ubRxIndex] = QSPI_ReceiveData8();
-          ubRxIndex++;          
-        }
-        else
-        {
-          /* All data have been received for the transfer */
-          QSPI_AbortRequest();
-          break;
-        }
-      }
-      /* Workaround - Extra data written in the FIFO at the end of a read transfer */
-      QSPI_AbortRequest();
-      
-      /* RX Complete callback */
-      RxCplt ++;
-      CmdCplt++;
+    /* QSPI Status Match interrupt occurred ------------------------------------*/
+    if(QSPI_GetITStatus(QSPI_IT_SM) != RESET) {
+        /* Clear flag */
+        QSPI_ClearITPendingBit(QSPI_IT_SM);
+
+        /* Disable the QSPI FIFO Threshold, Transfer Error and Status Match Interrupts */
+        QSPI_ITConfig(QSPI_IT_SM | QSPI_IT_FT | QSPI_IT_TE, DISABLE);
+
+        /* Status match callback */
+        StatusMatch++;
     }
-    else if(QSPI_GetFIFOLevel() != 0)
-    {
-      /* Command Complete callback */
-      CmdCplt++;
+    /* QSPI Transfer Error interrupt occurred ----------------------------------*/
+    if(QSPI_GetITStatus(QSPI_IT_TE) != RESET) {
+        /* Clear interrupt */
+        QSPI_ClearITPendingBit(QSPI_IT_TE);
+
+        /* Disable all the QSPI Interrupts */
+        QSPI_ITConfig(QSPI_IT_SM | QSPI_IT_TC | QSPI_IT_TE | QSPI_IT_FT, DISABLE);
     }
-  }  
-  /* QSPI Status Match interrupt occurred ------------------------------------*/
-  if(QSPI_GetITStatus(QSPI_IT_SM) != RESET)
-  {
-    /* Clear flag */
-    QSPI_ClearITPendingBit(QSPI_IT_SM);
-    
-    /* Disable the QSPI FIFO Threshold, Transfer Error and Status Match Interrupts */
-    QSPI_ITConfig(QSPI_IT_SM | QSPI_IT_FT | QSPI_IT_TE, DISABLE);
-    
-    /* Status match callback */
-    StatusMatch++;
-  }  
-  /* QSPI Transfer Error interrupt occurred ----------------------------------*/
-  if(QSPI_GetITStatus(QSPI_IT_TE) != RESET)
-  {
-    /* Clear interrupt */
-    QSPI_ClearITPendingBit(QSPI_IT_TE);
-    
-    /* Disable all the QSPI Interrupts */
-    QSPI_ITConfig(QSPI_IT_SM | QSPI_IT_TC | QSPI_IT_TE | QSPI_IT_FT, DISABLE);
-  }
-  
-  /* QSPI Timeout interrupt occurred -----------------------------------------*/
-  if(QSPI_GetITStatus(QSPI_IT_TO) != RESET)
-  {
-    /* Clear interrupt */
-    QSPI_ClearITPendingBit(QSPI_IT_TO);
-  }
+
+    /* QSPI Timeout interrupt occurred -----------------------------------------*/
+    if(QSPI_GetITStatus(QSPI_IT_TO) != RESET) {
+        /* Clear interrupt */
+        QSPI_ClearITPendingBit(QSPI_IT_TO);
+    }
 }
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

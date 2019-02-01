@@ -34,8 +34,7 @@
 
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/
-#if !defined (SLEEP_MODE) && !defined (STOP_MODE) && !defined (STANDBY_MODE)\
- && !defined (STANDBY_RTC_MODE) && !defined (STANDBY_RTC_BKPSRAM_MODE)
+#if !defined(SLEEP_MODE) && !defined(STOP_MODE) && !defined(STANDBY_MODE) && !defined(STANDBY_RTC_MODE) && !defined(STANDBY_RTC_BKPSRAM_MODE)
 /* Uncomment the corresponding line to select the STM32F4xx Low Power mode */
 //#define SLEEP_MODE
 //#define STOP_MODE
@@ -44,9 +43,8 @@
 //#define STANDBY_RTC_BKPSRAM_MODE
 #endif
 
-#if !defined (SLEEP_MODE) && !defined (STOP_MODE) && !defined (STANDBY_MODE)\
- && !defined (STANDBY_RTC_MODE) && !defined (STANDBY_RTC_BKPSRAM_MODE)
- #error "Please select first the target STM32F4xx Low Power mode to be measured (in stm32f4xx_lp_modes.h file)"
+#if !defined(SLEEP_MODE) && !defined(STOP_MODE) && !defined(STANDBY_MODE) && !defined(STANDBY_RTC_MODE) && !defined(STANDBY_RTC_BKPSRAM_MODE)
+#error "Please select first the target STM32F4xx Low Power mode to be measured (in stm32f4xx_lp_modes.h file)"
 #endif
 
 /* Exported macro ------------------------------------------------------------*/

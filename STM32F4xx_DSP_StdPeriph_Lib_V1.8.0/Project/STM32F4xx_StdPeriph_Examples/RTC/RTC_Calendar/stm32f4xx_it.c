@@ -66,10 +66,9 @@ void NMI_Handler(void)
   */
 void HardFault_Handler(void)
 {
-  /* Go to infinite loop when Hard Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Hard Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -79,10 +78,9 @@ void HardFault_Handler(void)
   */
 void MemManage_Handler(void)
 {
-  /* Go to infinite loop when Memory Manage exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Memory Manage exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -92,10 +90,9 @@ void MemManage_Handler(void)
   */
 void BusFault_Handler(void)
 {
-  /* Go to infinite loop when Bus Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Bus Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -105,10 +102,9 @@ void BusFault_Handler(void)
   */
 void UsageFault_Handler(void)
 {
-  /* Go to infinite loop when Usage Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Usage Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -161,14 +157,13 @@ void SysTick_Handler(void)
   */
 void EXTI0_IRQHandler(void)
 {
-  if(EXTI_GetITStatus(WAKEUP_BUTTON_EXTI_LINE) != RESET)
-  {  
-    /* Display the current alarm */
-    RTC_AlarmShow();
-     
-    /* Clear the Wakeup Button EXTI line pending bit */
-    EXTI_ClearITPendingBit(WAKEUP_BUTTON_EXTI_LINE);
-  } 
+    if(EXTI_GetITStatus(WAKEUP_BUTTON_EXTI_LINE) != RESET) {
+        /* Display the current alarm */
+        RTC_AlarmShow();
+
+        /* Clear the Wakeup Button EXTI line pending bit */
+        EXTI_ClearITPendingBit(WAKEUP_BUTTON_EXTI_LINE);
+    }
 }
 
 /**
@@ -178,15 +173,13 @@ void EXTI0_IRQHandler(void)
   */
 void EXTI15_10_IRQHandler(void)
 {
-   
-  if(EXTI_GetITStatus(TAMPER_BUTTON_EXTI_LINE) != RESET)
-  {
-    /* Display the current time */
-    RTC_TimeShow();
-    
-    /* Clear the Tamper Button EXTI line pending bit */
-    EXTI_ClearITPendingBit(TAMPER_BUTTON_EXTI_LINE);
-  }  
+    if(EXTI_GetITStatus(TAMPER_BUTTON_EXTI_LINE) != RESET) {
+        /* Display the current time */
+        RTC_TimeShow();
+
+        /* Clear the Tamper Button EXTI line pending bit */
+        EXTI_ClearITPendingBit(TAMPER_BUTTON_EXTI_LINE);
+    }
 }
 
 /**
@@ -196,12 +189,11 @@ void EXTI15_10_IRQHandler(void)
   */
 void RTC_Alarm_IRQHandler(void)
 {
-  if(RTC_GetITStatus(RTC_IT_ALRA) != RESET)
-  {
-    STM_EVAL_LEDToggle(LED1);
-    RTC_ClearITPendingBit(RTC_IT_ALRA);
-    EXTI_ClearITPendingBit(EXTI_Line17);
-  } 
+    if(RTC_GetITStatus(RTC_IT_ALRA) != RESET) {
+        STM_EVAL_LEDToggle(LED1);
+        RTC_ClearITPendingBit(RTC_IT_ALRA);
+        EXTI_ClearITPendingBit(EXTI_Line17);
+    }
 }
 
 /**

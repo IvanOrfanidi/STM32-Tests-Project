@@ -31,7 +31,7 @@
 #define __STM32F4xx_CRC_H
 
 #ifdef __cplusplus
- extern "C" {
+extern "C" {
 #endif
 
 /* Includes ------------------------------------------------------------------*/
@@ -57,7 +57,7 @@
   */
 
 /* Exported macro ------------------------------------------------------------*/
-/* Exported functions --------------------------------------------------------*/  
+/* Exported functions --------------------------------------------------------*/
 
 void CRC_ResetDR(void);
 uint32_t CRC_CalcCRC(uint32_t Data);

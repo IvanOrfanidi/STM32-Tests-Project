@@ -37,7 +37,6 @@
 * POSSIBILITY OF SUCH DAMAGE.   
 * -------------------------------------------------------------------------- */
 
-
 #include "arm_math.h"
 
 /**    
@@ -54,7 +53,7 @@
  * @{    
  */
 
-  /**    
+/**    
    * @brief  Q31 matrix initialization.    
    * @param[in,out] *S             points to an instance of the floating-point matrix structure.    
    * @param[in]     nRows          number of rows in the matrix.    
@@ -64,19 +63,19 @@
    */
 
 void arm_mat_init_q31(
-  arm_matrix_instance_q31 * S,
-  uint16_t nRows,
-  uint16_t nColumns,
-  q31_t * pData)
+    arm_matrix_instance_q31* S,
+    uint16_t nRows,
+    uint16_t nColumns,
+    q31_t* pData)
 {
-  /* Assign Number of Rows */
-  S->numRows = nRows;
+    /* Assign Number of Rows */
+    S->numRows = nRows;
 
-  /* Assign Number of Columns */
-  S->numCols = nColumns;
+    /* Assign Number of Columns */
+    S->numCols = nColumns;
 
-  /* Assign Data pointer */
-  S->pData = pData;
+    /* Assign Data pointer */
+    S->pData = pData;
 }
 
 /**    

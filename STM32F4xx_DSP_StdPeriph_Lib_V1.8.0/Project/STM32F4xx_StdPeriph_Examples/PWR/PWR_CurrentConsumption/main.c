@@ -35,7 +35,7 @@
 
 /** @addtogroup PWR_CurrentConsumption
   * @{
-  */ 
+  */
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
@@ -53,59 +53,55 @@ __IO uint32_t uwCounter = 0;
   */
 int main(void)
 {
-  
-  /*!< At this stage the microcontroller clock setting is already configured, 
+    /*!< At this stage the microcontroller clock setting is already configured, 
        this is done through SystemInit() function which is called from startup
        files (startup_stm32f40_41xxx.s/startup_stm32f427_437xx.s)
        before to branch to application main. 
        To reconfigure the default setting of SystemInit() function, refer to
        system_stm32f4xx.c file
-     */  
+     */
 
-  /* Enable PWR APB1 Clock */
-  RCC_APB1PeriphClockCmd(RCC_APB1Periph_PWR, ENABLE);
+    /* Enable PWR APB1 Clock */
+    RCC_APB1PeriphClockCmd(RCC_APB1Periph_PWR, ENABLE);
 
-  /* Allow access to Backup */
-  PWR_BackupAccessCmd(ENABLE);
+    /* Allow access to Backup */
+    PWR_BackupAccessCmd(ENABLE);
 
-  /* Reset RTC Domain */
-  RCC_BackupResetCmd(ENABLE);
-  RCC_BackupResetCmd(DISABLE);
-  
-  /* Check that the system was resumed from StandBy mode */ 
-  if(PWR_GetFlagStatus(PWR_FLAG_SB) != RESET)
-  {
-    /* Clear SB Flag */
-    PWR_ClearFlag(PWR_FLAG_SB);
-    
-    /* Initialize LED1 on STM324xG-EVAL board */
-    STM_EVAL_LEDInit(LED1);
+    /* Reset RTC Domain */
+    RCC_BackupResetCmd(ENABLE);
+    RCC_BackupResetCmd(DISABLE);
 
-    /* Infinite loop */
-    while (1)
-    {
-      /* Toggle The LED1 */
-      STM_EVAL_LEDToggle(LED1);
+    /* Check that the system was resumed from StandBy mode */
+    if(PWR_GetFlagStatus(PWR_FLAG_SB) != RESET) {
+        /* Clear SB Flag */
+        PWR_ClearFlag(PWR_FLAG_SB);
 
-      /* Inserted Delay */
-      for(uwCounter = 0; uwCounter < 0x5FFFF; uwCounter++);
+        /* Initialize LED1 on STM324xG-EVAL board */
+        STM_EVAL_LEDInit(LED1);
+
+        /* Infinite loop */
+        while(1) {
+            /* Toggle The LED1 */
+            STM_EVAL_LEDToggle(LED1);
+
+            /* Inserted Delay */
+            for(uwCounter = 0; uwCounter < 0x5FFFF; uwCounter++)
+                ;
+        }
     }
-  }
 
-  /*  Configure Key Button */
-  STM_EVAL_PBInit(BUTTON_KEY,BUTTON_MODE_GPIO);
+    /*  Configure Key Button */
+    STM_EVAL_PBInit(BUTTON_KEY, BUTTON_MODE_GPIO);
 
-  /* Wait until Key button is pressed to enter the Low Power mode */
-  while(STM_EVAL_PBGetState(BUTTON_KEY) != RESET)
-  {
-  }
-  /* Loop while Key button is maintained pressed */
-  while(STM_EVAL_PBGetState(BUTTON_KEY) == RESET)
-  {
-  }
+    /* Wait until Key button is pressed to enter the Low Power mode */
+    while(STM_EVAL_PBGetState(BUTTON_KEY) != RESET) {
+    }
+    /* Loop while Key button is maintained pressed */
+    while(STM_EVAL_PBGetState(BUTTON_KEY) == RESET) {
+    }
 
-#if defined (SLEEP_MODE)
-  /* Sleep Mode Entry 
+#if defined(SLEEP_MODE)
+    /* Sleep Mode Entry 
       - System Running at PLL (168MHz)
       - Flash 5 wait state
       - Instruction and Data caches ON
@@ -114,9 +110,9 @@ int main(void)
       - All peripherals disabled.
       - Wakeup using EXTI Line (Key Button PG.15)
    */
-  SleepMode_Measure();
-#elif defined (STOP_MODE)
-  /* STOP Mode Entry 
+    SleepMode_Measure();
+#elif defined(STOP_MODE)
+    /* STOP Mode Entry 
       - RTC Clocked by LSE/LSI
       - Regulator in LP mode
       - HSI, HSE OFF and LSI OFF if not used as RTC Clock source  
@@ -124,48 +120,48 @@ int main(void)
       - FLASH in deep power down mode
       - Automatic Wakeup using RTC clocked by LSE/LSI (after ~20s)
    */
-  StopMode_Measure();
-#elif defined (STANDBY_MODE)
-  /* STANDBY Mode Entry 
+    StopMode_Measure();
+#elif defined(STANDBY_MODE)
+    /* STANDBY Mode Entry 
       - Backup SRAM and RTC OFF
       - IWDG and LSI OFF
       - Wakeup using WakeUp Pin (PA.00)
    */
-  StandbyMode_Measure();
-#elif defined (STANDBY_RTC_MODE)
-  /* STANDBY Mode with RTC on LSE/LSI Entry 
+    StandbyMode_Measure();
+#elif defined(STANDBY_RTC_MODE)
+    /* STANDBY Mode with RTC on LSE/LSI Entry 
       - RTC Clocked by LSE or LSI
       - IWDG OFF and LSI OFF if not used as RTC Clock source
       - Backup SRAM OFF
       - Automatic Wakeup using RTC clocked by LSE/LSI (after ~20s)
    */
-  StandbyRTCMode_Measure();
-#elif defined (STANDBY_RTC_BKPSRAM_MODE)
-  /* STANDBY Mode with RTC on LSE/LSI Entry 
+    StandbyRTCMode_Measure();
+#elif defined(STANDBY_RTC_BKPSRAM_MODE)
+    /* STANDBY Mode with RTC on LSE/LSI Entry 
       - RTC Clocked by LSE/LSI
       - Backup SRAM ON
       - IWDG OFF
       - Automatic Wakeup using RTC clocked by LSE/LSI (after ~20s)
   */
-  StandbyRTCBKPSRAMMode_Measure();
+    StandbyRTCBKPSRAMMode_Measure();
 #else
 
-  /* Initialize LED1 on STM324xG-EVAL board */
-  STM_EVAL_LEDInit(LED1);
-  
-  /* Infinite loop */
-  while (1)
-  {
-    /* Toggle The LED1 */
-    STM_EVAL_LEDToggle(LED1);
+    /* Initialize LED1 on STM324xG-EVAL board */
+    STM_EVAL_LEDInit(LED1);
 
-    /* Inserted Delay */
-    for(Counter = 0; Counter < 0x5FF; Counter++);
-  }
+    /* Infinite loop */
+    while(1) {
+        /* Toggle The LED1 */
+        STM_EVAL_LEDToggle(LED1);
+
+        /* Inserted Delay */
+        for(Counter = 0; Counter < 0x5FF; Counter++)
+            ;
+    }
 #endif
 }
 
-#ifdef  USE_FULL_ASSERT
+#ifdef USE_FULL_ASSERT
 
 /**
   * @brief  Reports the name of the source file and the source line number
@@ -175,23 +171,22 @@ int main(void)
   * @retval None
   */
 void assert_failed(uint8_t* file, uint32_t line)
-{ 
-  /* User can add his own implementation to report the file name and line number,
+{
+    /* User can add his own implementation to report the file name and line number,
      ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
 
-  /* Infinite loop */
-  while (1)
-  {
-  }
+    /* Infinite loop */
+    while(1) {
+    }
 }
 #endif
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}
-  */ 
+  */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

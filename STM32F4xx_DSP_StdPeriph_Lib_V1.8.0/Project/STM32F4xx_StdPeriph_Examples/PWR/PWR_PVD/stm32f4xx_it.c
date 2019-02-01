@@ -65,10 +65,9 @@ void NMI_Handler(void)
   */
 void HardFault_Handler(void)
 {
-  /* Go to infinite loop when Hard Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Hard Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -78,10 +77,9 @@ void HardFault_Handler(void)
   */
 void MemManage_Handler(void)
 {
-  /* Go to infinite loop when Memory Manage exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Memory Manage exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -91,10 +89,9 @@ void MemManage_Handler(void)
   */
 void BusFault_Handler(void)
 {
-  /* Go to infinite loop when Bus Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Bus Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -104,10 +101,9 @@ void BusFault_Handler(void)
   */
 void UsageFault_Handler(void)
 {
-  /* Go to infinite loop when Usage Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Usage Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -152,7 +148,7 @@ void SysTick_Handler(void)
 /*  available peripheral interrupt handler's name please refer to the startup */
 /*  file (startup_stm32f40xx.s.startup_stm32f427x.s).                         */
 /******************************************************************************/
- 
+
 /**
   * @brief  This function handles the PVD Output interrupt request.
   * @param  None
@@ -160,22 +156,21 @@ void SysTick_Handler(void)
   */
 void PVD_IRQHandler(void)
 {
-  if(EXTI_GetITStatus(EXTI_Line16) != RESET)
-  {
-    /* Toggle LED1 */
-    STM_EVAL_LEDToggle(LED1);
+    if(EXTI_GetITStatus(EXTI_Line16) != RESET) {
+        /* Toggle LED1 */
+        STM_EVAL_LEDToggle(LED1);
 
-    /* Clear the Key Button EXTI line pending bit */
-    EXTI_ClearITPendingBit(EXTI_Line16);
-  }
+        /* Clear the Key Button EXTI line pending bit */
+        EXTI_ClearITPendingBit(EXTI_Line16);
+    }
 }
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}
-  */ 
+  */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

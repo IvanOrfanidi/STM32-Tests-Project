@@ -57,7 +57,7 @@
 /* Private typedef -----------------------------------------------------------*/
 /* Private defines -----------------------------------------------------------*/
 
-#define CHCFGR_INIT_CLEAR_MASK               (uint32_t) 0xFFFE0F10
+#define CHCFGR_INIT_CLEAR_MASK (uint32_t)0xFFFE0F10
 /* Private macros ------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
 /* Private function prototypes -----------------------------------------------*/
@@ -91,12 +91,12 @@
   */
 void DFSDM_DeInit(void)
 {
-  /* Enable LPTx reset state */
-  RCC_APB2PeriphResetCmd(RCC_APB2Periph_DFSDM1, ENABLE);
-  RCC_APB2PeriphResetCmd(RCC_APB2Periph_DFSDM1, DISABLE);
+    /* Enable LPTx reset state */
+    RCC_APB2PeriphResetCmd(RCC_APB2Periph_DFSDM1, ENABLE);
+    RCC_APB2PeriphResetCmd(RCC_APB2Periph_DFSDM1, DISABLE);
 #if defined(STM32F413_423xx)
-  RCC_APB2PeriphResetCmd(RCC_APB2Periph_DFSDM2, ENABLE);
-  RCC_APB2PeriphResetCmd(RCC_APB2Periph_DFSDM2, DISABLE);
+    RCC_APB2PeriphResetCmd(RCC_APB2Periph_DFSDM2, ENABLE);
+    RCC_APB2PeriphResetCmd(RCC_APB2Periph_DFSDM2, DISABLE);
 #endif /* STM32F413_423xx */
 }
 
@@ -171,8 +171,8 @@ void DFSDM_TransceiverInit(DFSDM_Channel_TypeDef* DFSDM_Channelx, DFSDM_Transcei
 
     /* Set or Reset DTRBS bits according to DFSDM_DataRightShift value */
     /* Set or Reset OFFSET bits according to DFSDM_Offset value */
-    tmpreg2 |= (((DFSDM_TransceiverInitStruct->DFSDM_DataRightShift) <<3 ) |
-                ((DFSDM_TransceiverInitStruct->DFSDM_Offset) <<8 ));
+    tmpreg2 |= (((DFSDM_TransceiverInitStruct->DFSDM_DataRightShift) << 3) |
+                ((DFSDM_TransceiverInitStruct->DFSDM_Offset) << 8));
 
     /* Write to DFSDM Channelx CHCFGR1R */
     DFSDM_Channelx->CHCFGR2 = tmpreg2;
@@ -239,8 +239,8 @@ void DFSDM_FilterInit(DFSDM_Filter_TypeDef* DFSDMx, DFSDM_FilterInitTypeDef* DFS
     /* Set or Reset FOSR bits according to DFSDM_FilterOversamplingRatio value */
     /* Set or Reset IOSR bits according to DFSDM_IntegratorOversamplingRatio value */
     tmpreg1 |= (DFSDM_FilterInitStruct->DFSDM_SincOrder |
-               ((DFSDM_FilterInitStruct->DFSDM_FilterOversamplingRatio -1) << 16) |
-               (DFSDM_FilterInitStruct->DFSDM_IntegratorOversamplingRatio -1));
+                ((DFSDM_FilterInitStruct->DFSDM_FilterOversamplingRatio - 1) << 16) |
+                (DFSDM_FilterInitStruct->DFSDM_IntegratorOversamplingRatio - 1));
 
     /* Write to DFSDMx FCR */
     DFSDMx->FLTFCR = tmpreg1;
@@ -258,7 +258,7 @@ void DFSDM_FilterStructInit(DFSDM_FilterInitTypeDef* DFSDM_FilterInitStruct)
     DFSDM_FilterInitStruct->DFSDM_SincOrder = DFSDM_SincOrder_Sinc3;
 
     /* Ratio = 64 is selected as default oversampling ratio */
-    DFSDM_FilterInitStruct->DFSDM_FilterOversamplingRatio  = 64 ;
+    DFSDM_FilterInitStruct->DFSDM_FilterOversamplingRatio = 64;
 
     /* Ratio = 4 is selected as default integrator oversampling ratio */
     DFSDM_FilterInitStruct->DFSDM_IntegratorOversamplingRatio = 4;
@@ -295,19 +295,17 @@ void DFSDM_FilterStructInit(DFSDM_FilterInitTypeDef* DFSDM_FilterInitStruct)
   */
 void DFSDM_Command(FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
+    /* Check the parameters */
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-  if (NewState != DISABLE)
-  {
-    /* Set the ENABLE bit */
-    DFSDM1_Channel0 -> CHCFGR1 |= DFSDM_CHCFGR1_DFSDMEN;
-  }
-  else
-  {
-    /* Reset the ENABLE bit */
-    DFSDM1_Channel0 -> CHCFGR1 &= ~(DFSDM_CHCFGR1_DFSDMEN);
-  }
+    if(NewState != DISABLE) {
+        /* Set the ENABLE bit */
+        DFSDM1_Channel0->CHCFGR1 |= DFSDM_CHCFGR1_DFSDMEN;
+    }
+    else {
+        /* Reset the ENABLE bit */
+        DFSDM1_Channel0->CHCFGR1 &= ~(DFSDM_CHCFGR1_DFSDMEN);
+    }
 }
 #endif /* STM32F412xG */
 
@@ -321,36 +319,31 @@ void DFSDM_Command(FunctionalState NewState)
   * @retval None
   */
 void DFSDM_Cmd(uint32_t Instance, FunctionalState NewState)
-{ 
-  /* Check the parameters */
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
-  
-  if(Instance == 1)
-  {
-    if (NewState != DISABLE)
-    {
-      /* Set the ENABLE bit */
-      DFSDM1_Channel0 -> CHCFGR1 |= DFSDM_CHCFGR1_DFSDMEN;
+{
+    /* Check the parameters */
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
+
+    if(Instance == 1) {
+        if(NewState != DISABLE) {
+            /* Set the ENABLE bit */
+            DFSDM1_Channel0->CHCFGR1 |= DFSDM_CHCFGR1_DFSDMEN;
+        }
+        else {
+            /* Reset the ENABLE bit */
+            DFSDM1_Channel0->CHCFGR1 &= ~(DFSDM_CHCFGR1_DFSDMEN);
+        }
     }
-    else
+    else /* DFSDM2 */
     {
-      /* Reset the ENABLE bit */
-      DFSDM1_Channel0 -> CHCFGR1 &= ~(DFSDM_CHCFGR1_DFSDMEN);
+        if(NewState != DISABLE) {
+            /* Set the ENABLE bit */
+            DFSDM2_Channel0->CHCFGR1 |= DFSDM_CHCFGR1_DFSDMEN;
+        }
+        else {
+            /* Reset the ENABLE bit */
+            DFSDM2_Channel0->CHCFGR1 &= ~(DFSDM_CHCFGR1_DFSDMEN);
+        }
     }
-  }
-  else /* DFSDM2 */
-  {
-    if (NewState != DISABLE)
-    {
-      /* Set the ENABLE bit */
-      DFSDM2_Channel0 -> CHCFGR1 |= DFSDM_CHCFGR1_DFSDMEN;
-    }
-    else
-    {
-      /* Reset the ENABLE bit */
-      DFSDM2_Channel0 -> CHCFGR1 &= ~(DFSDM_CHCFGR1_DFSDMEN);
-    } 
-  }
 }
 #endif /* STM32F413_423xx */
 /**
@@ -375,20 +368,18 @@ void DFSDM_Cmd(uint32_t Instance, FunctionalState NewState)
   */
 void DFSDM_ChannelCmd(DFSDM_Channel_TypeDef* DFSDM_Channelx, FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_DFSDM_ALL_CHANNEL(DFSDM_Channelx));
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
+    /* Check the parameters */
+    assert_param(IS_DFSDM_ALL_CHANNEL(DFSDM_Channelx));
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-  if (NewState != DISABLE)
-  {
-    /* Set the ENABLE bit */
-    DFSDM_Channelx->CHCFGR1 |= DFSDM_CHCFGR1_CHEN;
-  }
-  else
-  {
-    /* Reset the ENABLE bit */
-    DFSDM_Channelx->CHCFGR1 &= ~(DFSDM_CHCFGR1_CHEN);
-  }
+    if(NewState != DISABLE) {
+        /* Set the ENABLE bit */
+        DFSDM_Channelx->CHCFGR1 |= DFSDM_CHCFGR1_CHEN;
+    }
+    else {
+        /* Reset the ENABLE bit */
+        DFSDM_Channelx->CHCFGR1 &= ~(DFSDM_CHCFGR1_CHEN);
+    }
 }
 
 /**
@@ -407,20 +398,18 @@ void DFSDM_ChannelCmd(DFSDM_Channel_TypeDef* DFSDM_Channelx, FunctionalState New
   */
 void DFSDM_FilterCmd(DFSDM_Filter_TypeDef* DFSDMx, FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_DFSDM_ALL_FILTER(DFSDMx));
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
+    /* Check the parameters */
+    assert_param(IS_DFSDM_ALL_FILTER(DFSDMx));
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-  if (NewState != DISABLE)
-  {
-    /* Set the ENABLE bit */
-    DFSDMx->FLTCR1 |= DFSDM_FLTCR1_DFEN;
-  }
-  else
-  {
-    /* Reset the ENABLE bit */
-    DFSDMx->FLTCR1 &= ~(DFSDM_FLTCR1_DFEN);
-  }
+    if(NewState != DISABLE) {
+        /* Set the ENABLE bit */
+        DFSDMx->FLTCR1 |= DFSDM_FLTCR1_DFEN;
+    }
+    else {
+        /* Reset the ENABLE bit */
+        DFSDMx->FLTCR1 &= ~(DFSDM_FLTCR1_DFEN);
+    }
 }
 
 #if defined(STM32F412xG)
@@ -440,7 +429,7 @@ void DFSDM_ConfigClkOutputDivider(uint32_t DFSDM_ClkOutDivision)
     assert_param(IS_DFSDM_CLOCK_OUT_DIVIDER(DFSDM_ClkOutDivision));
 
     /* Get the DFSDM_Channel0 CHCFGR1 value */
-    tmpreg1 = DFSDM1_Channel0 -> CHCFGR1;
+    tmpreg1 = DFSDM1_Channel0->CHCFGR1;
 
     /* Clear the CKOUTDIV bits */
     tmpreg1 &= (uint32_t)(~DFSDM_CHCFGR1_CKOUTDIV);
@@ -449,7 +438,7 @@ void DFSDM_ConfigClkOutputDivider(uint32_t DFSDM_ClkOutDivision)
     tmpreg1 |= (uint32_t)((DFSDM_ClkOutDivision - 1) << 16);
 
     /* Write to DFSDM Channel0 CHCFGR1 */
-    DFSDM1_Channel0 -> CHCFGR1 = tmpreg1;
+    DFSDM1_Channel0->CHCFGR1 = tmpreg1;
 }
 
 /**
@@ -462,22 +451,22 @@ void DFSDM_ConfigClkOutputDivider(uint32_t DFSDM_ClkOutDivision)
   */
 void DFSDM_ConfigClkOutputSource(uint32_t DFSDM_ClkOutSource)
 {
-  uint32_t tmpreg1 = 0;
+    uint32_t tmpreg1 = 0;
 
-  /* Check the parameters */
-  assert_param(IS_DFSDM_CLOCK_OUT_SOURCE(DFSDM_ClkOutSource));
+    /* Check the parameters */
+    assert_param(IS_DFSDM_CLOCK_OUT_SOURCE(DFSDM_ClkOutSource));
 
-  /* Get the DFSDM_Channel0 CHCFGR1 value */
-  tmpreg1 = DFSDM1_Channel0 -> CHCFGR1;
+    /* Get the DFSDM_Channel0 CHCFGR1 value */
+    tmpreg1 = DFSDM1_Channel0->CHCFGR1;
 
-  /* Clear the CKOUTSRC bit */
-  tmpreg1 &= ~(DFSDM_CHCFGR1_CKOUTSRC);
+    /* Clear the CKOUTSRC bit */
+    tmpreg1 &= ~(DFSDM_CHCFGR1_CKOUTSRC);
 
-  /* Set or Reset the CKOUTSRC bit */
-  tmpreg1 |= DFSDM_ClkOutSource;
+    /* Set or Reset the CKOUTSRC bit */
+    tmpreg1 |= DFSDM_ClkOutSource;
 
-  /* Write to DFSDM Channel0 CHCFGR1 */
-  DFSDM1_Channel0 -> CHCFGR1 = tmpreg1;
+    /* Write to DFSDM Channel0 CHCFGR1 */
+    DFSDM1_Channel0->CHCFGR1 = tmpreg1;
 }
 #endif /* STM32F412xG */
 #if defined(STM32F413_423xx)
@@ -493,42 +482,41 @@ void DFSDM_ConfigClkOutputSource(uint32_t DFSDM_ClkOutSource)
   */
 void DFSDM_ConfigClkOutputDivider(uint32_t Instance, uint32_t DFSDM_ClkOutDivision)
 {
-  uint32_t tmpreg1 = 0;
-  
-  if(Instance == 1)
-  {
-    /* Check the parameters */
-    assert_param(IS_DFSDM_CLOCK_OUT_DIVIDER(DFSDM_ClkOutDivision));
-    
-    /* Get the DFSDM_Channel0 CHCFGR1 value */
-    tmpreg1 = DFSDM1_Channel0 -> CHCFGR1;
-    
-    /* Clear the CKOUTDIV bits */
-    tmpreg1 &= (uint32_t)(~DFSDM_CHCFGR1_CKOUTDIV);
-    
-    /* Set or Reset the CKOUTDIV bits */
-    tmpreg1 |= (uint32_t)((DFSDM_ClkOutDivision - 1) << 16);
-    
-    /* Write to DFSDM Channel0 CHCFGR1 */
-    DFSDM1_Channel0 -> CHCFGR1 = tmpreg1;
-  }
-  else /* DFSDM2 */
-  {
-    /* Check the parameters */
-    assert_param(IS_DFSDM_CLOCK_OUT_DIVIDER(DFSDM_ClkOutDivision));
-    
-    /* Get the DFSDM_Channel0 CHCFGR1 value */
-    tmpreg1 = DFSDM2_Channel0 -> CHCFGR1;
-    
-    /* Clear the CKOUTDIV bits */
-    tmpreg1 &= (uint32_t)(~DFSDM_CHCFGR1_CKOUTDIV);
-    
-    /* Set or Reset the CKOUTDIV bits */
-    tmpreg1 |= (uint32_t)((DFSDM_ClkOutDivision - 1) << 16);
-    
-    /* Write to DFSDM Channel0 CHCFGR1 */
-    DFSDM2_Channel0 -> CHCFGR1 = tmpreg1; 
-  }
+    uint32_t tmpreg1 = 0;
+
+    if(Instance == 1) {
+        /* Check the parameters */
+        assert_param(IS_DFSDM_CLOCK_OUT_DIVIDER(DFSDM_ClkOutDivision));
+
+        /* Get the DFSDM_Channel0 CHCFGR1 value */
+        tmpreg1 = DFSDM1_Channel0->CHCFGR1;
+
+        /* Clear the CKOUTDIV bits */
+        tmpreg1 &= (uint32_t)(~DFSDM_CHCFGR1_CKOUTDIV);
+
+        /* Set or Reset the CKOUTDIV bits */
+        tmpreg1 |= (uint32_t)((DFSDM_ClkOutDivision - 1) << 16);
+
+        /* Write to DFSDM Channel0 CHCFGR1 */
+        DFSDM1_Channel0->CHCFGR1 = tmpreg1;
+    }
+    else /* DFSDM2 */
+    {
+        /* Check the parameters */
+        assert_param(IS_DFSDM_CLOCK_OUT_DIVIDER(DFSDM_ClkOutDivision));
+
+        /* Get the DFSDM_Channel0 CHCFGR1 value */
+        tmpreg1 = DFSDM2_Channel0->CHCFGR1;
+
+        /* Clear the CKOUTDIV bits */
+        tmpreg1 &= (uint32_t)(~DFSDM_CHCFGR1_CKOUTDIV);
+
+        /* Set or Reset the CKOUTDIV bits */
+        tmpreg1 |= (uint32_t)((DFSDM_ClkOutDivision - 1) << 16);
+
+        /* Write to DFSDM Channel0 CHCFGR1 */
+        DFSDM2_Channel0->CHCFGR1 = tmpreg1;
+    }
 }
 
 /**
@@ -543,42 +531,41 @@ void DFSDM_ConfigClkOutputDivider(uint32_t Instance, uint32_t DFSDM_ClkOutDivisi
   */
 void DFSDM_ConfigClkOutputSource(uint32_t Instance, uint32_t DFSDM_ClkOutSource)
 {
-  uint32_t tmpreg1 = 0;
+    uint32_t tmpreg1 = 0;
 
-  if(Instance == 1)
-  {
-    /* Check the parameters */
-    assert_param(IS_DFSDM_CLOCK_OUT_SOURCE(DFSDM_ClkOutSource));
-    
-    /* Get the DFSDM_Channel0 CHCFGR1 value */
-    tmpreg1 = DFSDM1_Channel0 -> CHCFGR1;
-    
-    /* Clear the CKOUTSRC bit */
-    tmpreg1 &= ~(DFSDM_CHCFGR1_CKOUTSRC);
-    
-    /* Set or Reset the CKOUTSRC bit */
-    tmpreg1 |= DFSDM_ClkOutSource;
-    
-    /* Write to DFSDM Channel0 CHCFGR1 */
-    DFSDM1_Channel0 -> CHCFGR1 = tmpreg1;
-  }
-  else /* DFSDM2 */
-  {
-    /* Check the parameters */
-    assert_param(IS_DFSDM_CLOCK_OUT_SOURCE(DFSDM_ClkOutSource));
-    
-    /* Get the DFSDM_Channel0 CHCFGR1 value */
-    tmpreg1 = DFSDM2_Channel0 -> CHCFGR1;
-    
-    /* Clear the CKOUTSRC bit */
-    tmpreg1 &= ~(DFSDM_CHCFGR1_CKOUTSRC);
-    
-    /* Set or Reset the CKOUTSRC bit */
-    tmpreg1 |= DFSDM_ClkOutSource;
-    
-    /* Write to DFSDM Channel0 CHCFGR1 */
-    DFSDM2_Channel0 -> CHCFGR1 = tmpreg1;
-  }
+    if(Instance == 1) {
+        /* Check the parameters */
+        assert_param(IS_DFSDM_CLOCK_OUT_SOURCE(DFSDM_ClkOutSource));
+
+        /* Get the DFSDM_Channel0 CHCFGR1 value */
+        tmpreg1 = DFSDM1_Channel0->CHCFGR1;
+
+        /* Clear the CKOUTSRC bit */
+        tmpreg1 &= ~(DFSDM_CHCFGR1_CKOUTSRC);
+
+        /* Set or Reset the CKOUTSRC bit */
+        tmpreg1 |= DFSDM_ClkOutSource;
+
+        /* Write to DFSDM Channel0 CHCFGR1 */
+        DFSDM1_Channel0->CHCFGR1 = tmpreg1;
+    }
+    else /* DFSDM2 */
+    {
+        /* Check the parameters */
+        assert_param(IS_DFSDM_CLOCK_OUT_SOURCE(DFSDM_ClkOutSource));
+
+        /* Get the DFSDM_Channel0 CHCFGR1 value */
+        tmpreg1 = DFSDM2_Channel0->CHCFGR1;
+
+        /* Clear the CKOUTSRC bit */
+        tmpreg1 &= ~(DFSDM_CHCFGR1_CKOUTSRC);
+
+        /* Set or Reset the CKOUTSRC bit */
+        tmpreg1 |= DFSDM_ClkOutSource;
+
+        /* Write to DFSDM Channel0 CHCFGR1 */
+        DFSDM2_Channel0->CHCFGR1 = tmpreg1;
+    }
 }
 #endif /* STM32F413_423xx */
 /**
@@ -604,21 +591,19 @@ void DFSDM_ConfigClkOutputSource(uint32_t Instance, uint32_t DFSDM_ClkOutSource)
   */
 void DFSDM_ConfigBRKAnalogWatchDog(DFSDM_Channel_TypeDef* DFSDM_Channelx, uint32_t DFSDM_SCDBreak_i, FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_DFSDM_ALL_CHANNEL(DFSDM_Channelx));
-  assert_param(IS_DFSDM_SCD_BREAK_SIGNAL(DFSDM_SCDBreak_i));
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
+    /* Check the parameters */
+    assert_param(IS_DFSDM_ALL_CHANNEL(DFSDM_Channelx));
+    assert_param(IS_DFSDM_SCD_BREAK_SIGNAL(DFSDM_SCDBreak_i));
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-  if (NewState != DISABLE)
-  {
-    /* Set the BKSCD[i] bit */
-     DFSDM_Channelx -> CHAWSCDR |= DFSDM_SCDBreak_i;
-  }
-  else
-  {
-    /* Reset the BKSCD[i] bit */
-    DFSDM_Channelx -> CHAWSCDR &= ~(DFSDM_SCDBreak_i);
-  }
+    if(NewState != DISABLE) {
+        /* Set the BKSCD[i] bit */
+        DFSDM_Channelx->CHAWSCDR |= DFSDM_SCDBreak_i;
+    }
+    else {
+        /* Reset the BKSCD[i] bit */
+        DFSDM_Channelx->CHAWSCDR &= ~(DFSDM_SCDBreak_i);
+    }
 }
 
 /**
@@ -644,21 +629,19 @@ void DFSDM_ConfigBRKAnalogWatchDog(DFSDM_Channel_TypeDef* DFSDM_Channelx, uint32
   */
 void DFSDM_ConfigBRKShortCircuitDetector(DFSDM_Channel_TypeDef* DFSDM_Channelx, uint32_t DFSDM_SCDBreak_i, FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_DFSDM_ALL_CHANNEL(DFSDM_Channelx));
-  assert_param(IS_DFSDM_SCD_BREAK_SIGNAL(DFSDM_SCDBreak_i));
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
+    /* Check the parameters */
+    assert_param(IS_DFSDM_ALL_CHANNEL(DFSDM_Channelx));
+    assert_param(IS_DFSDM_SCD_BREAK_SIGNAL(DFSDM_SCDBreak_i));
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-  if (NewState != DISABLE)
-  {
-    /* Set the BKSCD[i] bit */
-     DFSDM_Channelx -> CHAWSCDR |= DFSDM_SCDBreak_i;
-  }
-  else
-  {
-    /* Reset the BKSCD[i] bit */
-    DFSDM_Channelx -> CHAWSCDR &= ~(DFSDM_SCDBreak_i);
-  }
+    if(NewState != DISABLE) {
+        /* Set the BKSCD[i] bit */
+        DFSDM_Channelx->CHAWSCDR |= DFSDM_SCDBreak_i;
+    }
+    else {
+        /* Reset the BKSCD[i] bit */
+        DFSDM_Channelx->CHAWSCDR &= ~(DFSDM_SCDBreak_i);
+    }
 }
 
 /**
@@ -689,7 +672,7 @@ void DFSDM_ConfigShortCircuitThreshold(DFSDM_Channel_TypeDef* DFSDM_Channelx, ui
     assert_param(IS_DFSDM_CSD_THRESHOLD_VALUE(DFSDM_SCDThreshold));
 
     /* Get the DFSDM_Channelx AWSCDR value */
-    tmpreg1 = DFSDM_Channelx -> CHAWSCDR;
+    tmpreg1 = DFSDM_Channelx->CHAWSCDR;
 
     /* Clear the SCDT bits */
     tmpreg1 &= ~(DFSDM_CHAWSCDR_SCDT);
@@ -698,7 +681,7 @@ void DFSDM_ConfigShortCircuitThreshold(DFSDM_Channel_TypeDef* DFSDM_Channelx, ui
     tmpreg1 |= DFSDM_SCDThreshold;
 
     /* Write to DFSDM Channelx AWSCDR */
-    DFSDM_Channelx -> CHAWSCDR = tmpreg1;
+    DFSDM_Channelx->CHAWSCDR = tmpreg1;
 }
 
 /**
@@ -719,37 +702,37 @@ void DFSDM_ConfigShortCircuitThreshold(DFSDM_Channel_TypeDef* DFSDM_Channelx, ui
   */
 void DFSDM_ConfigAnalogWatchdog(DFSDM_Filter_TypeDef* DFSDMx, uint32_t DFSDM_AWDChannelx, uint32_t DFSDM_AWDFastMode)
 {
-  uint32_t tmpreg1 = 0;
-  uint32_t tmpreg2 = 0;
+    uint32_t tmpreg1 = 0;
+    uint32_t tmpreg2 = 0;
 
-  /* Check the parameters */
-  assert_param(IS_DFSDM_ALL_FILTER(DFSDMx));
-  assert_param(IS_DFSDM_AWD_CHANNEL(DFSDM_AWDChannelx));
-  assert_param(IS_DFSDM_AWD_MODE(DFSDM_AWDFastMode));
+    /* Check the parameters */
+    assert_param(IS_DFSDM_ALL_FILTER(DFSDMx));
+    assert_param(IS_DFSDM_AWD_CHANNEL(DFSDM_AWDChannelx));
+    assert_param(IS_DFSDM_AWD_MODE(DFSDM_AWDFastMode));
 
-  /* Get the DFSDMx CR2 value */
-  tmpreg1 = DFSDMx -> FLTCR2;
+    /* Get the DFSDMx CR2 value */
+    tmpreg1 = DFSDMx->FLTCR2;
 
-  /* Clear the AWDCH bits */
-  tmpreg1 &= ~(DFSDM_FLTCR2_AWDCH);
+    /* Clear the AWDCH bits */
+    tmpreg1 &= ~(DFSDM_FLTCR2_AWDCH);
 
-  /* Set or Reset the AWDCH bits */
-  tmpreg1 |= DFSDM_AWDChannelx;
+    /* Set or Reset the AWDCH bits */
+    tmpreg1 |= DFSDM_AWDChannelx;
 
-  /* Write to DFSDMx CR2 Register */
-  DFSDMx -> FLTCR2 |= tmpreg1;
+    /* Write to DFSDMx CR2 Register */
+    DFSDMx->FLTCR2 |= tmpreg1;
 
-  /* Get the DFSDMx CR1 value */
-  tmpreg2 = DFSDMx->FLTCR1;
+    /* Get the DFSDMx CR1 value */
+    tmpreg2 = DFSDMx->FLTCR1;
 
-  /* Clear the AWFSEL bit */
-  tmpreg2 &= ~(DFSDM_FLTCR1_AWFSEL);
+    /* Clear the AWFSEL bit */
+    tmpreg2 &= ~(DFSDM_FLTCR1_AWFSEL);
 
-  /* Set or Reset the AWFSEL bit */
-  tmpreg2 |= DFSDM_AWDFastMode;
+    /* Set or Reset the AWFSEL bit */
+    tmpreg2 |= DFSDM_AWDFastMode;
 
-  /* Write to DFSDMx CR1 Register */
-  DFSDMx->FLTCR1 = tmpreg2;
+    /* Write to DFSDMx CR1 Register */
+    DFSDMx->FLTCR1 = tmpreg2;
 }
 
 /**
@@ -768,23 +751,23 @@ void DFSDM_ConfigAnalogWatchdog(DFSDM_Filter_TypeDef* DFSDMx, uint32_t DFSDM_AWD
   */
 void DFSDM_SelectExtremesDetectorChannel(DFSDM_Filter_TypeDef* DFSDMx, uint32_t DFSDM_ExtremChannelx)
 {
-  uint32_t tmpreg1 = 0;
+    uint32_t tmpreg1 = 0;
 
-  /* Check the parameters */
-  assert_param(IS_DFSDM_ALL_FILTER(DFSDMx));
-  assert_param(IS_DFSDM_EXTREM_CHANNEL(DFSDM_ExtremChannelx));
+    /* Check the parameters */
+    assert_param(IS_DFSDM_ALL_FILTER(DFSDMx));
+    assert_param(IS_DFSDM_EXTREM_CHANNEL(DFSDM_ExtremChannelx));
 
-  /* Get the DFSDMx CR2 value */
-  tmpreg1 = DFSDMx -> FLTCR2;
+    /* Get the DFSDMx CR2 value */
+    tmpreg1 = DFSDMx->FLTCR2;
 
-  /* Clear the EXCH bits */
-  tmpreg1 &= ~(DFSDM_FLTCR2_EXCH);
+    /* Clear the EXCH bits */
+    tmpreg1 &= ~(DFSDM_FLTCR2_EXCH);
 
-  /* Set or Reset the AWDCH bits */
-  tmpreg1 |= DFSDM_ExtremChannelx;
+    /* Set or Reset the AWDCH bits */
+    tmpreg1 |= DFSDM_ExtremChannelx;
 
-  /* Write to DFSDMx CR2 Register */
-  DFSDMx -> FLTCR2 = tmpreg1;
+    /* Write to DFSDMx CR2 Register */
+    DFSDMx->FLTCR2 = tmpreg1;
 }
 
 /**
@@ -802,20 +785,20 @@ void DFSDM_SelectExtremesDetectorChannel(DFSDM_Filter_TypeDef* DFSDMx, uint32_t 
   */
 int32_t DFSDM_GetRegularConversionData(DFSDM_Filter_TypeDef* DFSDMx)
 {
-  uint32_t reg = 0;
-  int32_t  value = 0;
+    uint32_t reg = 0;
+    int32_t value = 0;
 
-  /* Check the parameters */
-  assert_param(IS_DFSDM_ALL_FILTER(DFSDMx));
+    /* Check the parameters */
+    assert_param(IS_DFSDM_ALL_FILTER(DFSDMx));
 
-  /* Get value of data register for regular channel */
-  reg = DFSDMx -> FLTRDATAR;
+    /* Get value of data register for regular channel */
+    reg = DFSDMx->FLTRDATAR;
 
-  /* Extract conversion value */
-  value = (((reg & 0xFFFFFF00) >> 8));
+    /* Extract conversion value */
+    value = (((reg & 0xFFFFFF00) >> 8));
 
-  /* Return the conversion result */
-  return  value;
+    /* Return the conversion result */
+    return value;
 }
 
 /**
@@ -833,20 +816,20 @@ int32_t DFSDM_GetRegularConversionData(DFSDM_Filter_TypeDef* DFSDMx)
   */
 int32_t DFSDM_GetInjectedConversionData(DFSDM_Filter_TypeDef* DFSDMx)
 {
-  uint32_t reg = 0;
-  int32_t  value = 0;
+    uint32_t reg = 0;
+    int32_t value = 0;
 
-  /* Check the parameters */
-  assert_param(IS_DFSDM_ALL_FILTER(DFSDMx));
+    /* Check the parameters */
+    assert_param(IS_DFSDM_ALL_FILTER(DFSDMx));
 
-  /* Get value of data register for regular channel */
-  reg = DFSDMx -> FLTJDATAR;
+    /* Get value of data register for regular channel */
+    reg = DFSDMx->FLTJDATAR;
 
-  /* Extract conversion value */
-  value = ((reg & 0xFFFFFF00) >> 8);
+    /* Extract conversion value */
+    value = ((reg & 0xFFFFFF00) >> 8);
 
-  /* Return the conversion result */
-  return  value;
+    /* Return the conversion result */
+    return value;
 }
 
 /**
@@ -864,14 +847,14 @@ int32_t DFSDM_GetInjectedConversionData(DFSDM_Filter_TypeDef* DFSDMx)
   */
 int32_t DFSDM_GetMaxValue(DFSDM_Filter_TypeDef* DFSDMx)
 {
-  int32_t value = 0;
-  
-  /* Check the parameters */
-  assert_param(IS_DFSDM_ALL_FILTER(DFSDMx));
+    int32_t value = 0;
 
-  value = ((DFSDMx -> FLTEXMAX) >> 8);
-  /* Return the highest converted value */
-  return value;
+    /* Check the parameters */
+    assert_param(IS_DFSDM_ALL_FILTER(DFSDMx));
+
+    value = ((DFSDMx->FLTEXMAX) >> 8);
+    /* Return the highest converted value */
+    return value;
 }
 
 /**
@@ -889,14 +872,14 @@ int32_t DFSDM_GetMaxValue(DFSDM_Filter_TypeDef* DFSDMx)
   */
 int32_t DFSDM_GetMinValue(DFSDM_Filter_TypeDef* DFSDMx)
 {
-  int32_t value = 0;
-  
-  /* Check the parameters */
-  assert_param(IS_DFSDM_ALL_FILTER(DFSDMx));
+    int32_t value = 0;
 
-  value = ((DFSDMx -> FLTEXMIN) >> 8);
-  /* Return the lowest conversion value */
-  return value;
+    /* Check the parameters */
+    assert_param(IS_DFSDM_ALL_FILTER(DFSDMx));
+
+    value = ((DFSDMx->FLTEXMIN) >> 8);
+    /* Return the lowest conversion value */
+    return value;
 }
 
 /**
@@ -913,11 +896,11 @@ int32_t DFSDM_GetMinValue(DFSDM_Filter_TypeDef* DFSDMx)
   */
 int32_t DFSDM_GetMaxValueChannel(DFSDM_Filter_TypeDef* DFSDMx)
 {
-  /* Check the parameters */
-  assert_param(IS_DFSDM_ALL_FILTER(DFSDMx));
+    /* Check the parameters */
+    assert_param(IS_DFSDM_ALL_FILTER(DFSDMx));
 
-  /* Return the highest converted value */
-  return  ((DFSDMx -> FLTEXMAX) & (~DFSDM_FLTEXMAX_EXMAXCH));
+    /* Return the highest converted value */
+    return ((DFSDMx->FLTEXMAX) & (~DFSDM_FLTEXMAX_EXMAXCH));
 }
 
 /**
@@ -934,11 +917,11 @@ int32_t DFSDM_GetMaxValueChannel(DFSDM_Filter_TypeDef* DFSDMx)
   */
 int32_t DFSDM_GetMinValueChannel(DFSDM_Filter_TypeDef* DFSDMx)
 {
-  /* Check the parameters */
-  assert_param(IS_DFSDM_ALL_FILTER(DFSDMx));
+    /* Check the parameters */
+    assert_param(IS_DFSDM_ALL_FILTER(DFSDMx));
 
-  /* Return the lowest converted value */
-  return  ((DFSDMx -> FLTEXMIN) & (~DFSDM_FLTEXMIN_EXMINCH));
+    /* Return the lowest converted value */
+    return ((DFSDMx->FLTEXMIN) & (~DFSDM_FLTEXMIN_EXMINCH));
 }
 
 /**
@@ -955,11 +938,11 @@ int32_t DFSDM_GetMinValueChannel(DFSDM_Filter_TypeDef* DFSDMx)
   */
 uint32_t DFSDM_GetConversionTime(DFSDM_Filter_TypeDef* DFSDMx)
 {
-  /* Check the parameters */
-  assert_param(IS_DFSDM_ALL_FILTER(DFSDMx));
+    /* Check the parameters */
+    assert_param(IS_DFSDM_ALL_FILTER(DFSDMx));
 
-  /* Return the lowest converted value */
-  return  ((DFSDMx -> FLTCNVTIMR >> 4) & 0x0FFFFFFF);
+    /* Return the lowest converted value */
+    return ((DFSDMx->FLTCNVTIMR >> 4) & 0x0FFFFFFF);
 }
 
 /**
@@ -993,16 +976,16 @@ void DFSDM_ConfigAWDFilter(DFSDM_Channel_TypeDef* DFSDM_Channelx, uint32_t DFSDM
     assert_param(IS_DFSDM_AWD_OVRSMPL_RATIO(DFSDM_AWDSincOverSampleRatio));
 
     /* Get the DFSDM_Channelx CHAWSCDR value */
-    tmpreg1 = DFSDM_Channelx -> CHAWSCDR;
+    tmpreg1 = DFSDM_Channelx->CHAWSCDR;
 
     /* Clear the FORD and FOSR bits */
     tmpreg1 &= ~(DFSDM_CHAWSCDR_AWFORD | DFSDM_CHAWSCDR_AWFOSR);
 
     /* Set or Reset the SCDT bits */
-    tmpreg1 |= (DFSDM_AWDSincOrder | ((DFSDM_AWDSincOverSampleRatio -1) << 16)) ;
+    tmpreg1 |= (DFSDM_AWDSincOrder | ((DFSDM_AWDSincOverSampleRatio - 1) << 16));
 
     /* Write to DFSDM Channelx CHAWSCDR */
-    DFSDM_Channelx -> CHAWSCDR = tmpreg1;
+    DFSDM_Channelx->CHAWSCDR = tmpreg1;
 }
 
 /**
@@ -1025,13 +1008,12 @@ void DFSDM_ConfigAWDFilter(DFSDM_Channel_TypeDef* DFSDM_Channelx, uint32_t DFSDM
   */
 uint32_t DFSDM_GetAWDConversionValue(DFSDM_Channel_TypeDef* DFSDM_Channelx)
 {
-  /* Check the parameters */
-  assert_param(IS_DFSDM_ALL_CHANNEL(DFSDM_Channelx));
+    /* Check the parameters */
+    assert_param(IS_DFSDM_ALL_CHANNEL(DFSDM_Channelx));
 
-  /* Return the last analog watchdog filter conversion value */
-  return  DFSDM_Channelx -> CHWDATAR;
+    /* Return the last analog watchdog filter conversion value */
+    return DFSDM_Channelx->CHWDATAR;
 }
-
 
 /**
   * @brief  Configures the High Threshold and the Low threshold for the Analog watchdog of the selected DFSDMx.
@@ -1060,28 +1042,28 @@ void DFSDM_SetAWDThreshold(DFSDM_Filter_TypeDef* DFSDMx, uint32_t DFSDM_HighThre
     assert_param(IS_DFSDM_LOW_THRESHOLD(DFSDM_LowThreshold));
 
     /* Get the DFSDMx AWHTR value */
-    tmpreg1 = DFSDMx -> FLTAWHTR;
+    tmpreg1 = DFSDMx->FLTAWHTR;
 
     /* Clear the AWHT bits */
     tmpreg1 &= ~(DFSDM_FLTAWHTR_AWHT);
 
     /* Set or Reset the AWHT bits */
-    tmpreg1 |= (DFSDM_HighThreshold  << 8 );
+    tmpreg1 |= (DFSDM_HighThreshold << 8);
 
     /* Write to DFSDMx AWHTR Register */
-    DFSDMx -> FLTAWHTR = tmpreg1;
+    DFSDMx->FLTAWHTR = tmpreg1;
 
     /* Get the DFSDMx AWLTR value */
-    tmpreg2 = DFSDMx -> FLTAWLTR;
+    tmpreg2 = DFSDMx->FLTAWLTR;
 
     /* Clear the AWLTR bits */
     tmpreg2 &= ~(DFSDM_FLTAWLTR_AWLT);
 
     /* Set or Reset the AWLTR bits */
-    tmpreg2 |= (DFSDM_LowThreshold  << 8 );
+    tmpreg2 |= (DFSDM_LowThreshold << 8);
 
     /* Write to DFSDMx AWLTR Register */
-    DFSDMx -> FLTAWLTR = tmpreg2;
+    DFSDMx->FLTAWLTR = tmpreg2;
 }
 
 /**
@@ -1101,23 +1083,23 @@ void DFSDM_SetAWDThreshold(DFSDM_Filter_TypeDef* DFSDMx, uint32_t DFSDM_HighThre
   */
 void DFSDM_SelectInjectedChannel(DFSDM_Filter_TypeDef* DFSDMx, uint32_t DFSDM_InjectedChannelx)
 {
-  uint32_t tmpreg1 = 0;
+    uint32_t tmpreg1 = 0;
 
-  /* Check the parameters */
-  assert_param(IS_DFSDM_ALL_FILTER(DFSDMx));
-  assert_param(IS_DFSDM_INJECT_CHANNEL(DFSDM_InjectedChannelx));
+    /* Check the parameters */
+    assert_param(IS_DFSDM_ALL_FILTER(DFSDMx));
+    assert_param(IS_DFSDM_INJECT_CHANNEL(DFSDM_InjectedChannelx));
 
-  /* Get the DFSDMx JCHGR value */
-  tmpreg1 = DFSDMx -> FLTJCHGR;
+    /* Get the DFSDMx JCHGR value */
+    tmpreg1 = DFSDMx->FLTJCHGR;
 
-  /* Clear the JCHGR bits */
-  tmpreg1 &= ~(DFSDM_FLTJCHGR_JCHG);
+    /* Clear the JCHGR bits */
+    tmpreg1 &= ~(DFSDM_FLTJCHGR_JCHG);
 
-  /* Set or Reset the JCHGR bits */
-  tmpreg1 |= DFSDM_InjectedChannelx;
+    /* Set or Reset the JCHGR bits */
+    tmpreg1 |= DFSDM_InjectedChannelx;
 
-  /* Write to DFSDMx JCHGR Register */
-  DFSDMx -> FLTJCHGR |= tmpreg1;
+    /* Write to DFSDMx JCHGR Register */
+    DFSDMx->FLTJCHGR |= tmpreg1;
 }
 
 /**
@@ -1137,23 +1119,23 @@ void DFSDM_SelectInjectedChannel(DFSDM_Filter_TypeDef* DFSDMx, uint32_t DFSDM_In
   */
 void DFSDM_SelectRegularChannel(DFSDM_Filter_TypeDef* DFSDMx, uint32_t DFSDM_RegularChannelx)
 {
-  uint32_t tmpreg1 = 0;
+    uint32_t tmpreg1 = 0;
 
-  /* Check the parameters */
-  assert_param(IS_DFSDM_ALL_FILTER(DFSDMx));
-  assert_param(IS_DFSDM_REGULAR_CHANNEL(DFSDM_RegularChannelx));
+    /* Check the parameters */
+    assert_param(IS_DFSDM_ALL_FILTER(DFSDMx));
+    assert_param(IS_DFSDM_REGULAR_CHANNEL(DFSDM_RegularChannelx));
 
-  /* Get the DFSDMx CR1 value */
-  tmpreg1 = DFSDMx -> FLTCR1;
+    /* Get the DFSDMx CR1 value */
+    tmpreg1 = DFSDMx->FLTCR1;
 
-  /* Clear the RCH bits */
-  tmpreg1 &= ~(DFSDM_FLTCR1_RCH);
+    /* Clear the RCH bits */
+    tmpreg1 &= ~(DFSDM_FLTCR1_RCH);
 
-  /* Set or Reset the RCH bits */
-  tmpreg1 |= DFSDM_RegularChannelx;
+    /* Set or Reset the RCH bits */
+    tmpreg1 |= DFSDM_RegularChannelx;
 
-  /* Write to DFSDMx CR1 Register */
-  DFSDMx -> FLTCR1 = tmpreg1;
+    /* Write to DFSDMx CR1 Register */
+    DFSDMx->FLTCR1 = tmpreg1;
 }
 
 /**
@@ -1170,11 +1152,11 @@ void DFSDM_SelectRegularChannel(DFSDM_Filter_TypeDef* DFSDMx, uint32_t DFSDM_Reg
   */
 void DFSDM_StartSoftwareInjectedConversion(DFSDM_Filter_TypeDef* DFSDMx)
 {
-  /* Check the parameters */
-  assert_param(IS_DFSDM_ALL_FILTER(DFSDMx));
+    /* Check the parameters */
+    assert_param(IS_DFSDM_ALL_FILTER(DFSDMx));
 
-  /* Write 1 to DFSDMx CR1 RSWSTAR bit */
-  DFSDMx -> FLTCR1 |=  DFSDM_FLTCR1_JSWSTART;
+    /* Write 1 to DFSDMx CR1 RSWSTAR bit */
+    DFSDMx->FLTCR1 |= DFSDM_FLTCR1_JSWSTART;
 }
 
 /**
@@ -1191,11 +1173,11 @@ void DFSDM_StartSoftwareInjectedConversion(DFSDM_Filter_TypeDef* DFSDMx)
   */
 void DFSDM_StartSoftwareRegularConversion(DFSDM_Filter_TypeDef* DFSDMx)
 {
-  /* Check the parameters */
-  assert_param(IS_DFSDM_ALL_FILTER(DFSDMx));
+    /* Check the parameters */
+    assert_param(IS_DFSDM_ALL_FILTER(DFSDMx));
 
-  /* Write 1 to DFSDMx CR1 RSWSTAR bit */
-  DFSDMx -> FLTCR1 |=  DFSDM_FLTCR1_RSWSTART;
+    /* Write 1 to DFSDMx CR1 RSWSTAR bit */
+    DFSDMx->FLTCR1 |= DFSDM_FLTCR1_RSWSTART;
 }
 
 /**
@@ -1218,33 +1200,31 @@ void DFSDM_StartSoftwareRegularConversion(DFSDM_Filter_TypeDef* DFSDMx)
   */
 void DFSDM_ConfigInjectedTrigger(DFSDM_Filter_TypeDef* DFSDMx, uint32_t DFSDM_Trigger, uint32_t DFSDM_TriggerEdge)
 {
-  uint32_t tmpreg1 = 0;
+    uint32_t tmpreg1 = 0;
 
-  /* Check the parameters */
-  assert_param(IS_DFSDM_ALL_FILTER(DFSDMx));
+    /* Check the parameters */
+    assert_param(IS_DFSDM_ALL_FILTER(DFSDMx));
 
-  if (DFSDMx == DFSDM0)
-  {
-    assert_param(IS_DFSDM0_INJ_TRIGGER(DFSDM_Trigger));
-  }
-  else
-  {
-    assert_param(IS_DFSDM1_INJ_TRIGGER(DFSDM_Trigger));
-  }
+    if(DFSDMx == DFSDM0) {
+        assert_param(IS_DFSDM0_INJ_TRIGGER(DFSDM_Trigger));
+    }
+    else {
+        assert_param(IS_DFSDM1_INJ_TRIGGER(DFSDM_Trigger));
+    }
 
-  assert_param(IS_DFSDM_TRIGGER_EDGE(DFSDM_TriggerEdge));
+    assert_param(IS_DFSDM_TRIGGER_EDGE(DFSDM_TriggerEdge));
 
-  /* Get the DFSDMx CR1 value */
-  tmpreg1 = DFSDMx -> FLTCR1;
+    /* Get the DFSDMx CR1 value */
+    tmpreg1 = DFSDMx->FLTCR1;
 
-  /* Clear the JEXTSEL & JEXTEN bits */
-  tmpreg1 &= ~(DFSDM_FLTCR1_JEXTSEL | DFSDM_FLTCR1_JEXTEN);
+    /* Clear the JEXTSEL & JEXTEN bits */
+    tmpreg1 &= ~(DFSDM_FLTCR1_JEXTSEL | DFSDM_FLTCR1_JEXTEN);
 
-  /* Set or Reset the JEXTSEL & JEXTEN bits */
-  tmpreg1 |= (DFSDM_Trigger | DFSDM_TriggerEdge);
+    /* Set or Reset the JEXTSEL & JEXTEN bits */
+    tmpreg1 |= (DFSDM_Trigger | DFSDM_TriggerEdge);
 
-  /* Write to DFSDMx CR1 Register */
-  DFSDMx -> FLTCR1 = tmpreg1;
+    /* Write to DFSDMx CR1 Register */
+    DFSDMx->FLTCR1 = tmpreg1;
 }
 
 /**
@@ -1264,11 +1244,11 @@ void DFSDM_ConfigInjectedTrigger(DFSDM_Filter_TypeDef* DFSDMx, uint32_t DFSDM_Tr
   */
 void DFSDM_SynchronousFilter0InjectedStart(DFSDM_Filter_TypeDef* DFSDMx)
 {
-  /* Check the parameters */
-  assert_param(IS_DFSDM_SYNC_FILTER(DFSDMx));
+    /* Check the parameters */
+    assert_param(IS_DFSDM_SYNC_FILTER(DFSDMx));
 
-  /* Write 1 to DFSDMx CR1 JSYNC bit */
-  DFSDMx -> FLTCR1 |=  DFSDM_FLTCR1_JSYNC;
+    /* Write 1 to DFSDMx CR1 JSYNC bit */
+    DFSDMx->FLTCR1 |= DFSDM_FLTCR1_JSYNC;
 }
 
 /**
@@ -1288,11 +1268,11 @@ void DFSDM_SynchronousFilter0InjectedStart(DFSDM_Filter_TypeDef* DFSDMx)
   */
 void DFSDM_SynchronousFilter0RegularStart(DFSDM_Filter_TypeDef* DFSDMx)
 {
-  /* Check the parameters */
-  assert_param(IS_DFSDM_SYNC_FILTER(DFSDMx));
+    /* Check the parameters */
+    assert_param(IS_DFSDM_SYNC_FILTER(DFSDMx));
 
-  /* Write 1 to DFSDMx CR1 RSYNC bit */
-  DFSDMx -> FLTCR1 |=  DFSDM_FLTCR1_RSYNC;
+    /* Write 1 to DFSDMx CR1 RSYNC bit */
+    DFSDMx->FLTCR1 |= DFSDM_FLTCR1_RSYNC;
 }
 
 /**
@@ -1311,20 +1291,18 @@ void DFSDM_SynchronousFilter0RegularStart(DFSDM_Filter_TypeDef* DFSDMx)
   */
 void DFSDM_RegularContinuousModeCmd(DFSDM_Filter_TypeDef* DFSDMx, FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_DFSDM_ALL_FILTER(DFSDMx));
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
+    /* Check the parameters */
+    assert_param(IS_DFSDM_ALL_FILTER(DFSDMx));
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
 
- if (NewState != DISABLE)
-  {
-    /* Enable the RCONT bit */
-    DFSDMx -> FLTCR1 |=  DFSDM_FLTCR1_RCONT;
-  }
-  else
-  {
-    /* Disable the RCONT bit */
-    DFSDMx -> FLTCR1 &=  ~(DFSDM_FLTCR1_RCONT);
-  }
+    if(NewState != DISABLE) {
+        /* Enable the RCONT bit */
+        DFSDMx->FLTCR1 |= DFSDM_FLTCR1_RCONT;
+    }
+    else {
+        /* Disable the RCONT bit */
+        DFSDMx->FLTCR1 &= ~(DFSDM_FLTCR1_RCONT);
+    }
 }
 
 /**
@@ -1348,20 +1326,18 @@ void DFSDM_RegularContinuousModeCmd(DFSDM_Filter_TypeDef* DFSDMx, FunctionalStat
   */
 void DFSDM_FastModeCmd(DFSDM_Filter_TypeDef* DFSDMx, FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_DFSDM_ALL_FILTER(DFSDMx));
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
+    /* Check the parameters */
+    assert_param(IS_DFSDM_ALL_FILTER(DFSDMx));
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
 
- if (NewState != DISABLE)
-  {
-    /* Enable the FAST bit */
-    DFSDMx -> FLTCR1 |=  DFSDM_FLTCR1_FAST;
-  }
-  else
-  {
-    /* Disable the FAST bit */
-    DFSDMx -> FLTCR1 &=  ~(DFSDM_FLTCR1_FAST);
-  }
+    if(NewState != DISABLE) {
+        /* Enable the FAST bit */
+        DFSDMx->FLTCR1 |= DFSDM_FLTCR1_FAST;
+    }
+    else {
+        /* Disable the FAST bit */
+        DFSDMx->FLTCR1 &= ~(DFSDM_FLTCR1_FAST);
+    }
 }
 
 /**
@@ -1384,15 +1360,15 @@ void DFSDM_FastModeCmd(DFSDM_Filter_TypeDef* DFSDMx, FunctionalState NewState)
   */
 void DFSDM_SelectInjectedConversionMode(DFSDM_Filter_TypeDef* DFSDMx, uint32_t DFSDM_InjectConvMode)
 {
-  /* Check the parameters */
-  assert_param(IS_DFSDM_ALL_FILTER(DFSDMx));
-  assert_param(IS_DFSDM_INJ_CONV_MODE(DFSDM_InjectConvMode));
+    /* Check the parameters */
+    assert_param(IS_DFSDM_ALL_FILTER(DFSDMx));
+    assert_param(IS_DFSDM_INJ_CONV_MODE(DFSDM_InjectConvMode));
 
-  /* Clear the JSCAN bit */
-  DFSDMx -> FLTCR1 &= ~(DFSDM_FLTCR1_JSCAN);
+    /* Clear the JSCAN bit */
+    DFSDMx->FLTCR1 &= ~(DFSDM_FLTCR1_JSCAN);
 
-  /* Write to DFSDMx CR1 Register */
-  DFSDMx -> FLTCR1 |= DFSDM_InjectConvMode;
+    /* Write to DFSDMx CR1 Register */
+    DFSDMx->FLTCR1 |= DFSDM_InjectConvMode;
 }
 
 /**
@@ -1416,21 +1392,19 @@ void DFSDM_SelectInjectedConversionMode(DFSDM_Filter_TypeDef* DFSDMx, uint32_t D
   */
 void DFSDM_DMATransferConfig(DFSDM_Filter_TypeDef* DFSDMx, uint32_t DFSDM_DMAConversionMode, FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_DFSDM_ALL_FILTER(DFSDMx));
-  assert_param(IS_DFSDM_CONVERSION_MODE(DFSDM_DMAConversionMode));
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
+    /* Check the parameters */
+    assert_param(IS_DFSDM_ALL_FILTER(DFSDMx));
+    assert_param(IS_DFSDM_CONVERSION_MODE(DFSDM_DMAConversionMode));
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
 
- if (NewState != DISABLE)
-  {
-    /* Enable the JDMAEN or RDMAEN bit */
-    DFSDMx -> FLTCR1 |=  (DFSDM_FLTCR1_JDMAEN << DFSDM_DMAConversionMode) ;
-  }
-  else
-  {
-    /* Disable the JDMAEN or RDMAEN bit */
-    DFSDMx -> FLTCR1 &=  ~(DFSDM_FLTCR1_JDMAEN << DFSDM_DMAConversionMode);
-  }
+    if(NewState != DISABLE) {
+        /* Enable the JDMAEN or RDMAEN bit */
+        DFSDMx->FLTCR1 |= (DFSDM_FLTCR1_JDMAEN << DFSDM_DMAConversionMode);
+    }
+    else {
+        /* Disable the JDMAEN or RDMAEN bit */
+        DFSDMx->FLTCR1 &= ~(DFSDM_FLTCR1_JDMAEN << DFSDM_DMAConversionMode);
+    }
 }
 
 /** @defgroup DFSDM_Group3 Interrupts and flags management functions
@@ -1492,22 +1466,20 @@ void DFSDM_DMATransferConfig(DFSDM_Filter_TypeDef* DFSDMx, uint32_t DFSDM_DMACon
   * @retval None
   */
 void DFSDM_ITConfig(DFSDM_Filter_TypeDef* DFSDMx, uint32_t DFSDM_IT, FunctionalState NewState)
- {
-  /* Check the parameters */
-  assert_param(IS_DFSDM_ALL_FILTER(DFSDMx));
-  assert_param(IS_DFSDM_IT(DFSDM_IT));
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
+{
+    /* Check the parameters */
+    assert_param(IS_DFSDM_ALL_FILTER(DFSDMx));
+    assert_param(IS_DFSDM_IT(DFSDM_IT));
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-  if (NewState != DISABLE)
-  {
-    /* Enable the Interrupt sources */
-    DFSDMx->FLTCR2 |= DFSDM_IT;
-  }
-  else
-  {
-    /* Disable the Interrupt sources */
-    DFSDMx->FLTCR2 &= ~(DFSDM_IT);
-  }
+    if(NewState != DISABLE) {
+        /* Enable the Interrupt sources */
+        DFSDMx->FLTCR2 |= DFSDM_IT;
+    }
+    else {
+        /* Disable the Interrupt sources */
+        DFSDMx->FLTCR2 &= ~(DFSDM_IT);
+    }
 }
 
 #if defined(STM32F412xG)
@@ -1518,20 +1490,18 @@ void DFSDM_ITConfig(DFSDM_Filter_TypeDef* DFSDMx, uint32_t DFSDM_IT, FunctionalS
   * @retval None
   */
 void DFSDM_ITClockAbsenceCmd(FunctionalState NewState)
- {
-  /* Check the parameters */
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
+{
+    /* Check the parameters */
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-  if (NewState != DISABLE)
-  {
-    /* Enable the Interrupt source */
-    DFSDM1_0->FLTCR2 |= DFSDM_IT_CKAB;
-  }
-  else
-  {
-    /* Disable the Interrupt source */
-    DFSDM1_0->FLTCR2 &= ~(DFSDM_IT_CKAB);
-  }
+    if(NewState != DISABLE) {
+        /* Enable the Interrupt source */
+        DFSDM1_0->FLTCR2 |= DFSDM_IT_CKAB;
+    }
+    else {
+        /* Disable the Interrupt source */
+        DFSDM1_0->FLTCR2 &= ~(DFSDM_IT_CKAB);
+    }
 }
 
 /**
@@ -1541,20 +1511,18 @@ void DFSDM_ITClockAbsenceCmd(FunctionalState NewState)
   * @retval None
   */
 void DFSDM_ITShortCircuitDetectorCmd(FunctionalState NewState)
- {
-  /* Check the parameters */
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
+{
+    /* Check the parameters */
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-  if (NewState != DISABLE)
-  {
-    /* Enable the Interrupt source */
-    DFSDM1_0->FLTCR2 |= DFSDM_IT_SCD;
-  }
-  else
-  {
-    /* Disable the Interrupt source */
-    DFSDM1_0->FLTCR2 &= ~(DFSDM_IT_SCD);
-  }
+    if(NewState != DISABLE) {
+        /* Enable the Interrupt source */
+        DFSDM1_0->FLTCR2 |= DFSDM_IT_SCD;
+    }
+    else {
+        /* Disable the Interrupt source */
+        DFSDM1_0->FLTCR2 &= ~(DFSDM_IT_SCD);
+    }
 }
 #endif /* STM32F412xG */
 
@@ -1568,35 +1536,30 @@ void DFSDM_ITShortCircuitDetectorCmd(FunctionalState NewState)
   * @retval None
   */
 void DFSDM_ITClockAbsenceCmd(uint32_t Instance, FunctionalState NewState)
- {
-  /* Check the parameters */
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
-  if(Instance == 1)
-  {
-    if (NewState != DISABLE)
-    {
-      /* Enable the Interrupt source */
-      DFSDM1_0->FLTCR2 |= DFSDM_IT_CKAB;
+{
+    /* Check the parameters */
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
+    if(Instance == 1) {
+        if(NewState != DISABLE) {
+            /* Enable the Interrupt source */
+            DFSDM1_0->FLTCR2 |= DFSDM_IT_CKAB;
+        }
+        else {
+            /* Disable the Interrupt source */
+            DFSDM1_0->FLTCR2 &= ~(DFSDM_IT_CKAB);
+        }
     }
-    else
+    else /* DFSDM2 */
     {
-      /* Disable the Interrupt source */
-      DFSDM1_0->FLTCR2 &= ~(DFSDM_IT_CKAB);
+        if(NewState != DISABLE) {
+            /* Enable the Interrupt source */
+            DFSDM2_0->FLTCR2 |= DFSDM_IT_CKAB;
+        }
+        else {
+            /* Disable the Interrupt source */
+            DFSDM2_0->FLTCR2 &= ~(DFSDM_IT_CKAB);
+        }
     }
-  }
-  else /* DFSDM2 */
-  {
-    if (NewState != DISABLE)
-    {
-      /* Enable the Interrupt source */
-      DFSDM2_0->FLTCR2 |= DFSDM_IT_CKAB;
-    }
-    else
-    {
-      /* Disable the Interrupt source */
-      DFSDM2_0->FLTCR2 &= ~(DFSDM_IT_CKAB);
-    }
-  }
 }
 
 /**
@@ -1608,37 +1571,31 @@ void DFSDM_ITClockAbsenceCmd(uint32_t Instance, FunctionalState NewState)
   * @retval None
   */
 void DFSDM_ITShortCircuitDetectorCmd(uint32_t Instance, FunctionalState NewState)
- {
-  /* Check the parameters */
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
+{
+    /* Check the parameters */
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-  if(Instance == 1)
-  {
-    if (NewState != DISABLE)
-    {
-      /* Enable the Interrupt source */
-      DFSDM1_0->FLTCR2 |= DFSDM_IT_SCD;
+    if(Instance == 1) {
+        if(NewState != DISABLE) {
+            /* Enable the Interrupt source */
+            DFSDM1_0->FLTCR2 |= DFSDM_IT_SCD;
+        }
+        else {
+            /* Disable the Interrupt source */
+            DFSDM1_0->FLTCR2 &= ~(DFSDM_IT_SCD);
+        }
     }
-    else
+    else /* DFSDM2 */
     {
-      /* Disable the Interrupt source */
-      DFSDM1_0->FLTCR2 &= ~(DFSDM_IT_SCD);
+        if(NewState != DISABLE) {
+            /* Enable the Interrupt source */
+            DFSDM2_0->FLTCR2 |= DFSDM_IT_SCD;
+        }
+        else {
+            /* Disable the Interrupt source */
+            DFSDM2_0->FLTCR2 &= ~(DFSDM_IT_SCD);
+        }
     }
-  }
-  else /* DFSDM2 */
-  {
-    if (NewState != DISABLE)
-    {
-      /* Enable the Interrupt source */
-      DFSDM2_0->FLTCR2 |= DFSDM_IT_SCD;
-    }
-    else
-    {
-      /* Disable the Interrupt source */
-      DFSDM2_0->FLTCR2 &= ~(DFSDM_IT_SCD);
-    } 
-  }
-  
 }
 #endif /* STM32F413_423xx */
 
@@ -1665,21 +1622,19 @@ void DFSDM_ITShortCircuitDetectorCmd(uint32_t Instance, FunctionalState NewState
   */
 FlagStatus DFSDM_GetFlagStatus(DFSDM_Filter_TypeDef* DFSDMx, uint32_t DFSDM_FLAG)
 {
-  ITStatus bitstatus = RESET;
+    ITStatus bitstatus = RESET;
 
-  /* Check the parameters */
-  assert_param(IS_DFSDM_ALL_FILTER(DFSDMx));
-  assert_param(IS_DFSDM_FLAG(DFSDM_FLAG));
+    /* Check the parameters */
+    assert_param(IS_DFSDM_ALL_FILTER(DFSDMx));
+    assert_param(IS_DFSDM_FLAG(DFSDM_FLAG));
 
-  if ((DFSDMx->FLTISR & DFSDM_FLAG) != RESET )
-  {
-    bitstatus = SET;
-  }
-  else
-  {
-    bitstatus = RESET;
-  }
-  return bitstatus;
+    if((DFSDMx->FLTISR & DFSDM_FLAG) != RESET) {
+        bitstatus = SET;
+    }
+    else {
+        bitstatus = RESET;
+    }
+    return bitstatus;
 }
 
 #if defined(STM32F412xG)
@@ -1691,20 +1646,18 @@ FlagStatus DFSDM_GetFlagStatus(DFSDM_Filter_TypeDef* DFSDMx, uint32_t DFSDM_FLAG
   */
 FlagStatus DFSDM_GetClockAbsenceFlagStatus(uint32_t DFSDM_FLAG_CLKAbsence)
 {
-  ITStatus bitstatus = RESET;
+    ITStatus bitstatus = RESET;
 
-  /* Check the parameters */
-  assert_param(IS_DFSDM_CLK_ABS_FLAG(DFSDM_FLAG_CLKAbsence));
+    /* Check the parameters */
+    assert_param(IS_DFSDM_CLK_ABS_FLAG(DFSDM_FLAG_CLKAbsence));
 
-  if((DFSDM1_0->FLTISR & DFSDM_FLAG_CLKAbsence) != RESET)
-  {
-    bitstatus = SET;
-  }
-  else
-  {
-    bitstatus = RESET;
-  }
-  return bitstatus;
+    if((DFSDM1_0->FLTISR & DFSDM_FLAG_CLKAbsence) != RESET) {
+        bitstatus = SET;
+    }
+    else {
+        bitstatus = RESET;
+    }
+    return bitstatus;
 }
 
 /**
@@ -1715,21 +1668,19 @@ FlagStatus DFSDM_GetClockAbsenceFlagStatus(uint32_t DFSDM_FLAG_CLKAbsence)
   */
 FlagStatus DFSDM_GetShortCircuitFlagStatus(uint32_t DFSDM_FLAG_SCD)
 {
-  ITStatus bitstatus = RESET;
+    ITStatus bitstatus = RESET;
 
-  /* Check the parameters */
-  assert_param(IS_DFSDM_SCD_FLAG(DFSDM_FLAG_SCD));
+    /* Check the parameters */
+    assert_param(IS_DFSDM_SCD_FLAG(DFSDM_FLAG_SCD));
 
-  if ((DFSDM1_0->FLTISR & DFSDM_FLAG_SCD) != RESET)
-  {
-    bitstatus = SET;
-  }
-  else
-  {
-    bitstatus = RESET;
-  }
+    if((DFSDM1_0->FLTISR & DFSDM_FLAG_SCD) != RESET) {
+        bitstatus = SET;
+    }
+    else {
+        bitstatus = RESET;
+    }
 
-  return bitstatus;
+    return bitstatus;
 }
 #endif /* STM32F412xG */
 #if defined(STM32F413_423xx)
@@ -1743,37 +1694,32 @@ FlagStatus DFSDM_GetShortCircuitFlagStatus(uint32_t DFSDM_FLAG_SCD)
   */
 FlagStatus DFSDM_GetClockAbsenceFlagStatus(uint32_t Instance, uint32_t DFSDM_FLAG_CLKAbsence)
 {
-  ITStatus bitstatus = RESET;
-    
-  /* Check the parameters */
-  assert_param(IS_DFSDM_CLK_ABS_FLAG(DFSDM_FLAG_CLKAbsence));
-  
-  if(Instance == 1)
-  {    
-    if((DFSDM1_0->FLTISR & DFSDM_FLAG_CLKAbsence) != RESET)
-    {
-      bitstatus = SET;
-    }
-    else
-    {
-      bitstatus = RESET;
-    }
-  }
-  else /* DFSDM2 */
-  {
+    ITStatus bitstatus = RESET;
+
     /* Check the parameters */
     assert_param(IS_DFSDM_CLK_ABS_FLAG(DFSDM_FLAG_CLKAbsence));
-    
-    if((DFSDM2_0->FLTISR & DFSDM_FLAG_CLKAbsence) != RESET)
-    {
-      bitstatus = SET;
+
+    if(Instance == 1) {
+        if((DFSDM1_0->FLTISR & DFSDM_FLAG_CLKAbsence) != RESET) {
+            bitstatus = SET;
+        }
+        else {
+            bitstatus = RESET;
+        }
     }
-    else
+    else /* DFSDM2 */
     {
-      bitstatus = RESET;
-    } 
-  }
-  return bitstatus;
+        /* Check the parameters */
+        assert_param(IS_DFSDM_CLK_ABS_FLAG(DFSDM_FLAG_CLKAbsence));
+
+        if((DFSDM2_0->FLTISR & DFSDM_FLAG_CLKAbsence) != RESET) {
+            bitstatus = SET;
+        }
+        else {
+            bitstatus = RESET;
+        }
+    }
+    return bitstatus;
 }
 
 /**
@@ -1786,34 +1732,29 @@ FlagStatus DFSDM_GetClockAbsenceFlagStatus(uint32_t Instance, uint32_t DFSDM_FLA
   */
 FlagStatus DFSDM_GetShortCircuitFlagStatus(uint32_t Instance, uint32_t DFSDM_FLAG_SCD)
 {
-  ITStatus bitstatus = RESET;
+    ITStatus bitstatus = RESET;
 
-  /* Check the parameters */
-  assert_param(IS_DFSDM_SCD_FLAG(DFSDM_FLAG_SCD));
+    /* Check the parameters */
+    assert_param(IS_DFSDM_SCD_FLAG(DFSDM_FLAG_SCD));
 
-  if(Instance == 1)
-  {
-    if ((DFSDM1_0->FLTISR & DFSDM_FLAG_SCD) != RESET)
-    {
-      bitstatus = SET;
+    if(Instance == 1) {
+        if((DFSDM1_0->FLTISR & DFSDM_FLAG_SCD) != RESET) {
+            bitstatus = SET;
+        }
+        else {
+            bitstatus = RESET;
+        }
     }
-    else
+    else /* DFSDM2 */
     {
-      bitstatus = RESET;
+        if((DFSDM2_0->FLTISR & DFSDM_FLAG_SCD) != RESET) {
+            bitstatus = SET;
+        }
+        else {
+            bitstatus = RESET;
+        }
     }
-  }
-  else /* DFSDM2 */
-  {
-    if ((DFSDM2_0->FLTISR & DFSDM_FLAG_SCD) != RESET)
-    {
-      bitstatus = SET;
-    }
-    else
-    {
-      bitstatus = RESET;
-    } 
-  }
-  return bitstatus;
+    return bitstatus;
 }
 #endif /* STM32F413_423xx */
 /**
@@ -1833,22 +1774,20 @@ FlagStatus DFSDM_GetShortCircuitFlagStatus(uint32_t Instance, uint32_t DFSDM_FLA
   */
 FlagStatus DFSDM_GetWatchdogFlagStatus(DFSDM_Filter_TypeDef* DFSDMx, uint32_t DFSDM_AWDChannelx, uint8_t DFSDM_Threshold)
 {
-  ITStatus bitstatus = RESET;
+    ITStatus bitstatus = RESET;
 
-  /* Check the parameters */
-  assert_param(IS_DFSDM_ALL_FILTER(DFSDMx));
-  assert_param(IS_DFSDM_Threshold(DFSDM_Threshold));
-  assert_param(IS_DFSDM_AWD_CHANNEL(DFSDM_AWDChannelx));
+    /* Check the parameters */
+    assert_param(IS_DFSDM_ALL_FILTER(DFSDMx));
+    assert_param(IS_DFSDM_Threshold(DFSDM_Threshold));
+    assert_param(IS_DFSDM_AWD_CHANNEL(DFSDM_AWDChannelx));
 
-  if ((DFSDMx->FLTAWSR & ((DFSDM_AWDChannelx >> 16) << DFSDM_Threshold) ) != RESET)
-  {
-    bitstatus = SET;
-  }
-  else
-  {
-    bitstatus = RESET;
-  }
-  return bitstatus;
+    if((DFSDMx->FLTAWSR & ((DFSDM_AWDChannelx >> 16) << DFSDM_Threshold)) != RESET) {
+        bitstatus = SET;
+    }
+    else {
+        bitstatus = RESET;
+    }
+    return bitstatus;
 }
 
 /**
@@ -1869,12 +1808,12 @@ FlagStatus DFSDM_GetWatchdogFlagStatus(DFSDM_Filter_TypeDef* DFSDMx, uint32_t DF
   */
 void DFSDM_ClearFlag(DFSDM_Filter_TypeDef* DFSDMx, uint32_t DFSDM_CLEARF)
 {
-  /* Check the parameters */
-  assert_param(IS_DFSDM_ALL_FILTER(DFSDMx));
-  assert_param(IS_DFSDM_CLEAR_FLAG(DFSDM_CLEARF));
+    /* Check the parameters */
+    assert_param(IS_DFSDM_ALL_FILTER(DFSDMx));
+    assert_param(IS_DFSDM_CLEAR_FLAG(DFSDM_CLEARF));
 
-  /* Clear the pending Flag Bit */
-  DFSDMx->FLTICR |= DFSDM_CLEARF;
+    /* Clear the pending Flag Bit */
+    DFSDMx->FLTICR |= DFSDM_CLEARF;
 }
 
 #if defined(STM32F412xG)
@@ -1886,11 +1825,11 @@ void DFSDM_ClearFlag(DFSDM_Filter_TypeDef* DFSDMx, uint32_t DFSDM_CLEARF)
   */
 void DFSDM_ClearClockAbsenceFlag(uint32_t DFSDM_CLEARF_CLKAbsence)
 {
-  /* Check the parameters */
-  assert_param(IS_DFSDM_CLK_ABS_CLEARF(DFSDM_CLEARF_CLKAbsence));
+    /* Check the parameters */
+    assert_param(IS_DFSDM_CLK_ABS_CLEARF(DFSDM_CLEARF_CLKAbsence));
 
-  /* Clear the IT pending Flag Bit */
-  DFSDM1_0->FLTICR |= DFSDM_CLEARF_CLKAbsence;
+    /* Clear the IT pending Flag Bit */
+    DFSDM1_0->FLTICR |= DFSDM_CLEARF_CLKAbsence;
 }
 
 /**
@@ -1901,11 +1840,11 @@ void DFSDM_ClearClockAbsenceFlag(uint32_t DFSDM_CLEARF_CLKAbsence)
   */
 void DFSDM_ClearShortCircuitFlag(uint32_t DFSDM_CLEARF_SCD)
 {
-  /* Check the parameters */
-  assert_param(IS_DFSDM_SCD_CHANNEL_FLAG(DFSDM_CLEARF_SCD));
+    /* Check the parameters */
+    assert_param(IS_DFSDM_SCD_CHANNEL_FLAG(DFSDM_CLEARF_SCD));
 
-  /* Clear the pending Flag Bit */
-  DFSDM1_0->FLTICR |= DFSDM_CLEARF_SCD;
+    /* Clear the pending Flag Bit */
+    DFSDM1_0->FLTICR |= DFSDM_CLEARF_SCD;
 }
 #endif /* STM32F412xG */
 
@@ -1920,19 +1859,18 @@ void DFSDM_ClearShortCircuitFlag(uint32_t DFSDM_CLEARF_SCD)
   */
 void DFSDM_ClearClockAbsenceFlag(uint32_t Instance, uint32_t DFSDM_CLEARF_CLKAbsence)
 {
-  /* Check the parameters */
-  assert_param(IS_DFSDM_CLK_ABS_CLEARF(DFSDM_CLEARF_CLKAbsence));
+    /* Check the parameters */
+    assert_param(IS_DFSDM_CLK_ABS_CLEARF(DFSDM_CLEARF_CLKAbsence));
 
-  if(Instance == 1)
-  {
-    /* Clear the IT pending Flag Bit */
-    DFSDM1_0->FLTICR |= DFSDM_CLEARF_CLKAbsence;
-  }
-  else /* DFSDM2 */
-  {
-    /* Clear the IT pending Flag Bit */
-    DFSDM2_0->FLTICR |= DFSDM_CLEARF_CLKAbsence; 
-  }
+    if(Instance == 1) {
+        /* Clear the IT pending Flag Bit */
+        DFSDM1_0->FLTICR |= DFSDM_CLEARF_CLKAbsence;
+    }
+    else /* DFSDM2 */
+    {
+        /* Clear the IT pending Flag Bit */
+        DFSDM2_0->FLTICR |= DFSDM_CLEARF_CLKAbsence;
+    }
 }
 
 /**
@@ -1945,19 +1883,17 @@ void DFSDM_ClearClockAbsenceFlag(uint32_t Instance, uint32_t DFSDM_CLEARF_CLKAbs
   */
 void DFSDM_ClearShortCircuitFlag(uint32_t Instance, uint32_t DFSDM_CLEARF_SCD)
 {
-  /* Check the parameters */
-  assert_param(IS_DFSDM_SCD_CHANNEL_FLAG(DFSDM_CLEARF_SCD));
+    /* Check the parameters */
+    assert_param(IS_DFSDM_SCD_CHANNEL_FLAG(DFSDM_CLEARF_SCD));
 
-  if(Instance == 1)
-  {
-    /* Clear the pending Flag Bit */
-    DFSDM1_0->FLTICR |= DFSDM_CLEARF_SCD;
-  }
-  else
-  {
-    /* Clear the pending Flag Bit */
-    DFSDM2_0->FLTICR |= DFSDM_CLEARF_SCD; 
-  }
+    if(Instance == 1) {
+        /* Clear the pending Flag Bit */
+        DFSDM1_0->FLTICR |= DFSDM_CLEARF_SCD;
+    }
+    else {
+        /* Clear the pending Flag Bit */
+        DFSDM2_0->FLTICR |= DFSDM_CLEARF_SCD;
+    }
 }
 #endif /* STM32F413_423xx */
 /**
@@ -1977,16 +1913,15 @@ void DFSDM_ClearShortCircuitFlag(uint32_t Instance, uint32_t DFSDM_CLEARF_SCD)
   */
 void DFSDM_ClearAnalogWatchdogFlag(DFSDM_Filter_TypeDef* DFSDMx, uint32_t DFSDM_AWDChannelx, uint8_t DFSDM_Threshold)
 {
-  /* Check the parameters */
-  assert_param(IS_DFSDM_ALL_FILTER(DFSDMx));
-  assert_param(IS_DFSDM_Threshold(DFSDM_Threshold));
-  assert_param(IS_DFSDM_AWD_CHANNEL(DFSDM_AWDChannelx));
+    /* Check the parameters */
+    assert_param(IS_DFSDM_ALL_FILTER(DFSDMx));
+    assert_param(IS_DFSDM_Threshold(DFSDM_Threshold));
+    assert_param(IS_DFSDM_AWD_CHANNEL(DFSDM_AWDChannelx));
 
-  if ((DFSDMx->FLTAWSR & ((DFSDM_AWDChannelx >> 16) << DFSDM_Threshold) ) != RESET)
-  {
-    /* Clear the pending Flag Bit */
-    DFSDMx->FLTAWCFR |= (DFSDM_AWDChannelx >> 16) << DFSDM_Threshold;
-  }
+    if((DFSDMx->FLTAWSR & ((DFSDM_AWDChannelx >> 16) << DFSDM_Threshold)) != RESET) {
+        /* Clear the pending Flag Bit */
+        DFSDMx->FLTAWCFR |= (DFSDM_AWDChannelx >> 16) << DFSDM_Threshold;
+    }
 }
 
 /**
@@ -2009,28 +1944,26 @@ void DFSDM_ClearAnalogWatchdogFlag(DFSDM_Filter_TypeDef* DFSDMx, uint32_t DFSDM_
   */
 ITStatus DFSDM_GetITStatus(DFSDM_Filter_TypeDef* DFSDMx, uint32_t DFSDM_IT)
 {
-  ITStatus bitstatus = RESET;
-  uint32_t itstatus = 0x0, itenable = 0x0;
+    ITStatus bitstatus = RESET;
+    uint32_t itstatus = 0x0, itenable = 0x0;
 
-  /* Check the parameters */
-  assert_param(IS_DFSDM_ALL_FILTER(DFSDMx));
-  assert_param(IS_DFSDM_IT(DFSDM_IT));
+    /* Check the parameters */
+    assert_param(IS_DFSDM_ALL_FILTER(DFSDMx));
+    assert_param(IS_DFSDM_IT(DFSDM_IT));
 
-  /* Get the Interrupt Status bit value */
-  itstatus = DFSDMx->FLTISR & DFSDM_IT;
+    /* Get the Interrupt Status bit value */
+    itstatus = DFSDMx->FLTISR & DFSDM_IT;
 
-  /* Check if the Interrupt is enabled */
-  itenable = DFSDMx->FLTCR2 & DFSDM_IT;
+    /* Check if the Interrupt is enabled */
+    itenable = DFSDMx->FLTCR2 & DFSDM_IT;
 
-  if ((itstatus != RESET) && (itenable != RESET))
-  {
-    bitstatus = SET;
-  }
-  else
-  {
-    bitstatus = RESET;
-  }
-  return bitstatus;
+    if((itstatus != RESET) && (itenable != RESET)) {
+        bitstatus = SET;
+    }
+    else {
+        bitstatus = RESET;
+    }
+    return bitstatus;
 }
 
 #if defined(STM32F412xG)
@@ -2043,27 +1976,25 @@ ITStatus DFSDM_GetITStatus(DFSDM_Filter_TypeDef* DFSDMx, uint32_t DFSDM_IT)
   */
 ITStatus DFSDM_GetClockAbsenceITStatus(uint32_t DFSDM_IT_CLKAbsence)
 {
-  ITStatus bitstatus = RESET;
-  uint32_t itstatus = 0x0, itenable = 0x0;
+    ITStatus bitstatus = RESET;
+    uint32_t itstatus = 0x0, itenable = 0x0;
 
-  /* Check the parameters */
-  assert_param(IS_DFSDM_CLK_ABS_IT(DFSDM_IT_CLKAbsence));
+    /* Check the parameters */
+    assert_param(IS_DFSDM_CLK_ABS_IT(DFSDM_IT_CLKAbsence));
 
-  /* Get the Interrupt Status bit value */
-  itstatus = DFSDM0->FLTISR & DFSDM_IT_CLKAbsence;
+    /* Get the Interrupt Status bit value */
+    itstatus = DFSDM0->FLTISR & DFSDM_IT_CLKAbsence;
 
-  /* Check if the Interrupt is enabled */
-  itenable = DFSDM0->FLTCR2 & DFSDM_IT_CKAB;
+    /* Check if the Interrupt is enabled */
+    itenable = DFSDM0->FLTCR2 & DFSDM_IT_CKAB;
 
-  if ((itstatus != RESET) && (itenable != RESET))
-  {
-    bitstatus = SET;
-  }
-  else
-  {
-    bitstatus = RESET;
-  }
-  return bitstatus;
+    if((itstatus != RESET) && (itenable != RESET)) {
+        bitstatus = SET;
+    }
+    else {
+        bitstatus = RESET;
+    }
+    return bitstatus;
 }
 
 /**
@@ -2075,27 +2006,25 @@ ITStatus DFSDM_GetClockAbsenceITStatus(uint32_t DFSDM_IT_CLKAbsence)
   */
 ITStatus DFSDM_GetShortCircuitITStatus(uint32_t DFSDM_IT_SCR)
 {
-  ITStatus bitstatus = RESET;
-  uint32_t itstatus = 0x0, itenable = 0x0;
-  
-  /* Check the parameters */
-  assert_param(IS_DFSDM_SCD_IT(DFSDM_IT_SCR));
-  
-  /* Get the Interrupt Status bit value */
-  itstatus = DFSDM0->FLTISR & DFSDM_IT_SCR;
-  
-  /* Check if the Interrupt is enabled */
-  itenable = DFSDM0->FLTCR2 & DFSDM_IT_SCD;
-  
-  if ((itstatus != RESET) && (itenable != RESET))
-  {
-    bitstatus = SET;
-  }
-  else
-  {
-    bitstatus = RESET;
-  }
-  return bitstatus;
+    ITStatus bitstatus = RESET;
+    uint32_t itstatus = 0x0, itenable = 0x0;
+
+    /* Check the parameters */
+    assert_param(IS_DFSDM_SCD_IT(DFSDM_IT_SCR));
+
+    /* Get the Interrupt Status bit value */
+    itstatus = DFSDM0->FLTISR & DFSDM_IT_SCR;
+
+    /* Check if the Interrupt is enabled */
+    itenable = DFSDM0->FLTCR2 & DFSDM_IT_SCD;
+
+    if((itstatus != RESET) && (itenable != RESET)) {
+        bitstatus = SET;
+    }
+    else {
+        bitstatus = RESET;
+    }
+    return bitstatus;
 }
 #endif /* STM32F412xG */
 
@@ -2111,36 +2040,32 @@ ITStatus DFSDM_GetShortCircuitITStatus(uint32_t DFSDM_IT_SCR)
   */
 ITStatus DFSDM_GetClockAbsenceITStatus(uint32_t Instance, uint32_t DFSDM_IT_CLKAbsence)
 {
-  ITStatus bitstatus = RESET;
-  uint32_t itstatus = 0x0, itenable = 0x0;
+    ITStatus bitstatus = RESET;
+    uint32_t itstatus = 0x0, itenable = 0x0;
 
-  /* Check the parameters */
-  assert_param(IS_DFSDM_CLK_ABS_IT(DFSDM_IT_CLKAbsence));
+    /* Check the parameters */
+    assert_param(IS_DFSDM_CLK_ABS_IT(DFSDM_IT_CLKAbsence));
 
-  if(Instance == 1)
-  {
-    /* Get the Interrupt Status bit value */
-    itstatus = DFSDM1_0->FLTISR & DFSDM_IT_CLKAbsence;
-    /* Check if the Interrupt is enabled */
-    itenable = DFSDM1_0->FLTCR2 & DFSDM_IT_CKAB;
-  }
-  else
-  {
-    /* Get the Interrupt Status bit value */
-    itstatus = DFSDM2_0->FLTISR & DFSDM_IT_CLKAbsence;
-    /* Check if the Interrupt is enabled */
-    itenable = DFSDM1_0->FLTCR2 & DFSDM_IT_CKAB; 
-  }
-  
-  if ((itstatus != RESET) && (itenable != RESET))
-  {
-    bitstatus = SET;
-  }
-  else
-  {
-    bitstatus = RESET;
-  }
-  return bitstatus;
+    if(Instance == 1) {
+        /* Get the Interrupt Status bit value */
+        itstatus = DFSDM1_0->FLTISR & DFSDM_IT_CLKAbsence;
+        /* Check if the Interrupt is enabled */
+        itenable = DFSDM1_0->FLTCR2 & DFSDM_IT_CKAB;
+    }
+    else {
+        /* Get the Interrupt Status bit value */
+        itstatus = DFSDM2_0->FLTISR & DFSDM_IT_CLKAbsence;
+        /* Check if the Interrupt is enabled */
+        itenable = DFSDM1_0->FLTCR2 & DFSDM_IT_CKAB;
+    }
+
+    if((itstatus != RESET) && (itenable != RESET)) {
+        bitstatus = SET;
+    }
+    else {
+        bitstatus = RESET;
+    }
+    return bitstatus;
 }
 
 /**
@@ -2154,38 +2079,35 @@ ITStatus DFSDM_GetClockAbsenceITStatus(uint32_t Instance, uint32_t DFSDM_IT_CLKA
   */
 ITStatus DFSDM_GetShortCircuitITStatus(uint32_t Instance, uint32_t DFSDM_IT_SCR)
 {
-  ITStatus bitstatus = RESET;
-  uint32_t itstatus = 0x0, itenable = 0x0;
-  
-  /* Check the parameters */
-  assert_param(IS_DFSDM_SCD_IT(DFSDM_IT_SCR));
+    ITStatus bitstatus = RESET;
+    uint32_t itstatus = 0x0, itenable = 0x0;
 
-  if(Instance == 1)
-  {
-    /* Get the Interrupt Status bit value */
-    itstatus = DFSDM1_0->FLTISR & DFSDM_IT_SCR;
-    
-    /* Check if the Interrupt is enabled */
-    itenable = DFSDM1_0->FLTCR2 & DFSDM_IT_SCD;
-  }
-  else /* DFSDM2 */
-  {
-    /* Get the Interrupt Status bit value */
-    itstatus = DFSDM2_0->FLTISR & DFSDM_IT_SCR;
-    
-    /* Check if the Interrupt is enabled */
-    itenable = DFSDM2_0->FLTCR2 & DFSDM_IT_SCD; 
-  }
-  
-  if ((itstatus != RESET) && (itenable != RESET))
-  {
-    bitstatus = SET;
-  }
-  else
-  {
-    bitstatus = RESET;
-  }
-  return bitstatus;
+    /* Check the parameters */
+    assert_param(IS_DFSDM_SCD_IT(DFSDM_IT_SCR));
+
+    if(Instance == 1) {
+        /* Get the Interrupt Status bit value */
+        itstatus = DFSDM1_0->FLTISR & DFSDM_IT_SCR;
+
+        /* Check if the Interrupt is enabled */
+        itenable = DFSDM1_0->FLTCR2 & DFSDM_IT_SCD;
+    }
+    else /* DFSDM2 */
+    {
+        /* Get the Interrupt Status bit value */
+        itstatus = DFSDM2_0->FLTISR & DFSDM_IT_SCR;
+
+        /* Check if the Interrupt is enabled */
+        itenable = DFSDM2_0->FLTCR2 & DFSDM_IT_SCD;
+    }
+
+    if((itstatus != RESET) && (itenable != RESET)) {
+        bitstatus = SET;
+    }
+    else {
+        bitstatus = RESET;
+    }
+    return bitstatus;
 }
 
 #endif /* STM32F413_423xx */

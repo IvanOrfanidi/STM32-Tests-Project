@@ -30,8 +30,8 @@
 #define __STM32F4xx_IT_H
 
 #ifdef __cplusplus
- extern "C" {
-#endif 
+extern "C" {
+#endif
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f4xx.h"
@@ -55,7 +55,7 @@ void SysTick_Handler(void);
 void DMA2_Stream5_IRQHandler(void);
 #else
 void DMA1_Stream1_IRQHandler(void);
-#endif /* USE_STM324x9I_EVAL */ 
+#endif /* USE_STM324x9I_EVAL */
 
 void EXTI15_10_IRQHandler(void);
 

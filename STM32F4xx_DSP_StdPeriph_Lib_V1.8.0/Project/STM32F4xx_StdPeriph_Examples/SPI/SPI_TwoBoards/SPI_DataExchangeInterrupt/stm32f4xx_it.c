@@ -36,13 +36,13 @@
 
 /** @addtogroup SPI_DataExchangeInterrupt
   * @{
-  */ 
+  */
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
-extern  __IO uint8_t aRxBuffer[];
+extern __IO uint8_t aRxBuffer[];
 extern __IO uint8_t ubRxIndex;
 extern __IO uint8_t ubTxIndex;
 extern uint8_t aTxBuffer[];
@@ -72,10 +72,9 @@ void NMI_Handler(void)
   */
 void HardFault_Handler(void)
 {
-  /* Go to infinite loop when Hard Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Hard Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -85,10 +84,9 @@ void HardFault_Handler(void)
   */
 void MemManage_Handler(void)
 {
-  /* Go to infinite loop when Memory Manage exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Memory Manage exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -98,10 +96,9 @@ void MemManage_Handler(void)
   */
 void BusFault_Handler(void)
 {
-  /* Go to infinite loop when Bus Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Bus Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -111,10 +108,9 @@ void BusFault_Handler(void)
   */
 void UsageFault_Handler(void)
 {
-  /* Go to infinite loop when Usage Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Usage Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -151,21 +147,18 @@ void PendSV_Handler(void)
   */
 void SysTick_Handler(void)
 {
-  /* Decrement the timeout value */
-  if (TimeOut != 0)
-  {
-    TimeOut--;
-  }
-    
-  if (ubCounter < 10)
-  {
-    ubCounter++;
-  }
-  else
-  {
-    ubCounter = 0;
-    STM_EVAL_LEDToggle(LED1);
-  }
+    /* Decrement the timeout value */
+    if(TimeOut != 0) {
+        TimeOut--;
+    }
+
+    if(ubCounter < 10) {
+        ubCounter++;
+    }
+    else {
+        ubCounter = 0;
+        STM_EVAL_LEDToggle(LED1);
+    }
 }
 
 /******************************************************************************/
@@ -182,43 +175,36 @@ void SysTick_Handler(void)
   */
 void SPIx_IRQHANDLER(void)
 {
-  /* SPI in Receiver mode */
-  if (SPI_I2S_GetITStatus(SPIx, SPI_I2S_IT_RXNE) == SET)
-  {
-    if (ubRxIndex < BUFFERSIZE)
-    {
-      /* Receive Transaction data */
-      aRxBuffer[ubRxIndex++] = SPI_I2S_ReceiveData(SPIx);
+    /* SPI in Receiver mode */
+    if(SPI_I2S_GetITStatus(SPIx, SPI_I2S_IT_RXNE) == SET) {
+        if(ubRxIndex < BUFFERSIZE) {
+            /* Receive Transaction data */
+            aRxBuffer[ubRxIndex++] = SPI_I2S_ReceiveData(SPIx);
+        }
+        else {
+            /* Disable the Rx buffer not empty interrupt */
+            SPI_I2S_ITConfig(SPIx, SPI_I2S_IT_RXNE, DISABLE);
+        }
     }
-    else
-    {
-      /* Disable the Rx buffer not empty interrupt */
-      SPI_I2S_ITConfig(SPIx, SPI_I2S_IT_RXNE, DISABLE);
+    /* SPI in Transmitter mode */
+    if(SPI_I2S_GetITStatus(SPIx, SPI_I2S_IT_TXE) == SET) {
+        if(ubTxIndex < BUFFERSIZE) {
+            /* Send Transaction data */
+            SPI_I2S_SendData(SPIx, aTxBuffer[ubTxIndex++]);
+        }
+        else {
+            /* Disable the Tx buffer empty interrupt */
+            SPI_I2S_ITConfig(SPIx, SPI_I2S_IT_TXE, DISABLE);
+        }
     }
-  }
-  /* SPI in Transmitter mode */
-  if (SPI_I2S_GetITStatus(SPIx, SPI_I2S_IT_TXE) == SET)
-  {
-    if (ubTxIndex < BUFFERSIZE)
-    {
-      /* Send Transaction data */
-      SPI_I2S_SendData(SPIx, aTxBuffer[ubTxIndex++]);
-    }
-    else
-    {
-      /* Disable the Tx buffer empty interrupt */
-      SPI_I2S_ITConfig(SPIx, SPI_I2S_IT_TXE, DISABLE);
-    }
-  }
 }
 
+/**
+  * @}
+  */
 
 /**
   * @}
-  */ 
-
-/**
-  * @}
-  */ 
+  */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

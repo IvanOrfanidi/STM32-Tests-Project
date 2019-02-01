@@ -24,7 +24,7 @@
   *
   ******************************************************************************
   */
-  
+
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __CAMERA_API_H
 #define __CAMERA_API_H
@@ -34,31 +34,29 @@
 #include "main.h"
 
 /* Exported constants --------------------------------------------------------*/
-#define DCMI_DR_ADDRESS       0x50050028
-#define FSMC_LCD_ADDRESS      0x68000002
-#define NOKEY                 0
-#define SEL                   1
-#define UP                    2
-#define DOWN                  3
+#define DCMI_DR_ADDRESS 0x50050028
+#define FSMC_LCD_ADDRESS 0x68000002
+#define NOKEY 0
+#define SEL 1
+#define UP 2
+#define DOWN 3
 
 /* Exported types ------------------------------------------------------------*/
 /* Camera devices enumeration */
-typedef enum   
-{
-  OV9655_CAMERA            =   0x00,	 /* Use OV9655 Camera */
-  OV2640_CAMERA            =   0x01      /* Use OV2640 Camera */
-}Camera_TypeDef;
+typedef enum {
+    OV9655_CAMERA = 0x00, /* Use OV9655 Camera */
+    OV2640_CAMERA = 0x01  /* Use OV2640 Camera */
+} Camera_TypeDef;
 
 /* Image Sizes enumeration */
-typedef enum   
-{
-  BMP_QQVGA             =   0x00,	    /* BMP Image QQVGA 160x120 Size */
-  BMP_QVGA              =   0x01,           /* BMP Image QVGA 320x240 Size */
-  JPEG_160x120          =   0x02,	    /* JPEG Image 160x120 Size */
-  JPEG_176x144          =   0x03,	    /* JPEG Image 176x144 Size */
-  JPEG_320x240          =   0x04,	    /* JPEG Image 320x240 Size */
-  JPEG_352x288          =   0x05	    /* JPEG Image 352x288 Size */
-}ImageFormat_TypeDef;
+typedef enum {
+    BMP_QQVGA = 0x00,    /* BMP Image QQVGA 160x120 Size */
+    BMP_QVGA = 0x01,     /* BMP Image QVGA 320x240 Size */
+    JPEG_160x120 = 0x02, /* JPEG Image 160x120 Size */
+    JPEG_176x144 = 0x03, /* JPEG Image 176x144 Size */
+    JPEG_320x240 = 0x04, /* JPEG Image 320x240 Size */
+    JPEG_352x288 = 0x05  /* JPEG Image 352x288 Size */
+} ImageFormat_TypeDef;
 
 /* Exported macro ------------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */

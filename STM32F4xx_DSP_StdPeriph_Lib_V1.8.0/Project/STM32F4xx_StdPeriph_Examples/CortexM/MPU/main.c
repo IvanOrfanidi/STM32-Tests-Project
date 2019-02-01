@@ -36,7 +36,7 @@
 /** @addtogroup CortexM_MPU
   * @{
   */
-  
+
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
 #define ACCESS_PERMISSION
@@ -44,7 +44,7 @@
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
 /* Private function prototypes -----------------------------------------------*/
-void Delay (uint32_t nCount);
+void Delay(uint32_t nCount);
 
 /* Private functions ---------------------------------------------------------*/
 
@@ -55,35 +55,33 @@ void Delay (uint32_t nCount);
   */
 int main(void)
 {
-  
-  /*!< At this stage the microcontroller clock setting is already configured, 
+    /*!< At this stage the microcontroller clock setting is already configured, 
        this is done through SystemInit() function which is called from startup
        files (startup_stm32f40_41xxx.s/startup_stm32f427_437xx.s/startup_stm32f429_439xx.s)
        before to branch to application main. 
        To reconfigure the default setting of SystemInit() function, refer to
        system_stm32f4xx.c file
-     */  
- 
-  /* Initialize LEDs mounted on EVAL board */
-  STM_EVAL_LEDInit(LED1);
-  STM_EVAL_LEDInit(LED2);
-  
-  /* Set MPU regions */
-  MPU_Config();
+     */
+
+    /* Initialize LEDs mounted on EVAL board */
+    STM_EVAL_LEDInit(LED1);
+    STM_EVAL_LEDInit(LED2);
+
+    /* Set MPU regions */
+    MPU_Config();
 
 #ifdef ACCESS_PERMISSION
-  MPU_AccessPermConfig();
-#endif  
+    MPU_AccessPermConfig();
+#endif
 
-  /* Infinite loop */
-  while (1)
-  {
-    /* Toggle LED1 */
-    STM_EVAL_LEDToggle(LED1); 
+    /* Infinite loop */
+    while(1) {
+        /* Toggle LED1 */
+        STM_EVAL_LEDToggle(LED1);
 
-    /* Insert a delay */
-    Delay(0x7FFFF);
-  }
+        /* Insert a delay */
+        Delay(0x7FFFF);
+    }
 }
 
 /**
@@ -93,14 +91,13 @@ int main(void)
   */
 void Delay(__IO uint32_t nCount)
 {
-  /* Decrement nCount value */
-  while (nCount != 0)
-  {
-    nCount--;
-  }
+    /* Decrement nCount value */
+    while(nCount != 0) {
+        nCount--;
+    }
 }
 
-#ifdef  USE_FULL_ASSERT
+#ifdef USE_FULL_ASSERT
 /**
   * @brief  Reports the name of the source file and the source line number
   *         where the assert_param error has occurred.
@@ -109,14 +106,13 @@ void Delay(__IO uint32_t nCount)
   * @retval None
   */
 void assert_failed(uint8_t* file, uint32_t line)
-{ 
-  /* User can add his own implementation to report the file name and line number,
+{
+    /* User can add his own implementation to report the file name and line number,
      ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
 
-  /* Infinite loop */
-  while (1)
-  {
-  }
+    /* Infinite loop */
+    while(1) {
+    }
 }
 #endif
 

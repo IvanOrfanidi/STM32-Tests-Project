@@ -36,7 +36,7 @@
 
 /** @addtogroup HASH_ContextSwap
   * @{
-  */ 
+  */
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
@@ -70,10 +70,9 @@ void NMI_Handler(void)
   */
 void HardFault_Handler(void)
 {
-  /* Go to infinite loop when Hard Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Hard Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -83,10 +82,9 @@ void HardFault_Handler(void)
   */
 void MemManage_Handler(void)
 {
-  /* Go to infinite loop when Memory Manage exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Memory Manage exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -96,10 +94,9 @@ void MemManage_Handler(void)
   */
 void BusFault_Handler(void)
 {
-  /* Go to infinite loop when Bus Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Bus Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -109,10 +106,9 @@ void BusFault_Handler(void)
   */
 void UsageFault_Handler(void)
 {
-  /* Go to infinite loop when Usage Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Usage Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -174,36 +170,33 @@ void SysTick_Handler(void)
   */
 void TIM6_DAC_IRQHandler(void)
 {
-  if (TIM_GetITStatus(TIM6, TIM_IT_Update) != RESET)
-  {
-
-/*=============================================================================
+    if(TIM_GetITStatus(TIM6, TIM_IT_Update) != RESET) {
+        /*=============================================================================
    Save MD5 Digest Computation context
 ==============================================================================*/
-    HASH_SaveContext(&Md5Context);
-    ContextSwapCounter++;
+        HASH_SaveContext(&Md5Context);
+        ContextSwapCounter++;
 
-/*=============================================================================
+        /*=============================================================================
    SHA1 Digest Computation 
 ==============================================================================*/
-    HASH_SHA1((uint8_t*)Sha1Input, SHA1_INPUT_TAB_SIZE, Sha1output); 
+        HASH_SHA1((uint8_t*)Sha1Input, SHA1_INPUT_TAB_SIZE, Sha1output);
 
-/*=============================================================================
+        /*=============================================================================
    Restore MD5 Digest Computation context
 ==============================================================================*/
-    HASH_RestoreContext(&Md5Context);
+        HASH_RestoreContext(&Md5Context);
 
-    TIM_ClearITPendingBit(TIM6, TIM_IT_Update);
-  }
-
+        TIM_ClearITPendingBit(TIM6, TIM_IT_Update);
+    }
 }
 
 /**
   * @}
-  */ 
-  
+  */
+
 /**
   * @}
-  */ 
+  */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

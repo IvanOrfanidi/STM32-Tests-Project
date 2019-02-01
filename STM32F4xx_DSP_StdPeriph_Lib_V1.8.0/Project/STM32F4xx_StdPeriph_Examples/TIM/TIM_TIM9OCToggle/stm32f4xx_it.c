@@ -36,7 +36,7 @@
 
 /** @addtogroup TIM_TIM9OCToggle
   * @{
-  */ 
+  */
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
@@ -69,9 +69,9 @@ void NMI_Handler(void)
   */
 void HardFault_Handler(void)
 {
-  /* Go to infinite loop when Hard Fault exception occurs */
-  while (1)
-  {}
+    /* Go to infinite loop when Hard Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -81,9 +81,9 @@ void HardFault_Handler(void)
   */
 void MemManage_Handler(void)
 {
-  /* Go to infinite loop when Memory Manage exception occurs */
-  while (1)
-  {}
+    /* Go to infinite loop when Memory Manage exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -93,9 +93,9 @@ void MemManage_Handler(void)
   */
 void BusFault_Handler(void)
 {
-  /* Go to infinite loop when Bus Fault exception occurs */
-  while (1)
-  {}
+    /* Go to infinite loop when Bus Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -105,9 +105,9 @@ void BusFault_Handler(void)
   */
 void UsageFault_Handler(void)
 {
-  /* Go to infinite loop when Usage Fault exception occurs */
-  while (1)
-  {}
+    /* Go to infinite loop when Usage Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -116,7 +116,8 @@ void UsageFault_Handler(void)
   * @retval None
   */
 void DebugMon_Handler(void)
-{}
+{
+}
 
 /**
   * @brief  This function handles SVCall exception.
@@ -124,7 +125,8 @@ void DebugMon_Handler(void)
   * @retval None
   */
 void SVC_Handler(void)
-{}
+{
+}
 
 /**
   * @brief  This function handles PendSV_Handler exception.
@@ -132,7 +134,8 @@ void SVC_Handler(void)
   * @retval None
   */
 void PendSV_Handler(void)
-{}
+{
+}
 
 /**
   * @brief  This function handles SysTick Handler.
@@ -140,7 +143,8 @@ void PendSV_Handler(void)
   * @retval None
   */
 void SysTick_Handler(void)
-{}
+{
+}
 
 /******************************************************************************/
 /*                 STM32F4xx Peripherals Interrupt Handlers                   */
@@ -156,30 +160,27 @@ void SysTick_Handler(void)
   */
 void TIM1_BRK_TIM9_IRQHandler(void)
 {
-  /* TIM9_CH1 toggling with frequency = 183.1 Hz */
-  if (TIM_GetITStatus(TIM9, TIM_IT_CC1) != RESET)
-  {
-    TIM_ClearITPendingBit(TIM9, TIM_IT_CC1);
-    capture = TIM_GetCapture1(TIM9);
-    TIM_SetCompare1(TIM9, capture + CCR1_Val);
-  }
+    /* TIM9_CH1 toggling with frequency = 183.1 Hz */
+    if(TIM_GetITStatus(TIM9, TIM_IT_CC1) != RESET) {
+        TIM_ClearITPendingBit(TIM9, TIM_IT_CC1);
+        capture = TIM_GetCapture1(TIM9);
+        TIM_SetCompare1(TIM9, capture + CCR1_Val);
+    }
 
-  /* TIM9_CH2 toggling with frequency = 366.2 Hz */
-  if (TIM_GetITStatus(TIM9, TIM_IT_CC2) != RESET)
-  {
-    TIM_ClearITPendingBit(TIM9, TIM_IT_CC2);
-    capture = TIM_GetCapture2(TIM9);
-    TIM_SetCompare2(TIM9, capture + CCR2_Val);
-  }
-
+    /* TIM9_CH2 toggling with frequency = 366.2 Hz */
+    if(TIM_GetITStatus(TIM9, TIM_IT_CC2) != RESET) {
+        TIM_ClearITPendingBit(TIM9, TIM_IT_CC2);
+        capture = TIM_GetCapture2(TIM9);
+        TIM_SetCompare2(TIM9, capture + CCR2_Val);
+    }
 }
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}
-  */ 
+  */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

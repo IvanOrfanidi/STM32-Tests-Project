@@ -24,7 +24,7 @@
   *
   ******************************************************************************
   */
-  
+
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __MAIN_H
 #define __MAIN_H
@@ -32,14 +32,13 @@
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f4xx.h"
 
-
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/
 /* SAI PLL parameters to be used for the LTDC clock configuration */
-#define LTDC_PLLSAIN          417
-#define LTDC_PLLSAIP          2
-#define LTDC_PLLSAIQ          4
-#define LTDC_PLLSAIR          5
+#define LTDC_PLLSAIN 417
+#define LTDC_PLLSAIP 2
+#define LTDC_PLLSAIQ 4
+#define LTDC_PLLSAIR 5
 /* Exported macro ------------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */
 void TimingDelay_Decrement(void);

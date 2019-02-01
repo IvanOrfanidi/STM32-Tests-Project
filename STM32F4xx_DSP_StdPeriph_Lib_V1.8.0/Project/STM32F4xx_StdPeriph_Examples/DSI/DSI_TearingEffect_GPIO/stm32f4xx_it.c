@@ -67,10 +67,9 @@ void NMI_Handler(void)
   */
 void HardFault_Handler(void)
 {
-  /* Go to infinite loop when Hard Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Hard Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -80,10 +79,9 @@ void HardFault_Handler(void)
   */
 void MemManage_Handler(void)
 {
-  /* Go to infinite loop when Memory Manage exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Memory Manage exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -93,10 +91,9 @@ void MemManage_Handler(void)
   */
 void BusFault_Handler(void)
 {
-  /* Go to infinite loop when Bus Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Bus Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -106,10 +103,9 @@ void BusFault_Handler(void)
   */
 void UsageFault_Handler(void)
 {
-  /* Go to infinite loop when Usage Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Usage Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -146,7 +142,7 @@ void PendSV_Handler(void)
   */
 void SysTick_Handler(void)
 {
-  TimingDelay_Decrement();
+    TimingDelay_Decrement();
 }
 
 /******************************************************************************/
@@ -171,27 +167,25 @@ void SysTick_Handler(void)
   */
 void DSI_IRQHandler(void)
 {
-  /* Tearing Effect Interrupt management **************************************/
-  if(DSI_GetITStatus(DSI, DSI_IT_TE) != RESET)
-  {
-    /* Clear the Tearing Effect Interrupt Flag */
-    DSI_ClearITPendingBit(DSI, DSI_IT_TE);
-    
-    DSISync = 1;
-    
-    /* Enable the LTDC in DSI Wrapper by software */
-    DSI_Refresh(DSI);
-  }
-  
-  /* End of Refresh Interrupt management **************************************/
-  if(DSI_GetITStatus(DSI, DSI_IT_ER) != RESET)
-  {
-    /* Clear the End of Refresh Interrupt Flag */
-    DSI_ClearITPendingBit(DSI, DSI_IT_ER);
-    
-    /* Set the command tear on to enable tearing effect through DSI link */
-    DSI_ShortWrite(DSI, 0, DSI_DCS_SHORT_PKT_WRITE_P1, 0x35, 0);
-  }
+    /* Tearing Effect Interrupt management **************************************/
+    if(DSI_GetITStatus(DSI, DSI_IT_TE) != RESET) {
+        /* Clear the Tearing Effect Interrupt Flag */
+        DSI_ClearITPendingBit(DSI, DSI_IT_TE);
+
+        DSISync = 1;
+
+        /* Enable the LTDC in DSI Wrapper by software */
+        DSI_Refresh(DSI);
+    }
+
+    /* End of Refresh Interrupt management **************************************/
+    if(DSI_GetITStatus(DSI, DSI_IT_ER) != RESET) {
+        /* Clear the End of Refresh Interrupt Flag */
+        DSI_ClearITPendingBit(DSI, DSI_IT_ER);
+
+        /* Set the command tear on to enable tearing effect through DSI link */
+        DSI_ShortWrite(DSI, 0, DSI_DCS_SHORT_PKT_WRITE_P1, 0x35, 0);
+    }
 }
 
 /**

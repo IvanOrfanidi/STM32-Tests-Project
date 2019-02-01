@@ -24,14 +24,14 @@
   * limitations under the License.
   *
   ******************************************************************************
-  */   
+  */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __STM324X9I_EVAL_SRAM_H
 #define __STM324X9I_EVAL_SRAM_H
 
 #ifdef __cplusplus
- extern "C" {
+extern "C" {
 #endif
 
 /* Includes ------------------------------------------------------------------*/
@@ -43,44 +43,44 @@
 
 /**
   * @brief  FMC SRAM bank address
-  */   
-#define SRAM_BANK_ADDR  ((uint32_t)0x64000000)  
-  
+  */
+#define SRAM_BANK_ADDR ((uint32_t)0x64000000)
+
 /**
   * @brief  FMC SRAM Memory Width
-  */  
+  */
 /* #define SRAM_MEMORY_WIDTH    FMC_NORSRAM_MemoryDataWidth_8b  */
-#define SRAM_MEMORY_WIDTH    FMC_NORSRAM_MemoryDataWidth_16b
+#define SRAM_MEMORY_WIDTH FMC_NORSRAM_MemoryDataWidth_16b
 
 /**
   * @brief  FMC SRAM Burst Access mode
-  */  
-#define SRAM_BURSTACCESS    FMC_BurstAccessMode_Disable  
+  */
+#define SRAM_BURSTACCESS FMC_BurstAccessMode_Disable
 /* #define SRAM_BURSTACCESS    FMC_BurstAccessMode_Enable*/
 
 /**
   * @brief  FMC SRAM Write Burst feature
-  */  
-#define SRAM_WRITEBURST    FMC_WriteBurst_Disable  
+  */
+#define SRAM_WRITEBURST FMC_WriteBurst_Disable
 /* #define SRAM_WRITEBURST   FMC_WriteBurst_Enable */
 
 /**
   * @brief  FMC SRAM Continuous Clock feature
-  */  
-#define CONTINUOUSCLOCK_FEATURE    FMC_CClock_SyncOnly 
+  */
+#define CONTINUOUSCLOCK_FEATURE FMC_CClock_SyncOnly
 /* #define CONTINUOUSCLOCK_FEATURE     FMC_CClock_SyncAsync */
 
 /**
   * @}
-  */ 
+  */
 
 /** @defgroup STM324x9I_EVAL_FMC_SDRAM_Exported_Functions
   * @{
-  */ 
-void  SRAM_Init(void);
-void  SRAM_GPIOConfig(void);
-void  SRAM_WriteBuffer(uint16_t* pBuffer, uint32_t uwWriteAddress, uint32_t uwBufferSize);
-void  SRAM_ReadBuffer(uint16_t* pBuffer, uint32_t uwReadAddress, uint32_t uwBufferSize);
+  */
+void SRAM_Init(void);
+void SRAM_GPIOConfig(void);
+void SRAM_WriteBuffer(uint16_t* pBuffer, uint32_t uwWriteAddress, uint32_t uwBufferSize);
+void SRAM_ReadBuffer(uint16_t* pBuffer, uint32_t uwReadAddress, uint32_t uwBufferSize);
 
 #ifdef __cplusplus
 }
@@ -91,6 +91,5 @@ void  SRAM_ReadBuffer(uint16_t* pBuffer, uint32_t uwReadAddress, uint32_t uwBuff
 /**
   * @}
   */
-
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

@@ -43,7 +43,7 @@
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
 extern uint32_t uwDMA_Transfer_Complete;
-    
+
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
 
@@ -67,10 +67,9 @@ void NMI_Handler(void)
   */
 void HardFault_Handler(void)
 {
-  /* Go to infinite loop when Hard Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Hard Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -80,10 +79,9 @@ void HardFault_Handler(void)
   */
 void MemManage_Handler(void)
 {
-  /* Go to infinite loop when Memory Manage exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Memory Manage exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -93,10 +91,9 @@ void MemManage_Handler(void)
   */
 void BusFault_Handler(void)
 {
-  /* Go to infinite loop when Bus Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Bus Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -106,10 +103,9 @@ void BusFault_Handler(void)
   */
 void UsageFault_Handler(void)
 {
-  /* Go to infinite loop when Usage Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Usage Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -155,18 +151,17 @@ void SysTick_Handler(void)
   */
 void DMA_STREAM_IRQHANDLER(void)
 {
-  /* Test on DMA Stream Transfer Complete interrupt */
-  if(DMA_GetITStatus(DMA_STREAM, DMA_IT_TCIF))
-  {
-    /* Clear DMA Stream Transfer Complete interrupt pending bit */
-    DMA_ClearITPendingBit(DMA_STREAM, DMA_IT_TCIF); 
-   
-    /* Set transfer complete flag */
-    uwDMA_Transfer_Complete = 1;
-    
-    /* Turn on LD3 */
-    STM_EVAL_LEDOn(LED3);  
-  }
+    /* Test on DMA Stream Transfer Complete interrupt */
+    if(DMA_GetITStatus(DMA_STREAM, DMA_IT_TCIF)) {
+        /* Clear DMA Stream Transfer Complete interrupt pending bit */
+        DMA_ClearITPendingBit(DMA_STREAM, DMA_IT_TCIF);
+
+        /* Set transfer complete flag */
+        uwDMA_Transfer_Complete = 1;
+
+        /* Turn on LD3 */
+        STM_EVAL_LEDOn(LED3);
+    }
 }
 
 /******************************************************************************/
@@ -187,11 +182,10 @@ void DMA_STREAM_IRQHANDLER(void)
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}
-  */ 
-
+  */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

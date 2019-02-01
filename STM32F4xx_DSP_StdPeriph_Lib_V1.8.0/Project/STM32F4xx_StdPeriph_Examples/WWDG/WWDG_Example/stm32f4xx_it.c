@@ -37,7 +37,7 @@
 
 /** @addtogroup WWDG_Example
   * @{
-  */ 
+  */
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
@@ -68,10 +68,9 @@ void NMI_Handler(void)
   */
 void HardFault_Handler(void)
 {
-  /* Go to infinite loop when Hard Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Hard Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -81,10 +80,9 @@ void HardFault_Handler(void)
   */
 void MemManage_Handler(void)
 {
-  /* Go to infinite loop when Memory Manage exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Memory Manage exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -94,10 +92,9 @@ void MemManage_Handler(void)
   */
 void BusFault_Handler(void)
 {
-  /* Go to infinite loop when Bus Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Bus Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -107,10 +104,9 @@ void BusFault_Handler(void)
   */
 void UsageFault_Handler(void)
 {
-  /* Go to infinite loop when Usage Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Usage Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -147,7 +143,7 @@ void PendSV_Handler(void)
   */
 void SysTick_Handler(void)
 {
-  uwTimingDelay--;
+    uwTimingDelay--;
 }
 
 /******************************************************************************/
@@ -173,25 +169,23 @@ void SysTick_Handler(void)
   */
 void EXTI15_10_IRQHandler(void)
 {
-  if (EXTI_GetITStatus(BUTTON_EXTI_LINE) != RESET)
-  {  
-    /* Clear the Key Button EXTI Line Pending Bit */
-    EXTI_ClearITPendingBit(BUTTON_EXTI_LINE);
-    
-    /* As the following address is invalid (not mapped), a Hardfault exception
+    if(EXTI_GetITStatus(BUTTON_EXTI_LINE) != RESET) {
+        /* Clear the Key Button EXTI Line Pending Bit */
+        EXTI_ClearITPendingBit(BUTTON_EXTI_LINE);
+
+        /* As the following address is invalid (not mapped), a Hardfault exception
 	  will be generated with an infinite loop and when the WWDG counter falls to 63
     the WWDG reset occurs */
- 	  *(__IO uint32_t *) 0xA0001000 = 0xFF;
-  }
+        *(__IO uint32_t*)0xA0001000 = 0xFF;
+    }
 }
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}
-  */ 
-
+  */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

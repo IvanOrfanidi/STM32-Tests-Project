@@ -34,15 +34,15 @@
 
 /** @addtogroup TIM_ExtTriggerSynchro
   * @{
-  */ 
+  */
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
-TIM_TimeBaseInitTypeDef  TIM_TimeBaseStructure;
-TIM_ICInitTypeDef  TIM_ICInitStructure;
-TIM_OCInitTypeDef  TIM_OCInitStructure;
+TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure;
+TIM_ICInitTypeDef TIM_ICInitStructure;
+TIM_OCInitTypeDef TIM_OCInitStructure;
 
 /* Private function prototypes -----------------------------------------------*/
 static void TIM_Config(void);
@@ -56,18 +56,18 @@ static void TIM_Config(void);
   */
 int main(void)
 {
-  /*!< At this stage the microcontroller clock setting is already configured, 
+    /*!< At this stage the microcontroller clock setting is already configured, 
        this is done through SystemInit() function which is called from startup
        files (startup_stm32f40_41xxx.s/startup_stm32f427_437xx.s/startup_stm32f429_439xx.s)
        before to branch to application main. 
        To reconfigure the default setting of SystemInit() function, refer to
        system_stm32f4xx.c file
-     */    
-       
-  /* TIM Configuration */
-  TIM_Config();
+     */
 
-  /* Timers synchronisation in cascade mode with an external trigger -----
+    /* TIM Configuration */
+    TIM_Config();
+
+    /* Timers synchronisation in cascade mode with an external trigger -----
     1/TIM1 is configured as Master Timer:
        - Toggle Mode is used
        - The TIM1 Enable event is used as Trigger Output 
@@ -121,80 +121,79 @@ int main(void)
      based on this variable will be incorrect.  
   -------------------------------------------------------------------- */
 
-  /* Time base configuration for TIM1, TIM3 & TIM4 */
-  TIM_TimeBaseStructure.TIM_Period = 73;
-  TIM_TimeBaseStructure.TIM_Prescaler = 5;
-  TIM_TimeBaseStructure.TIM_ClockDivision = 0;
-  TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
+    /* Time base configuration for TIM1, TIM3 & TIM4 */
+    TIM_TimeBaseStructure.TIM_Period = 73;
+    TIM_TimeBaseStructure.TIM_Prescaler = 5;
+    TIM_TimeBaseStructure.TIM_ClockDivision = 0;
+    TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
 
-  TIM_TimeBaseInit(TIM1, &TIM_TimeBaseStructure);
+    TIM_TimeBaseInit(TIM1, &TIM_TimeBaseStructure);
 
-  TIM_TimeBaseStructure.TIM_Period = 36;
-  TIM_TimeBaseInit(TIM3, &TIM_TimeBaseStructure);
+    TIM_TimeBaseStructure.TIM_Period = 36;
+    TIM_TimeBaseInit(TIM3, &TIM_TimeBaseStructure);
 
-  TIM_TimeBaseStructure.TIM_Period = 36;
-  TIM_TimeBaseInit(TIM4, &TIM_TimeBaseStructure);
+    TIM_TimeBaseStructure.TIM_Period = 36;
+    TIM_TimeBaseInit(TIM4, &TIM_TimeBaseStructure);
 
-  /* Master Configuration in Toggle Mode */
-  TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_Toggle;
-  TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
-  TIM_OCInitStructure.TIM_Pulse = 64;
-  TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_High;
+    /* Master Configuration in Toggle Mode */
+    TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_Toggle;
+    TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
+    TIM_OCInitStructure.TIM_Pulse = 64;
+    TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_High;
 
-  TIM_OC1Init(TIM1, &TIM_OCInitStructure);
+    TIM_OC1Init(TIM1, &TIM_OCInitStructure);
 
-  /* TIM1 Input Capture Configuration */
-  TIM_ICInitStructure.TIM_Channel = TIM_Channel_2;
-  TIM_ICInitStructure.TIM_ICPolarity = TIM_ICPolarity_Rising;
-  TIM_ICInitStructure.TIM_ICSelection = TIM_ICSelection_DirectTI;
-  TIM_ICInitStructure.TIM_ICPrescaler = TIM_ICPSC_DIV1;
-  TIM_ICInitStructure.TIM_ICFilter = 0;
+    /* TIM1 Input Capture Configuration */
+    TIM_ICInitStructure.TIM_Channel = TIM_Channel_2;
+    TIM_ICInitStructure.TIM_ICPolarity = TIM_ICPolarity_Rising;
+    TIM_ICInitStructure.TIM_ICSelection = TIM_ICSelection_DirectTI;
+    TIM_ICInitStructure.TIM_ICPrescaler = TIM_ICPSC_DIV1;
+    TIM_ICInitStructure.TIM_ICFilter = 0;
 
-  TIM_ICInit(TIM1, &TIM_ICInitStructure);
+    TIM_ICInit(TIM1, &TIM_ICInitStructure);
 
-  /* TIM1 Input trigger configuration: External Trigger connected to TI2 */
-  TIM_SelectInputTrigger(TIM1, TIM_TS_TI2FP2);
-  TIM_SelectSlaveMode(TIM1, TIM_SlaveMode_Gated);
+    /* TIM1 Input trigger configuration: External Trigger connected to TI2 */
+    TIM_SelectInputTrigger(TIM1, TIM_TS_TI2FP2);
+    TIM_SelectSlaveMode(TIM1, TIM_SlaveMode_Gated);
 
-  /* Select the Master Slave Mode */
-  TIM_SelectMasterSlaveMode(TIM1, TIM_MasterSlaveMode_Enable);
+    /* Select the Master Slave Mode */
+    TIM_SelectMasterSlaveMode(TIM1, TIM_MasterSlaveMode_Enable);
 
-  /* Master Mode selection: TIM1 */
-  TIM_SelectOutputTrigger(TIM1, TIM_TRGOSource_Enable);
+    /* Master Mode selection: TIM1 */
+    TIM_SelectOutputTrigger(TIM1, TIM_TRGOSource_Enable);
 
-  /* Slaves Configuration: Toggle Mode */
-  TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_Toggle;
-  TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
-  TIM_OCInitStructure.TIM_Pulse = 10;
-  TIM_OC1Init(TIM3, &TIM_OCInitStructure);
+    /* Slaves Configuration: Toggle Mode */
+    TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_Toggle;
+    TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
+    TIM_OCInitStructure.TIM_Pulse = 10;
+    TIM_OC1Init(TIM3, &TIM_OCInitStructure);
 
-  TIM_OC1Init(TIM4, &TIM_OCInitStructure);
+    TIM_OC1Init(TIM4, &TIM_OCInitStructure);
 
-  /* Slave Mode selection: TIM3 */
-  TIM_SelectInputTrigger(TIM3, TIM_TS_ITR0);
-  TIM_SelectSlaveMode(TIM3, TIM_SlaveMode_Gated);
+    /* Slave Mode selection: TIM3 */
+    TIM_SelectInputTrigger(TIM3, TIM_TS_ITR0);
+    TIM_SelectSlaveMode(TIM3, TIM_SlaveMode_Gated);
 
-  /* Select the Master Slave Mode */
-  TIM_SelectMasterSlaveMode(TIM3, TIM_MasterSlaveMode_Enable);
+    /* Select the Master Slave Mode */
+    TIM_SelectMasterSlaveMode(TIM3, TIM_MasterSlaveMode_Enable);
 
-  /* Master Mode selection: TIM3 */
-  TIM_SelectOutputTrigger(TIM3, TIM_TRGOSource_Enable);
+    /* Master Mode selection: TIM3 */
+    TIM_SelectOutputTrigger(TIM3, TIM_TRGOSource_Enable);
 
-  /* Slave Mode selection: TIM4 */
-  TIM_SelectInputTrigger(TIM4, TIM_TS_ITR2);
-  TIM_SelectSlaveMode(TIM4, TIM_SlaveMode_Gated);
-  
-  /* TIM1 Main Output Enable */
-  TIM_CtrlPWMOutputs(TIM1, ENABLE);
+    /* Slave Mode selection: TIM4 */
+    TIM_SelectInputTrigger(TIM4, TIM_TS_ITR2);
+    TIM_SelectSlaveMode(TIM4, TIM_SlaveMode_Gated);
 
-  /* TIM enable counter */
-  TIM_Cmd(TIM1, ENABLE);
-  TIM_Cmd(TIM3, ENABLE);
-  TIM_Cmd(TIM4, ENABLE);
+    /* TIM1 Main Output Enable */
+    TIM_CtrlPWMOutputs(TIM1, ENABLE);
 
-  while (1)
-  {
-  }
+    /* TIM enable counter */
+    TIM_Cmd(TIM1, ENABLE);
+    TIM_Cmd(TIM3, ENABLE);
+    TIM_Cmd(TIM4, ENABLE);
+
+    while(1) {
+    }
 }
 
 /**
@@ -204,51 +203,49 @@ int main(void)
   */
 static void TIM_Config(void)
 {
-  GPIO_InitTypeDef GPIO_InitStructure;
+    GPIO_InitTypeDef GPIO_InitStructure;
 
-  /* TIM3 and TIM4 clock enable */
-  RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM3 | RCC_APB1Periph_TIM4, ENABLE);
+    /* TIM3 and TIM4 clock enable */
+    RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM3 | RCC_APB1Periph_TIM4, ENABLE);
 
-  /* TIM1 clock enable */
-  RCC_APB2PeriphClockCmd(RCC_APB2Periph_TIM1, ENABLE);
-                           
-  /* GPIOA and GPIOB clocks enable */
-  RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA | RCC_AHB1Periph_GPIOB | RCC_AHB1Periph_GPIOC | RCC_AHB1Periph_GPIOE, ENABLE);
+    /* TIM1 clock enable */
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_TIM1, ENABLE);
 
-  /* GPIOA Configuration: PA.08(TIM1 CH1) as alternate function push-pull */
-  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_8;
-  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
-  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;
-  GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-  GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
-  GPIO_Init(GPIOA, &GPIO_InitStructure);
-  
-  /* GPIOE Configuration: PE.11(TIM1 CH2) */
-  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_11;
-  GPIO_Init(GPIOE, &GPIO_InitStructure);
+    /* GPIOA and GPIOB clocks enable */
+    RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA | RCC_AHB1Periph_GPIOB | RCC_AHB1Periph_GPIOC | RCC_AHB1Periph_GPIOE, ENABLE);
 
-  /* Connect TIM pins to AF1 */
-  GPIO_PinAFConfig(GPIOA, GPIO_PinSource8, GPIO_AF_TIM1);
-  GPIO_PinAFConfig(GPIOE, GPIO_PinSource11, GPIO_AF_TIM1);  
-  
-  /* GPIOB Configuration: PB.06(TIM4 CH1) as alternate function push-pull */
-  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6;
-  GPIO_Init(GPIOB, &GPIO_InitStructure);
-  
-  /* Connect TIM pins to AF2 */  
-  GPIO_PinAFConfig(GPIOB, GPIO_PinSource6, GPIO_AF_TIM4);
-  
-  /* GPIOC Configuration: PC.06(TIM3 CH1) as alternate function push-pull */
-  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6;
-  GPIO_Init(GPIOC, &GPIO_InitStructure);
-  
-  /* Connect TIM pins to AF2 */  
-  GPIO_PinAFConfig(GPIOC, GPIO_PinSource6, GPIO_AF_TIM3); 
-  
-  
+    /* GPIOA Configuration: PA.08(TIM1 CH1) as alternate function push-pull */
+    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_8;
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;
+    GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+    GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
+    GPIO_Init(GPIOA, &GPIO_InitStructure);
+
+    /* GPIOE Configuration: PE.11(TIM1 CH2) */
+    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_11;
+    GPIO_Init(GPIOE, &GPIO_InitStructure);
+
+    /* Connect TIM pins to AF1 */
+    GPIO_PinAFConfig(GPIOA, GPIO_PinSource8, GPIO_AF_TIM1);
+    GPIO_PinAFConfig(GPIOE, GPIO_PinSource11, GPIO_AF_TIM1);
+
+    /* GPIOB Configuration: PB.06(TIM4 CH1) as alternate function push-pull */
+    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6;
+    GPIO_Init(GPIOB, &GPIO_InitStructure);
+
+    /* Connect TIM pins to AF2 */
+    GPIO_PinAFConfig(GPIOB, GPIO_PinSource6, GPIO_AF_TIM4);
+
+    /* GPIOC Configuration: PC.06(TIM3 CH1) as alternate function push-pull */
+    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6;
+    GPIO_Init(GPIOC, &GPIO_InitStructure);
+
+    /* Connect TIM pins to AF2 */
+    GPIO_PinAFConfig(GPIOC, GPIO_PinSource6, GPIO_AF_TIM3);
 }
 
-#ifdef  USE_FULL_ASSERT
+#ifdef USE_FULL_ASSERT
 
 /**
   * @brief  Reports the name of the source file and the source line number
@@ -259,22 +256,21 @@ static void TIM_Config(void)
   */
 void assert_failed(uint8_t* file, uint32_t line)
 {
-  /* User can add his own implementation to report the file name and line number,
+    /* User can add his own implementation to report the file name and line number,
      ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
 
-  while (1)
-  {
-  }
+    while(1) {
+    }
 }
 
 #endif
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}
-  */ 
+  */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

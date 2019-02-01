@@ -56,12 +56,12 @@ static void LCD_Config(void);
   */
 int main(void)
 {
-  /*!< At this stage the microcontroller clock setting is already configured, 
+    /*!< At this stage the microcontroller clock setting is already configured, 
        this is done through SystemInit() function which is called from startup
        files (startup_stm32f429_439xx.s) before to branch to application main.
-     */     
-       
-  /* Example description.
+     */
+
+    /* Example description.
      ------------------------------------------
   This example provides a description of how to configure DMA2D periph in 
   Memory_to_Memory with pixel format conversion transfer mode and display the 
@@ -70,28 +70,26 @@ int main(void)
   the pixel format conversion and the transferred data after pixel format conversion
   In this example the pixel format conversion is done from ARGB8888 to ARGB4444 
   and you can see on LCD the difference between the two images
-   */  
-  
-  /* DMA2D configuration */
-  DMA2D_Config();
-  
-  /* Start Transfer */
-  DMA2D_StartTransfer(); 
-  
-  /* Wait for CTC Flag activation */
-  while(DMA2D_GetFlagStatus(DMA2D_FLAG_TC) == RESET)
-  {
-  }  
+   */
 
-  /* Configure LCD */
-  LCD_Config();
-  
-  /* LCD Display */
-  LCD_DisplayOn();
+    /* DMA2D configuration */
+    DMA2D_Config();
 
-  while (1)
-  {
-  }
+    /* Start Transfer */
+    DMA2D_StartTransfer();
+
+    /* Wait for CTC Flag activation */
+    while(DMA2D_GetFlagStatus(DMA2D_FLAG_TC) == RESET) {
+    }
+
+    /* Configure LCD */
+    LCD_Config();
+
+    /* LCD Display */
+    LCD_DisplayOn();
+
+    while(1) {
+    }
 }
 
 /**
@@ -109,43 +107,43 @@ int main(void)
 
 static void DMA2D_Config(void)
 {
-  DMA2D_InitTypeDef      DMA2D_InitStruct;
-  DMA2D_FG_InitTypeDef   DMA2D_FG_InitStruct;
+    DMA2D_InitTypeDef DMA2D_InitStruct;
+    DMA2D_FG_InitTypeDef DMA2D_FG_InitStruct;
 
-  /* Enable the DMA2D Clock */
-  RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_DMA2D, ENABLE);
-  
-  /* Transfer mode => Memory to memory with pixel format conversion*/
-  DMA2D_InitStruct.DMA2D_Mode = DMA2D_M2M_PFC; 
-  /* Output color mode */
-  DMA2D_InitStruct.DMA2D_CMode = DMA2D_ARGB4444; 
-  /* Output Address at SRAM memory */
-  DMA2D_InitStruct.DMA2D_OutputMemoryAdd = (uint32_t)&aBufferResult;
-  /* Initialize the alpha and RGB values */
-  DMA2D_InitStruct.DMA2D_OutputGreen = 0;
-  DMA2D_InitStruct.DMA2D_OutputBlue = 0;
-  DMA2D_InitStruct.DMA2D_OutputRed = 0;
-  DMA2D_InitStruct.DMA2D_OutputAlpha = 0;
-  /* Initialize the output offset */
-  DMA2D_InitStruct.DMA2D_OutputOffset = 0;
-  /* Number of lines : height */
-  DMA2D_InitStruct.DMA2D_NumberOfLine = 120; 
-  /* Number of pixel per line : width */
-  DMA2D_InitStruct.DMA2D_PixelPerLine = 300;
-  
-  /* Initialize DMA2D */
-  DMA2D_Init(&DMA2D_InitStruct);
+    /* Enable the DMA2D Clock */
+    RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_DMA2D, ENABLE);
 
-  /* Configure default values for foreground */
-  DMA2D_FG_StructInit(&DMA2D_FG_InitStruct);
-  
-  /* Input Address at flash memory */
-  DMA2D_FG_InitStruct.DMA2D_FGMA = (uint32_t)&ARGB8888_300x120;
-  /* Input color mode */
-  DMA2D_FG_InitStruct.DMA2D_FGCM = CM_ARGB8888;
-  
-  /* Initialize foreground */
-  DMA2D_FGConfig(&DMA2D_FG_InitStruct);
+    /* Transfer mode => Memory to memory with pixel format conversion*/
+    DMA2D_InitStruct.DMA2D_Mode = DMA2D_M2M_PFC;
+    /* Output color mode */
+    DMA2D_InitStruct.DMA2D_CMode = DMA2D_ARGB4444;
+    /* Output Address at SRAM memory */
+    DMA2D_InitStruct.DMA2D_OutputMemoryAdd = (uint32_t)&aBufferResult;
+    /* Initialize the alpha and RGB values */
+    DMA2D_InitStruct.DMA2D_OutputGreen = 0;
+    DMA2D_InitStruct.DMA2D_OutputBlue = 0;
+    DMA2D_InitStruct.DMA2D_OutputRed = 0;
+    DMA2D_InitStruct.DMA2D_OutputAlpha = 0;
+    /* Initialize the output offset */
+    DMA2D_InitStruct.DMA2D_OutputOffset = 0;
+    /* Number of lines : height */
+    DMA2D_InitStruct.DMA2D_NumberOfLine = 120;
+    /* Number of pixel per line : width */
+    DMA2D_InitStruct.DMA2D_PixelPerLine = 300;
+
+    /* Initialize DMA2D */
+    DMA2D_Init(&DMA2D_InitStruct);
+
+    /* Configure default values for foreground */
+    DMA2D_FG_StructInit(&DMA2D_FG_InitStruct);
+
+    /* Input Address at flash memory */
+    DMA2D_FG_InitStruct.DMA2D_FGMA = (uint32_t)&ARGB8888_300x120;
+    /* Input color mode */
+    DMA2D_FG_InitStruct.DMA2D_FGCM = CM_ARGB8888;
+
+    /* Initialize foreground */
+    DMA2D_FGConfig(&DMA2D_FG_InitStruct);
 }
 
 /**
@@ -167,38 +165,38 @@ static void DMA2D_Config(void)
 
 static void LCD_Config(void)
 {
-  /* Initialize the LCD */
-  LCD_Init();
-  
-  /* Initialize the LCD Layers */
-  LCD_LayerInit();
-  
-  /* Set the Foreground as active Layer */
-  LCD_SetLayer(LCD_FOREGROUND_LAYER);
+    /* Initialize the LCD */
+    LCD_Init();
 
-  /* Configure the window size and position */
-  LCD_SetDisplayWindow(90, 137, 120, 300);
-  
-  /* Configure the LCD frame Buffer Address */
-  LCD_SetAddress((uint32_t)&aBufferResult);
+    /* Initialize the LCD Layers */
+    LCD_LayerInit();
 
-  /* Configure the LCD Pixel Format */
-  LCD_SetPixelFormat(LTDC_Pixelformat_ARGB4444);  
-  
-  /* Set the Background as active Layer */
-  LCD_SetLayer(LCD_BACKGROUND_LAYER); 
-  
-  /* Configure the window size and position */
-  LCD_SetDisplayWindow(90, 15, 120, 300);
-  
-  /* Configure the LCD frame Buffer Address */
-  LCD_SetAddress((uint32_t)&ARGB8888_300x120); 
-  
-  /* Configure the LCD Pixel Format */
-  LCD_SetPixelFormat(LTDC_Pixelformat_ARGB8888);
-}    
+    /* Set the Foreground as active Layer */
+    LCD_SetLayer(LCD_FOREGROUND_LAYER);
 
-#ifdef  USE_FULL_ASSERT
+    /* Configure the window size and position */
+    LCD_SetDisplayWindow(90, 137, 120, 300);
+
+    /* Configure the LCD frame Buffer Address */
+    LCD_SetAddress((uint32_t)&aBufferResult);
+
+    /* Configure the LCD Pixel Format */
+    LCD_SetPixelFormat(LTDC_Pixelformat_ARGB4444);
+
+    /* Set the Background as active Layer */
+    LCD_SetLayer(LCD_BACKGROUND_LAYER);
+
+    /* Configure the window size and position */
+    LCD_SetDisplayWindow(90, 15, 120, 300);
+
+    /* Configure the LCD frame Buffer Address */
+    LCD_SetAddress((uint32_t)&ARGB8888_300x120);
+
+    /* Configure the LCD Pixel Format */
+    LCD_SetPixelFormat(LTDC_Pixelformat_ARGB8888);
+}
+
+#ifdef USE_FULL_ASSERT
 
 /**
   * @brief  Reports the name of the source file and the source line number
@@ -208,14 +206,13 @@ static void LCD_Config(void)
   * @retval None
   */
 void assert_failed(uint8_t* file, uint32_t line)
-{ 
-  /* User can add his own implementation to report the file name and line number,
+{
+    /* User can add his own implementation to report the file name and line number,
      ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
 
-  /* Infinite loop */
-  while (1)
-  {
-  }
+    /* Infinite loop */
+    while(1) {
+    }
 }
 #endif
 
@@ -226,6 +223,5 @@ void assert_failed(uint8_t* file, uint32_t line)
 /**
   * @}
   */
-
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

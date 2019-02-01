@@ -24,7 +24,7 @@
   *
   ******************************************************************************
   */
-  
+
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __MAIN_H
 #define __MAIN_H
@@ -32,18 +32,18 @@
 /* Includes ------------------------------------------------------------------*/
 #include "camera_api.h"
 
-#if defined (USE_STM324xG_EVAL)
-  #include "stm324xg_eval.h"
-  #include "stm324xg_eval_lcd.h"
-  #include "stm324xg_eval_ioe.h"
+#if defined(USE_STM324xG_EVAL)
+#include "stm324xg_eval.h"
+#include "stm324xg_eval_lcd.h"
+#include "stm324xg_eval_ioe.h"
 
-#elif defined (USE_STM324x7I_EVAL) 
-  #include "stm324x7i_eval.h"
-  #include "stm324x7i_eval_lcd.h"
-  #include "stm324x7i_eval_ioe.h"
+#elif defined(USE_STM324x7I_EVAL)
+#include "stm324x7i_eval.h"
+#include "stm324x7i_eval_lcd.h"
+#include "stm324x7i_eval_ioe.h"
 
 #else
- #error "Please select first the Evaluation board used in your application (in Project Options)"
+#error "Please select first the Evaluation board used in your application (in Project Options)"
 #endif
 
 /* Exported types ------------------------------------------------------------*/

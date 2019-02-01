@@ -58,51 +58,49 @@ __IO uint32_t uwCounter = 0;
   */
 int main(void)
 {
-  /*!< At this stage the microcontroller clock setting is already configured, 
+    /*!< At this stage the microcontroller clock setting is already configured, 
        this is done through SystemInit() function which is called from startup
        files (startup_stm32f40_41xxx.s/startup_stm32f427_437xx.s/startup_stm32f429_439xx.s)
        before to branch to application main. 
        To reconfigure the default setting of SystemInit() function, refer to
        system_stm32f4xx.c file
-     */     
-       
-  /* Initialize LED1 on EVAL board */
-  STM_EVAL_LEDInit(LED1);
+     */
 
-  /* Initialize Key Button mounted on EVAL board */
-  STM_EVAL_PBInit(BUTTON_KEY, BUTTON_MODE_GPIO);
+    /* Initialize LED1 on EVAL board */
+    STM_EVAL_LEDInit(LED1);
 
-  /* Test if Key push-button on EVAL Board is pressed */
-  if (STM_EVAL_PBGetState(BUTTON_KEY) == 0x00)
-  {
-    /* Get BOR Option Bytes */
-    if((FLASH_OB_GetBOR() & 0x0C) != BOR_LEVEL) 
-    {
-      /* Unlocks the option bytes block access */
-      FLASH_OB_Unlock();
+    /* Initialize Key Button mounted on EVAL board */
+    STM_EVAL_PBInit(BUTTON_KEY, BUTTON_MODE_GPIO);
 
-      /* Select the desired V(BOR) Level */
-      FLASH_OB_BORConfig(BOR_LEVEL); 
+    /* Test if Key push-button on EVAL Board is pressed */
+    if(STM_EVAL_PBGetState(BUTTON_KEY) == 0x00) {
+        /* Get BOR Option Bytes */
+        if((FLASH_OB_GetBOR() & 0x0C) != BOR_LEVEL) {
+            /* Unlocks the option bytes block access */
+            FLASH_OB_Unlock();
 
-      /* Launch the option byte loading */
-      FLASH_OB_Launch();
+            /* Select the desired V(BOR) Level */
+            FLASH_OB_BORConfig(BOR_LEVEL);
 
-      /* Locks the option bytes block access */
-      FLASH_OB_Lock();
+            /* Launch the option byte loading */
+            FLASH_OB_Launch();
+
+            /* Locks the option bytes block access */
+            FLASH_OB_Lock();
+        }
     }
-  } 
-   
-  while (1)
-  {
-    /* Toggle LED1 */
-    STM_EVAL_LEDToggle(LED1);
 
-    /* Inserted Delay */
-    for(uwCounter = 0; uwCounter < 0x5FFFF; uwCounter++);
-  }
+    while(1) {
+        /* Toggle LED1 */
+        STM_EVAL_LEDToggle(LED1);
+
+        /* Inserted Delay */
+        for(uwCounter = 0; uwCounter < 0x5FFFF; uwCounter++)
+            ;
+    }
 }
 
-#ifdef  USE_FULL_ASSERT
+#ifdef USE_FULL_ASSERT
 
 /**
   * @brief  Reports the name of the source file and the source line number
@@ -112,23 +110,22 @@ int main(void)
   * @retval None
   */
 void assert_failed(uint8_t* file, uint32_t line)
-{ 
-  /* User can add his own implementation to report the file name and line number,
+{
+    /* User can add his own implementation to report the file name and line number,
      ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
 
-  /* Infinite loop */
-  while (1)
-  {
-  }
+    /* Infinite loop */
+    while(1) {
+    }
 }
 #endif
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}
-  */ 
+  */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

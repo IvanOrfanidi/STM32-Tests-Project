@@ -37,7 +37,7 @@
 
 /** @addtogroup TIM_OCInactive
   * @{
-  */ 
+  */
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
@@ -66,9 +66,9 @@ void NMI_Handler(void)
   */
 void HardFault_Handler(void)
 {
-  /* Go to infinite loop when Hard Fault exception occurs */
-  while (1)
-  {}
+    /* Go to infinite loop when Hard Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -78,9 +78,9 @@ void HardFault_Handler(void)
   */
 void MemManage_Handler(void)
 {
-  /* Go to infinite loop when Memory Manage exception occurs */
-  while (1)
-  {}
+    /* Go to infinite loop when Memory Manage exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -90,9 +90,9 @@ void MemManage_Handler(void)
   */
 void BusFault_Handler(void)
 {
-  /* Go to infinite loop when Bus Fault exception occurs */
-  while (1)
-  {}
+    /* Go to infinite loop when Bus Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -102,9 +102,9 @@ void BusFault_Handler(void)
   */
 void UsageFault_Handler(void)
 {
-  /* Go to infinite loop when Usage Fault exception occurs */
-  while (1)
-  {}
+    /* Go to infinite loop when Usage Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -113,7 +113,8 @@ void UsageFault_Handler(void)
   * @retval None
   */
 void DebugMon_Handler(void)
-{}
+{
+}
 
 /**
   * @brief  This function handles SVCall exception.
@@ -121,7 +122,8 @@ void DebugMon_Handler(void)
   * @retval None
   */
 void SVC_Handler(void)
-{}
+{
+}
 
 /**
   * @brief  This function handles PendSV_Handler exception.
@@ -129,7 +131,8 @@ void SVC_Handler(void)
   * @retval None
   */
 void PendSV_Handler(void)
-{}
+{
+}
 
 /**
   * @brief  This function handles SysTick Handler.
@@ -137,7 +140,8 @@ void PendSV_Handler(void)
   * @retval None
   */
 void SysTick_Handler(void)
-{}
+{
+}
 
 /******************************************************************************/
 /*            STM32F4xx Peripherals Interrupt Handlers                        */
@@ -150,38 +154,34 @@ void SysTick_Handler(void)
   */
 void TIM2_IRQHandler(void)
 {
-  if (TIM_GetITStatus(TIM2, TIM_IT_CC1) != RESET)
-  {
-    /* Clear TIM2 Capture Compare1 interrupt pending bit*/
-    TIM_ClearITPendingBit(TIM2, TIM_IT_CC1);
+    if(TIM_GetITStatus(TIM2, TIM_IT_CC1) != RESET) {
+        /* Clear TIM2 Capture Compare1 interrupt pending bit*/
+        TIM_ClearITPendingBit(TIM2, TIM_IT_CC1);
 
-    /* LED1 turn-off after 500 ms */
-    STM_EVAL_LEDOff(LED1);
-  }
-  else if (TIM_GetITStatus(TIM2, TIM_IT_CC2) != RESET)
-  {
-    /* Clear TIM2 Capture Compare2 interrupt pending bit*/
-    TIM_ClearITPendingBit(TIM2, TIM_IT_CC2);
+        /* LED1 turn-off after 500 ms */
+        STM_EVAL_LEDOff(LED1);
+    }
+    else if(TIM_GetITStatus(TIM2, TIM_IT_CC2) != RESET) {
+        /* Clear TIM2 Capture Compare2 interrupt pending bit*/
+        TIM_ClearITPendingBit(TIM2, TIM_IT_CC2);
 
-    /* LED2 turn-off after 250 ms */
-    STM_EVAL_LEDOff(LED2);
-  }
-  else if (TIM_GetITStatus(TIM2, TIM_IT_CC3) != RESET)
-  {
-    /* Clear TIM2 Capture Compare3 interrupt pending bit*/
-    TIM_ClearITPendingBit(TIM2, TIM_IT_CC3);
+        /* LED2 turn-off after 250 ms */
+        STM_EVAL_LEDOff(LED2);
+    }
+    else if(TIM_GetITStatus(TIM2, TIM_IT_CC3) != RESET) {
+        /* Clear TIM2 Capture Compare3 interrupt pending bit*/
+        TIM_ClearITPendingBit(TIM2, TIM_IT_CC3);
 
-    /* LED3 turn-off after 125 ms */
-    STM_EVAL_LEDOff(LED3);
-  }
-  else
-  {
-    /* Clear TIM2 Capture Compare4 interrupt pending bit*/
-    TIM_ClearITPendingBit(TIM2, TIM_IT_CC4);
+        /* LED3 turn-off after 125 ms */
+        STM_EVAL_LEDOff(LED3);
+    }
+    else {
+        /* Clear TIM2 Capture Compare4 interrupt pending bit*/
+        TIM_ClearITPendingBit(TIM2, TIM_IT_CC4);
 
-    /* LED4 turn-off after 62.5 ms */
-    STM_EVAL_LEDOff(LED4);
-  }
+        /* LED4 turn-off after 62.5 ms */
+        STM_EVAL_LEDOff(LED4);
+    }
 }
 
 /******************************************************************************/
@@ -202,10 +202,10 @@ void TIM2_IRQHandler(void)
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}
-  */ 
+  */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

@@ -83,42 +83,39 @@
  */
 
 arm_status arm_mat_inverse_f32(
-  const arm_matrix_instance_f32 * pSrc,
-  arm_matrix_instance_f32 * pDst)
+    const arm_matrix_instance_f32* pSrc,
+    arm_matrix_instance_f32* pDst)
 {
-  float32_t *pIn = pSrc->pData;                  /* input data matrix pointer */
-  float32_t *pOut = pDst->pData;                 /* output data matrix pointer */
-  float32_t *pInT1, *pInT2;                      /* Temporary input data matrix pointer */
-  float32_t *pOutT1, *pOutT2;                    /* Temporary output data matrix pointer */
-  float32_t *pPivotRowIn, *pPRT_in, *pPivotRowDst, *pPRT_pDst;  /* Temporary input and output data matrix pointer */
-  uint32_t numRows = pSrc->numRows;              /* Number of rows in the matrix  */
-  uint32_t numCols = pSrc->numCols;              /* Number of Cols in the matrix  */
+    float32_t* pIn = pSrc->pData;                                /* input data matrix pointer */
+    float32_t* pOut = pDst->pData;                               /* output data matrix pointer */
+    float32_t *pInT1, *pInT2;                                    /* Temporary input data matrix pointer */
+    float32_t *pOutT1, *pOutT2;                                  /* Temporary output data matrix pointer */
+    float32_t *pPivotRowIn, *pPRT_in, *pPivotRowDst, *pPRT_pDst; /* Temporary input and output data matrix pointer */
+    uint32_t numRows = pSrc->numRows;                            /* Number of rows in the matrix  */
+    uint32_t numCols = pSrc->numCols;                            /* Number of Cols in the matrix  */
 
 #ifndef ARM_MATH_CM0_FAMILY
-  float32_t maxC;                                /* maximum value in the column */
+    float32_t maxC; /* maximum value in the column */
 
-  /* Run the below code for Cortex-M4 and Cortex-M3 */
+    /* Run the below code for Cortex-M4 and Cortex-M3 */
 
-  float32_t Xchg, in = 0.0f, in1;                /* Temporary input values  */
-  uint32_t i, rowCnt, flag = 0u, j, loopCnt, k, l;      /* loop counters */
-  arm_status status;                             /* status of matrix inverse */
+    float32_t Xchg, in = 0.0f, in1;                  /* Temporary input values  */
+    uint32_t i, rowCnt, flag = 0u, j, loopCnt, k, l; /* loop counters */
+    arm_status status;                               /* status of matrix inverse */
 
 #ifdef ARM_MATH_MATRIX_CHECK
 
-
-  /* Check for matrix mismatch condition */
-  if((pSrc->numRows != pSrc->numCols) || (pDst->numRows != pDst->numCols)
-     || (pSrc->numRows != pDst->numRows))
-  {
-    /* Set status as ARM_MATH_SIZE_MISMATCH */
-    status = ARM_MATH_SIZE_MISMATCH;
-  }
-  else
+    /* Check for matrix mismatch condition */
+    if((pSrc->numRows != pSrc->numCols) || (pDst->numRows != pDst->numCols) || (pSrc->numRows != pDst->numRows)) {
+        /* Set status as ARM_MATH_SIZE_MISMATCH */
+        status = ARM_MATH_SIZE_MISMATCH;
+    }
+    else
 #endif /*    #ifdef ARM_MATH_MATRIX_CHECK    */
 
-  {
+    {
 
-    /*--------------------------------------------------------------------------------------------------------------    
+        /*--------------------------------------------------------------------------------------------------------------    
 	 * Matrix Inverse can be solved using elementary row operations.    
 	 *    
 	 *	Gauss-Jordan Method:    
@@ -154,298 +151,275 @@ arm_status arm_mat_inverse_f32(
 	 *		   Therefore, the matrix to the right of the bar is our solution(pDst matrix, pDst).    
 	 *----------------------------------------------------------------------------------------------------------------*/
 
-    /* Working pointer for destination matrix */
-    pOutT1 = pOut;
+        /* Working pointer for destination matrix */
+        pOutT1 = pOut;
 
-    /* Loop over the number of rows */
-    rowCnt = numRows;
+        /* Loop over the number of rows */
+        rowCnt = numRows;
 
-    /* Making the destination matrix as identity matrix */
-    while(rowCnt > 0u)
-    {
-      /* Writing all zeroes in lower triangle of the destination matrix */
-      j = numRows - rowCnt;
-      while(j > 0u)
-      {
-        *pOutT1++ = 0.0f;
-        j--;
-      }
+        /* Making the destination matrix as identity matrix */
+        while(rowCnt > 0u) {
+            /* Writing all zeroes in lower triangle of the destination matrix */
+            j = numRows - rowCnt;
+            while(j > 0u) {
+                *pOutT1++ = 0.0f;
+                j--;
+            }
 
-      /* Writing all ones in the diagonal of the destination matrix */
-      *pOutT1++ = 1.0f;
+            /* Writing all ones in the diagonal of the destination matrix */
+            *pOutT1++ = 1.0f;
 
-      /* Writing all zeroes in upper triangle of the destination matrix */
-      j = rowCnt - 1u;
-      while(j > 0u)
-      {
-        *pOutT1++ = 0.0f;
-        j--;
-      }
+            /* Writing all zeroes in upper triangle of the destination matrix */
+            j = rowCnt - 1u;
+            while(j > 0u) {
+                *pOutT1++ = 0.0f;
+                j--;
+            }
 
-      /* Decrement the loop counter */
-      rowCnt--;
-    }
+            /* Decrement the loop counter */
+            rowCnt--;
+        }
 
-    /* Loop over the number of columns of the input matrix.    
+        /* Loop over the number of columns of the input matrix.    
        All the elements in each column are processed by the row operations */
-    loopCnt = numCols;
+        loopCnt = numCols;
 
-    /* Index modifier to navigate through the columns */
-    l = 0u;
+        /* Index modifier to navigate through the columns */
+        l = 0u;
 
-    while(loopCnt > 0u)
-    {
-      /* Check if the pivot element is zero..    
+        while(loopCnt > 0u) {
+            /* Check if the pivot element is zero..    
        * If it is zero then interchange the row with non zero row below.    
        * If there is no non zero element to replace in the rows below,    
        * then the matrix is Singular. */
 
-      /* Working pointer for the input matrix that points    
+            /* Working pointer for the input matrix that points    
        * to the pivot element of the particular row  */
-      pInT1 = pIn + (l * numCols);
+            pInT1 = pIn + (l * numCols);
 
-      /* Working pointer for the destination matrix that points    
+            /* Working pointer for the destination matrix that points    
        * to the pivot element of the particular row  */
-      pOutT1 = pOut + (l * numCols);
+            pOutT1 = pOut + (l * numCols);
 
-      /* Temporary variable to hold the pivot value */
-      in = *pInT1;
+            /* Temporary variable to hold the pivot value */
+            in = *pInT1;
 
-      /* Grab the most significant value from column l */
-      maxC = 0;
-      for (i = l; i < numRows; i++)
-      {
-        maxC = *pInT1 > 0 ? (*pInT1 > maxC ? *pInT1 : maxC) : (-*pInT1 > maxC ? -*pInT1 : maxC);
-        pInT1 += numCols;
-      }
+            /* Grab the most significant value from column l */
+            maxC = 0;
+            for(i = l; i < numRows; i++) {
+                maxC = *pInT1 > 0 ? (*pInT1 > maxC ? *pInT1 : maxC) : (-*pInT1 > maxC ? -*pInT1 : maxC);
+                pInT1 += numCols;
+            }
 
-      /* Update the status if the matrix is singular */
-      if(maxC == 0.0f)
-      {
-        return ARM_MATH_SINGULAR;
-      }
+            /* Update the status if the matrix is singular */
+            if(maxC == 0.0f) {
+                return ARM_MATH_SINGULAR;
+            }
 
-      /* Restore pInT1  */
-      pInT1 = pIn;
+            /* Restore pInT1  */
+            pInT1 = pIn;
 
-      /* Destination pointer modifier */
-      k = 1u;
-      
-      /* Check if the pivot element is the most significant of the column */
-      if( (in > 0.0f ? in : -in) != maxC)
-      {
-        /* Loop over the number rows present below */
-        i = numRows - (l + 1u);
+            /* Destination pointer modifier */
+            k = 1u;
 
-        while(i > 0u)
-        {
-          /* Update the input and destination pointers */
-          pInT2 = pInT1 + (numCols * l);
-          pOutT2 = pOutT1 + (numCols * k);
+            /* Check if the pivot element is the most significant of the column */
+            if((in > 0.0f ? in : -in) != maxC) {
+                /* Loop over the number rows present below */
+                i = numRows - (l + 1u);
 
-          /* Look for the most significant element to    
+                while(i > 0u) {
+                    /* Update the input and destination pointers */
+                    pInT2 = pInT1 + (numCols * l);
+                    pOutT2 = pOutT1 + (numCols * k);
+
+                    /* Look for the most significant element to    
            * replace in the rows below */
-          if((*pInT2 > 0.0f ? *pInT2: -*pInT2) == maxC)
-          {
-            /* Loop over number of columns    
+                    if((*pInT2 > 0.0f ? *pInT2 : -*pInT2) == maxC) {
+                        /* Loop over number of columns    
              * to the right of the pilot element */
-            j = numCols - l;
+                        j = numCols - l;
 
-            while(j > 0u)
-            {
-              /* Exchange the row elements of the input matrix */
-              Xchg = *pInT2;
-              *pInT2++ = *pInT1;
-              *pInT1++ = Xchg;
+                        while(j > 0u) {
+                            /* Exchange the row elements of the input matrix */
+                            Xchg = *pInT2;
+                            *pInT2++ = *pInT1;
+                            *pInT1++ = Xchg;
 
-              /* Decrement the loop counter */
-              j--;
+                            /* Decrement the loop counter */
+                            j--;
+                        }
+
+                        /* Loop over number of columns of the destination matrix */
+                        j = numCols;
+
+                        while(j > 0u) {
+                            /* Exchange the row elements of the destination matrix */
+                            Xchg = *pOutT2;
+                            *pOutT2++ = *pOutT1;
+                            *pOutT1++ = Xchg;
+
+                            /* Decrement the loop counter */
+                            j--;
+                        }
+
+                        /* Flag to indicate whether exchange is done or not */
+                        flag = 1u;
+
+                        /* Break after exchange is done */
+                        break;
+                    }
+
+                    /* Update the destination pointer modifier */
+                    k++;
+
+                    /* Decrement the loop counter */
+                    i--;
+                }
+            }
+
+            /* Update the status if the matrix is singular */
+            if((flag != 1u) && (in == 0.0f)) {
+                return ARM_MATH_SINGULAR;
+            }
+
+            /* Points to the pivot row of input and destination matrices */
+            pPivotRowIn = pIn + (l * numCols);
+            pPivotRowDst = pOut + (l * numCols);
+
+            /* Temporary pointers to the pivot row pointers */
+            pInT1 = pPivotRowIn;
+            pInT2 = pPivotRowDst;
+
+            /* Pivot element of the row */
+            in = *pPivotRowIn;
+
+            /* Loop over number of columns    
+       * to the right of the pilot element */
+            j = (numCols - l);
+
+            while(j > 0u) {
+                /* Divide each element of the row of the input matrix    
+         * by the pivot element */
+                in1 = *pInT1;
+                *pInT1++ = in1 / in;
+
+                /* Decrement the loop counter */
+                j--;
             }
 
             /* Loop over number of columns of the destination matrix */
             j = numCols;
 
-            while(j > 0u)
-            {
-              /* Exchange the row elements of the destination matrix */
-              Xchg = *pOutT2;
-              *pOutT2++ = *pOutT1;
-              *pOutT1++ = Xchg;
+            while(j > 0u) {
+                /* Divide each element of the row of the destination matrix    
+         * by the pivot element */
+                in1 = *pInT2;
+                *pInT2++ = in1 / in;
 
-              /* Decrement the loop counter */
-              j--;
+                /* Decrement the loop counter */
+                j--;
             }
 
-            /* Flag to indicate whether exchange is done or not */
-            flag = 1u;
-
-            /* Break after exchange is done */
-            break;
-          }
-
-          /* Update the destination pointer modifier */
-          k++;
-
-          /* Decrement the loop counter */
-          i--;
-        }
-      }
-
-      /* Update the status if the matrix is singular */
-      if((flag != 1u) && (in == 0.0f))
-      {
-        return ARM_MATH_SINGULAR;
-      }
-
-      /* Points to the pivot row of input and destination matrices */
-      pPivotRowIn = pIn + (l * numCols);
-      pPivotRowDst = pOut + (l * numCols);
-
-      /* Temporary pointers to the pivot row pointers */
-      pInT1 = pPivotRowIn;
-      pInT2 = pPivotRowDst;
-
-      /* Pivot element of the row */
-      in = *pPivotRowIn;
-
-      /* Loop over number of columns    
-       * to the right of the pilot element */
-      j = (numCols - l);
-
-      while(j > 0u)
-      {
-        /* Divide each element of the row of the input matrix    
-         * by the pivot element */
-        in1 = *pInT1;
-        *pInT1++ = in1 / in;
-
-        /* Decrement the loop counter */
-        j--;
-      }
-
-      /* Loop over number of columns of the destination matrix */
-      j = numCols;
-
-      while(j > 0u)
-      {
-        /* Divide each element of the row of the destination matrix    
-         * by the pivot element */
-        in1 = *pInT2;
-        *pInT2++ = in1 / in;
-
-        /* Decrement the loop counter */
-        j--;
-      }
-
-      /* Replace the rows with the sum of that row and a multiple of row i    
+            /* Replace the rows with the sum of that row and a multiple of row i    
        * so that each new element in column i above row i is zero.*/
 
-      /* Temporary pointers for input and destination matrices */
-      pInT1 = pIn;
-      pInT2 = pOut;
+            /* Temporary pointers for input and destination matrices */
+            pInT1 = pIn;
+            pInT2 = pOut;
 
-      /* index used to check for pivot element */
-      i = 0u;
+            /* index used to check for pivot element */
+            i = 0u;
 
-      /* Loop over number of rows */
-      /*  to be replaced by the sum of that row and a multiple of row i */
-      k = numRows;
+            /* Loop over number of rows */
+            /*  to be replaced by the sum of that row and a multiple of row i */
+            k = numRows;
 
-      while(k > 0u)
-      {
-        /* Check for the pivot element */
-        if(i == l)
-        {
-          /* If the processing element is the pivot element,    
+            while(k > 0u) {
+                /* Check for the pivot element */
+                if(i == l) {
+                    /* If the processing element is the pivot element,    
              only the columns to the right are to be processed */
-          pInT1 += numCols - l;
+                    pInT1 += numCols - l;
 
-          pInT2 += numCols;
-        }
-        else
-        {
-          /* Element of the reference row */
-          in = *pInT1;
+                    pInT2 += numCols;
+                }
+                else {
+                    /* Element of the reference row */
+                    in = *pInT1;
 
-          /* Working pointers for input and destination pivot rows */
-          pPRT_in = pPivotRowIn;
-          pPRT_pDst = pPivotRowDst;
+                    /* Working pointers for input and destination pivot rows */
+                    pPRT_in = pPivotRowIn;
+                    pPRT_pDst = pPivotRowDst;
 
-          /* Loop over the number of columns to the right of the pivot element,    
+                    /* Loop over the number of columns to the right of the pivot element,    
              to replace the elements in the input matrix */
-          j = (numCols - l);
+                    j = (numCols - l);
 
-          while(j > 0u)
-          {
-            /* Replace the element by the sum of that row    
+                    while(j > 0u) {
+                        /* Replace the element by the sum of that row    
                and a multiple of the reference row  */
-            in1 = *pInT1;
-            *pInT1++ = in1 - (in * *pPRT_in++);
+                        in1 = *pInT1;
+                        *pInT1++ = in1 - (in * *pPRT_in++);
 
-            /* Decrement the loop counter */
-            j--;
-          }
+                        /* Decrement the loop counter */
+                        j--;
+                    }
 
-          /* Loop over the number of columns to    
+                    /* Loop over the number of columns to    
              replace the elements in the destination matrix */
-          j = numCols;
+                    j = numCols;
 
-          while(j > 0u)
-          {
-            /* Replace the element by the sum of that row    
+                    while(j > 0u) {
+                        /* Replace the element by the sum of that row    
                and a multiple of the reference row  */
-            in1 = *pInT2;
-            *pInT2++ = in1 - (in * *pPRT_pDst++);
+                        in1 = *pInT2;
+                        *pInT2++ = in1 - (in * *pPRT_pDst++);
+
+                        /* Decrement the loop counter */
+                        j--;
+                    }
+                }
+
+                /* Increment the temporary input pointer */
+                pInT1 = pInT1 + l;
+
+                /* Decrement the loop counter */
+                k--;
+
+                /* Increment the pivot index */
+                i++;
+            }
+
+            /* Increment the input pointer */
+            pIn++;
 
             /* Decrement the loop counter */
-            j--;
-          }
+            loopCnt--;
 
+            /* Increment the index modifier */
+            l++;
         }
-
-        /* Increment the temporary input pointer */
-        pInT1 = pInT1 + l;
-
-        /* Decrement the loop counter */
-        k--;
-
-        /* Increment the pivot index */
-        i++;
-      }
-
-      /* Increment the input pointer */
-      pIn++;
-
-      /* Decrement the loop counter */
-      loopCnt--;
-
-      /* Increment the index modifier */
-      l++;
-    }
-
 
 #else
 
-  /* Run the below code for Cortex-M0 */
+    /* Run the below code for Cortex-M0 */
 
-  float32_t Xchg, in = 0.0f;                     /* Temporary input values  */
-  uint32_t i, rowCnt, flag = 0u, j, loopCnt, k, l;      /* loop counters */
-  arm_status status;                             /* status of matrix inverse */
+    float32_t Xchg, in = 0.0f;                       /* Temporary input values  */
+    uint32_t i, rowCnt, flag = 0u, j, loopCnt, k, l; /* loop counters */
+    arm_status status;                               /* status of matrix inverse */
 
 #ifdef ARM_MATH_MATRIX_CHECK
 
-  /* Check for matrix mismatch condition */
-  if((pSrc->numRows != pSrc->numCols) || (pDst->numRows != pDst->numCols)
-     || (pSrc->numRows != pDst->numRows))
-  {
-    /* Set status as ARM_MATH_SIZE_MISMATCH */
-    status = ARM_MATH_SIZE_MISMATCH;
-  }
-  else
+    /* Check for matrix mismatch condition */
+    if((pSrc->numRows != pSrc->numCols) || (pDst->numRows != pDst->numCols) || (pSrc->numRows != pDst->numRows)) {
+        /* Set status as ARM_MATH_SIZE_MISMATCH */
+        status = ARM_MATH_SIZE_MISMATCH;
+    }
+    else
 #endif /*      #ifdef ARM_MATH_MATRIX_CHECK    */
-  {
+    {
 
-    /*--------------------------------------------------------------------------------------------------------------       
+        /*--------------------------------------------------------------------------------------------------------------       
 	 * Matrix Inverse can be solved using elementary row operations.        
 	 *        
 	 *	Gauss-Jordan Method:       
@@ -480,222 +454,201 @@ arm_status arm_mat_inverse_f32(
 	 *		   Therefore, the matrix to the right of the bar is our solution(dst matrix, dst).         
 	 *----------------------------------------------------------------------------------------------------------------*/
 
-    /* Working pointer for destination matrix */
-    pOutT1 = pOut;
+        /* Working pointer for destination matrix */
+        pOutT1 = pOut;
 
-    /* Loop over the number of rows */
-    rowCnt = numRows;
+        /* Loop over the number of rows */
+        rowCnt = numRows;
 
-    /* Making the destination matrix as identity matrix */
-    while(rowCnt > 0u)
-    {
-      /* Writing all zeroes in lower triangle of the destination matrix */
-      j = numRows - rowCnt;
-      while(j > 0u)
-      {
-        *pOutT1++ = 0.0f;
-        j--;
-      }
+        /* Making the destination matrix as identity matrix */
+        while(rowCnt > 0u) {
+            /* Writing all zeroes in lower triangle of the destination matrix */
+            j = numRows - rowCnt;
+            while(j > 0u) {
+                *pOutT1++ = 0.0f;
+                j--;
+            }
 
-      /* Writing all ones in the diagonal of the destination matrix */
-      *pOutT1++ = 1.0f;
+            /* Writing all ones in the diagonal of the destination matrix */
+            *pOutT1++ = 1.0f;
 
-      /* Writing all zeroes in upper triangle of the destination matrix */
-      j = rowCnt - 1u;
-      while(j > 0u)
-      {
-        *pOutT1++ = 0.0f;
-        j--;
-      }
+            /* Writing all zeroes in upper triangle of the destination matrix */
+            j = rowCnt - 1u;
+            while(j > 0u) {
+                *pOutT1++ = 0.0f;
+                j--;
+            }
 
-      /* Decrement the loop counter */
-      rowCnt--;
-    }
+            /* Decrement the loop counter */
+            rowCnt--;
+        }
 
-    /* Loop over the number of columns of the input matrix.     
+        /* Loop over the number of columns of the input matrix.     
        All the elements in each column are processed by the row operations */
-    loopCnt = numCols;
+        loopCnt = numCols;
 
-    /* Index modifier to navigate through the columns */
-    l = 0u;
-    //for(loopCnt = 0u; loopCnt < numCols; loopCnt++)   
-    while(loopCnt > 0u)
-    {
-      /* Check if the pivot element is zero..    
+        /* Index modifier to navigate through the columns */
+        l = 0u;
+        //for(loopCnt = 0u; loopCnt < numCols; loopCnt++)
+        while(loopCnt > 0u) {
+            /* Check if the pivot element is zero..    
        * If it is zero then interchange the row with non zero row below.   
        * If there is no non zero element to replace in the rows below,   
        * then the matrix is Singular. */
 
-      /* Working pointer for the input matrix that points     
+            /* Working pointer for the input matrix that points     
        * to the pivot element of the particular row  */
-      pInT1 = pIn + (l * numCols);
+            pInT1 = pIn + (l * numCols);
 
-      /* Working pointer for the destination matrix that points     
+            /* Working pointer for the destination matrix that points     
        * to the pivot element of the particular row  */
-      pOutT1 = pOut + (l * numCols);
+            pOutT1 = pOut + (l * numCols);
 
-      /* Temporary variable to hold the pivot value */
-      in = *pInT1;
+            /* Temporary variable to hold the pivot value */
+            in = *pInT1;
 
-      /* Destination pointer modifier */
-      k = 1u;
+            /* Destination pointer modifier */
+            k = 1u;
 
-      /* Check if the pivot element is zero */
-      if(*pInT1 == 0.0f)
-      {
-        /* Loop over the number rows present below */
-        for (i = (l + 1u); i < numRows; i++)
-        {
-          /* Update the input and destination pointers */
-          pInT2 = pInT1 + (numCols * l);
-          pOutT2 = pOutT1 + (numCols * k);
+            /* Check if the pivot element is zero */
+            if(*pInT1 == 0.0f) {
+                /* Loop over the number rows present below */
+                for(i = (l + 1u); i < numRows; i++) {
+                    /* Update the input and destination pointers */
+                    pInT2 = pInT1 + (numCols * l);
+                    pOutT2 = pOutT1 + (numCols * k);
 
-          /* Check if there is a non zero pivot element to     
+                    /* Check if there is a non zero pivot element to     
            * replace in the rows below */
-          if(*pInT2 != 0.0f)
-          {
-            /* Loop over number of columns     
+                    if(*pInT2 != 0.0f) {
+                        /* Loop over number of columns     
              * to the right of the pilot element */
-            for (j = 0u; j < (numCols - l); j++)
-            {
-              /* Exchange the row elements of the input matrix */
-              Xchg = *pInT2;
-              *pInT2++ = *pInT1;
-              *pInT1++ = Xchg;
+                        for(j = 0u; j < (numCols - l); j++) {
+                            /* Exchange the row elements of the input matrix */
+                            Xchg = *pInT2;
+                            *pInT2++ = *pInT1;
+                            *pInT1++ = Xchg;
+                        }
+
+                        for(j = 0u; j < numCols; j++) {
+                            Xchg = *pOutT2;
+                            *pOutT2++ = *pOutT1;
+                            *pOutT1++ = Xchg;
+                        }
+
+                        /* Flag to indicate whether exchange is done or not */
+                        flag = 1u;
+
+                        /* Break after exchange is done */
+                        break;
+                    }
+
+                    /* Update the destination pointer modifier */
+                    k++;
+                }
             }
 
-            for (j = 0u; j < numCols; j++)
-            {
-              Xchg = *pOutT2;
-              *pOutT2++ = *pOutT1;
-              *pOutT1++ = Xchg;
+            /* Update the status if the matrix is singular */
+            if((flag != 1u) && (in == 0.0f)) {
+                return ARM_MATH_SINGULAR;
             }
 
-            /* Flag to indicate whether exchange is done or not */
-            flag = 1u;
+            /* Points to the pivot row of input and destination matrices */
+            pPivotRowIn = pIn + (l * numCols);
+            pPivotRowDst = pOut + (l * numCols);
 
-            /* Break after exchange is done */
-            break;
-          }
+            /* Temporary pointers to the pivot row pointers */
+            pInT1 = pPivotRowIn;
+            pOutT1 = pPivotRowDst;
 
-          /* Update the destination pointer modifier */
-          k++;
-        }
-      }
+            /* Pivot element of the row */
+            in = *(pIn + (l * numCols));
 
-      /* Update the status if the matrix is singular */
-      if((flag != 1u) && (in == 0.0f))
-      {
-        return ARM_MATH_SINGULAR;
-      }
-
-      /* Points to the pivot row of input and destination matrices */
-      pPivotRowIn = pIn + (l * numCols);
-      pPivotRowDst = pOut + (l * numCols);
-
-      /* Temporary pointers to the pivot row pointers */
-      pInT1 = pPivotRowIn;
-      pOutT1 = pPivotRowDst;
-
-      /* Pivot element of the row */
-      in = *(pIn + (l * numCols));
-
-      /* Loop over number of columns     
+            /* Loop over number of columns     
        * to the right of the pilot element */
-      for (j = 0u; j < (numCols - l); j++)
-      {
-        /* Divide each element of the row of the input matrix     
+            for(j = 0u; j < (numCols - l); j++) {
+                /* Divide each element of the row of the input matrix     
          * by the pivot element */
-        *pInT1 = *pInT1 / in;
-        pInT1++;
-      }
-      for (j = 0u; j < numCols; j++)
-      {
-        /* Divide each element of the row of the destination matrix     
+                *pInT1 = *pInT1 / in;
+                pInT1++;
+            }
+            for(j = 0u; j < numCols; j++) {
+                /* Divide each element of the row of the destination matrix     
          * by the pivot element */
-        *pOutT1 = *pOutT1 / in;
-        pOutT1++;
-      }
+                *pOutT1 = *pOutT1 / in;
+                pOutT1++;
+            }
 
-      /* Replace the rows with the sum of that row and a multiple of row i     
+            /* Replace the rows with the sum of that row and a multiple of row i     
        * so that each new element in column i above row i is zero.*/
 
-      /* Temporary pointers for input and destination matrices */
-      pInT1 = pIn;
-      pOutT1 = pOut;
+            /* Temporary pointers for input and destination matrices */
+            pInT1 = pIn;
+            pOutT1 = pOut;
 
-      for (i = 0u; i < numRows; i++)
-      {
-        /* Check for the pivot element */
-        if(i == l)
-        {
-          /* If the processing element is the pivot element,     
+            for(i = 0u; i < numRows; i++) {
+                /* Check for the pivot element */
+                if(i == l) {
+                    /* If the processing element is the pivot element,     
              only the columns to the right are to be processed */
-          pInT1 += numCols - l;
-          pOutT1 += numCols;
-        }
-        else
-        {
-          /* Element of the reference row */
-          in = *pInT1;
+                    pInT1 += numCols - l;
+                    pOutT1 += numCols;
+                }
+                else {
+                    /* Element of the reference row */
+                    in = *pInT1;
 
-          /* Working pointers for input and destination pivot rows */
-          pPRT_in = pPivotRowIn;
-          pPRT_pDst = pPivotRowDst;
+                    /* Working pointers for input and destination pivot rows */
+                    pPRT_in = pPivotRowIn;
+                    pPRT_pDst = pPivotRowDst;
 
-          /* Loop over the number of columns to the right of the pivot element,     
+                    /* Loop over the number of columns to the right of the pivot element,     
              to replace the elements in the input matrix */
-          for (j = 0u; j < (numCols - l); j++)
-          {
-            /* Replace the element by the sum of that row     
+                    for(j = 0u; j < (numCols - l); j++) {
+                        /* Replace the element by the sum of that row     
                and a multiple of the reference row  */
-            *pInT1 = *pInT1 - (in * *pPRT_in++);
-            pInT1++;
-          }
-          /* Loop over the number of columns to     
+                        *pInT1 = *pInT1 - (in * *pPRT_in++);
+                        pInT1++;
+                    }
+                    /* Loop over the number of columns to     
              replace the elements in the destination matrix */
-          for (j = 0u; j < numCols; j++)
-          {
-            /* Replace the element by the sum of that row     
+                    for(j = 0u; j < numCols; j++) {
+                        /* Replace the element by the sum of that row     
                and a multiple of the reference row  */
-            *pOutT1 = *pOutT1 - (in * *pPRT_pDst++);
-            pOutT1++;
-          }
+                        *pOutT1 = *pOutT1 - (in * *pPRT_pDst++);
+                        pOutT1++;
+                    }
+                }
+                /* Increment the temporary input pointer */
+                pInT1 = pInT1 + l;
+            }
+            /* Increment the input pointer */
+            pIn++;
 
+            /* Decrement the loop counter */
+            loopCnt--;
+            /* Increment the index modifier */
+            l++;
         }
-        /* Increment the temporary input pointer */
-        pInT1 = pInT1 + l;
-      }
-      /* Increment the input pointer */
-      pIn++;
-
-      /* Decrement the loop counter */
-      loopCnt--;
-      /* Increment the index modifier */
-      l++;
-    }
-
 
 #endif /* #ifndef ARM_MATH_CM0_FAMILY */
 
-    /* Set status as ARM_MATH_SUCCESS */
-    status = ARM_MATH_SUCCESS;
+        /* Set status as ARM_MATH_SUCCESS */
+        status = ARM_MATH_SUCCESS;
 
-    if((flag != 1u) && (in == 0.0f))
-    {
-      pIn = pSrc->pData;
-      for (i = 0; i < numRows * numCols; i++)
-      {
-        if (pIn[i] != 0.0f)
-            break;
-      }
-      
-      if (i == numRows * numCols)
-        status = ARM_MATH_SINGULAR;
+        if((flag != 1u) && (in == 0.0f)) {
+            pIn = pSrc->pData;
+            for(i = 0; i < numRows * numCols; i++) {
+                if(pIn[i] != 0.0f)
+                    break;
+            }
+
+            if(i == numRows * numCols)
+                status = ARM_MATH_SINGULAR;
+        }
     }
-  }
-  /* Return to application */
-  return (status);
+    /* Return to application */
+    return (status);
 }
 
 /**    

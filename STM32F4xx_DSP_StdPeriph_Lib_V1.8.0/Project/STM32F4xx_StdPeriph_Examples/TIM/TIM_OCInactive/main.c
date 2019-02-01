@@ -34,14 +34,14 @@
 
 /** @addtogroup TIM_OCInactive
   * @{
-  */ 
+  */
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
-TIM_TimeBaseInitTypeDef  TIM_TimeBaseStructure;
-TIM_OCInitTypeDef  TIM_OCInitStructure;
+TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure;
+TIM_OCInitTypeDef TIM_OCInitStructure;
 
 uint16_t uhCCR1_Val = 1000;
 uint16_t uhCCR2_Val = 500;
@@ -61,7 +61,7 @@ static void TIM_Config(void);
   */
 int main(void)
 {
-  /*!< At this stage the microcontroller clock setting is already configured, 
+    /*!< At this stage the microcontroller clock setting is already configured, 
        this is done through SystemInit() function which is called from startup
        files (startup_stm32f40_41xxx.s/startup_stm32f427_437xx.s/startup_stm32f429_439xx.s)
        before to branch to application main. 
@@ -69,10 +69,10 @@ int main(void)
        system_stm32f4xx.c file
      */
 
-  /* TIM Configuration */
-  TIM_Config();
-  
-  /* ---------------------------------------------------------------
+    /* TIM Configuration */
+    TIM_Config();
+
+    /* ---------------------------------------------------------------
     TIM2 Configuration: Output Compare Inactive Mode:
     In this example TIM2 input clock (TIM2CLK) is set to 2 * APB1 clock (PCLK1), 
     since APB1 prescaler is different from 1.   
@@ -97,68 +97,67 @@ int main(void)
      based on this variable will be incorrect. 
      
   --------------------------------------------------------------- */
-  /* Compute the prescaler value */
-  uhPrescalerValue = (uint16_t) ((SystemCoreClock / 2) / 2000) - 1;
+    /* Compute the prescaler value */
+    uhPrescalerValue = (uint16_t)((SystemCoreClock / 2) / 2000) - 1;
 
-  /* Time base configuration */
-  TIM_TimeBaseStructure.TIM_Period = 65535;
-  TIM_TimeBaseStructure.TIM_Prescaler = uhPrescalerValue;
-  TIM_TimeBaseStructure.TIM_ClockDivision = 0;
-  TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
+    /* Time base configuration */
+    TIM_TimeBaseStructure.TIM_Period = 65535;
+    TIM_TimeBaseStructure.TIM_Prescaler = uhPrescalerValue;
+    TIM_TimeBaseStructure.TIM_ClockDivision = 0;
+    TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
 
-  TIM_TimeBaseInit(TIM2, &TIM_TimeBaseStructure);
+    TIM_TimeBaseInit(TIM2, &TIM_TimeBaseStructure);
 
-  /* Output Compare Active Mode configuration: Channel1 */
-  TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_Inactive;
-  TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
-  TIM_OCInitStructure.TIM_Pulse = uhCCR1_Val;
-  TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_High;
+    /* Output Compare Active Mode configuration: Channel1 */
+    TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_Inactive;
+    TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
+    TIM_OCInitStructure.TIM_Pulse = uhCCR1_Val;
+    TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_High;
 
-  TIM_OC1Init(TIM2, &TIM_OCInitStructure);
+    TIM_OC1Init(TIM2, &TIM_OCInitStructure);
 
-  TIM_OC1PreloadConfig(TIM2, TIM_OCPreload_Disable);
+    TIM_OC1PreloadConfig(TIM2, TIM_OCPreload_Disable);
 
-  /* Output Compare Active Mode configuration: Channel2 */
-  TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
-  TIM_OCInitStructure.TIM_Pulse = uhCCR2_Val;
+    /* Output Compare Active Mode configuration: Channel2 */
+    TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
+    TIM_OCInitStructure.TIM_Pulse = uhCCR2_Val;
 
-  TIM_OC2Init(TIM2, &TIM_OCInitStructure);
+    TIM_OC2Init(TIM2, &TIM_OCInitStructure);
 
-  TIM_OC2PreloadConfig(TIM2, TIM_OCPreload_Disable);
+    TIM_OC2PreloadConfig(TIM2, TIM_OCPreload_Disable);
 
-  /* Output Compare Active Mode configuration: Channel3 */
-  TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
-  TIM_OCInitStructure.TIM_Pulse = uhCCR3_Val;
+    /* Output Compare Active Mode configuration: Channel3 */
+    TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
+    TIM_OCInitStructure.TIM_Pulse = uhCCR3_Val;
 
-  TIM_OC3Init(TIM2, &TIM_OCInitStructure);
+    TIM_OC3Init(TIM2, &TIM_OCInitStructure);
 
-  TIM_OC3PreloadConfig(TIM2, TIM_OCPreload_Disable);
+    TIM_OC3PreloadConfig(TIM2, TIM_OCPreload_Disable);
 
-  /* Output Compare Active Mode configuration: Channel4 */
-  TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
-  TIM_OCInitStructure.TIM_Pulse = uhCCR4_Val;
+    /* Output Compare Active Mode configuration: Channel4 */
+    TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
+    TIM_OCInitStructure.TIM_Pulse = uhCCR4_Val;
 
-  TIM_OC4Init(TIM2, &TIM_OCInitStructure);
+    TIM_OC4Init(TIM2, &TIM_OCInitStructure);
 
-  TIM_OC4PreloadConfig(TIM2, TIM_OCPreload_Disable);
+    TIM_OC4PreloadConfig(TIM2, TIM_OCPreload_Disable);
 
-  TIM_ARRPreloadConfig(TIM2, ENABLE);
-  
-  /* Turn on LED1, LED2, LED3 and LED4 */
-  STM_EVAL_LEDOn(LED1);
-  STM_EVAL_LEDOn(LED2);
-  STM_EVAL_LEDOn(LED3);
-  STM_EVAL_LEDOn(LED4);
+    TIM_ARRPreloadConfig(TIM2, ENABLE);
 
-  /* TIM IT enable */
-  TIM_ITConfig(TIM2, TIM_IT_CC1 | TIM_IT_CC2 | TIM_IT_CC3 | TIM_IT_CC4, ENABLE);
+    /* Turn on LED1, LED2, LED3 and LED4 */
+    STM_EVAL_LEDOn(LED1);
+    STM_EVAL_LEDOn(LED2);
+    STM_EVAL_LEDOn(LED3);
+    STM_EVAL_LEDOn(LED4);
 
-  /* TIM2 enable counter */
-  TIM_Cmd(TIM2, ENABLE);
+    /* TIM IT enable */
+    TIM_ITConfig(TIM2, TIM_IT_CC1 | TIM_IT_CC2 | TIM_IT_CC3 | TIM_IT_CC4, ENABLE);
 
-  while (1)
-  {
-  }
+    /* TIM2 enable counter */
+    TIM_Cmd(TIM2, ENABLE);
+
+    while(1) {
+    }
 }
 
 /**
@@ -168,44 +167,44 @@ int main(void)
   */
 static void TIM_Config(void)
 {
-  NVIC_InitTypeDef NVIC_InitStructure;
-   GPIO_InitTypeDef GPIO_InitStructure;
+    NVIC_InitTypeDef NVIC_InitStructure;
+    GPIO_InitTypeDef GPIO_InitStructure;
 
-  /* TIM2 clock enable */
-  RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2, ENABLE);
+    /* TIM2 clock enable */
+    RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2, ENABLE);
 
-  /* GPIOA clock enable */
-  RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA, ENABLE);
-   
-  /* GPIOC Configuration: TIM2 CH1 (PA0), TIM2 CH2 (PA1), TIM2 CH2 (PA2) and TIM2 CH4 (PA3) */
-  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0 | GPIO_Pin_1 | GPIO_Pin_2 | GPIO_Pin_3;
-  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
-  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;
-  GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-  GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
-  GPIO_Init(GPIOA, &GPIO_InitStructure); 
-    
-  /* Connect TIM Channels to AF1 */
-  GPIO_PinAFConfig(GPIOA, GPIO_PinSource0, GPIO_AF_TIM2);
-  GPIO_PinAFConfig(GPIOA, GPIO_PinSource1, GPIO_AF_TIM2); 
-  GPIO_PinAFConfig(GPIOA, GPIO_PinSource2, GPIO_AF_TIM2);
-  GPIO_PinAFConfig(GPIOA, GPIO_PinSource3, GPIO_AF_TIM2);
+    /* GPIOA clock enable */
+    RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA, ENABLE);
 
-  /* Initialize Leds mounted on EVAL board */
-  STM_EVAL_LEDInit(LED1);
-  STM_EVAL_LEDInit(LED2);
-  STM_EVAL_LEDInit(LED3);
-  STM_EVAL_LEDInit(LED4);
+    /* GPIOC Configuration: TIM2 CH1 (PA0), TIM2 CH2 (PA1), TIM2 CH2 (PA2) and TIM2 CH4 (PA3) */
+    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0 | GPIO_Pin_1 | GPIO_Pin_2 | GPIO_Pin_3;
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;
+    GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+    GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
+    GPIO_Init(GPIOA, &GPIO_InitStructure);
 
-  /* Enable the TIM2 Interrupt */
-  NVIC_InitStructure.NVIC_IRQChannel = TIM2_IRQn;
-  NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
-  NVIC_InitStructure.NVIC_IRQChannelSubPriority = 1;
-  NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
-  NVIC_Init(&NVIC_InitStructure);  
+    /* Connect TIM Channels to AF1 */
+    GPIO_PinAFConfig(GPIOA, GPIO_PinSource0, GPIO_AF_TIM2);
+    GPIO_PinAFConfig(GPIOA, GPIO_PinSource1, GPIO_AF_TIM2);
+    GPIO_PinAFConfig(GPIOA, GPIO_PinSource2, GPIO_AF_TIM2);
+    GPIO_PinAFConfig(GPIOA, GPIO_PinSource3, GPIO_AF_TIM2);
+
+    /* Initialize Leds mounted on EVAL board */
+    STM_EVAL_LEDInit(LED1);
+    STM_EVAL_LEDInit(LED2);
+    STM_EVAL_LEDInit(LED3);
+    STM_EVAL_LEDInit(LED4);
+
+    /* Enable the TIM2 Interrupt */
+    NVIC_InitStructure.NVIC_IRQChannel = TIM2_IRQn;
+    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
+    NVIC_InitStructure.NVIC_IRQChannelSubPriority = 1;
+    NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+    NVIC_Init(&NVIC_InitStructure);
 }
 
-#ifdef  USE_FULL_ASSERT
+#ifdef USE_FULL_ASSERT
 
 /**
   * @brief  Reports the name of the source file and the source line number
@@ -216,20 +215,19 @@ static void TIM_Config(void)
   */
 void assert_failed(uint8_t* file, uint32_t line)
 {
-  /* User can add his own implementation to report the file name and line number,
+    /* User can add his own implementation to report the file name and line number,
      ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
 
-  while (1)
-  {
-  }
+    while(1) {
+    }
 }
 #endif
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}
-  */ 
+  */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

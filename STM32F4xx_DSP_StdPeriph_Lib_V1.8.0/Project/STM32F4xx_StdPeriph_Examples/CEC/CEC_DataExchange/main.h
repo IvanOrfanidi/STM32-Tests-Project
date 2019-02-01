@@ -33,16 +33,16 @@
 #include "stm32f4xx.h"
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/
-#define CEC_MAX_PAYLOAD                  16
+#define CEC_MAX_PAYLOAD 16
 
 /* Uncomment the line below if you use the CEC peripheral as a Device 1 */
-//#define DEVICE_1   
-/* Uncomment the line below if you use the CEC peripheral as a Device 2 */ 
-#define DEVICE_2 
-#define DEVICE_ADDRESS_1               0x01  /* CEC device 1 address   */
-#define DEVICE_ADDRESS_2               0x03  /* CEC device 2 address   */
+//#define DEVICE_1
+/* Uncomment the line below if you use the CEC peripheral as a Device 2 */
+#define DEVICE_2
+#define DEVICE_ADDRESS_1 0x01 /* CEC device 1 address   */
+#define DEVICE_ADDRESS_2 0x03 /* CEC device 2 address   */
 
-#define CEC_INITIATOR_LSB_POS         ((uint32_t) 4)
+#define CEC_INITIATOR_LSB_POS ((uint32_t)4)
 /* Exported macro ------------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */
 

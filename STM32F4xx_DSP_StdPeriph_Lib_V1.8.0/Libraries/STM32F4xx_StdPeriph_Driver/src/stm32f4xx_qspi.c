@@ -92,22 +92,21 @@
 #if defined(STM32F412xG) || defined(STM32F413_423xx) || defined(STM32F446xx) || defined(STM32F469_479xx)
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
-#define QSPI_CR_CLEAR_MASK                           0x00FFFFCF
-#define QSPI_DCR_CLEAR_MASK                          0xFFE0F7FE
-#define QSPI_CCR_CLEAR_MASK                          0x90800000
-#define QSPI_PIR_CLEAR_MASK                          0xFFFF0000
-#define QSPI_LPTR_CLEAR_MASK                         0xFFFF0000
-#define QSPI_CCR_CLEAR_INSTRUCTION_MASK              0xFFFFFF00
-#define QSPI_CCR_CLEAR_DCY_MASK                      0xFFC3FFFF
-#define QSPI_CR_CLEAR_FIFOTHRESHOLD_MASK             0xFFFFF0FF
-#define QSPI_CR_INTERRUPT_MASK                       0x001F0000
-#define QSPI_SR_INTERRUPT_MASK                       0x0000001F
-#define QSPI_FSR_INTERRUPT_MASK                      0x0000001B
+#define QSPI_CR_CLEAR_MASK 0x00FFFFCF
+#define QSPI_DCR_CLEAR_MASK 0xFFE0F7FE
+#define QSPI_CCR_CLEAR_MASK 0x90800000
+#define QSPI_PIR_CLEAR_MASK 0xFFFF0000
+#define QSPI_LPTR_CLEAR_MASK 0xFFFF0000
+#define QSPI_CCR_CLEAR_INSTRUCTION_MASK 0xFFFFFF00
+#define QSPI_CCR_CLEAR_DCY_MASK 0xFFC3FFFF
+#define QSPI_CR_CLEAR_FIFOTHRESHOLD_MASK 0xFFFFF0FF
+#define QSPI_CR_INTERRUPT_MASK 0x001F0000
+#define QSPI_SR_INTERRUPT_MASK 0x0000001F
+#define QSPI_FSR_INTERRUPT_MASK 0x0000001B
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
-
 
 /* Initialization and Configuration functions *********************************/
 
@@ -133,7 +132,7 @@
 
 @endverbatim
   * @{
-  */   
+  */
 
 /**
   * @brief  Deinitializes the QSPI peripheral registers to their default
@@ -143,10 +142,10 @@
   */
 void QSPI_DeInit(void)
 {
-  /* Enable QSPI reset state */
-  RCC_AHB3PeriphResetCmd(RCC_AHB3Periph_QSPI, ENABLE);
-  /* Release QSPI from reset state */
-  RCC_AHB3PeriphResetCmd(RCC_AHB3Periph_QSPI, DISABLE);
+    /* Enable QSPI reset state */
+    RCC_AHB3PeriphResetCmd(RCC_AHB3Periph_QSPI, ENABLE);
+    /* Release QSPI from reset state */
+    RCC_AHB3PeriphResetCmd(RCC_AHB3Periph_QSPI, DISABLE);
 }
 
 /**
@@ -156,21 +155,21 @@ void QSPI_DeInit(void)
   */
 void QSPI_StructInit(QSPI_InitTypeDef* QSPI_InitStruct)
 {
-/*--------- Reset QSPI init structure parameters default values ------------*/
-  /* Initialize the QSPI_SShift member */
-  QSPI_InitStruct->QSPI_SShift = QSPI_SShift_NoShift ;
-  /* Initialize the QSPI_Prescaler member */  
-  QSPI_InitStruct->QSPI_Prescaler = 0 ;
-  /* Initialize the QSPI_CKMode member */
-  QSPI_InitStruct->QSPI_CKMode = QSPI_CKMode_Mode0 ;
-  /* Initialize the QSPI_CSHTime member */
-  QSPI_InitStruct->QSPI_CSHTime = QSPI_CSHTime_1Cycle ;
-  /* Initialize the QSPI_FSize member */
-  QSPI_InitStruct->QSPI_FSize = 0 ;
-  /* Initialize the QSPI_FSelect member */
-  QSPI_InitStruct->QSPI_FSelect = QSPI_FSelect_1 ;
-  /* Initialize the QSPI_DFlash member */
-  QSPI_InitStruct->QSPI_DFlash = QSPI_DFlash_Disable ;
+    /*--------- Reset QSPI init structure parameters default values ------------*/
+    /* Initialize the QSPI_SShift member */
+    QSPI_InitStruct->QSPI_SShift = QSPI_SShift_NoShift;
+    /* Initialize the QSPI_Prescaler member */
+    QSPI_InitStruct->QSPI_Prescaler = 0;
+    /* Initialize the QSPI_CKMode member */
+    QSPI_InitStruct->QSPI_CKMode = QSPI_CKMode_Mode0;
+    /* Initialize the QSPI_CSHTime member */
+    QSPI_InitStruct->QSPI_CSHTime = QSPI_CSHTime_1Cycle;
+    /* Initialize the QSPI_FSize member */
+    QSPI_InitStruct->QSPI_FSize = 0;
+    /* Initialize the QSPI_FSelect member */
+    QSPI_InitStruct->QSPI_FSelect = QSPI_FSelect_1;
+    /* Initialize the QSPI_DFlash member */
+    QSPI_InitStruct->QSPI_DFlash = QSPI_DFlash_Disable;
 }
 
 /**
@@ -180,33 +179,33 @@ void QSPI_StructInit(QSPI_InitTypeDef* QSPI_InitStruct)
   */
 void QSPI_ComConfig_StructInit(QSPI_ComConfig_InitTypeDef* QSPI_ComConfig_InitStruct)
 {
-/*--------- Reset QSPI ComConfig init structure parameters default values ------------*/
-    
-/* Set QSPI Communication configuration structure parameters default values */
-  /* Initialize the QSPI_ComConfig_DDRMode member */
-  QSPI_ComConfig_InitStruct->QSPI_ComConfig_DDRMode = QSPI_ComConfig_DDRMode_Disable ;
-  /* Initialize the QSPI_ComConfig_DHHC member */
-  QSPI_ComConfig_InitStruct->QSPI_ComConfig_DHHC = QSPI_ComConfig_DHHC_Disable ;
-  /* Initialize the QSPI_ComConfig_SIOOMode member */
-  QSPI_ComConfig_InitStruct->QSPI_ComConfig_SIOOMode = QSPI_ComConfig_SIOOMode_Disable ;
-  /* Initialize the QSPI_ComConfig_FMode member */
-  QSPI_ComConfig_InitStruct->QSPI_ComConfig_FMode = QSPI_ComConfig_FMode_Indirect_Write ;
-  /* Initialize the QSPI_ComConfig_DMode member */
-  QSPI_ComConfig_InitStruct->QSPI_ComConfig_DMode = QSPI_ComConfig_DMode_NoData ;
-  /* Initialize the QSPI_ComConfig_DummyCycles member */
-  QSPI_ComConfig_InitStruct->QSPI_ComConfig_DummyCycles = 0 ;
-  /* Initialize the QSPI_ComConfig_ABSize member */
-  QSPI_ComConfig_InitStruct->QSPI_ComConfig_ABSize = QSPI_ComConfig_ABSize_8bit ;
-  /* Initialize the QSPI_ComConfig_ABMode member */
-  QSPI_ComConfig_InitStruct->QSPI_ComConfig_ABMode = QSPI_ComConfig_ABMode_NoAlternateByte ;
-  /* Initialize the QSPI_ComConfig_ADSize member */
-  QSPI_ComConfig_InitStruct->QSPI_ComConfig_ADSize = QSPI_ComConfig_ADSize_8bit ;
-  /* Initialize the QSPI_ComConfig_ADMode member */
-  QSPI_ComConfig_InitStruct->QSPI_ComConfig_ADMode = QSPI_ComConfig_ADMode_NoAddress ;
-  /* Initialize the QSPI_ComConfig_IMode member */
-  QSPI_ComConfig_InitStruct->QSPI_ComConfig_IMode = QSPI_ComConfig_IMode_NoInstruction ;
-  /* Initialize the QSPI_ComConfig_Ins member */
-  QSPI_ComConfig_InitStruct->QSPI_ComConfig_Ins = 0 ;
+    /*--------- Reset QSPI ComConfig init structure parameters default values ------------*/
+
+    /* Set QSPI Communication configuration structure parameters default values */
+    /* Initialize the QSPI_ComConfig_DDRMode member */
+    QSPI_ComConfig_InitStruct->QSPI_ComConfig_DDRMode = QSPI_ComConfig_DDRMode_Disable;
+    /* Initialize the QSPI_ComConfig_DHHC member */
+    QSPI_ComConfig_InitStruct->QSPI_ComConfig_DHHC = QSPI_ComConfig_DHHC_Disable;
+    /* Initialize the QSPI_ComConfig_SIOOMode member */
+    QSPI_ComConfig_InitStruct->QSPI_ComConfig_SIOOMode = QSPI_ComConfig_SIOOMode_Disable;
+    /* Initialize the QSPI_ComConfig_FMode member */
+    QSPI_ComConfig_InitStruct->QSPI_ComConfig_FMode = QSPI_ComConfig_FMode_Indirect_Write;
+    /* Initialize the QSPI_ComConfig_DMode member */
+    QSPI_ComConfig_InitStruct->QSPI_ComConfig_DMode = QSPI_ComConfig_DMode_NoData;
+    /* Initialize the QSPI_ComConfig_DummyCycles member */
+    QSPI_ComConfig_InitStruct->QSPI_ComConfig_DummyCycles = 0;
+    /* Initialize the QSPI_ComConfig_ABSize member */
+    QSPI_ComConfig_InitStruct->QSPI_ComConfig_ABSize = QSPI_ComConfig_ABSize_8bit;
+    /* Initialize the QSPI_ComConfig_ABMode member */
+    QSPI_ComConfig_InitStruct->QSPI_ComConfig_ABMode = QSPI_ComConfig_ABMode_NoAlternateByte;
+    /* Initialize the QSPI_ComConfig_ADSize member */
+    QSPI_ComConfig_InitStruct->QSPI_ComConfig_ADSize = QSPI_ComConfig_ADSize_8bit;
+    /* Initialize the QSPI_ComConfig_ADMode member */
+    QSPI_ComConfig_InitStruct->QSPI_ComConfig_ADMode = QSPI_ComConfig_ADMode_NoAddress;
+    /* Initialize the QSPI_ComConfig_IMode member */
+    QSPI_ComConfig_InitStruct->QSPI_ComConfig_IMode = QSPI_ComConfig_IMode_NoInstruction;
+    /* Initialize the QSPI_ComConfig_Ins member */
+    QSPI_ComConfig_InitStruct->QSPI_ComConfig_Ins = 0;
 }
 
 /**
@@ -218,41 +217,36 @@ void QSPI_ComConfig_StructInit(QSPI_ComConfig_InitTypeDef* QSPI_ComConfig_InitSt
   */
 void QSPI_Init(QSPI_InitTypeDef* QSPI_InitStruct)
 {
-  uint32_t tmpreg = 0;
-  
-  /* Check the QSPI parameters */
-  assert_param(IS_QSPI_SSHIFT(QSPI_InitStruct->QSPI_SShift));
-  assert_param(IS_QSPI_PRESCALER(QSPI_InitStruct->QSPI_Prescaler));
-  assert_param(IS_QSPI_CKMODE(QSPI_InitStruct->QSPI_CKMode));
-  assert_param(IS_QSPI_CSHTIME(QSPI_InitStruct->QSPI_CSHTime));
-  assert_param(IS_QSPI_FSIZE(QSPI_InitStruct->QSPI_FSize));
-	assert_param(IS_QSPI_FSEL(QSPI_InitStruct->QSPI_FSelect));
-	assert_param(IS_QSPI_DFM(QSPI_InitStruct->QSPI_DFlash));
-  
-  /*------------------------ QSPI CR Configuration ------------------------*/
-  /* Get the QUADSPI CR1 value */
-  tmpreg = QUADSPI->CR;
-  /* Clear PRESCALER and SSHIFT bits */
-  tmpreg &= QSPI_CR_CLEAR_MASK;
-  /* Configure QUADSPI: Prescaler and Sample Shift */
-  tmpreg |= (uint32_t)(((QSPI_InitStruct->QSPI_Prescaler)<<24)
-                        |(QSPI_InitStruct->QSPI_SShift)
-	                      |(QSPI_InitStruct->QSPI_FSelect)
-	                      |(QSPI_InitStruct->QSPI_DFlash));  
-  /* Write to QUADSPI CR */
-  QUADSPI->CR = tmpreg;
-  
-  /*------------------------ QUADSPI DCR Configuration ------------------------*/
-  /* Get the QUADSPI DCR value */
-  tmpreg = QUADSPI->DCR;
-  /* Clear FSIZE, CSHT and CKMODE bits */
-  tmpreg &= QSPI_DCR_CLEAR_MASK;
-  /* Configure QSPI: Flash Size, Chip Select High Time and Clock Mode */
-  tmpreg |= (uint32_t)(((QSPI_InitStruct->QSPI_FSize)<<16)
-                        |(QSPI_InitStruct->QSPI_CSHTime)
-                        |(QSPI_InitStruct->QSPI_CKMode));  
-  /* Write to QSPI DCR */
-  QUADSPI->DCR = tmpreg;  
+    uint32_t tmpreg = 0;
+
+    /* Check the QSPI parameters */
+    assert_param(IS_QSPI_SSHIFT(QSPI_InitStruct->QSPI_SShift));
+    assert_param(IS_QSPI_PRESCALER(QSPI_InitStruct->QSPI_Prescaler));
+    assert_param(IS_QSPI_CKMODE(QSPI_InitStruct->QSPI_CKMode));
+    assert_param(IS_QSPI_CSHTIME(QSPI_InitStruct->QSPI_CSHTime));
+    assert_param(IS_QSPI_FSIZE(QSPI_InitStruct->QSPI_FSize));
+    assert_param(IS_QSPI_FSEL(QSPI_InitStruct->QSPI_FSelect));
+    assert_param(IS_QSPI_DFM(QSPI_InitStruct->QSPI_DFlash));
+
+    /*------------------------ QSPI CR Configuration ------------------------*/
+    /* Get the QUADSPI CR1 value */
+    tmpreg = QUADSPI->CR;
+    /* Clear PRESCALER and SSHIFT bits */
+    tmpreg &= QSPI_CR_CLEAR_MASK;
+    /* Configure QUADSPI: Prescaler and Sample Shift */
+    tmpreg |= (uint32_t)(((QSPI_InitStruct->QSPI_Prescaler) << 24) | (QSPI_InitStruct->QSPI_SShift) | (QSPI_InitStruct->QSPI_FSelect) | (QSPI_InitStruct->QSPI_DFlash));
+    /* Write to QUADSPI CR */
+    QUADSPI->CR = tmpreg;
+
+    /*------------------------ QUADSPI DCR Configuration ------------------------*/
+    /* Get the QUADSPI DCR value */
+    tmpreg = QUADSPI->DCR;
+    /* Clear FSIZE, CSHT and CKMODE bits */
+    tmpreg &= QSPI_DCR_CLEAR_MASK;
+    /* Configure QSPI: Flash Size, Chip Select High Time and Clock Mode */
+    tmpreg |= (uint32_t)(((QSPI_InitStruct->QSPI_FSize) << 16) | (QSPI_InitStruct->QSPI_CSHTime) | (QSPI_InitStruct->QSPI_CKMode));
+    /* Write to QSPI DCR */
+    QUADSPI->DCR = tmpreg;
 }
 
 /**
@@ -264,42 +258,31 @@ void QSPI_Init(QSPI_InitTypeDef* QSPI_InitStruct)
   */
 void QSPI_ComConfig_Init(QSPI_ComConfig_InitTypeDef* QSPI_ComConfig_InitStruct)
 {
-  uint32_t tmpreg = 0;
+    uint32_t tmpreg = 0;
 
-  /* Check the QSPI Communication Control parameters */
-  assert_param(IS_QSPI_FMODE       (QSPI_ComConfig_InitStruct->QSPI_ComConfig_FMode));
-  assert_param(IS_QSPI_SIOOMODE    (QSPI_ComConfig_InitStruct->QSPI_ComConfig_SIOOMode));
-  assert_param(IS_QSPI_DMODE       (QSPI_ComConfig_InitStruct->QSPI_ComConfig_DMode));
-  assert_param(IS_QSPI_DCY         (QSPI_ComConfig_InitStruct->QSPI_ComConfig_DummyCycles));
-  assert_param(IS_QSPI_ABSIZE      (QSPI_ComConfig_InitStruct->QSPI_ComConfig_ABSize));
-  assert_param(IS_QSPI_ABMODE      (QSPI_ComConfig_InitStruct->QSPI_ComConfig_ABMode));
-  assert_param(IS_QSPI_ADSIZE      (QSPI_ComConfig_InitStruct->QSPI_ComConfig_ADSize));
-  assert_param(IS_QSPI_ADMODE      (QSPI_ComConfig_InitStruct->QSPI_ComConfig_ADMode));
-  assert_param(IS_QSPI_IMODE       (QSPI_ComConfig_InitStruct->QSPI_ComConfig_IMode));
-  assert_param(IS_QSPI_INSTRUCTION (QSPI_ComConfig_InitStruct->QSPI_ComConfig_Ins));
-	assert_param(IS_QSPI_DDRMODE     (QSPI_ComConfig_InitStruct->QSPI_ComConfig_DDRMode));
-	assert_param(IS_QSPI_DHHC        (QSPI_ComConfig_InitStruct->QSPI_ComConfig_DHHC));
-  
-  /*------------------------ QUADSPI CCR Configuration ------------------------*/
-  /* Get the QUADSPI CCR value */
-  tmpreg = QUADSPI->CCR;
-  /* Clear FMODE Mode bits */
-  tmpreg &= QSPI_CCR_CLEAR_MASK;
-  /* Configure QUADSPI: CCR Configuration */
-  tmpreg |=  (uint32_t)( (QSPI_ComConfig_InitStruct->QSPI_ComConfig_FMode)
-                       | (QSPI_ComConfig_InitStruct->QSPI_ComConfig_DDRMode)
-											 | (QSPI_ComConfig_InitStruct->QSPI_ComConfig_DHHC)
-                       | (QSPI_ComConfig_InitStruct->QSPI_ComConfig_SIOOMode)
-                       | (QSPI_ComConfig_InitStruct->QSPI_ComConfig_DMode)
-                       | (QSPI_ComConfig_InitStruct->QSPI_ComConfig_ABSize)
-                       | (QSPI_ComConfig_InitStruct->QSPI_ComConfig_ABMode)                                                                       
-                       | (QSPI_ComConfig_InitStruct->QSPI_ComConfig_ADSize)
-                       | (QSPI_ComConfig_InitStruct->QSPI_ComConfig_ADMode)
-                       | (QSPI_ComConfig_InitStruct->QSPI_ComConfig_IMode)
-                       | (QSPI_ComConfig_InitStruct->QSPI_ComConfig_Ins)
-                       |((QSPI_ComConfig_InitStruct->QSPI_ComConfig_DummyCycles)<<18));    
-  /* Write to QUADSPI DCR */
-  QUADSPI->CCR = tmpreg;      
+    /* Check the QSPI Communication Control parameters */
+    assert_param(IS_QSPI_FMODE(QSPI_ComConfig_InitStruct->QSPI_ComConfig_FMode));
+    assert_param(IS_QSPI_SIOOMODE(QSPI_ComConfig_InitStruct->QSPI_ComConfig_SIOOMode));
+    assert_param(IS_QSPI_DMODE(QSPI_ComConfig_InitStruct->QSPI_ComConfig_DMode));
+    assert_param(IS_QSPI_DCY(QSPI_ComConfig_InitStruct->QSPI_ComConfig_DummyCycles));
+    assert_param(IS_QSPI_ABSIZE(QSPI_ComConfig_InitStruct->QSPI_ComConfig_ABSize));
+    assert_param(IS_QSPI_ABMODE(QSPI_ComConfig_InitStruct->QSPI_ComConfig_ABMode));
+    assert_param(IS_QSPI_ADSIZE(QSPI_ComConfig_InitStruct->QSPI_ComConfig_ADSize));
+    assert_param(IS_QSPI_ADMODE(QSPI_ComConfig_InitStruct->QSPI_ComConfig_ADMode));
+    assert_param(IS_QSPI_IMODE(QSPI_ComConfig_InitStruct->QSPI_ComConfig_IMode));
+    assert_param(IS_QSPI_INSTRUCTION(QSPI_ComConfig_InitStruct->QSPI_ComConfig_Ins));
+    assert_param(IS_QSPI_DDRMODE(QSPI_ComConfig_InitStruct->QSPI_ComConfig_DDRMode));
+    assert_param(IS_QSPI_DHHC(QSPI_ComConfig_InitStruct->QSPI_ComConfig_DHHC));
+
+    /*------------------------ QUADSPI CCR Configuration ------------------------*/
+    /* Get the QUADSPI CCR value */
+    tmpreg = QUADSPI->CCR;
+    /* Clear FMODE Mode bits */
+    tmpreg &= QSPI_CCR_CLEAR_MASK;
+    /* Configure QUADSPI: CCR Configuration */
+    tmpreg |= (uint32_t)((QSPI_ComConfig_InitStruct->QSPI_ComConfig_FMode) | (QSPI_ComConfig_InitStruct->QSPI_ComConfig_DDRMode) | (QSPI_ComConfig_InitStruct->QSPI_ComConfig_DHHC) | (QSPI_ComConfig_InitStruct->QSPI_ComConfig_SIOOMode) | (QSPI_ComConfig_InitStruct->QSPI_ComConfig_DMode) | (QSPI_ComConfig_InitStruct->QSPI_ComConfig_ABSize) | (QSPI_ComConfig_InitStruct->QSPI_ComConfig_ABMode) | (QSPI_ComConfig_InitStruct->QSPI_ComConfig_ADSize) | (QSPI_ComConfig_InitStruct->QSPI_ComConfig_ADMode) | (QSPI_ComConfig_InitStruct->QSPI_ComConfig_IMode) | (QSPI_ComConfig_InitStruct->QSPI_ComConfig_Ins) | ((QSPI_ComConfig_InitStruct->QSPI_ComConfig_DummyCycles) << 18));
+    /* Write to QUADSPI DCR */
+    QUADSPI->CCR = tmpreg;
 }
 
 /**
@@ -310,19 +293,17 @@ void QSPI_ComConfig_Init(QSPI_ComConfig_InitTypeDef* QSPI_ComConfig_InitStruct)
   */
 void QSPI_Cmd(FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
+    /* Check the parameters */
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-  if (NewState != DISABLE)
-  {
-    /* Enable QSPI peripheral */
-    QUADSPI->CR |= QUADSPI_CR_EN;
-  }
-  else
-  {
-    /* Disable QSPI peripheral */
-    QUADSPI->CR &= ~ QUADSPI_CR_EN;
-  }
+    if(NewState != DISABLE) {
+        /* Enable QSPI peripheral */
+        QUADSPI->CR |= QUADSPI_CR_EN;
+    }
+    else {
+        /* Disable QSPI peripheral */
+        QUADSPI->CR &= ~QUADSPI_CR_EN;
+    }
 }
 
 /**
@@ -341,34 +322,34 @@ void QSPI_Cmd(FunctionalState NewState)
   * @note   This function is used only in Automatic Polling Mode
   * @retval None
   */
-void QSPI_AutoPollingMode_Config(uint32_t QSPI_Match, uint32_t QSPI_Mask , uint32_t QSPI_Match_Mode)
+void QSPI_AutoPollingMode_Config(uint32_t QSPI_Match, uint32_t QSPI_Mask, uint32_t QSPI_Match_Mode)
 {
-  /* Check the parameters */
-  assert_param(IS_QSPI_PMM(QSPI_Match_Mode));
+    /* Check the parameters */
+    assert_param(IS_QSPI_PMM(QSPI_Match_Mode));
 
-  if ((QUADSPI->SR & QUADSPI_SR_BUSY) == RESET)
-  /* Device is not Busy */
-  {
-    /* Set the Match Register */
-    QUADSPI->PSMAR = QSPI_Match ;
+    if((QUADSPI->SR & QUADSPI_SR_BUSY) == RESET)
+    /* Device is not Busy */
+    {
+        /* Set the Match Register */
+        QUADSPI->PSMAR = QSPI_Match;
 
-    /* Set the Mask Register */
-    QUADSPI->PSMKR = QSPI_Mask ;
-    
-    /* Set the Polling Match Mode */
-    if(QSPI_Match_Mode)
-    /* OR Match Mode */
-    {
-      /* Set the PMM bit */
-      QUADSPI->CR |= QUADSPI_CR_PMM;
+        /* Set the Mask Register */
+        QUADSPI->PSMKR = QSPI_Mask;
+
+        /* Set the Polling Match Mode */
+        if(QSPI_Match_Mode)
+        /* OR Match Mode */
+        {
+            /* Set the PMM bit */
+            QUADSPI->CR |= QUADSPI_CR_PMM;
+        }
+        else
+        /* AND Match Mode */
+        {
+            /* Reset the PMM bit */
+            QUADSPI->CR &= ~QUADSPI_CR_PMM;
+        }
     }
-    else
-    /* AND Match Mode */
-    {
-      /* Reset the PMM bit */
-      QUADSPI->CR &= ~ QUADSPI_CR_PMM;
-    }
-  }
 }
 
 /**
@@ -380,23 +361,23 @@ void QSPI_AutoPollingMode_Config(uint32_t QSPI_Match, uint32_t QSPI_Mask , uint3
   */
 void QSPI_AutoPollingMode_SetInterval(uint32_t QSPI_Interval)
 {
-  uint32_t tmpreg = 0;
-  
-  /* Check the parameters */
-  assert_param(IS_QSPI_PIR(QSPI_Interval));
+    uint32_t tmpreg = 0;
 
-  if ((QUADSPI->SR & QUADSPI_SR_BUSY) == RESET)
-  /* Device is not Busy */
-  {
-    /* Read the PIR Register */
-    tmpreg = QUADSPI->PIR ;
-    /* Clear Polling interval Bits */
-    tmpreg &= QSPI_PIR_CLEAR_MASK ;
-    /* Set the QSPI Polling Interval Bits */
-    tmpreg |= QSPI_Interval;
-    /* Write the PIR Register */
-    QUADSPI->PIR = tmpreg;
-  }
+    /* Check the parameters */
+    assert_param(IS_QSPI_PIR(QSPI_Interval));
+
+    if((QUADSPI->SR & QUADSPI_SR_BUSY) == RESET)
+    /* Device is not Busy */
+    {
+        /* Read the PIR Register */
+        tmpreg = QUADSPI->PIR;
+        /* Clear Polling interval Bits */
+        tmpreg &= QSPI_PIR_CLEAR_MASK;
+        /* Set the QSPI Polling Interval Bits */
+        tmpreg |= QSPI_Interval;
+        /* Write the PIR Register */
+        QUADSPI->PIR = tmpreg;
+    }
 }
 
 /**
@@ -410,23 +391,23 @@ void QSPI_AutoPollingMode_SetInterval(uint32_t QSPI_Interval)
   */
 void QSPI_MemoryMappedMode_SetTimeout(uint32_t QSPI_Timeout)
 {
-  uint32_t tmpreg = 0;
-  
-  /* Check the parameters */
-  assert_param(IS_QSPI_TIMEOUT(QSPI_Timeout));
+    uint32_t tmpreg = 0;
 
-  if ((QUADSPI->SR & QUADSPI_SR_BUSY) == RESET)
-  /* Device is not Busy */
-  {
-    /* Read the LPTR Register */
-    tmpreg = QUADSPI->LPTR ;
-    /* Clear Timeout Bits */
-    tmpreg &= QSPI_LPTR_CLEAR_MASK ;
-    /* Set Timeout Bits */
-    tmpreg |= QSPI_Timeout;
-    /* Write the LPTR Register */
-    QUADSPI->LPTR = tmpreg;
-  }
+    /* Check the parameters */
+    assert_param(IS_QSPI_TIMEOUT(QSPI_Timeout));
+
+    if((QUADSPI->SR & QUADSPI_SR_BUSY) == RESET)
+    /* Device is not Busy */
+    {
+        /* Read the LPTR Register */
+        tmpreg = QUADSPI->LPTR;
+        /* Clear Timeout Bits */
+        tmpreg &= QSPI_LPTR_CLEAR_MASK;
+        /* Set Timeout Bits */
+        tmpreg |= QSPI_Timeout;
+        /* Write the LPTR Register */
+        QUADSPI->LPTR = tmpreg;
+    }
 }
 
 /**
@@ -438,12 +419,12 @@ void QSPI_MemoryMappedMode_SetTimeout(uint32_t QSPI_Timeout)
   */
 void QSPI_SetAddress(uint32_t QSPI_Address)
 {
-  if((QUADSPI->SR & QUADSPI_SR_BUSY) == RESET)
-  /* Device is not Busy */
-  {
-    /* Write the AR Register */
-    QUADSPI->AR = QSPI_Address;
-  }
+    if((QUADSPI->SR & QUADSPI_SR_BUSY) == RESET)
+    /* Device is not Busy */
+    {
+        /* Write the AR Register */
+        QUADSPI->AR = QSPI_Address;
+    }
 }
 
 /**
@@ -455,12 +436,12 @@ void QSPI_SetAddress(uint32_t QSPI_Address)
   */
 void QSPI_SetAlternateByte(uint32_t QSPI_AlternateByte)
 {
-  if((QUADSPI->SR & QUADSPI_SR_BUSY) == RESET)
-  /* Device is not Busy */
-  {
-    /* Write the ABR Register */
-    QUADSPI->ABR = QSPI_AlternateByte;
-  }
+    if((QUADSPI->SR & QUADSPI_SR_BUSY) == RESET)
+    /* Device is not Busy */
+    {
+        /* Write the ABR Register */
+        QUADSPI->ABR = QSPI_AlternateByte;
+    }
 }
 
 /**
@@ -473,19 +454,19 @@ void QSPI_SetAlternateByte(uint32_t QSPI_AlternateByte)
   */
 void QSPI_SetFIFOThreshold(uint32_t QSPI_FIFOThreshold)
 {
-  uint32_t tmpreg = 0;
-  
-  /* Check the parameters */
-  assert_param(IS_QSPI_FIFOTHRESHOLD(QSPI_FIFOThreshold));
+    uint32_t tmpreg = 0;
 
-  /* Read the CR Register */
-  tmpreg = QUADSPI->CR ;
-  /* Clear FIFO Threshold Bits */
-  tmpreg &= QSPI_CR_CLEAR_FIFOTHRESHOLD_MASK ;
-  /* Set FIFO Threshold Bits */
-  tmpreg |= (QSPI_FIFOThreshold << 8);
-  /* Write the CR Register */
-  QUADSPI->CR = tmpreg;
+    /* Check the parameters */
+    assert_param(IS_QSPI_FIFOTHRESHOLD(QSPI_FIFOThreshold));
+
+    /* Read the CR Register */
+    tmpreg = QUADSPI->CR;
+    /* Clear FIFO Threshold Bits */
+    tmpreg &= QSPI_CR_CLEAR_FIFOTHRESHOLD_MASK;
+    /* Set FIFO Threshold Bits */
+    tmpreg |= (QSPI_FIFOThreshold << 8);
+    /* Write the CR Register */
+    QUADSPI->CR = tmpreg;
 }
 
 /**
@@ -510,12 +491,12 @@ void QSPI_SetFIFOThreshold(uint32_t QSPI_FIFOThreshold)
   */
 void QSPI_SetDataLength(uint32_t QSPI_DataLength)
 {
-  if ((QUADSPI->SR & QUADSPI_SR_BUSY) == RESET)
-  /* Device is not Busy */
-  {
-    /* Write the DLR Register */
-    QUADSPI->DLR = QSPI_DataLength;
-  }
+    if((QUADSPI->SR & QUADSPI_SR_BUSY) == RESET)
+    /* Device is not Busy */
+    {
+        /* Write the DLR Register */
+        QUADSPI->DLR = QSPI_DataLength;
+    }
 }
 
 /**
@@ -527,23 +508,21 @@ void QSPI_SetDataLength(uint32_t QSPI_DataLength)
   */
 void QSPI_TimeoutCounterCmd(FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
+    /* Check the parameters */
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-  if ((QUADSPI->SR & QUADSPI_SR_BUSY) == RESET)
-  /* Device is not Busy */
-  {
-    if (NewState != DISABLE)
+    if((QUADSPI->SR & QUADSPI_SR_BUSY) == RESET)
+    /* Device is not Busy */
     {
-      /* Enable Timeout Counter */
-      QUADSPI->CR |= QUADSPI_CR_TCEN;
+        if(NewState != DISABLE) {
+            /* Enable Timeout Counter */
+            QUADSPI->CR |= QUADSPI_CR_TCEN;
+        }
+        else {
+            /* Disable Timeout Counter */
+            QUADSPI->CR &= ~QUADSPI_CR_TCEN;
+        }
     }
-    else
-    {
-      /* Disable Timeout Counter */
-      QUADSPI->CR &= ~ QUADSPI_CR_TCEN;
-    }
-  }
 }
 
 /**
@@ -555,23 +534,21 @@ void QSPI_TimeoutCounterCmd(FunctionalState NewState)
   */
 void QSPI_AutoPollingModeStopCmd(FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
+    /* Check the parameters */
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-  if ((QUADSPI->SR & QUADSPI_SR_BUSY) == RESET)
-  /* Device is not Busy */
-  {
-    if (NewState != DISABLE)
+    if((QUADSPI->SR & QUADSPI_SR_BUSY) == RESET)
+    /* Device is not Busy */
     {
-      /* Enable Automatic Polling Mode Stop */
-      QUADSPI->CR |= QUADSPI_CR_APMS;
+        if(NewState != DISABLE) {
+            /* Enable Automatic Polling Mode Stop */
+            QUADSPI->CR |= QUADSPI_CR_APMS;
+        }
+        else {
+            /* Disable Automatic Polling Mode Stop */
+            QUADSPI->CR &= ~QUADSPI_CR_APMS;
+        }
     }
-    else
-    {
-      /* Disable Automatic Polling Mode Stop */
-      QUADSPI->CR &= ~ QUADSPI_CR_APMS;
-    }
-  }
 }
 
 /**
@@ -581,8 +558,8 @@ void QSPI_AutoPollingModeStopCmd(FunctionalState NewState)
   */
 void QSPI_AbortRequest(void)
 {
-  /* Enable the ABORT request bit in CR */
-  QUADSPI->CR |= QUADSPI_CR_ABORT;
+    /* Enable the ABORT request bit in CR */
+    QUADSPI->CR |= QUADSPI_CR_ABORT;
 }
 
 /* Data transfers functions ***************************************************/
@@ -594,12 +571,12 @@ void QSPI_AbortRequest(void)
   */
 void QSPI_SendData8(uint8_t Data)
 {
-  uint32_t quadspibase = 0;
+    uint32_t quadspibase = 0;
 
-  quadspibase = (uint32_t)QUADSPI; 
-  quadspibase += 0x20;
-  
-  *(__IO uint8_t *) quadspibase = Data;
+    quadspibase = (uint32_t)QUADSPI;
+    quadspibase += 0x20;
+
+    *(__IO uint8_t*)quadspibase = Data;
 }
 
 /**
@@ -609,12 +586,12 @@ void QSPI_SendData8(uint8_t Data)
   */
 void QSPI_SendData16(uint16_t Data)
 {
-  uint32_t quadspibase = 0;
+    uint32_t quadspibase = 0;
 
-  quadspibase = (uint32_t)QUADSPI; 
-  quadspibase += 0x20;
-  
-  *(__IO uint16_t *) quadspibase = Data;
+    quadspibase = (uint32_t)QUADSPI;
+    quadspibase += 0x20;
+
+    *(__IO uint16_t*)quadspibase = Data;
 }
 
 /**
@@ -624,7 +601,7 @@ void QSPI_SendData16(uint16_t Data)
   */
 void QSPI_SendData32(uint32_t Data)
 {
-  QUADSPI->DR = Data;
+    QUADSPI->DR = Data;
 }
 
 /**
@@ -633,12 +610,12 @@ void QSPI_SendData32(uint32_t Data)
   */
 uint8_t QSPI_ReceiveData8(void)
 {
-  uint32_t quadspibase = 0;
-  
-  quadspibase = (uint32_t)QUADSPI; 
-  quadspibase += 0x20;
-  
-  return *(__IO uint8_t *) quadspibase;
+    uint32_t quadspibase = 0;
+
+    quadspibase = (uint32_t)QUADSPI;
+    quadspibase += 0x20;
+
+    return *(__IO uint8_t*)quadspibase;
 }
 
 /**
@@ -647,12 +624,12 @@ uint8_t QSPI_ReceiveData8(void)
   */
 uint16_t QSPI_ReceiveData16(void)
 {
-  uint32_t quadspibase = 0;
-  
-  quadspibase = (uint32_t)QUADSPI; 
-  quadspibase += 0x20;
-  
-  return *(__IO uint16_t *) quadspibase;
+    uint32_t quadspibase = 0;
+
+    quadspibase = (uint32_t)QUADSPI;
+    quadspibase += 0x20;
+
+    return *(__IO uint16_t*)quadspibase;
 }
 
 /**
@@ -661,7 +638,7 @@ uint16_t QSPI_ReceiveData16(void)
   */
 uint32_t QSPI_ReceiveData32(void)
 {
-  return QUADSPI->DR;
+    return QUADSPI->DR;
 }
 
 /* DMA transfers management functions *****************************************/
@@ -674,19 +651,17 @@ uint32_t QSPI_ReceiveData32(void)
   */
 void QSPI_DMACmd(FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
+    /* Check the parameters */
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-  if (NewState != DISABLE)
-  {
-    /* Enable DMA */
-    QUADSPI->CR |= QUADSPI_CR_DMAEN;
-  }
-  else
-  {
-    /* Disable DMA */
-    QUADSPI->CR &= ~ QUADSPI_CR_DMAEN;
-  }
+    if(NewState != DISABLE) {
+        /* Enable DMA */
+        QUADSPI->CR |= QUADSPI_CR_DMAEN;
+    }
+    else {
+        /* Disable DMA */
+        QUADSPI->CR &= ~QUADSPI_CR_DMAEN;
+    }
 }
 
 /* Interrupts and flags management functions **********************************/
@@ -706,27 +681,25 @@ void QSPI_DMACmd(FunctionalState NewState)
   */
 void QSPI_ITConfig(uint32_t QSPI_IT, FunctionalState NewState)
 {
-  uint32_t tmpreg = 0;
+    uint32_t tmpreg = 0;
 
-  /* Check the parameters */
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
-  assert_param(IS_QSPI_IT(QSPI_IT));
+    /* Check the parameters */
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
+    assert_param(IS_QSPI_IT(QSPI_IT));
 
-  /* Read the CR Register */
-  tmpreg = QUADSPI->CR ;
-  
-  if(NewState != DISABLE)
-  {
-    /* Enable the selected QSPI interrupt */
-    tmpreg |= (uint32_t)(QSPI_IT & QSPI_CR_INTERRUPT_MASK);
-  }
-  else
-  {
-    /* Disable the selected QSPI interrupt */
-    tmpreg &= ~(uint32_t)(QSPI_IT & QSPI_CR_INTERRUPT_MASK);
-  }
-  /* Write the CR Register */
-  QUADSPI->CR = tmpreg ;  
+    /* Read the CR Register */
+    tmpreg = QUADSPI->CR;
+
+    if(NewState != DISABLE) {
+        /* Enable the selected QSPI interrupt */
+        tmpreg |= (uint32_t)(QSPI_IT & QSPI_CR_INTERRUPT_MASK);
+    }
+    else {
+        /* Disable the selected QSPI interrupt */
+        tmpreg &= ~(uint32_t)(QSPI_IT & QSPI_CR_INTERRUPT_MASK);
+    }
+    /* Write the CR Register */
+    QUADSPI->CR = tmpreg;
 }
 
 /**
@@ -737,8 +710,8 @@ void QSPI_ITConfig(uint32_t QSPI_IT, FunctionalState NewState)
   */
 uint32_t QSPI_GetFIFOLevel(void)
 {
-  /* Get the QSPI FIFO level bits */
-  return ((QUADSPI->SR & QUADSPI_SR_FLEVEL)>> 8);
+    /* Get the QSPI FIFO level bits */
+    return ((QUADSPI->SR & QUADSPI_SR_FLEVEL) >> 8);
 }
 
 /**
@@ -752,8 +725,8 @@ uint32_t QSPI_GetFIFOLevel(void)
   */
 uint32_t QSPI_GetFMode(void)
 {
-  /* Return the QSPI_FMode */
-  return  (QUADSPI->CCR & QUADSPI_CCR_FMODE);
+    /* Return the QSPI_FMode */
+    return (QUADSPI->CCR & QUADSPI_CCR_FMODE);
 }
 
 /**
@@ -770,23 +743,21 @@ uint32_t QSPI_GetFMode(void)
   */
 FlagStatus QSPI_GetFlagStatus(uint32_t QSPI_FLAG)
 {
-  FlagStatus bitstatus = RESET;
-  /* Check the parameters */
-  assert_param(IS_QSPI_GET_FLAG(QSPI_FLAG));
+    FlagStatus bitstatus = RESET;
+    /* Check the parameters */
+    assert_param(IS_QSPI_GET_FLAG(QSPI_FLAG));
 
-  /* Check the status of the specified QSPI flag */
-  if((QUADSPI->SR & QSPI_FLAG) != RESET)
-  {
-    /* QSPI_FLAG is set */
-    bitstatus = SET;
-  }
-  else
-  {
-    /* QSPI_FLAG is reset */
-    bitstatus = RESET;
-  }
-  /* Return the QSPI_FLAG status */
-  return  bitstatus;
+    /* Check the status of the specified QSPI flag */
+    if((QUADSPI->SR & QSPI_FLAG) != RESET) {
+        /* QSPI_FLAG is set */
+        bitstatus = SET;
+    }
+    else {
+        /* QSPI_FLAG is reset */
+        bitstatus = RESET;
+    }
+    /* Return the QSPI_FLAG status */
+    return bitstatus;
 }
 
 /**
@@ -801,11 +772,11 @@ FlagStatus QSPI_GetFlagStatus(uint32_t QSPI_FLAG)
   */
 void QSPI_ClearFlag(uint32_t QSPI_FLAG)
 {
-  /* Check the parameters */
-  assert_param(IS_QSPI_CLEAR_FLAG(QSPI_FLAG));
+    /* Check the parameters */
+    assert_param(IS_QSPI_CLEAR_FLAG(QSPI_FLAG));
 
-  /* Clear the selected QSPI flags */
-  QUADSPI->FCR = QSPI_FLAG;
+    /* Clear the selected QSPI flags */
+    QUADSPI->FCR = QSPI_FLAG;
 }
 
 /**
@@ -821,33 +792,31 @@ void QSPI_ClearFlag(uint32_t QSPI_FLAG)
   */
 ITStatus QSPI_GetITStatus(uint32_t QSPI_IT)
 {
-  ITStatus bitstatus = RESET;
-  uint32_t tmpcreg = 0, tmpsreg = 0; 
+    ITStatus bitstatus = RESET;
+    uint32_t tmpcreg = 0, tmpsreg = 0;
 
-  /* Check the parameters */
-  assert_param(IS_QSPI_IT(QSPI_IT));
+    /* Check the parameters */
+    assert_param(IS_QSPI_IT(QSPI_IT));
 
-  /* Read the QUADSPI CR */
-  tmpcreg = QUADSPI->CR;  
-  tmpcreg &= (uint32_t)(QSPI_IT & QSPI_CR_INTERRUPT_MASK);
-  
-  /* Read the QUADSPI SR */
-  tmpsreg = QUADSPI->SR;  
-  tmpsreg &= (uint32_t)(QSPI_IT & QSPI_SR_INTERRUPT_MASK);
+    /* Read the QUADSPI CR */
+    tmpcreg = QUADSPI->CR;
+    tmpcreg &= (uint32_t)(QSPI_IT & QSPI_CR_INTERRUPT_MASK);
 
-  /* Check the status of the specified QSPI interrupt */
-  if((tmpcreg != RESET) && (tmpsreg != RESET))
-  {
-    /* QSPI_IT is set */
-    bitstatus = SET;
-  }
-  else
-  {
-    /* QSPI_IT is reset */
-    bitstatus = RESET;
-  }
-  /* Return the QSPI_IT status */
-  return bitstatus;
+    /* Read the QUADSPI SR */
+    tmpsreg = QUADSPI->SR;
+    tmpsreg &= (uint32_t)(QSPI_IT & QSPI_SR_INTERRUPT_MASK);
+
+    /* Check the status of the specified QSPI interrupt */
+    if((tmpcreg != RESET) && (tmpsreg != RESET)) {
+        /* QSPI_IT is set */
+        bitstatus = SET;
+    }
+    else {
+        /* QSPI_IT is reset */
+        bitstatus = RESET;
+    }
+    /* Return the QSPI_IT status */
+    return bitstatus;
 }
 
 /**
@@ -862,10 +831,10 @@ ITStatus QSPI_GetITStatus(uint32_t QSPI_IT)
   */
 void QSPI_ClearITPendingBit(uint32_t QSPI_IT)
 {
-  /* Check the parameters */
-  assert_param(IS_QSPI_CLEAR_IT(QSPI_IT));  
+    /* Check the parameters */
+    assert_param(IS_QSPI_CLEAR_IT(QSPI_IT));
 
-  QUADSPI->FCR = (uint32_t)(QSPI_IT & QSPI_FSR_INTERRUPT_MASK);
+    QUADSPI->FCR = (uint32_t)(QSPI_IT & QSPI_FSR_INTERRUPT_MASK);
 }
 
 /**
@@ -876,19 +845,17 @@ void QSPI_ClearITPendingBit(uint32_t QSPI_IT)
   */
 void QSPI_DualFlashMode_Cmd(FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
+    /* Check the parameters */
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-  if (NewState != DISABLE)
-  {
-    /* Enable QSPI Dual Flash Mode */
-    QUADSPI->CR |= QUADSPI_CR_DFM;
-  }
-  else
-  {
-    /* Disable QSPI Dual Flash Mode */
-    QUADSPI->CR &= ~ QUADSPI_CR_DFM;
-  }
+    if(NewState != DISABLE) {
+        /* Enable QSPI Dual Flash Mode */
+        QUADSPI->CR |= QUADSPI_CR_DFM;
+    }
+    else {
+        /* Disable QSPI Dual Flash Mode */
+        QUADSPI->CR &= ~QUADSPI_CR_DFM;
+    }
 }
 
 /**
