@@ -9,11 +9,11 @@
 
 // Правило одного определения
 #ifdef __ALLOCATE_NOW__
-#   define GLOBAL PUBLIC
-#   define _EQU(x) = (x)
+#define GLOBAL PUBLIC
+#define _EQU(x) = (x)
 #else
-#   define GLOBAL _EXTERN
-#   define _EQU(x)
+#define GLOBAL _EXTERN
+#define _EQU(x)
 #endif
 
 // В описании функции могут быть определены дополнительные коды ошибок (#define)
@@ -76,10 +76,10 @@
 
 typedef __packed struct
 {
-   int32_t iRealTemperatur;
-   int32_t iRealPressurePa;
-   int32_t iRealPressureHg;
-   _Bool bDataValid;
+    int32_t iRealTemperatur;
+    int32_t iRealPressurePa;
+    int32_t iRealPressureHg;
+    _Bool bDataValid;
 } TPressure_Data;
 
 // buffer
@@ -90,10 +90,10 @@ GLOBAL uint8_t g_aucTxBufferUSART1[TX_BUFFER_SIZE1];
 GLOBAL uint8_t g_aucTxBufferUSART2[TX_BUFFER_SIZE2];
 GLOBAL uint8_t g_aucTxBufferUSART3[TX_BUFFER_SIZE3];
 
-GLOBAL xQueueHandle xQueuePressureDataToUsart;   // Очередь данных о давлении.
+GLOBAL xQueueHandle xQueuePressureDataToUsart;    // Очередь данных о давлении.
 /**********************/
 
-GLOBAL xTaskHandle CurrentTaskHandle;   // ID текущего процесса(Debug)
-GLOBAL char* pNameCurrentTask;   //Имя текущего процесса(Debug)
+GLOBAL xTaskHandle CurrentTaskHandle;    // ID текущего процесса(Debug)
+GLOBAL char* pNameCurrentTask;           //Имя текущего процесса(Debug)
 
 #endif

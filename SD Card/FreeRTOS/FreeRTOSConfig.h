@@ -83,7 +83,7 @@
 
 /* Ensure stdint is only used by the compiler, and not the assembler. */
 #if defined(__ICCARM__) || defined(__CC_ARM) || defined(__GNUC__)
-#   include <stdint.h>
+#include <stdint.h>
 extern uint32_t SystemCoreClock;
 #endif
 
@@ -93,7 +93,7 @@ extern uint32_t SystemCoreClock;
 #define configCPU_CLOCK_HZ (SystemCoreClock)
 #define configTICK_RATE_HZ ((portTickType)1000)
 #define configMAX_PRIORITIES ((unsigned portBASE_TYPE)5)
-#define configMINIMAL_STACK_SIZE ((unsigned short)128)   // *4
+#define configMINIMAL_STACK_SIZE ((unsigned short)128)    // *4
 #define configTOTAL_HEAP_SIZE ((size_t)5 * 512)
 #define configMAX_TASK_NAME_LEN (22)
 #define configUSE_TRACE_FACILITY 1
@@ -132,9 +132,9 @@ to exclude the API function. */
 /* Cortex-M specific definitions. */
 #ifdef __NVIC_PRIO_BITS
 /* __BVIC_PRIO_BITS will be specified when CMSIS is being used. */
-#   define configPRIO_BITS __NVIC_PRIO_BITS
+#define configPRIO_BITS __NVIC_PRIO_BITS
 #else
-#   define configPRIO_BITS 4
+#define configPRIO_BITS 4
 #endif
 
 /* The lowest interrupt priority that can be used in a call to a "set priority"

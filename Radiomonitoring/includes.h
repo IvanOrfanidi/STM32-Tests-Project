@@ -9,11 +9,11 @@
 
 // Правило одного определения
 #ifdef __ALLOCATE_NOW__
-#   define GLOBAL PUBLIC
-#   define _EQU(x) = (x)
+#define GLOBAL PUBLIC
+#define _EQU(x) = (x)
 #else
-#   define GLOBAL _EXTERN
-#   define _EQU(x)
+#define GLOBAL _EXTERN
+#define _EQU(x)
 #endif
 
 // В описании функции могут быть определены дополнительные коды ошибок (#define)
@@ -116,41 +116,39 @@ GLOBAL uint8_t g_aucTxBufferUSART3[TX_BUFFER_SIZE3];
 
 typedef __packed struct
 {
-   int16_t sValueAxisX;
-   int16_t sValueAxisY;
-   int16_t sValueAxisZ;
-   u8 ucInterrupt;
-   _Bool bDataValid;
+    int16_t sValueAxisX;
+    int16_t sValueAxisY;
+    int16_t sValueAxisZ;
+    u8 ucInterrupt;
+    _Bool bDataValid;
 } TAccel_Data;
 
 typedef __packed struct
 {
-   char strMsg[4];
-   int displaySeparator;
-   char brightness;
-   uint32_t uiDelay;
+    char strMsg[4];
+    int displaySeparator;
+    char brightness;
+    uint32_t uiDelay;
 } TDisplayData;
 
 typedef __packed struct
 {
-   uint32_t uiTimeBuzOn;
-   uint32_t uiTimeBuzOff;
+    uint32_t uiTimeBuzOn;
+    uint32_t uiTimeBuzOff;
 } TBuzzerData;
 
-typedef enum
-{
-   DEVICE_TX = 0,
-   DEVICE_RX = 1,
-   FUNCTION = 2,
-   VALUE = 3,
-   CRC8 = 4
+typedef enum {
+    DEVICE_TX = 0,
+    DEVICE_RX = 1,
+    FUNCTION = 2,
+    VALUE = 3,
+    CRC8 = 4
 } TypeProtocol;
 
-typedef enum
-{
-   SETTING = 0,
-   DIAGNOSTICS = 1,
-   NOTICE = 2,
+typedef enum {
+    SETTING = 0,
+    DIAGNOSTICS = 1,
+    NOTICE = 2,
 } TypeFunction;
 
 #define QUEUE_LENGTH 5
@@ -159,7 +157,7 @@ GLOBAL xSemaphoreHandle mDISPLAY_COMPLETED _EQU(NULL);
 GLOBAL xQueueHandle xQueueDisplayData _EQU(NULL);
 GLOBAL xQueueHandle xQueueBuzzer _EQU(NULL);
 
-GLOBAL xTaskHandle CurrentTaskHandle;   // ID текущего процесса(Debug)
-GLOBAL char* pNameCurrentTask;   //Имя текущего процесса(Debug)
+GLOBAL xTaskHandle CurrentTaskHandle;    // ID текущего процесса(Debug)
+GLOBAL char* pNameCurrentTask;           //Имя текущего процесса(Debug)
 
 #endif

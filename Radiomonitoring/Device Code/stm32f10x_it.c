@@ -49,10 +49,10 @@
  */
 void NMI_Handler(void)
 {
-   // —бросим флаг системы контрол€ HSE
-   if (RCC->CIR & RCC_CIR_CSSF)
-      RCC->CIR |= RCC_CIR_CSSC;
-   // SetSysClockHSI();
+    // —бросим флаг системы контрол€ HSE
+    if(RCC->CIR & RCC_CIR_CSSF)
+        RCC->CIR |= RCC_CIR_CSSC;
+    // SetSysClockHSI();
 }
 
 /**
@@ -63,14 +63,13 @@ void NMI_Handler(void)
 void HardFault_Handler(void)
 {
 #ifdef FREERTOS_CONFIG_H
-   CurrentTaskHandle = xTaskGetCurrentTaskHandle();
-   pNameCurrentTask = pcTaskGetTaskName(CurrentTaskHandle);
+    CurrentTaskHandle = xTaskGetCurrentTaskHandle();
+    pNameCurrentTask = pcTaskGetTaskName(CurrentTaskHandle);
 #endif
 
-   /* Go to infinite loop when Hard Fault exception occurs */
-   while (1)
-   {
-   }
+    /* Go to infinite loop when Hard Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -80,10 +79,9 @@ void HardFault_Handler(void)
  */
 void MemManage_Handler(void)
 {
-   /* Go to infinite loop when Memory Manage exception occurs */
-   while (1)
-   {
-   }
+    /* Go to infinite loop when Memory Manage exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -93,10 +91,9 @@ void MemManage_Handler(void)
  */
 void BusFault_Handler(void)
 {
-   /* Go to infinite loop when Bus Fault exception occurs */
-   while (1)
-   {
-   }
+    /* Go to infinite loop when Bus Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -106,10 +103,9 @@ void BusFault_Handler(void)
  */
 void UsageFault_Handler(void)
 {
-   /* Go to infinite loop when Usage Fault exception occurs */
-   while (1)
-   {
-   }
+    /* Go to infinite loop when Usage Fault exception occurs */
+    while(1) {
+    }
 }
 
 #ifndef FREERTOS_CONFIG_H
@@ -142,18 +138,18 @@ void DebugMon_Handler(void)
  * Output         : None
  * Return         : None
  *******************************************************************************/
-#   if defined(STM32L1XX_MD) || defined(STM32L1XX_HD) || defined(STM32L1XX_MD_PLUS) || defined(STM32F37X)
+#if defined(STM32L1XX_MD) || defined(STM32L1XX_HD) || defined(STM32L1XX_MD_PLUS) || defined(STM32F37X)
 void USB_LP_IRQHandler(void)
-#   else
+#else
 void USB_LP_CAN1_RX0_IRQHandler(void)
-#   endif
+#endif
 {
-   USB_Istr();
+    USB_Istr();
 }
 
 void USB_HP_IRQHandler(void)
 {
-   USB_Istr();
+    USB_Istr();
 }
 
 /*******************************************************************************
@@ -164,13 +160,13 @@ void USB_HP_IRQHandler(void)
  * Return         : None
  *******************************************************************************/
 
-#   if defined(STM32L1XX_MD) || defined(STM32L1XX_HD) || defined(STM32L1XX_MD_PLUS)
+#if defined(STM32L1XX_MD) || defined(STM32L1XX_HD) || defined(STM32L1XX_MD_PLUS)
 void USB_FS_WKUP_IRQHandler(void)
-#   else
+#else
 void USBWakeUp_IRQHandler(void)
-#   endif
+#endif
 {
-   EXTI_ClearITPendingBit(EXTI_Line18);
+    EXTI_ClearITPendingBit(EXTI_Line18);
 }
 #endif
 /********************************/
@@ -207,11 +203,10 @@ void PendSV_Handler(void)
  */
 void RTCAlarm_IRQHandler()
 {
-   if (RTC_GetITStatus(RTC_IT_ALR) != RESET)
-   {
-      RTC_ClearITPendingBit(RTC_IT_ALR);
-      EXTI_ClearITPendingBit(EXTI_Line17);
-   }
+    if(RTC_GetITStatus(RTC_IT_ALR) != RESET) {
+        RTC_ClearITPendingBit(RTC_IT_ALR);
+        EXTI_ClearITPendingBit(EXTI_Line17);
+    }
 }
 
 /******************* (C) COPYRIGHT 2011 STMicroelectronics *****END OF FILE****/

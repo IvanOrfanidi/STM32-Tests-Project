@@ -27,17 +27,17 @@
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __USB_TYPE_H
-#   define __USB_TYPE_H
+#define __USB_TYPE_H
 
 /* Includes ------------------------------------------------------------------*/
-#   include "usb_conf.h"
-#   include "arm_comm.h"
+#include "usb_conf.h"
+#include "arm_comm.h"
 
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/
-#   ifndef NULL
-#      define NULL ((void*)0)
-#   endif
+#ifndef NULL
+#define NULL ((void*)0)
+#endif
 
 // typedef enum
 //{

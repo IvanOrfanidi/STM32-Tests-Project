@@ -8,50 +8,47 @@ xTaskHandle xHandleSDCardTask;
 
 int main()
 {
-   InitGPIO();
+    InitGPIO();
 
-   InitBKP();
+    InitBKP();
 
-   rtc_init();
+    rtc_init();
 
-   SD_Init();
+    SD_Init();
 
-   OutPutFile();
+    OutPutFile();
 
-   // Start Task //
-   xTaskCreate(
-      vSdCardTask, "vSdCardTask", configMINIMAL_STACK_SIZE * 1, NULL, tskIDLE_PRIORITY + 1, &xHandleSDCardTask);
+    // Start Task //
+    xTaskCreate(
+        vSdCardTask, "vSdCardTask", configMINIMAL_STACK_SIZE * 1, NULL, tskIDLE_PRIORITY + 1, &xHandleSDCardTask);
 
-   // Start scheduler //
-   osKernelStart(NULL, NULL);
+    // Start scheduler //
+    osKernelStart(NULL, NULL);
 }
 
 void vApplicationMallocFailedHook(void)
 {
-   for (;;)
-      ;
+    for(;;)
+        ;
 }
 void vApplicationStackOverflowHook(TaskHandle_t pxTask, char* pcTaskName)
 {
-   for (;;)
-      ;
+    for(;;)
+        ;
 }
 
 void vApplicationIdleHook(void)
 {
-   portTickType WakeTick = 0;
+    portTickType WakeTick = 0;
 
-   WakeTick = xTaskGetTickCount() + configTICK_RATE_HZ;
-   while (1)
-   {
-      if (xTaskGetTickCount() >= WakeTick)
-      {
-      }
-      if (WakeTick > xTaskGetTickCount() + configTICK_RATE_HZ << 1)
-      {
-         WakeTick = configTICK_RATE_HZ + xTaskGetTickCount();
-      }
+    WakeTick = xTaskGetTickCount() + configTICK_RATE_HZ;
+    while(1) {
+        if(xTaskGetTickCount() >= WakeTick) {
+        }
+        if(WakeTick > xTaskGetTickCount() + configTICK_RATE_HZ << 1) {
+            WakeTick = configTICK_RATE_HZ + xTaskGetTickCount();
+        }
 
-      IWDG_ReloadCounter();   // Reload IWDG counter
-   }
+        IWDG_ReloadCounter();    // Reload IWDG counter
+    }
 }

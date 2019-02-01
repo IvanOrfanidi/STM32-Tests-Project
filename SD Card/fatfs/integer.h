@@ -5,7 +5,7 @@
 #ifndef _INTEGER
 
 #if 0
-#   include <windows.h>
+#include <windows.h>
 #else
 //#include "includes.h"
 /* These types must be 16-bit, 32-bit or larger integer */

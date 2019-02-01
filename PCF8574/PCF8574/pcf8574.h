@@ -4,24 +4,24 @@
 #define _I2C_PORT_PCF8574_ 1
 
 #if _I2C_PORT_PCF8574_ == 1
-#   define PCF8574_I2C I2C1
-#   define PCF8574_I2C_RCC_Periph RCC_APB1Periph_I2C1
-#   define PCF8574_I2C_Port GPIOB
-#   define PCF8574_I2C_SCL_Pin GPIO_Pin_6
-#   define PCF8574_I2C_SDA_Pin GPIO_Pin_7
-#   define PCF8574_I2C_RCC_Port RCC_APB2Periph_GPIOB
+#define PCF8574_I2C I2C1
+#define PCF8574_I2C_RCC_Periph RCC_APB1Periph_I2C1
+#define PCF8574_I2C_Port GPIOB
+#define PCF8574_I2C_SCL_Pin GPIO_Pin_6
+#define PCF8574_I2C_SDA_Pin GPIO_Pin_7
+#define PCF8574_I2C_RCC_Port RCC_APB2Periph_GPIOB
 #elif _I2C_PORT_PCF8574_ == 2
-#   define PCF8574_I2C I2C2
-#   define PCF8574_I2C_RCC_Periph RCC_APB1Periph_I2C2
-#   define PCF8574_I2C_Port GPIOB
-#   define PCF8574_I2C_SCL_Pin GPIO_Pin_10
-#   define PCF8574_I2C_SDA_Pin GPIO_Pin_11
-#   define PCF8574_I2C_RCC_Port RCC_APB2Periph_GPIOB
+#define PCF8574_I2C I2C2
+#define PCF8574_I2C_RCC_Periph RCC_APB1Periph_I2C2
+#define PCF8574_I2C_Port GPIOB
+#define PCF8574_I2C_SCL_Pin GPIO_Pin_10
+#define PCF8574_I2C_SDA_Pin GPIO_Pin_11
+#define PCF8574_I2C_RCC_Port RCC_APB2Periph_GPIOB
 #endif
 
 #define PCF8574_I2C_Speed 100000
 
-#define PCF8574_ADDRESS 0x07   // this device only has one address
+#define PCF8574_ADDRESS 0x07    // this device only has one address
 
 // Раскомментировать нужную строку для своего ЖКИ
 //#define LCD_2004
@@ -29,7 +29,7 @@
 
 // Указать название вункции задержки
 extern void delay(uint32_t t);
-#define lcd_pause _delay_ms(1)   // а тут указать значение задержки
+#define lcd_pause _delay_ms(1)    // а тут указать значение задержки
 
 // Не нужно редактировать.
 // Описание пинов расширителя портов

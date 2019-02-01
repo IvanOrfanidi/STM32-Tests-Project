@@ -16,25 +16,25 @@
 
 #if _SPI_RC522_PORT == 1
 
-#   define RC522_SPI SPI1
-#   define RC522_SPI_CLK RCC_APB2Periph_SPI1
-#   define RC522_SPI_MOSI_GPIO_CLK RCC_APB2Periph_GPIOA
+#define RC522_SPI SPI1
+#define RC522_SPI_CLK RCC_APB2Periph_SPI1
+#define RC522_SPI_MOSI_GPIO_CLK RCC_APB2Periph_GPIOA
 
-#   define RC522_SPI_SCK_PIN GPIO_Pin_5
-#   define RC522_SPI_MISO_PIN GPIO_Pin_6
-#   define RC522_SPI_MOSI_PIN GPIO_Pin_7
-#   define RC522_SPI_GPIO_PORT GPIOA
+#define RC522_SPI_SCK_PIN GPIO_Pin_5
+#define RC522_SPI_MISO_PIN GPIO_Pin_6
+#define RC522_SPI_MOSI_PIN GPIO_Pin_7
+#define RC522_SPI_GPIO_PORT GPIOA
 
 #elif _SPI_RC522_PORT == 2
 
-#   define RC522_SPI SPI2
-#   define RC522_SPI_CLK RCC_APB1Periph_SPI2
-#   define RC522_SPI_MOSI_GPIO_CLK RCC_APB2Periph_GPIOB
+#define RC522_SPI SPI2
+#define RC522_SPI_CLK RCC_APB1Periph_SPI2
+#define RC522_SPI_MOSI_GPIO_CLK RCC_APB2Periph_GPIOB
 
-#   define RC522_SPI_SCK_PIN GPIO_Pin_13
-#   define RC522_SPI_MISO_PIN GPIO_Pin_14
-#   define RC522_SPI_MOSI_PIN GPIO_Pin_15
-#   define RC522_SPI_GPIO_PORT GPIOB
+#define RC522_SPI_SCK_PIN GPIO_Pin_13
+#define RC522_SPI_MISO_PIN GPIO_Pin_14
+#define RC522_SPI_MOSI_PIN GPIO_Pin_15
+#define RC522_SPI_GPIO_PORT GPIOB
 
 #endif
 
@@ -44,28 +44,28 @@
 #define MI_ERR 2
 
 // MFRC522 Commands
-#define PCD_IDLE 0x00   // NO action; Cancel the current command
-#define PCD_AUTHENT 0x0E   // Authentication Key
-#define PCD_RECEIVE 0x08   // Receive Data
-#define PCD_TRANSMIT 0x04   // Transmit data
-#define PCD_TRANSCEIVE 0x0C   // Transmit and receive data,
-#define PCD_RESETPHASE 0x0F   // Reset
-#define PCD_CALCCRC 0x03   // CRC Calculate
+#define PCD_IDLE 0x00          // NO action; Cancel the current command
+#define PCD_AUTHENT 0x0E       // Authentication Key
+#define PCD_RECEIVE 0x08       // Receive Data
+#define PCD_TRANSMIT 0x04      // Transmit data
+#define PCD_TRANSCEIVE 0x0C    // Transmit and receive data,
+#define PCD_RESETPHASE 0x0F    // Reset
+#define PCD_CALCCRC 0x03       // CRC Calculate
 
 // Mifare_One card command word
-#define PICC_REQIDL 0x26   // find the antenna area does not enter hibernation
-#define PICC_REQALL 0x52   // find all the cards antenna area
-#define PICC_ANTICOLL 0x93   // anti-collision
-#define PICC_SElECTTAG 0x93   // election card
-#define PICC_AUTHENT1A 0x60   // authentication key A
-#define PICC_AUTHENT1B 0x61   // authentication key B
-#define PICC_READ 0x30   // Read Block
-#define PICC_WRITE 0xA0   // write block
-#define PICC_DECREMENT 0xC0   // debit
-#define PICC_INCREMENT 0xC1   // recharge
-#define PICC_RESTORE 0xC2   // transfer block data to the buffer
-#define PICC_TRANSFER 0xB0   // save the data in the buffer
-#define PICC_HALT 0x50   // Sleep
+#define PICC_REQIDL 0x26       // find the antenna area does not enter hibernation
+#define PICC_REQALL 0x52       // find all the cards antenna area
+#define PICC_ANTICOLL 0x93     // anti-collision
+#define PICC_SElECTTAG 0x93    // election card
+#define PICC_AUTHENT1A 0x60    // authentication key A
+#define PICC_AUTHENT1B 0x61    // authentication key B
+#define PICC_READ 0x30         // Read Block
+#define PICC_WRITE 0xA0        // write block
+#define PICC_DECREMENT 0xC0    // debit
+#define PICC_INCREMENT 0xC1    // recharge
+#define PICC_RESTORE 0xC2      // transfer block data to the buffer
+#define PICC_TRANSFER 0xB0     // save the data in the buffer
+#define PICC_HALT 0x50         // Sleep
 
 // MFRC522 Registers
 // Page 0: Command and Status
@@ -137,8 +137,8 @@
 #define MFRC522_REG_RESERVED33 0x3E
 #define MFRC522_REG_RESERVED34 0x3F
 
-#define MFRC522_DUMMY 0x00   // Dummy byte
-#define MFRC522_MAX_LEN 16   // Buf len byte
+#define MFRC522_DUMMY 0x00    // Dummy byte
+#define MFRC522_MAX_LEN 16    // Buf len byte
 
 void SPI_RC522_Init(void);
 void RF_Deactivate(void);
