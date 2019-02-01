@@ -20,7 +20,7 @@
 #define FLASH_WRITE_DISABLE 0x04
 
 // REGISTER Operations //
-#define READ_STATUS_REGISTER 0x05   // Read Status Register instruction  //
+#define READ_STATUS_REGISTER 0x05    // Read Status Register instruction  //
 #define WRITE_STATUS_REGISTER 0x01
 #define READ_LOCK_REGISTER 0xE8
 #define WRITE_LOCK_REGISTER 0xE5
@@ -40,7 +40,7 @@
 
 // ERASE Operations //
 #define SUBSECTOR_ERASE 0x20
-#define SECTOR_ERASE 0xD8   // Sector Erase instruction //
+#define SECTOR_ERASE 0xD8    // Sector Erase instruction //
 #define BULK_ERASE 0xC7
 #define PROGRAM_ERASE_RESUME 0x7A
 #define PROGRAM_ERASE_SUSPEND 0x75
@@ -54,7 +54,7 @@
 #define READ_SERIAL_FLASH_DISCOVERY_PARAMETER 0x5A
 
 #define WIP_Flag \
-   0x01 /* Write In Progress (WIP) flag. \
+    0x01 /* Write In Progress (WIP) flag. \
            Indicates if one of the following command cycles is in progress: \
              1)WRITE STATUS REGISTER \
              2)WRITE NONVOLATILE CONFIGURATION REGISTER \
@@ -62,14 +62,14 @@
              4)ERASE*/
 
 #define WEL_Flag \
-   0x02 /* Write enable latch. \
+    0x02 /* Write enable latch. \
            The device always powers up with this bit \
            cleared to prevent inadvertent WRITE STATUS REGISTER, \
            PROGRAM, or ERASE operations. To enable these operations, the WRITE ENABLE operation must be executed first \
            to set this bit.*/
 
 #define SRWE_Flag \
-   0x80 /* Status register write enable/disable. \
+    0x80 /* Status register write enable/disable. \
            Used with the W#/Vpp signal to enable or \
            disable writing to the status register. \
            A one-time programmable bit used to lock permanently the entire status register. */
@@ -78,16 +78,16 @@ uint8_t SPI_Flash_ReadByte(void);
 void FlashWaitBusy(void);
 void FlashReadID(uint8_t* Data);
 
-void FlashBulkErase();   // Full Earse Flash.
-void FlashSubSectorEarse(uint32_t SubSectorAddress);   // Max 4096 (4096 bytes, 16 Page).
-void FlashSectorEarse(uint32_t SectorAddress);   // Max 256 (65536 bytes, 256 Page).
+void FlashBulkErase();                                  // Full Earse Flash.
+void FlashSubSectorEarse(uint32_t SubSectorAddress);    // Max 4096 (4096 bytes, 16 Page).
+void FlashSectorEarse(uint32_t SectorAddress);          // Max 256 (65536 bytes, 256 Page).
 
 void EXT_FLASH_Read(uint8_t* pBuffer,
-                    uint32_t StartAddress,
-                    uint16_t Length);   // Max Address 16 777 216 and max Length 256.
+    uint32_t StartAddress,
+    uint16_t Length);    // Max Address 16 777 216 and max Length 256.
 void EXT_FLASH_Write(const uint8_t* pBuffer,
-                     uint32_t StartAddress,
-                     uint16_t Length);   // Max Address 16 777 216 and max Length 256.
+    uint32_t StartAddress,
+    uint16_t Length);    // Max Address 16 777 216 and max Length 256.
 
 /*******************************************************************************
 
@@ -100,29 +100,29 @@ void EXT_FLASH_Write(const uint8_t* pBuffer,
 #define FLASH_ERASE_SUBSECTOR(subsec) FlashSubSectorEarse(subsec << 12)
 
 #ifdef N25Q128
-#   define SIZE_EXT_FLASH ((uint32_t)16777216)
-#   define SIZE_SECTOR_FLASH ((uint32_t)65536)
+#define SIZE_EXT_FLASH ((uint32_t)16777216)
+#define SIZE_SECTOR_FLASH ((uint32_t)65536)
 #endif
 
 #ifdef N25Q64
-#   define SIZE_EXT_FLASH ((uint32_t)8388608)
-#   define SIZE_SECTOR_FLASH ((uint32_t)32768)
+#define SIZE_EXT_FLASH ((uint32_t)8388608)
+#define SIZE_SECTOR_FLASH ((uint32_t)32768)
 #endif
 
 #ifdef MX25L1006E
-#   define SIZE_EXT_FLASH ((uint32_t)131072)
-#   define SIZE_SECTOR_FLASH ((uint32_t)65536)
+#define SIZE_EXT_FLASH ((uint32_t)131072)
+#define SIZE_SECTOR_FLASH ((uint32_t)65536)
 #endif
 
 #ifdef MX25L4006E
-#   define SIZE_EXT_FLASH ((uint32_t)524288)
-#   define SIZE_SECTOR_FLASH ((uint32_t)65536)
+#define SIZE_EXT_FLASH ((uint32_t)524288)
+#define SIZE_SECTOR_FLASH ((uint32_t)65536)
 #endif
 
 #define SIZE_SUBSECTOR_FLASH ((uint32_t)4096)
 #define SIZE_PAGE_FLASH ((uint32_t)256)
 
-#define FLASH_SUB_SECTOR_PG_NUM SIZE_SUBSECTOR_FLASH / SIZE_PAGE_FLASH   //число страниц в суб секторе
+#define FLASH_SUB_SECTOR_PG_NUM SIZE_SUBSECTOR_FLASH / SIZE_PAGE_FLASH    //число страниц в суб секторе
 
 void SaveConfigToFlash(uint8_t* pBuffer, uint16_t Length);
 void ReadConfigToFlash(uint8_t* pBuffer, uint16_t Length);

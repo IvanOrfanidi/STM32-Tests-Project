@@ -11,20 +11,20 @@ extern "C" {
 
 typedef struct
 {
-   // csq
-   u8 rssi;
-   u8 ber;
+    // csq
+    u8 rssi;
+    u8 ber;
 
-   // creg
-   u8 urcMode;
-   u8 regStatus;
-   u8 netLac;
-   u8 netCellId;
+    // creg
+    u8 urcMode;
+    u8 regStatus;
+    u8 netLac;
+    u8 netCellId;
 
-   // cops
-   u8 mode;
-   u8 format;
-   u32 opName;
+    // cops
+    u8 mode;
+    u8 format;
+    u32 opName;
 
 } GSM_PARAM;
 

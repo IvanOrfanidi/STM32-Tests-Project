@@ -28,14 +28,14 @@
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __STM32L1xx_CRC_H
-#   define __STM32L1xx_CRC_H
+#define __STM32L1xx_CRC_H
 
-#   ifdef __cplusplus
+#ifdef __cplusplus
 extern "C" {
-#   endif
+#endif
 
 /* Includes ------------------------------------------------------------------*/
-#   include "stm32l1xx.h"
+#include "stm32l1xx.h"
 
 /** @addtogroup STM32L1xx_StdPeriph_Driver
  * @{
@@ -66,9 +66,9 @@ uint32_t CRC_GetCRC(void);
 void CRC_SetIDRegister(uint8_t IDValue);
 uint8_t CRC_GetIDRegister(void);
 
-#   ifdef __cplusplus
+#ifdef __cplusplus
 }
-#   endif
+#endif
 
 #endif /* __STM32L1xx_CRC_H */
 

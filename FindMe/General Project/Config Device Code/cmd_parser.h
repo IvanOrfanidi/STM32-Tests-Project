@@ -25,9 +25,8 @@
 
 #define ANS_BUFF_SIZE 256
 
-typedef enum
-{
-   ID_SET_PASS = 192,
+typedef enum {
+    ID_SET_PASS = 192,
 } ID_SET_VALUE;
 
 int pass_entry(u8* pansw, u8* parg, u16 len);

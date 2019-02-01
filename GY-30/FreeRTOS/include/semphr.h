@@ -67,7 +67,7 @@
 #define SEMAPHORE_H
 
 #ifndef INC_FREERTOS_H
-#   error "include FreeRTOS.h" must appear in source files before "include semphr.h"
+#error "include FreeRTOS.h" must appear in source files before "include semphr.h"
 #endif
 
 #include "queue.h"
@@ -124,14 +124,13 @@ typedef QueueHandle_t SemaphoreHandle_t;
  * \ingroup Semaphores
  */
 #define vSemaphoreCreateBinary(xSemaphore) \
-   { \
-      (xSemaphore) = \
-         xQueueGenericCreate((UBaseType_t)1, semSEMAPHORE_QUEUE_ITEM_LENGTH, queueQUEUE_TYPE_BINARY_SEMAPHORE); \
-      if ((xSemaphore) != NULL) \
-      { \
-         (void)xSemaphoreGive((xSemaphore)); \
-      } \
-   }
+    { \
+        (xSemaphore) = \
+            xQueueGenericCreate((UBaseType_t)1, semSEMAPHORE_QUEUE_ITEM_LENGTH, queueQUEUE_TYPE_BINARY_SEMAPHORE); \
+        if((xSemaphore) != NULL) { \
+            (void)xSemaphoreGive((xSemaphore)); \
+        } \
+    }
 
 /**
  * semphr. h
@@ -179,7 +178,7 @@ typedef QueueHandle_t SemaphoreHandle_t;
  * \ingroup Semaphores
  */
 #define xSemaphoreCreateBinary() \
-   xQueueGenericCreate((UBaseType_t)1, semSEMAPHORE_QUEUE_ITEM_LENGTH, queueQUEUE_TYPE_BINARY_SEMAPHORE)
+    xQueueGenericCreate((UBaseType_t)1, semSEMAPHORE_QUEUE_ITEM_LENGTH, queueQUEUE_TYPE_BINARY_SEMAPHORE)
 
 /**
  * semphr. h
@@ -247,7 +246,7 @@ typedef QueueHandle_t SemaphoreHandle_t;
  * \ingroup Semaphores
  */
 #define xSemaphoreTake(xSemaphore, xBlockTime) \
-   xQueueGenericReceive((QueueHandle_t)(xSemaphore), NULL, (xBlockTime), pdFALSE)
+    xQueueGenericReceive((QueueHandle_t)(xSemaphore), NULL, (xBlockTime), pdFALSE)
 
 /**
  * semphr. h
@@ -355,7 +354,7 @@ typedef QueueHandle_t SemaphoreHandle_t;
  * sacrifices execution speed to ensure better interrupt responsiveness.
  */
 #define xSemaphoreAltTake(xSemaphore, xBlockTime) \
-   xQueueAltGenericReceive((QueueHandle_t)(xSemaphore), NULL, (xBlockTime), pdFALSE)
+    xQueueAltGenericReceive((QueueHandle_t)(xSemaphore), NULL, (xBlockTime), pdFALSE)
 
 /**
  * semphr. h
@@ -419,7 +418,7 @@ typedef QueueHandle_t SemaphoreHandle_t;
  * \ingroup Semaphores
  */
 #define xSemaphoreGive(xSemaphore) \
-   xQueueGenericSend((QueueHandle_t)(xSemaphore), NULL, semGIVE_BLOCK_TIME, queueSEND_TO_BACK)
+    xQueueGenericSend((QueueHandle_t)(xSemaphore), NULL, semGIVE_BLOCK_TIME, queueSEND_TO_BACK)
 
 /**
  * semphr. h
@@ -518,7 +517,7 @@ typedef QueueHandle_t SemaphoreHandle_t;
  * sacrifices execution speed to ensure better interrupt responsiveness.
  */
 #define xSemaphoreAltGive(xSemaphore) \
-   xQueueAltGenericSend((QueueHandle_t)(xSemaphore), NULL, semGIVE_BLOCK_TIME, queueSEND_TO_BACK)
+    xQueueAltGenericSend((QueueHandle_t)(xSemaphore), NULL, semGIVE_BLOCK_TIME, queueSEND_TO_BACK)
 
 /**
  * semphr. h
@@ -610,7 +609,7 @@ typedef QueueHandle_t SemaphoreHandle_t;
  * \ingroup Semaphores
  */
 #define xSemaphoreGiveFromISR(xSemaphore, pxHigherPriorityTaskWoken) \
-   xQueueGenericSendFromISR((QueueHandle_t)(xSemaphore), NULL, (pxHigherPriorityTaskWoken), queueSEND_TO_BACK)
+    xQueueGenericSendFromISR((QueueHandle_t)(xSemaphore), NULL, (pxHigherPriorityTaskWoken), queueSEND_TO_BACK)
 
 /**
  * semphr. h
@@ -645,7 +644,7 @@ typedef QueueHandle_t SemaphoreHandle_t;
  * pdFALSE
  */
 #define xSemaphoreTakeFromISR(xSemaphore, pxHigherPriorityTaskWoken) \
-   xQueueReceiveFromISR((QueueHandle_t)(xSemaphore), NULL, (pxHigherPriorityTaskWoken))
+    xQueueReceiveFromISR((QueueHandle_t)(xSemaphore), NULL, (pxHigherPriorityTaskWoken))
 
 /**
  * semphr. h
@@ -810,7 +809,7 @@ typedef QueueHandle_t SemaphoreHandle_t;
  * \ingroup Semaphores
  */
 #define xSemaphoreCreateCounting(uxMaxCount, uxInitialCount) \
-   xQueueCreateCountingSemaphore((uxMaxCount), (uxInitialCount))
+    xQueueCreateCountingSemaphore((uxMaxCount), (uxInitialCount))
 
 /**
  * semphr. h

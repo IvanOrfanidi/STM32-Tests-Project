@@ -2,32 +2,32 @@
 #define __PLATFORM_CONFIG_FM3_H_
 
 #ifndef BOOTLOADER
-#   include "includes.h"
+#include "includes.h"
 #endif
 
 #define __DEBUG__ 1
 #define _CHECK_FUSES_ 0
 
-#define DEV_VER "15"   // Индивидуальный номер каждого устройства.
+#define DEV_VER "15"    // Индивидуальный номер каждого устройства.
 /* 11 - iON Fm, 12 - Connect, 15 - FindMe3,  16 - FindMe4 */
 #define HW_VER "01"
 
-#define NAME_FIRMWARE 1509022170   //Имя прошивки
+#define NAME_FIRMWARE 1509022170    //Имя прошивки
 
 /* Макросы портов GPIO */
 #define GPIO_HIGH(a, b) a->BSRRL = b
 #define GPIO_LOW(a, b) a->BSRRH = b
 #define GPIO_TOGGLE(a, b) a->ODR ^= b
 
-#define MX25L4006E   // Микросхема FLASH памяти
+#define MX25L4006E    // Микросхема FLASH памяти
 
-#define TWO_SIMCARD 1   // Наличие двух СИМ карт
+#define TWO_SIMCARD 1    // Наличие двух СИМ карт
 
-#define TEMPERATURE_ACCEL 1   // Измерение температуры акселерометром
+#define TEMPERATURE_ACCEL 1    // Измерение температуры акселерометром
 
-#define USE_TEST_DEVICE 0   // Выход тестового режима на сторонний сервер отличный от 911
+#define USE_TEST_DEVICE 0    // Выход тестового режима на сторонний сервер отличный от 911
 
-#define USE_LOG_DATA 1   // Отправка лога девайса на сервер iON
+#define USE_LOG_DATA 1    // Отправка лога девайса на сервер iON
 
 //// ----- USART BAUDRATE  ---- ////
 #define GPS_BAUDRATE 9600
@@ -108,18 +108,18 @@
 
 /* SPI */
 /* SPI1 DEVICE */
-#define SPI1_CLK RCC_APB2Periph_SPI1   // RCC_APB2Periph_SPI1
-#define SPI1_SCK_PIN GPIO_Pin_5 /* PB.13 */
-#define SPI1_SCK_GPIO_PORT GPIOA /* GPIOB */
+#define SPI1_CLK RCC_APB2Periph_SPI1    // RCC_APB2Periph_SPI1
+#define SPI1_SCK_PIN GPIO_Pin_5         /* PB.13 */
+#define SPI1_SCK_GPIO_PORT GPIOA        /* GPIOB */
 #define SPI1_SCK_GPIO_CLK RCC_AHBPeriph_GPIOA
 #define SPI1_SCK_SOURCE GPIO_PinSource5
 #define SPI1_SCK_AF GPIO_AF_SPI1
-#define SPI1_MISO_PIN GPIO_Pin_6 /* PB.14 */
+#define SPI1_MISO_PIN GPIO_Pin_6  /* PB.14 */
 #define SPI1_MISO_GPIO_PORT GPIOA /* GPIOB */
 #define SPI1_MISO_GPIO_CLK RCC_AHBPeriph_GPIOA
 #define SPI1_MISO_SOURCE GPIO_PinSource6
 #define SPI1_MISO_AF GPIO_AF_SPI1
-#define SPI1_MOSI_PIN GPIO_Pin_7 /* PB.15 */
+#define SPI1_MOSI_PIN GPIO_Pin_7  /* PB.15 */
 #define SPI1_MOSI_GPIO_PORT GPIOA /* GPIOB */
 #define SPI1_MOSI_GPIO_CLK RCC_AHBPeriph_GPIOA
 #define SPI1_MOSI_SOURCE GPIO_PinSource7
@@ -127,8 +127,8 @@
 
 /* SPI2 DEVICE */
 #define SPI2_CLK RCC_APB1Periph_SPI2 /* RCC_APB1Periph_SPI2 */
-#define SPI2_SCK_PIN GPIO_Pin_13 /* PB.13 */
-#define SPI2_SCK_GPIO_PORT GPIOB /* GPIOB */
+#define SPI2_SCK_PIN GPIO_Pin_13     /* PB.13 */
+#define SPI2_SCK_GPIO_PORT GPIOB     /* GPIOB */
 #define SPI2_SCK_GPIO_CLK RCC_AHBPeriph_GPIOB
 #define SPI2_SCK_SOURCE GPIO_PinSource13
 #define SPI2_SCK_AF GPIO_AF_SPI2
@@ -152,21 +152,21 @@
 #define LED_TOGGLE GPIO_TOGGLE(LED_PORT, LED_MCU)
 
 #define FLASH_CS_OFF \
-   GPIO_HIGH(FLASH_SPI_CS_GPIO_PORT, FLASH_SPI_CS_PIN); \
-   SPI1_CS_DELAY
+    GPIO_HIGH(FLASH_SPI_CS_GPIO_PORT, FLASH_SPI_CS_PIN); \
+    SPI1_CS_DELAY
 #define FLASH_CS_ON \
-   GPIO_LOW(FLASH_SPI_CS_GPIO_PORT, FLASH_SPI_CS_PIN); \
-   SPI1_CS_DELAY
+    GPIO_LOW(FLASH_SPI_CS_GPIO_PORT, FLASH_SPI_CS_PIN); \
+    SPI1_CS_DELAY
 
 #define ACCEL_CS_OFF \
-   GPIO_HIGH(ACCEL_SPI_CS_GPIO_PORT, ACCEL_SPI_CS_PIN); \
-   SPI1_CS_DELAY
+    GPIO_HIGH(ACCEL_SPI_CS_GPIO_PORT, ACCEL_SPI_CS_PIN); \
+    SPI1_CS_DELAY
 #define ACCEL_CS_ON \
-   GPIO_LOW(ACCEL_SPI_CS_GPIO_PORT, ACCEL_SPI_CS_PIN); \
-   SPI1_CS_DELAY
+    GPIO_LOW(ACCEL_SPI_CS_GPIO_PORT, ACCEL_SPI_CS_PIN); \
+    SPI1_CS_DELAY
 
 #define GSM_STATUS_ON \
-   (GPIO_ReadInputDataBit(GSM_REF_PORT, GSM_REF_PIN))   // Проверяем старт GSM модуля по напряжению на его пине.
+    (GPIO_ReadInputDataBit(GSM_REF_PORT, GSM_REF_PIN))    // Проверяем старт GSM модуля по напряжению на его пине.
 
 #define PWR_KEY_PULL_DOWN GPIO_HIGH(GSM_PWR_KEY_PIN_PORT, GSM_PWR_KEY_PIN)
 #define PWR_KEY_PULL_UP GPIO_LOW(GSM_PWR_KEY_PIN_PORT, GSM_PWR_KEY_PIN)

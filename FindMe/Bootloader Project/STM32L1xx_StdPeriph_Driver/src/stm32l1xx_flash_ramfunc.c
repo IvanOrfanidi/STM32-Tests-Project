@@ -89,7 +89,7 @@ static __RAM_FUNC WaitForLastOperation(uint32_t Timeout);
   * @{
   */
 #if defined(__TASKING__)
-#   pragma section_code_init on
+#pragma section_code_init on
 #endif
 
 /**
@@ -101,30 +101,27 @@ static __RAM_FUNC WaitForLastOperation(uint32_t Timeout);
  */
 __RAM_FUNC FLASH_RUNPowerDownCmd(FunctionalState NewState)
 {
-   FLASH_Status status = FLASH_COMPLETE;
+    FLASH_Status status = FLASH_COMPLETE;
 
-   if (NewState != DISABLE)
-   {
-      /* Unlock the RUN_PD bit */
-      FLASH->PDKEYR = FLASH_PDKEY1;
-      FLASH->PDKEYR = FLASH_PDKEY2;
+    if(NewState != DISABLE) {
+        /* Unlock the RUN_PD bit */
+        FLASH->PDKEYR = FLASH_PDKEY1;
+        FLASH->PDKEYR = FLASH_PDKEY2;
 
-      /* Set the RUN_PD bit in  FLASH_ACR register to put Flash in power down mode */
-      FLASH->ACR |= (uint32_t)FLASH_ACR_RUN_PD;
+        /* Set the RUN_PD bit in  FLASH_ACR register to put Flash in power down mode */
+        FLASH->ACR |= (uint32_t)FLASH_ACR_RUN_PD;
 
-      if ((FLASH->ACR & FLASH_ACR_RUN_PD) != FLASH_ACR_RUN_PD)
-      {
-         status = FLASH_ERROR_PROGRAM;
-      }
-   }
-   else
-   {
-      /* Clear the RUN_PD bit in  FLASH_ACR register to put Flash in idle  mode */
-      FLASH->ACR &= (uint32_t)(~(uint32_t)FLASH_ACR_RUN_PD);
-   }
+        if((FLASH->ACR & FLASH_ACR_RUN_PD) != FLASH_ACR_RUN_PD) {
+            status = FLASH_ERROR_PROGRAM;
+        }
+    }
+    else {
+        /* Clear the RUN_PD bit in  FLASH_ACR register to put Flash in idle  mode */
+        FLASH->ACR &= (uint32_t)(~(uint32_t)FLASH_ACR_RUN_PD);
+    }
 
-   /* Return the Write Status */
-   return status;
+    /* Return the Write Status */
+    return status;
 }
 
 /**
@@ -160,39 +157,38 @@ __RAM_FUNC FLASH_RUNPowerDownCmd(FunctionalState NewState)
  */
 FLASH_Status FLASH_EraseParallelPage(uint32_t Page_Address1, uint32_t Page_Address2)
 {
-   FLASH_Status status = FLASH_COMPLETE;
+    FLASH_Status status = FLASH_COMPLETE;
 
-   /* Wait for last operation to be completed */
-   status = WaitForLastOperation(FLASH_ER_PRG_TIMEOUT);
+    /* Wait for last operation to be completed */
+    status = WaitForLastOperation(FLASH_ER_PRG_TIMEOUT);
 
-   if (status == FLASH_COMPLETE)
-   {
-      /* If the previous operation is completed, proceed to erase the page */
+    if(status == FLASH_COMPLETE) {
+        /* If the previous operation is completed, proceed to erase the page */
 
-      /* Set the PARALLBANK bit */
-      FLASH->PECR |= FLASH_PECR_PARALLBANK;
+        /* Set the PARALLBANK bit */
+        FLASH->PECR |= FLASH_PECR_PARALLBANK;
 
-      /* Set the ERASE bit */
-      FLASH->PECR |= FLASH_PECR_ERASE;
+        /* Set the ERASE bit */
+        FLASH->PECR |= FLASH_PECR_ERASE;
 
-      /* Set PROG bit */
-      FLASH->PECR |= FLASH_PECR_PROG;
+        /* Set PROG bit */
+        FLASH->PECR |= FLASH_PECR_PROG;
 
-      /* Write 00000000h to the first word of the first program page to erase */
-      *(__IO uint32_t*)Page_Address1 = 0x00000000;
-      /* Write 00000000h to the first word of the second program page to erase */
-      *(__IO uint32_t*)Page_Address2 = 0x00000000;
+        /* Write 00000000h to the first word of the first program page to erase */
+        *(__IO uint32_t*)Page_Address1 = 0x00000000;
+        /* Write 00000000h to the first word of the second program page to erase */
+        *(__IO uint32_t*)Page_Address2 = 0x00000000;
 
-      /* Wait for last operation to be completed */
-      status = WaitForLastOperation(FLASH_ER_PRG_TIMEOUT);
+        /* Wait for last operation to be completed */
+        status = WaitForLastOperation(FLASH_ER_PRG_TIMEOUT);
 
-      /* If the erase operation is completed, disable the ERASE, PROG and PARALLBANK bits */
-      FLASH->PECR &= (uint32_t)(~FLASH_PECR_PROG);
-      FLASH->PECR &= (uint32_t)(~FLASH_PECR_ERASE);
-      FLASH->PECR &= (uint32_t)(~FLASH_PECR_PARALLBANK);
-   }
-   /* Return the Erase Status */
-   return status;
+        /* If the erase operation is completed, disable the ERASE, PROG and PARALLBANK bits */
+        FLASH->PECR &= (uint32_t)(~FLASH_PECR_PROG);
+        FLASH->PECR &= (uint32_t)(~FLASH_PECR_ERASE);
+        FLASH->PECR &= (uint32_t)(~FLASH_PECR_PARALLBANK);
+    }
+    /* Return the Erase Status */
+    return status;
 }
 
 /**
@@ -222,43 +218,41 @@ FLASH_Status FLASH_EraseParallelPage(uint32_t Page_Address1, uint32_t Page_Addre
  */
 __RAM_FUNC FLASH_ProgramHalfPage(uint32_t Address, uint32_t* pBuffer)
 {
-   uint32_t count = 0;
+    uint32_t count = 0;
 
-   FLASH_Status status = FLASH_COMPLETE;
+    FLASH_Status status = FLASH_COMPLETE;
 
-   /* Set the DISMCYCINT[0] bit in the Auxillary Control Register (0xE000E008)
+    /* Set the DISMCYCINT[0] bit in the Auxillary Control Register (0xE000E008)
       This bit prevents the interruption of multicycle instructions and therefore
       will increase the interrupt latency. of Cortex-M3. */
-   SCnSCB->ACTLR |= SCnSCB_ACTLR_DISMCYCINT_Msk;
+    SCnSCB->ACTLR |= SCnSCB_ACTLR_DISMCYCINT_Msk;
 
-   /* Wait for last operation to be completed */
-   status = WaitForLastOperation(FLASH_ER_PRG_TIMEOUT);
+    /* Wait for last operation to be completed */
+    status = WaitForLastOperation(FLASH_ER_PRG_TIMEOUT);
 
-   if (status == FLASH_COMPLETE)
-   {
-      /* if the previous operation is completed, proceed to program the new
+    if(status == FLASH_COMPLETE) {
+        /* if the previous operation is completed, proceed to program the new
       half page */
-      FLASH->PECR |= FLASH_PECR_FPRG;
-      FLASH->PECR |= FLASH_PECR_PROG;
+        FLASH->PECR |= FLASH_PECR_FPRG;
+        FLASH->PECR |= FLASH_PECR_PROG;
 
-      /* Write one half page directly with 32 different words */
-      while (count < 32)
-      {
-         *(__IO uint32_t*)(Address + (4 * count)) = *(pBuffer++);
-         count++;
-      }
-      /* Wait for last operation to be completed */
-      status = WaitForLastOperation(FLASH_ER_PRG_TIMEOUT);
+        /* Write one half page directly with 32 different words */
+        while(count < 32) {
+            *(__IO uint32_t*)(Address + (4 * count)) = *(pBuffer++);
+            count++;
+        }
+        /* Wait for last operation to be completed */
+        status = WaitForLastOperation(FLASH_ER_PRG_TIMEOUT);
 
-      /* if the write operation is completed, disable the PROG and FPRG bits */
-      FLASH->PECR &= (uint32_t)(~FLASH_PECR_PROG);
-      FLASH->PECR &= (uint32_t)(~FLASH_PECR_FPRG);
-   }
+        /* if the write operation is completed, disable the PROG and FPRG bits */
+        FLASH->PECR &= (uint32_t)(~FLASH_PECR_PROG);
+        FLASH->PECR &= (uint32_t)(~FLASH_PECR_FPRG);
+    }
 
-   SCnSCB->ACTLR &= ~SCnSCB_ACTLR_DISMCYCINT_Msk;
+    SCnSCB->ACTLR &= ~SCnSCB_ACTLR_DISMCYCINT_Msk;
 
-   /* Return the Write Status */
-   return status;
+    /* Return the Write Status */
+    return status;
 }
 
 /**
@@ -298,52 +292,49 @@ __RAM_FUNC FLASH_ProgramHalfPage(uint32_t Address, uint32_t* pBuffer)
  */
 __RAM_FUNC FLASH_ProgramParallelHalfPage(uint32_t Address1, uint32_t* pBuffer1, uint32_t Address2, uint32_t* pBuffer2)
 {
-   uint32_t count = 0;
+    uint32_t count = 0;
 
-   FLASH_Status status = FLASH_COMPLETE;
+    FLASH_Status status = FLASH_COMPLETE;
 
-   /* Set the DISMCYCINT[0] bit in the Auxillary Control Register (0xE000E008)
+    /* Set the DISMCYCINT[0] bit in the Auxillary Control Register (0xE000E008)
       This bit prevents the interruption of multicycle instructions and therefore
       will increase the interrupt latency. of Cortex-M3. */
-   SCnSCB->ACTLR |= SCnSCB_ACTLR_DISMCYCINT_Msk;
+    SCnSCB->ACTLR |= SCnSCB_ACTLR_DISMCYCINT_Msk;
 
-   /* Wait for last operation to be completed */
-   status = WaitForLastOperation(FLASH_ER_PRG_TIMEOUT);
+    /* Wait for last operation to be completed */
+    status = WaitForLastOperation(FLASH_ER_PRG_TIMEOUT);
 
-   if (status == FLASH_COMPLETE)
-   {
-      /* If the previous operation is completed, proceed to program the new
+    if(status == FLASH_COMPLETE) {
+        /* If the previous operation is completed, proceed to program the new
          half page */
-      FLASH->PECR |= FLASH_PECR_PARALLBANK;
-      FLASH->PECR |= FLASH_PECR_FPRG;
-      FLASH->PECR |= FLASH_PECR_PROG;
+        FLASH->PECR |= FLASH_PECR_PARALLBANK;
+        FLASH->PECR |= FLASH_PECR_FPRG;
+        FLASH->PECR |= FLASH_PECR_PROG;
 
-      /* Write the first half page directly with 32 different words */
-      while (count < 32)
-      {
-         *(__IO uint32_t*)(Address1 + (4 * count)) = *(pBuffer1++);
-         count++;
-      }
-      count = 0;
-      /* Write the second half page directly with 32 different words */
-      while (count < 32)
-      {
-         *(__IO uint32_t*)(Address2 + (4 * count)) = *(pBuffer2++);
-         count++;
-      }
-      /* Wait for last operation to be completed */
-      status = WaitForLastOperation(FLASH_ER_PRG_TIMEOUT);
+        /* Write the first half page directly with 32 different words */
+        while(count < 32) {
+            *(__IO uint32_t*)(Address1 + (4 * count)) = *(pBuffer1++);
+            count++;
+        }
+        count = 0;
+        /* Write the second half page directly with 32 different words */
+        while(count < 32) {
+            *(__IO uint32_t*)(Address2 + (4 * count)) = *(pBuffer2++);
+            count++;
+        }
+        /* Wait for last operation to be completed */
+        status = WaitForLastOperation(FLASH_ER_PRG_TIMEOUT);
 
-      /* if the write operation is completed, disable the PROG, FPRG and PARALLBANK bits */
-      FLASH->PECR &= (uint32_t)(~FLASH_PECR_PROG);
-      FLASH->PECR &= (uint32_t)(~FLASH_PECR_FPRG);
-      FLASH->PECR &= (uint32_t)(~FLASH_PECR_PARALLBANK);
-   }
+        /* if the write operation is completed, disable the PROG, FPRG and PARALLBANK bits */
+        FLASH->PECR &= (uint32_t)(~FLASH_PECR_PROG);
+        FLASH->PECR &= (uint32_t)(~FLASH_PECR_FPRG);
+        FLASH->PECR &= (uint32_t)(~FLASH_PECR_PARALLBANK);
+    }
 
-   SCnSCB->ACTLR &= ~SCnSCB_ACTLR_DISMCYCINT_Msk;
+    SCnSCB->ACTLR &= ~SCnSCB_ACTLR_DISMCYCINT_Msk;
 
-   /* Return the Write Status */
-   return status;
+    /* Return the Write Status */
+    return status;
 }
 
 /**
@@ -377,42 +368,41 @@ __RAM_FUNC FLASH_ProgramParallelHalfPage(uint32_t Address1, uint32_t* pBuffer1, 
 
 __RAM_FUNC DATA_EEPROM_EraseDoubleWord(uint32_t Address)
 {
-   FLASH_Status status = FLASH_COMPLETE;
+    FLASH_Status status = FLASH_COMPLETE;
 
-   /* Set the DISMCYCINT[0] bit in the Auxillary Control Register (0xE000E008)
+    /* Set the DISMCYCINT[0] bit in the Auxillary Control Register (0xE000E008)
       This bit prevents the interruption of multicycle instructions and therefore
       will increase the interrupt latency. of Cortex-M3. */
-   SCnSCB->ACTLR |= SCnSCB_ACTLR_DISMCYCINT_Msk;
+    SCnSCB->ACTLR |= SCnSCB_ACTLR_DISMCYCINT_Msk;
 
-   /* Wait for last operation to be completed */
-   status = WaitForLastOperation(FLASH_ER_PRG_TIMEOUT);
+    /* Wait for last operation to be completed */
+    status = WaitForLastOperation(FLASH_ER_PRG_TIMEOUT);
 
-   if (status == FLASH_COMPLETE)
-   {
-      /* If the previous operation is completed, proceed to erase the next double word */
-      /* Set the ERASE bit */
-      FLASH->PECR |= FLASH_PECR_ERASE;
+    if(status == FLASH_COMPLETE) {
+        /* If the previous operation is completed, proceed to erase the next double word */
+        /* Set the ERASE bit */
+        FLASH->PECR |= FLASH_PECR_ERASE;
 
-      /* Set DATA bit */
-      FLASH->PECR |= FLASH_PECR_DATA;
+        /* Set DATA bit */
+        FLASH->PECR |= FLASH_PECR_DATA;
 
-      /* Write 00000000h to the 2 words to erase */
-      *(__IO uint32_t*)Address = 0x00000000;
-      Address += 4;
-      *(__IO uint32_t*)Address = 0x00000000;
+        /* Write 00000000h to the 2 words to erase */
+        *(__IO uint32_t*)Address = 0x00000000;
+        Address += 4;
+        *(__IO uint32_t*)Address = 0x00000000;
 
-      /* Wait for last operation to be completed */
-      status = WaitForLastOperation(FLASH_ER_PRG_TIMEOUT);
+        /* Wait for last operation to be completed */
+        status = WaitForLastOperation(FLASH_ER_PRG_TIMEOUT);
 
-      /* If the erase operation is completed, disable the ERASE and DATA bits */
-      FLASH->PECR &= (uint32_t)(~FLASH_PECR_ERASE);
-      FLASH->PECR &= (uint32_t)(~FLASH_PECR_DATA);
-   }
+        /* If the erase operation is completed, disable the ERASE and DATA bits */
+        FLASH->PECR &= (uint32_t)(~FLASH_PECR_ERASE);
+        FLASH->PECR &= (uint32_t)(~FLASH_PECR_DATA);
+    }
 
-   SCnSCB->ACTLR &= ~SCnSCB_ACTLR_DISMCYCINT_Msk;
+    SCnSCB->ACTLR &= ~SCnSCB_ACTLR_DISMCYCINT_Msk;
 
-   /* Return the erase status */
-   return status;
+    /* Return the erase status */
+    return status;
 }
 
 /**
@@ -436,39 +426,38 @@ __RAM_FUNC DATA_EEPROM_EraseDoubleWord(uint32_t Address)
  */
 __RAM_FUNC DATA_EEPROM_ProgramDoubleWord(uint32_t Address, uint64_t Data)
 {
-   FLASH_Status status = FLASH_COMPLETE;
+    FLASH_Status status = FLASH_COMPLETE;
 
-   /* Set the DISMCYCINT[0] bit in the Auxillary Control Register (0xE000E008)
+    /* Set the DISMCYCINT[0] bit in the Auxillary Control Register (0xE000E008)
       This bit prevents the interruption of multicycle instructions and therefore
       will increase the interrupt latency. of Cortex-M3. */
-   SCnSCB->ACTLR |= SCnSCB_ACTLR_DISMCYCINT_Msk;
+    SCnSCB->ACTLR |= SCnSCB_ACTLR_DISMCYCINT_Msk;
 
-   /* Wait for last operation to be completed */
-   status = WaitForLastOperation(FLASH_ER_PRG_TIMEOUT);
+    /* Wait for last operation to be completed */
+    status = WaitForLastOperation(FLASH_ER_PRG_TIMEOUT);
 
-   if (status == FLASH_COMPLETE)
-   {
-      /* If the previous operation is completed, proceed to program the new data*/
-      FLASH->PECR |= FLASH_PECR_FPRG;
-      FLASH->PECR |= FLASH_PECR_DATA;
+    if(status == FLASH_COMPLETE) {
+        /* If the previous operation is completed, proceed to program the new data*/
+        FLASH->PECR |= FLASH_PECR_FPRG;
+        FLASH->PECR |= FLASH_PECR_DATA;
 
-      /* Write the 2 words */
-      *(__IO uint32_t*)Address = (uint32_t)Data;
-      Address += 4;
-      *(__IO uint32_t*)Address = (uint32_t)(Data >> 32);
+        /* Write the 2 words */
+        *(__IO uint32_t*)Address = (uint32_t)Data;
+        Address += 4;
+        *(__IO uint32_t*)Address = (uint32_t)(Data >> 32);
 
-      /* Wait for last operation to be completed */
-      status = WaitForLastOperation(FLASH_ER_PRG_TIMEOUT);
+        /* Wait for last operation to be completed */
+        status = WaitForLastOperation(FLASH_ER_PRG_TIMEOUT);
 
-      /* If the write operation is completed, disable the FPRG and DATA bits */
-      FLASH->PECR &= (uint32_t)(~FLASH_PECR_FPRG);
-      FLASH->PECR &= (uint32_t)(~FLASH_PECR_DATA);
-   }
+        /* If the write operation is completed, disable the FPRG and DATA bits */
+        FLASH->PECR &= (uint32_t)(~FLASH_PECR_FPRG);
+        FLASH->PECR &= (uint32_t)(~FLASH_PECR_DATA);
+    }
 
-   SCnSCB->ACTLR &= ~SCnSCB_ACTLR_DISMCYCINT_Msk;
+    SCnSCB->ACTLR &= ~SCnSCB_ACTLR_DISMCYCINT_Msk;
 
-   /* Return the Write Status */
-   return status;
+    /* Return the Write Status */
+    return status;
 }
 
 /**
@@ -483,32 +472,26 @@ __RAM_FUNC DATA_EEPROM_ProgramDoubleWord(uint32_t Address, uint64_t Data)
  */
 static __RAM_FUNC GetStatus(void)
 {
-   FLASH_Status FLASHstatus = FLASH_COMPLETE;
+    FLASH_Status FLASHstatus = FLASH_COMPLETE;
 
-   if ((FLASH->SR & FLASH_FLAG_BSY) == FLASH_FLAG_BSY)
-   {
-      FLASHstatus = FLASH_BUSY;
-   }
-   else
-   {
-      if ((FLASH->SR & (uint32_t)FLASH_FLAG_WRPERR) != (uint32_t)0x00)
-      {
-         FLASHstatus = FLASH_ERROR_WRP;
-      }
-      else
-      {
-         if ((FLASH->SR & (uint32_t)0x1E00) != (uint32_t)0x00)
-         {
-            FLASHstatus = FLASH_ERROR_PROGRAM;
-         }
-         else
-         {
-            FLASHstatus = FLASH_COMPLETE;
-         }
-      }
-   }
-   /* Return the FLASH Status */
-   return FLASHstatus;
+    if((FLASH->SR & FLASH_FLAG_BSY) == FLASH_FLAG_BSY) {
+        FLASHstatus = FLASH_BUSY;
+    }
+    else {
+        if((FLASH->SR & (uint32_t)FLASH_FLAG_WRPERR) != (uint32_t)0x00) {
+            FLASHstatus = FLASH_ERROR_WRP;
+        }
+        else {
+            if((FLASH->SR & (uint32_t)0x1E00) != (uint32_t)0x00) {
+                FLASHstatus = FLASH_ERROR_PROGRAM;
+            }
+            else {
+                FLASHstatus = FLASH_COMPLETE;
+            }
+        }
+    }
+    /* Return the FLASH Status */
+    return FLASHstatus;
 }
 
 /**
@@ -520,28 +503,26 @@ static __RAM_FUNC GetStatus(void)
  */
 static __RAM_FUNC WaitForLastOperation(uint32_t Timeout)
 {
-   __IO FLASH_Status status = FLASH_COMPLETE;
+    __IO FLASH_Status status = FLASH_COMPLETE;
 
-   /* Check for the FLASH Status */
-   status = GetStatus();
+    /* Check for the FLASH Status */
+    status = GetStatus();
 
-   /* Wait for a FLASH operation to complete or a TIMEOUT to occur */
-   while ((status == FLASH_BUSY) && (Timeout != 0x00))
-   {
-      status = GetStatus();
-      Timeout--;
-   }
+    /* Wait for a FLASH operation to complete or a TIMEOUT to occur */
+    while((status == FLASH_BUSY) && (Timeout != 0x00)) {
+        status = GetStatus();
+        Timeout--;
+    }
 
-   if (Timeout == 0x00)
-   {
-      status = FLASH_TIMEOUT;
-   }
-   /* Return the operation status */
-   return status;
+    if(Timeout == 0x00) {
+        status = FLASH_TIMEOUT;
+    }
+    /* Return the operation status */
+    return status;
 }
 
 #if defined(__TASKING__)
-#   pragma section_code_init restore
+#pragma section_code_init restore
 #endif
 
 /**

@@ -9,11 +9,11 @@
 
 // Правило одного определения
 #ifdef __ALLOCATE_NOW__
-#   define GLOBAL PUBLIC
-#   define _EQU(x) = (x)
+#define GLOBAL PUBLIC
+#define _EQU(x) = (x)
 #else
-#   define GLOBAL _EXTERN
-#   define _EQU(x)
+#define GLOBAL _EXTERN
+#define _EQU(x)
 #endif
 
 // В описании функции могут быть определены дополнительные коды ошибок (#define)
@@ -112,7 +112,7 @@ GLOBAL uint8_t g_aucTxBufferUSART3[TX_BUFFER_SIZE3];
 GLOBAL xSemaphoreHandle mGPS_DATA_ARRIVAL _EQU(NULL);
 /*******************************/
 
-GLOBAL xTaskHandle CurrentTaskHandle;   // ID текущего процесса(Debug)
-GLOBAL char* pNameCurrentTask;   //Имя текущего процесса(Debug)
+GLOBAL xTaskHandle CurrentTaskHandle;    // ID текущего процесса(Debug)
+GLOBAL char* pNameCurrentTask;           //Имя текущего процесса(Debug)
 
 #endif

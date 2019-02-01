@@ -6,7 +6,7 @@
 #include "eeprom.h"
 #include "ram.h"
 
-#define TIMEOUT_HTTP_CONNECT 30   //Ждем подключения
+#define TIMEOUT_HTTP_CONNECT 30    //Ждем подключения
 #define MAX_ERR_CONNECT_HTTP 5
 #define MAX_ERR_DOWNLOAD_PAGE 4
 #define MAX_ERR_DOWN_SESSION 10

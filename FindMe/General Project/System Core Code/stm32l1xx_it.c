@@ -46,12 +46,11 @@
  */
 void NMI_Handler(void)
 {
-   if (RCC->CIR & RCC_CIR_CSSF)
-   {
-      RCC->CIR |= RCC_CIR_CSSC;   //Сбросить флаг системы контроля сбоя HSE
-      RCC->CR &= ~RCC_CR_CSSON;   //Отключаем работу системы защиты сбоя HSE
-      SetSysClockHSI();   //переключаем тактирование на работу от внутренней RC цепочки
-   }
+    if(RCC->CIR & RCC_CIR_CSSF) {
+        RCC->CIR |= RCC_CIR_CSSC;    //Сбросить флаг системы контроля сбоя HSE
+        RCC->CR &= ~RCC_CR_CSSON;    //Отключаем работу системы защиты сбоя HSE
+        SetSysClockHSI();            //переключаем тактирование на работу от внутренней RC цепочки
+    }
 }
 
 /**
@@ -59,36 +58,33 @@ void NMI_Handler(void)
  * @param  None
  * @retval None
  */
-xTaskHandle xCurrentTaskHandle;   // ID текущего процесса(Debug)
-char* pNameCurrentTask = NULL;   //Имя текущего процесса(Debug)
+xTaskHandle xCurrentTaskHandle;    // ID текущего процесса(Debug)
+char* pNameCurrentTask = NULL;     //Имя текущего процесса(Debug)
 volatile unsigned long StackPointer = 0;
 volatile uint8_t* pProgramCounter = NULL;
 volatile uint32_t ProgramCounter = 0;
 
 void HardFault_Handler(void)
 {
-   /* Go to infinite loop when Hard Fault exception occurs */
+    /* Go to infinite loop when Hard Fault exception occurs */
 #ifdef FREERTOS_CONFIG_H
-   xCurrentTaskHandle = xTaskGetCurrentTaskHandle();
-   pNameCurrentTask = pcTaskGetTaskName(xCurrentTaskHandle);
+    xCurrentTaskHandle = xTaskGetCurrentTaskHandle();
+    pNameCurrentTask = pcTaskGetTaskName(xCurrentTaskHandle);
 #endif
-   StackPointer = __get_PSP();
-   if (!(StackPointer))
-   {
-      StackPointer = __get_MSP();
-      pProgramCounter = (uint8_t*)(StackPointer + 0x30);
-   }
-   else
-   {
-      pProgramCounter = (uint8_t*)(StackPointer + 0x18);
-   }
+    StackPointer = __get_PSP();
+    if(!(StackPointer)) {
+        StackPointer = __get_MSP();
+        pProgramCounter = (uint8_t*)(StackPointer + 0x30);
+    }
+    else {
+        pProgramCounter = (uint8_t*)(StackPointer + 0x18);
+    }
 
-   for (int8_t i = sizeof(ProgramCounter); i >= 0; i--)
-   {
-      ProgramCounter |= pProgramCounter[i] << i * 8;
-   }
-   while (1)
-      ;   //Ждем перезагрузки по watchdogу.
+    for(int8_t i = sizeof(ProgramCounter); i >= 0; i--) {
+        ProgramCounter |= pProgramCounter[i] << i * 8;
+    }
+    while(1)
+        ;    //Ждем перезагрузки по watchdogу.
 }
 
 /**
@@ -98,10 +94,9 @@ void HardFault_Handler(void)
  */
 void MemManage_Handler(void)
 {
-   /* Go to infinite loop when Memory Manage exception occurs */
-   while (1)
-   {
-   }
+    /* Go to infinite loop when Memory Manage exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -111,10 +106,9 @@ void MemManage_Handler(void)
  */
 void BusFault_Handler(void)
 {
-   /* Go to infinite loop when Bus Fault exception occurs */
-   while (1)
-   {
-   }
+    /* Go to infinite loop when Bus Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -124,10 +118,9 @@ void BusFault_Handler(void)
  */
 void UsageFault_Handler(void)
 {
-   /* Go to infinite loop when Usage Fault exception occurs */
-   while (1)
-   {
-   }
+    /* Go to infinite loop when Usage Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -164,21 +157,18 @@ void EXTI0_IRQHandler(void)
  */
 void RTC_WKUP_IRQHandler(void)
 {
-   if (RTC_GetITStatus(RTC_IT_WUT) != RESET)
-   {
-      RTC_ClearITPendingBit(RTC_IT_WUT);
-      RTC_WaitForSynchro();
-   }
-   if (RTC_GetITStatus(RTC_IT_ALRA) != RESET)
-   {
-      RTC_ClearITPendingBit(RTC_IT_ALRA);
-      RTC_WaitForSynchro();
-   }
-   if (RTC_GetITStatus(RTC_IT_ALRB) != RESET)
-   {
-      RTC_ClearITPendingBit(RTC_IT_ALRB);
-      RTC_WaitForSynchro();
-   }
+    if(RTC_GetITStatus(RTC_IT_WUT) != RESET) {
+        RTC_ClearITPendingBit(RTC_IT_WUT);
+        RTC_WaitForSynchro();
+    }
+    if(RTC_GetITStatus(RTC_IT_ALRA) != RESET) {
+        RTC_ClearITPendingBit(RTC_IT_ALRA);
+        RTC_WaitForSynchro();
+    }
+    if(RTC_GetITStatus(RTC_IT_ALRB) != RESET) {
+        RTC_ClearITPendingBit(RTC_IT_ALRB);
+        RTC_WaitForSynchro();
+    }
 }
 /**
  * @brief  This function handles RTC_Alarm_IRQHandler .
@@ -187,17 +177,15 @@ void RTC_WKUP_IRQHandler(void)
  */
 void RTC_Alarm_IRQHandler(void)
 {
-   if (RTC_GetITStatus(RTC_IT_ALRA) != RESET)
-   {
-      RTC_ClearITPendingBit(RTC_IT_ALRA);
-      RTC_WaitForSynchro();
-   }
-   if (RTC_GetITStatus(RTC_IT_ALRB) != RESET)
-   {
-      RTC_ClearITPendingBit(RTC_IT_ALRB);
-      RTC_WaitForSynchro();
-   }
-   EXTI_ClearITPendingBit(EXTI_Line17);
+    if(RTC_GetITStatus(RTC_IT_ALRA) != RESET) {
+        RTC_ClearITPendingBit(RTC_IT_ALRA);
+        RTC_WaitForSynchro();
+    }
+    if(RTC_GetITStatus(RTC_IT_ALRB) != RESET) {
+        RTC_ClearITPendingBit(RTC_IT_ALRB);
+        RTC_WaitForSynchro();
+    }
+    EXTI_ClearITPendingBit(EXTI_Line17);
 }
 /**
  * @}
@@ -210,11 +198,10 @@ void RTC_Alarm_IRQHandler(void)
  */
 void PVD_IRQHandler(void)
 {
-   if (EXTI_GetITStatus(EXTI_Line16) != RESET)
-   {
-      /* Clear the Key Button EXTI line pending bit */
-      EXTI_ClearITPendingBit(EXTI_Line16);
-   }
+    if(EXTI_GetITStatus(EXTI_Line16) != RESET) {
+        /* Clear the Key Button EXTI line pending bit */
+        EXTI_ClearITPendingBit(EXTI_Line16);
+    }
 }
 
 /******************* (C) COPYRIGHT 2010 STMicroelectronics *****END OF FILE****/

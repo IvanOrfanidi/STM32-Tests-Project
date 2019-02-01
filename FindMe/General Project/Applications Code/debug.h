@@ -9,7 +9,7 @@ extern "C" {
 #include "eeprom.h"
 
 #ifndef OUT_DEBUG_DATA_SER
-#   define OUT_DEBUG_DATA_SER 0
+#define OUT_DEBUG_DATA_SER 0
 #endif
 
 #define DP_GSM(format, ...) debug_printf(format, ##__VA_ARGS__)

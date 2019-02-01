@@ -33,38 +33,35 @@ extern "C" {
 
 #define ST2_X_REG 0x60
 
-typedef enum
-{
-   POWER_DOWN = 0,
-   F_3HZ = 16,
-   F_6HZ = 32,
-   F_12HZ = 48,
-   F_25HZ = 64,
-   F_50HZ = 80,
-   F_100HZ = 96,
-   F_400HZ = 112,
-   F_800HZ = 128,
-   F_1600HZ = 144,
+typedef enum {
+    POWER_DOWN = 0,
+    F_3HZ = 16,
+    F_6HZ = 32,
+    F_12HZ = 48,
+    F_25HZ = 64,
+    F_50HZ = 80,
+    F_100HZ = 96,
+    F_400HZ = 112,
+    F_800HZ = 128,
+    F_1600HZ = 144,
 } T_ODR_FREQ;
 
-typedef enum
-{
-   BW_FILTER_800HZ = 0,
-   BW_FILTER_400HZ = 64,
-   BW_FILTER_200HZ = 128,
-   BW_FILTER_50HZ = 192,
+typedef enum {
+    BW_FILTER_800HZ = 0,
+    BW_FILTER_400HZ = 64,
+    BW_FILTER_200HZ = 128,
+    BW_FILTER_50HZ = 192,
 } T_BW_FILTERS;
 
-typedef enum
-{
-   N_V = (1 << 0),
-   P_V = (1 << 1),
-   N_Z = (1 << 2),
-   P_Z = (1 << 3),
-   N_Y = (1 << 4),
-   P_Y = (1 << 5),
-   N_X = (1 << 6),
-   P_X = (1 << 7)
+typedef enum {
+    N_V = (1 << 0),
+    P_V = (1 << 1),
+    N_Z = (1 << 2),
+    P_Z = (1 << 3),
+    N_Y = (1 << 4),
+    P_Y = (1 << 5),
+    N_X = (1 << 6),
+    P_X = (1 << 7)
 } T_MASK_SM;
 
 #define SM2_EN (1 << 0)
@@ -76,25 +73,25 @@ typedef enum
 #define YEN (1 << 1)
 #define ZEN (1 << 2)
 
-#define STRT (1 << 0)   // Soft reset bit (0 = no soft reset, 1 = softreset (POR function))
+#define STRT (1 << 0)    // Soft reset bit (0 = no soft reset, 1 = softreset (POR function))
 #define VFILT \
-   (1 << 2)   // Vector filter enable/disable. Default value:0 (0 = vector filter disabled, 1 = vector filter enabled)
+    (1 << 2)    // Vector filter enable/disable. Default value:0 (0 = vector filter disabled, 1 = vector filter enabled)
 #define INT1_EN \
-   (1 << 3)   // Interrupt 2 enable/disable. Default Value:0 (0 = INT1/DRDY signal disabled, 1 = INT1/DRDY signal
-              // enabled)
+    (1 << 3)    // Interrupt 2 enable/disable. Default Value:0 (0 = INT1/DRDY signal disabled, 1 = INT1/DRDY signal \
+                // enabled)
 #define INT2_EN \
-   (1 << 4)   // Interrupt 2 enable/disable. Default value:0 (0 = INT2 signal disabled, 1 = INT2 signal enabled)
+    (1 << 4)    // Interrupt 2 enable/disable. Default value:0 (0 = INT2 signal disabled, 1 = INT2 signal enabled)
 #define IEL \
-   (1 << 5)   // Interrupt signal latching. Default value:0 (0 = interrupt signals latched, 1 = interrupt signal pulsed)
+    (1 << 5)    // Interrupt signal latching. Default value:0 (0 = interrupt signals latched, 1 = interrupt signal pulsed)
 #define IEA \
-   (1 << 6)   // Interrupt signal polarity. Default value:0 (0 = interrupt signals active LOW, 1 = interrupt signals
-              // active HIGH)
+    (1 << 6)    // Interrupt signal polarity. Default value:0 (0 = interrupt signals active LOW, 1 = interrupt signals \
+                // active HIGH)
 #define DR_EN \
-   (1 << 7)   // DRDY signal enable to INT1. Default value:0 (0 = data ready signal not connected, 1 = data ready signal
-              // connected to INT1)
+    (1 << 7)    // DRDY signal enable to INT1. Default value:0 (0 = data ready signal not connected, 1 = data ready signal \
+                // connected to INT1)
 
 //различные сообщения
-#define CMD_ACCEL_READ_IRQ 0   //прочитать прерывание из акселерометра
+#define CMD_ACCEL_READ_IRQ 0    //прочитать прерывание из акселерометра
 
 // void vAccelHandler(void *pvParameters);
 
@@ -110,7 +107,7 @@ void AccelIRQDeInit(void);
 void AccMoveDetect(void);
 int8_t GetTemperaturAccel(void);
 void ReadAxisDataAccel(TAcc_state* pAcc_state);
-void AccelHandler(void);   //Обработчик Акселерометра.
+void AccelHandler(void);    //Обработчик Акселерометра.
 void AccelSetMove(void);
 void EXTI0_IRQHandler(void);
 

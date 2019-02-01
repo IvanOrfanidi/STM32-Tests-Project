@@ -5,35 +5,33 @@
 /* Convert from CMSIS type osPriority to FreeRTOS priority number */
 static unsigned portBASE_TYPE makeFreeRtosPriority(osPriority priority)
 {
-   unsigned portBASE_TYPE fpriority = tskIDLE_PRIORITY;
+    unsigned portBASE_TYPE fpriority = tskIDLE_PRIORITY;
 
-   if (priority != osPriorityError)
-   {
-      fpriority += (priority - osPriorityIdle);
-   }
+    if(priority != osPriorityError) {
+        fpriority += (priority - osPriorityIdle);
+    }
 
-   return fpriority;
+    return fpriority;
 }
 
-#if (INCLUDE_vTaskPriorityGet == 1)
+#if(INCLUDE_vTaskPriorityGet == 1)
 /* Convert from FreeRTOS priority number to CMSIS type osPriority */
 static osPriority makeCmsisPriority(unsigned portBASE_TYPE fpriority)
 {
-   osPriority priority = osPriorityError;
+    osPriority priority = osPriorityError;
 
-   if ((fpriority - tskIDLE_PRIORITY) <= (osPriorityRealtime - osPriorityIdle))
-   {
-      priority = (osPriority)((int)osPriorityIdle + (int)(fpriority - tskIDLE_PRIORITY));
-   }
+    if((fpriority - tskIDLE_PRIORITY) <= (osPriorityRealtime - osPriorityIdle)) {
+        priority = (osPriority)((int)osPriorityIdle + (int)(fpriority - tskIDLE_PRIORITY));
+    }
 
-   return priority;
+    return priority;
 }
 #endif
 
 /* Determine whether we are in thread mode or handler mode. */
 static int inHandlerMode(void)
 {
-   return __get_IPSR() != 0;
+    return __get_IPSR() != 0;
 }
 
 /*********************** Kernel Control Functions *****************************/
@@ -46,16 +44,15 @@ static int inHandlerMode(void)
  */
 osStatus osKernelStart(osThreadDef_t* thread_def, void* argument)
 {
-   (void)argument;
+    (void)argument;
 
-   if (thread_def != NULL)
-   {
-      osThreadCreate(thread_def, argument);
-   }
+    if(thread_def != NULL) {
+        osThreadCreate(thread_def, argument);
+    }
 
-   vTaskStartScheduler();
+    vTaskStartScheduler();
 
-   return osOK;
+    return osOK;
 }
 
 /**
@@ -66,14 +63,12 @@ osStatus osKernelStart(osThreadDef_t* thread_def, void* argument)
  */
 uint32_t osKernelSysTick(void)
 {
-   if (inHandlerMode())
-   {
-      return xTaskGetTickCountFromISR();
-   }
-   else
-   {
-      return xTaskGetTickCount();
-   }
+    if(inHandlerMode()) {
+        return xTaskGetTickCountFromISR();
+    }
+    else {
+        return xTaskGetTickCount();
+    }
 }
 
 /**
@@ -86,13 +81,13 @@ uint32_t osKernelSysTick(void)
  */
 int32_t osKernelRunning(void)
 {
-#if ((INCLUDE_xTaskGetSchedulerState == 1) || (configUSE_TIMERS == 1))
-   if (xTaskGetSchedulerState() == taskSCHEDULER_NOT_STARTED)
-      return 0;
-   else
-      return 1;
+#if((INCLUDE_xTaskGetSchedulerState == 1) || (configUSE_TIMERS == 1))
+    if(xTaskGetSchedulerState() == taskSCHEDULER_NOT_STARTED)
+        return 0;
+    else
+        return 1;
 #else
-   return (-1);
+    return (-1);
 #endif
 }
 
@@ -106,16 +101,16 @@ int32_t osKernelRunning(void)
  */
 osThreadId osThreadCreate(osThreadDef_t* thread_def, void* argument)
 {
-   xTaskHandle handle;
+    xTaskHandle handle;
 
-   xTaskCreate((pdTASK_CODE)thread_def->pthread,
-               (const portCHAR*)thread_def->name,
-               thread_def->stacksize,
-               argument,
-               makeFreeRtosPriority(thread_def->tpriority),
-               &handle);
+    xTaskCreate((pdTASK_CODE)thread_def->pthread,
+        (const portCHAR*)thread_def->name,
+        thread_def->stacksize,
+        argument,
+        makeFreeRtosPriority(thread_def->tpriority),
+        &handle);
 
-   return handle;
+    return handle;
 }
 
 /**
@@ -125,10 +120,10 @@ osThreadId osThreadCreate(osThreadDef_t* thread_def, void* argument)
  */
 osThreadId osThreadGetId(void)
 {
-#if ((INCLUDE_xTaskGetCurrentTaskHandle == 1) || (configUSE_MUTEXES == 1))
-   return xTaskGetCurrentTaskHandle();
+#if((INCLUDE_xTaskGetCurrentTaskHandle == 1) || (configUSE_MUTEXES == 1))
+    return xTaskGetCurrentTaskHandle();
 #else
-   return NULL;
+    return NULL;
 #endif
 }
 
@@ -140,11 +135,11 @@ osThreadId osThreadGetId(void)
  */
 osStatus osThreadTerminate(osThreadId thread_id)
 {
-#if (INCLUDE_vTaskDelete == 1)
-   vTaskDelete(thread_id);
-   return osOK;
+#if(INCLUDE_vTaskDelete == 1)
+    vTaskDelete(thread_id);
+    return osOK;
 #else
-   return osErrorOS;
+    return osErrorOS;
 #endif
 }
 
@@ -155,9 +150,9 @@ osStatus osThreadTerminate(osThreadId thread_id)
  */
 osStatus osThreadYield(void)
 {
-   taskYIELD();
+    taskYIELD();
 
-   return osOK;
+    return osOK;
 }
 
 /**
@@ -169,11 +164,11 @@ osStatus osThreadYield(void)
  */
 osStatus osThreadSetPriority(osThreadId thread_id, osPriority priority)
 {
-#if (INCLUDE_vTaskPrioritySet == 1)
-   vTaskPrioritySet(thread_id, makeFreeRtosPriority(priority));
-   return osOK;
+#if(INCLUDE_vTaskPrioritySet == 1)
+    vTaskPrioritySet(thread_id, makeFreeRtosPriority(priority));
+    return osOK;
 #else
-   return osErrorOS;
+    return osErrorOS;
 #endif
 }
 
@@ -185,10 +180,10 @@ osStatus osThreadSetPriority(osThreadId thread_id, osPriority priority)
  */
 osPriority osThreadGetPriority(osThreadId thread_id)
 {
-#if (INCLUDE_vTaskPriorityGet == 1)
-   return makeCmsisPriority(uxTaskPriorityGet(thread_id));
+#if(INCLUDE_vTaskPriorityGet == 1)
+    return makeCmsisPriority(uxTaskPriorityGet(thread_id));
 #else
-   return osPriorityError;
+    return osPriorityError;
 #endif
 }
 
@@ -201,19 +196,19 @@ osPriority osThreadGetPriority(osThreadId thread_id)
 osStatus osDelay(uint32_t millisec)
 {
 #if INCLUDE_vTaskDelay
-   portTickType ticks = millisec / portTICK_RATE_MS;
+    portTickType ticks = millisec / portTICK_RATE_MS;
 
-   vTaskDelay(ticks ? ticks : 1); /* Minimum delay = 1 tick */
+    vTaskDelay(ticks ? ticks : 1); /* Minimum delay = 1 tick */
 
-   return osOK;
+    return osOK;
 #else
-   (void)millisec;
+    (void)millisec;
 
-   return osErrorResource;
+    return osErrorResource;
 #endif
 }
 
-#if (defined(osFeature_Wait) && (osFeature_Wait != 0)) /* Generic Wait available */
+#if(defined(osFeature_Wait) && (osFeature_Wait != 0)) /* Generic Wait available */
 /**
  * @brief  Wait for Signal, Message, Mail, or Timeout
  * @param   millisec  timeout value or 0 in case of no time-out
@@ -235,14 +230,14 @@ osEvent osWait(uint32_t millisec);
  */
 osTimerId osTimerCreate(osTimerDef_t* timer_def, os_timer_type type, void* argument)
 {
-#if (configUSE_TIMERS == 1)
-   return xTimerCreate((const char*)"",
-                       1,   // period should be filled when starting the Timer using osTimerStart
-                       (type == osTimerPeriodic) ? pdTRUE : pdFALSE,
-                       (void*)argument,
-                       (pdTASK_CODE)timer_def->ptimer);
+#if(configUSE_TIMERS == 1)
+    return xTimerCreate((const char*)"",
+        1,    // period should be filled when starting the Timer using osTimerStart
+        (type == osTimerPeriodic) ? pdTRUE : pdFALSE,
+        (void*)argument,
+        (pdTASK_CODE)timer_def->ptimer);
 #else
-   return NULL;
+    return NULL;
 #endif
 }
 
@@ -255,64 +250,54 @@ osTimerId osTimerCreate(osTimerDef_t* timer_def, os_timer_type type, void* argum
  */
 osStatus osTimerStart(osTimerId timer_id, uint32_t millisec)
 {
-   osStatus result = osOK;
-#if (configUSE_TIMERS == 1)
-   portBASE_TYPE taskWoken = pdFALSE;
-   portTickType ticks = millisec / portTICK_RATE_MS;
+    osStatus result = osOK;
+#if(configUSE_TIMERS == 1)
+    portBASE_TYPE taskWoken = pdFALSE;
+    portTickType ticks = millisec / portTICK_RATE_MS;
 
-   if (xTimerIsTimerActive(timer_id) != pdFALSE)
-   {
-      if (inHandlerMode())
-      {
-         if (xTimerResetFromISR(timer_id, &taskWoken) != pdPASS)
-         {
-            result = osErrorOS;
-         }
-         else
-         {
-            portEND_SWITCHING_ISR(taskWoken);
-            result = osOK;
-         }
-      }
-      else
-      {
-         if (xTimerReset(timer_id, 0) != pdPASS)
-            result = osErrorOS;
-         else
-            result = osOK;
-      }
-   }
-   else
-   {
-      if (ticks == 0)
-         ticks = 1;
+    if(xTimerIsTimerActive(timer_id) != pdFALSE) {
+        if(inHandlerMode()) {
+            if(xTimerResetFromISR(timer_id, &taskWoken) != pdPASS) {
+                result = osErrorOS;
+            }
+            else {
+                portEND_SWITCHING_ISR(taskWoken);
+                result = osOK;
+            }
+        }
+        else {
+            if(xTimerReset(timer_id, 0) != pdPASS)
+                result = osErrorOS;
+            else
+                result = osOK;
+        }
+    }
+    else {
+        if(ticks == 0)
+            ticks = 1;
 
-      if (inHandlerMode())
-      {
-         if (xTimerChangePeriodFromISR(timer_id, ticks, &taskWoken) != pdPASS)
-            result = osErrorOS;
-         else
-         {
-            xTimerStartFromISR(timer_id, &taskWoken);
-            portEND_SWITCHING_ISR(taskWoken);
-            result = osOK;
-         }
-      }
-      else
-      {
-         if (xTimerChangePeriod(timer_id, ticks, 0) != pdPASS)
-            result = osErrorOS;
-         else
-         {
-            if (xTimerStart(timer_id, 0) != pdPASS)
-               result = osErrorOS;
-         }
-      }
-   }
+        if(inHandlerMode()) {
+            if(xTimerChangePeriodFromISR(timer_id, ticks, &taskWoken) != pdPASS)
+                result = osErrorOS;
+            else {
+                xTimerStartFromISR(timer_id, &taskWoken);
+                portEND_SWITCHING_ISR(taskWoken);
+                result = osOK;
+            }
+        }
+        else {
+            if(xTimerChangePeriod(timer_id, ticks, 0) != pdPASS)
+                result = osErrorOS;
+            else {
+                if(xTimerStart(timer_id, 0) != pdPASS)
+                    result = osErrorOS;
+            }
+        }
+    }
 #else
-   result = osErrorOS;
+    result = osErrorOS;
 #endif
-   return result;
+    return result;
 }
 
 /**
@@ -323,26 +308,23 @@ osStatus osTimerStart(osTimerId timer_id, uint32_t millisec)
  */
 osStatus osTimerStop(osTimerId timer_id)
 {
-   osStatus result = osOK;
-#if (configUSE_TIMERS == 1)
-   portBASE_TYPE taskWoken = pdFALSE;
+    osStatus result = osOK;
+#if(configUSE_TIMERS == 1)
+    portBASE_TYPE taskWoken = pdFALSE;
 
-   if (inHandlerMode())
-   {
-      xTimerStopFromISR(timer_id, &taskWoken);
-      portEND_SWITCHING_ISR(taskWoken);
-   }
-   else
-   {
-      if (xTimerStop(timer_id, 0) != pdPASS)
-      {
-         result = osErrorOS;
-      }
-   }
+    if(inHandlerMode()) {
+        xTimerStopFromISR(timer_id, &taskWoken);
+        portEND_SWITCHING_ISR(taskWoken);
+    }
+    else {
+        if(xTimerStop(timer_id, 0) != pdPASS) {
+            result = osErrorOS;
+        }
+    }
 #else
-   result = osErrorOS;
+    result = osErrorOS;
 #endif
-   return result;
+    return result;
 }
 
 /***************************  Signal Management ********************************/
@@ -390,10 +372,10 @@ osEvent osSignalWait(int32_t signals, uint32_t millisec);
  */
 osMutexId osMutexCreate(osMutexDef_t* mutex_def)
 {
-#if (configUSE_MUTEXES == 1)
-   return xSemaphoreCreateMutex();
+#if(configUSE_MUTEXES == 1)
+    return xSemaphoreCreateMutex();
 #else
-   return NULL;
+    return NULL;
 #endif
 }
 
@@ -406,38 +388,32 @@ osMutexId osMutexCreate(osMutexDef_t* mutex_def)
  */
 osStatus osMutexWait(osMutexId mutex_id, uint32_t millisec)
 {
-   portTickType ticks;
+    portTickType ticks;
 
-   if (mutex_id == NULL)
-   {
-      return osErrorParameter;
-   }
+    if(mutex_id == NULL) {
+        return osErrorParameter;
+    }
 
-   ticks = 0;
-   if (millisec == osWaitForever)
-   {
-      ticks = portMAX_DELAY;
-   }
-   else if (millisec != 0)
-   {
-      ticks = millisec / portTICK_RATE_MS;
-      if (ticks == 0)
-      {
-         ticks = 1;
-      }
-   }
+    ticks = 0;
+    if(millisec == osWaitForever) {
+        ticks = portMAX_DELAY;
+    }
+    else if(millisec != 0) {
+        ticks = millisec / portTICK_RATE_MS;
+        if(ticks == 0) {
+            ticks = 1;
+        }
+    }
 
-   if (inHandlerMode())
-   {
-      return osErrorISR;
-   }
+    if(inHandlerMode()) {
+        return osErrorISR;
+    }
 
-   if (xSemaphoreTake(mutex_id, ticks) != pdTRUE)
-   {
-      return osErrorOS;
-   }
+    if(xSemaphoreTake(mutex_id, ticks) != pdTRUE) {
+        return osErrorOS;
+    }
 
-   return osOK;
+    return osOK;
 }
 
 /**
@@ -448,18 +424,16 @@ osStatus osMutexWait(osMutexId mutex_id, uint32_t millisec)
  */
 osStatus osMutexRelease(osMutexId mutex_id)
 {
-   osStatus result = osOK;
+    osStatus result = osOK;
 
-   if (inHandlerMode())
-   {
-      return osErrorISR;
-   }
+    if(inHandlerMode()) {
+        return osErrorISR;
+    }
 
-   if (xSemaphoreGive(mutex_id) != pdTRUE)
-   {
-      result = osErrorOS;
-   }
-   return result;
+    if(xSemaphoreGive(mutex_id) != pdTRUE) {
+        result = osErrorOS;
+    }
+    return result;
 }
 
 /**
@@ -470,14 +444,14 @@ osStatus osMutexRelease(osMutexId mutex_id)
  */
 osStatus osMutexDelete(osMutexId mutex_id)
 {
-   vQueueDelete(mutex_id);
+    vQueueDelete(mutex_id);
 
-   return osOK;
+    return osOK;
 }
 
 /********************  Semaphore Management Functions **************************/
 
-#if (defined(osFeature_Semaphore) && (osFeature_Semaphore != 0))
+#if(defined(osFeature_Semaphore) && (osFeature_Semaphore != 0))
 
 /**
  * @brief Create and Initialize a Semaphore object used for managing resources
@@ -488,20 +462,19 @@ osStatus osMutexDelete(osMutexId mutex_id)
  */
 osSemaphoreId osSemaphoreCreate(osSemaphoreDef_t* semaphore_def, int32_t count)
 {
-   (void)semaphore_def;
-   osSemaphoreId sema;
+    (void)semaphore_def;
+    osSemaphoreId sema;
 
-   if (count == 1)
-   {
-      vSemaphoreCreateBinary(sema);
-      return sema;
-   }
+    if(count == 1) {
+        vSemaphoreCreateBinary(sema);
+        return sema;
+    }
 
-#   if (configUSE_COUNTING_SEMAPHORES == 1)
-   return xSemaphoreCreateCounting(count, count);
-#   else
-   return NULL;
-#   endif
+#if(configUSE_COUNTING_SEMAPHORES == 1)
+    return xSemaphoreCreateCounting(count, count);
+#else
+    return NULL;
+#endif
 }
 
 /**
@@ -513,38 +486,32 @@ osSemaphoreId osSemaphoreCreate(osSemaphoreDef_t* semaphore_def, int32_t count)
  */
 int32_t osSemaphoreWait(osSemaphoreId semaphore_id, uint32_t millisec)
 {
-   portTickType ticks;
+    portTickType ticks;
 
-   if (semaphore_id == NULL)
-   {
-      return osErrorParameter;
-   }
+    if(semaphore_id == NULL) {
+        return osErrorParameter;
+    }
 
-   ticks = 0;
-   if (millisec == osWaitForever)
-   {
-      ticks = portMAX_DELAY;
-   }
-   else if (millisec != 0)
-   {
-      ticks = millisec / portTICK_RATE_MS;
-      if (ticks == 0)
-      {
-         ticks = 1;
-      }
-   }
+    ticks = 0;
+    if(millisec == osWaitForever) {
+        ticks = portMAX_DELAY;
+    }
+    else if(millisec != 0) {
+        ticks = millisec / portTICK_RATE_MS;
+        if(ticks == 0) {
+            ticks = 1;
+        }
+    }
 
-   if (inHandlerMode())
-   {
-      return osErrorISR;
-   }
+    if(inHandlerMode()) {
+        return osErrorISR;
+    }
 
-   if (xSemaphoreTake(semaphore_id, ticks) != pdTRUE)
-   {
-      return osErrorOS;
-   }
+    if(xSemaphoreTake(semaphore_id, ticks) != pdTRUE) {
+        return osErrorOS;
+    }
 
-   return osOK;
+    return osOK;
 }
 
 /**
@@ -555,26 +522,22 @@ int32_t osSemaphoreWait(osSemaphoreId semaphore_id, uint32_t millisec)
  */
 osStatus osSemaphoreRelease(osSemaphoreId semaphore_id)
 {
-   osStatus result = osOK;
-   portBASE_TYPE taskWoken = pdFALSE;
+    osStatus result = osOK;
+    portBASE_TYPE taskWoken = pdFALSE;
 
-   if (inHandlerMode())
-   {
-      if (xSemaphoreGiveFromISR(semaphore_id, &taskWoken) != pdTRUE)
-      {
-         result = osErrorOS;
-      }
-      portEND_SWITCHING_ISR(taskWoken);
-   }
-   else
-   {
-      if (xSemaphoreGive(semaphore_id) != pdTRUE)
-      {
-         result = osErrorOS;
-      }
-   }
+    if(inHandlerMode()) {
+        if(xSemaphoreGiveFromISR(semaphore_id, &taskWoken) != pdTRUE) {
+            result = osErrorOS;
+        }
+        portEND_SWITCHING_ISR(taskWoken);
+    }
+    else {
+        if(xSemaphoreGive(semaphore_id) != pdTRUE) {
+            result = osErrorOS;
+        }
+    }
 
-   return result;
+    return result;
 }
 
 /**
@@ -585,28 +548,27 @@ osStatus osSemaphoreRelease(osSemaphoreId semaphore_id)
  */
 osStatus osSemaphoreDelete(osSemaphoreId semaphore_id)
 {
-   vSemaphoreDelete(semaphore_id);
+    vSemaphoreDelete(semaphore_id);
 
-   return osOK;
+    return osOK;
 }
 
 #endif /* Use Semaphores */
 
 /*******************   Memory Pool Management Functions  ***********************/
 
-#if (defined(osFeature_Pool) && (osFeature_Pool != 0))
+#if(defined(osFeature_Pool) && (osFeature_Pool != 0))
 
 // TODO
 // This is a primitive and inefficient wrapper around the existing FreeRTOS memory management.
 // A better implementation will have to modify heap_x.c!
 
-typedef struct os_pool_cb
-{
-   void* pool;
-   uint8_t* markers;
-   uint32_t pool_sz;
-   uint32_t item_sz;
-   uint32_t currentIndex;
+typedef struct os_pool_cb {
+    void* pool;
+    uint8_t* markers;
+    uint32_t pool_sz;
+    uint32_t item_sz;
+    uint32_t currentIndex;
 } os_pool_cb_t;
 
 /**
@@ -617,47 +579,41 @@ typedef struct os_pool_cb
  */
 osPoolId osPoolCreate(osPoolDef_t* pool_def)
 {
-   osPoolId thePool;
-   int itemSize = 4 * ((pool_def->item_sz + 3) / 4);
-   uint32_t i;
+    osPoolId thePool;
+    int itemSize = 4 * ((pool_def->item_sz + 3) / 4);
+    uint32_t i;
 
-   /* First have to allocate memory for the pool control block. */
-   thePool = pvPortMalloc(sizeof(os_pool_cb_t));
-   if (thePool)
-   {
-      thePool->pool_sz = pool_def->pool_sz;
-      thePool->item_sz = itemSize;
-      thePool->currentIndex = 0;
+    /* First have to allocate memory for the pool control block. */
+    thePool = pvPortMalloc(sizeof(os_pool_cb_t));
+    if(thePool) {
+        thePool->pool_sz = pool_def->pool_sz;
+        thePool->item_sz = itemSize;
+        thePool->currentIndex = 0;
 
-      /* Memory for markers */
-      thePool->markers = pvPortMalloc(pool_def->pool_sz);
-      if (thePool->markers)
-      {
-         /* Now allocate the pool itself. */
-         thePool->pool = pvPortMalloc(pool_def->pool_sz * itemSize);
+        /* Memory for markers */
+        thePool->markers = pvPortMalloc(pool_def->pool_sz);
+        if(thePool->markers) {
+            /* Now allocate the pool itself. */
+            thePool->pool = pvPortMalloc(pool_def->pool_sz * itemSize);
 
-         if (thePool->pool)
-         {
-            for (i = 0; i < pool_def->pool_sz; i++)
-            {
-               thePool->markers[i] = 0;
+            if(thePool->pool) {
+                for(i = 0; i < pool_def->pool_sz; i++) {
+                    thePool->markers[i] = 0;
+                }
             }
-         }
-         else
-         {
-            vPortFree(thePool->markers);
+            else {
+                vPortFree(thePool->markers);
+                vPortFree(thePool);
+                thePool = NULL;
+            }
+        }
+        else {
             vPortFree(thePool);
             thePool = NULL;
-         }
-      }
-      else
-      {
-         vPortFree(thePool);
-         thePool = NULL;
-      }
-   }
+        }
+    }
 
-   return thePool;
+    return thePool;
 }
 
 /**
@@ -668,47 +624,40 @@ osPoolId osPoolCreate(osPoolDef_t* pool_def)
  */
 void* osPoolAlloc(osPoolId pool_id)
 {
-   int dummy = 0;
-   void* p = NULL;
-   uint32_t i;
-   uint32_t index;
+    int dummy = 0;
+    void* p = NULL;
+    uint32_t i;
+    uint32_t index;
 
-   if (inHandlerMode())
-   {
-      dummy = portSET_INTERRUPT_MASK_FROM_ISR();
-   }
-   else
-   {
-      vPortEnterCritical();
-   }
+    if(inHandlerMode()) {
+        dummy = portSET_INTERRUPT_MASK_FROM_ISR();
+    }
+    else {
+        vPortEnterCritical();
+    }
 
-   for (i = 0; i < pool_id->pool_sz; i++)
-   {
-      index = pool_id->currentIndex + i;
-      if (index >= pool_id->pool_sz)
-      {
-         index = 0;
-      }
+    for(i = 0; i < pool_id->pool_sz; i++) {
+        index = pool_id->currentIndex + i;
+        if(index >= pool_id->pool_sz) {
+            index = 0;
+        }
 
-      if (pool_id->markers[index] == 0)
-      {
-         pool_id->markers[index] = 1;
-         p = (void*)((uint32_t)(pool_id->pool) + (index * pool_id->item_sz));
-         pool_id->currentIndex = index;
-         break;
-      }
-   }
+        if(pool_id->markers[index] == 0) {
+            pool_id->markers[index] = 1;
+            p = (void*)((uint32_t)(pool_id->pool) + (index * pool_id->item_sz));
+            pool_id->currentIndex = index;
+            break;
+        }
+    }
 
-   if (inHandlerMode())
-   {
-      portCLEAR_INTERRUPT_MASK_FROM_ISR(dummy);
-   }
-   else
-   {
-      vPortExitCritical();
-   }
+    if(inHandlerMode()) {
+        portCLEAR_INTERRUPT_MASK_FROM_ISR(dummy);
+    }
+    else {
+        vPortExitCritical();
+    }
 
-   return p;
+    return p;
 }
 
 /**
@@ -719,14 +668,13 @@ void* osPoolAlloc(osPoolId pool_id)
  */
 void* osPoolCAlloc(osPoolId pool_id)
 {
-   void* p = osPoolAlloc(pool_id);
+    void* p = osPoolAlloc(pool_id);
 
-   if (p != NULL)
-   {
-      memset(p, 0, sizeof(pool_id->pool_sz));
-   }
+    if(p != NULL) {
+        memset(p, 0, sizeof(pool_id->pool_sz));
+    }
 
-   return p;
+    return p;
 }
 
 /**
@@ -738,44 +686,39 @@ void* osPoolCAlloc(osPoolId pool_id)
  */
 osStatus osPoolFree(osPoolId pool_id, void* block)
 {
-   uint32_t index;
+    uint32_t index;
 
-   if (pool_id == NULL)
-   {
-      return osErrorParameter;
-   }
+    if(pool_id == NULL) {
+        return osErrorParameter;
+    }
 
-   if (block == NULL)
-   {
-      return osErrorParameter;
-   }
+    if(block == NULL) {
+        return osErrorParameter;
+    }
 
-   if (block < pool_id->pool)
-   {
-      return osErrorParameter;
-   }
+    if(block < pool_id->pool) {
+        return osErrorParameter;
+    }
 
-   index = (uint32_t)block - (uint32_t)(pool_id->pool);
-   if (index % pool_id->item_sz)
-   {
-      return osErrorParameter;
-   }
-   index = index / pool_id->item_sz;
-   if (index >= pool_id->pool_sz)
-   {
-      return osErrorParameter;
-   }
+    index = (uint32_t)block - (uint32_t)(pool_id->pool);
+    if(index % pool_id->item_sz) {
+        return osErrorParameter;
+    }
+    index = index / pool_id->item_sz;
+    if(index >= pool_id->pool_sz) {
+        return osErrorParameter;
+    }
 
-   pool_id->markers[index] = 0;
+    pool_id->markers[index] = 0;
 
-   return osOK;
+    return osOK;
 }
 
 #endif /* Use Memory Pool Management */
 
 /*******************   Message Queue Management Functions  *********************/
 
-#if (defined(osFeature_MessageQ) && (osFeature_MessageQ != 0)) /* Use Message Queues */
+#if(defined(osFeature_MessageQ) && (osFeature_MessageQ != 0)) /* Use Message Queues */
 
 /**
  * @brief Create and Initialize a Message Queue
@@ -786,9 +729,9 @@ osStatus osPoolFree(osPoolId pool_id, void* block)
  */
 osMessageQId osMessageCreate(osMessageQDef_t* queue_def, osThreadId thread_id)
 {
-   (void)thread_id;
+    (void)thread_id;
 
-   return xQueueCreate(queue_def->queue_sz, (uint32_t)sizeof(queue_def->item_sz));
+    return xQueueCreate(queue_def->queue_sz, (uint32_t)sizeof(queue_def->item_sz));
 }
 
 /**
@@ -801,32 +744,27 @@ osMessageQId osMessageCreate(osMessageQDef_t* queue_def, osThreadId thread_id)
  */
 osStatus osMessagePut(osMessageQId queue_id, uint32_t info, uint32_t millisec)
 {
-   portBASE_TYPE taskWoken = pdFALSE;
-   portTickType ticks;
+    portBASE_TYPE taskWoken = pdFALSE;
+    portTickType ticks;
 
-   ticks = millisec / portTICK_RATE_MS;
-   if (ticks == 0)
-   {
-      ticks = 1;
-   }
+    ticks = millisec / portTICK_RATE_MS;
+    if(ticks == 0) {
+        ticks = 1;
+    }
 
-   if (inHandlerMode())
-   {
-      if (xQueueSendFromISR(queue_id, &info, &taskWoken) != pdTRUE)
-      {
-         return osErrorOS;
-      }
-      portEND_SWITCHING_ISR(taskWoken);
-   }
-   else
-   {
-      if (xQueueSend(queue_id, &info, ticks) != pdTRUE)
-      {
-         return osErrorOS;
-      }
-   }
+    if(inHandlerMode()) {
+        if(xQueueSendFromISR(queue_id, &info, &taskWoken) != pdTRUE) {
+            return osErrorOS;
+        }
+        portEND_SWITCHING_ISR(taskWoken);
+    }
+    else {
+        if(xQueueSend(queue_id, &info, ticks) != pdTRUE) {
+            return osErrorOS;
+        }
+    }
 
-   return osOK;
+    return osOK;
 }
 
 /**
@@ -838,74 +776,63 @@ osStatus osMessagePut(osMessageQId queue_id, uint32_t info, uint32_t millisec)
  */
 osEvent osMessageGet(osMessageQId queue_id, uint32_t millisec)
 {
-   portBASE_TYPE taskWoken;
-   portTickType ticks;
-   osEvent event;
+    portBASE_TYPE taskWoken;
+    portTickType ticks;
+    osEvent event;
 
-   event.def.message_id = queue_id;
+    event.def.message_id = queue_id;
 
-   if (queue_id == NULL)
-   {
-      event.status = osErrorParameter;
-      return event;
-   }
+    if(queue_id == NULL) {
+        event.status = osErrorParameter;
+        return event;
+    }
 
-   taskWoken = pdFALSE;
+    taskWoken = pdFALSE;
 
-   ticks = 0;
-   if (millisec == osWaitForever)
-   {
-      ticks = portMAX_DELAY;
-   }
-   else if (millisec != 0)
-   {
-      ticks = millisec / portTICK_RATE_MS;
-      if (ticks == 0)
-      {
-         ticks = 1;
-      }
-   }
+    ticks = 0;
+    if(millisec == osWaitForever) {
+        ticks = portMAX_DELAY;
+    }
+    else if(millisec != 0) {
+        ticks = millisec / portTICK_RATE_MS;
+        if(ticks == 0) {
+            ticks = 1;
+        }
+    }
 
-   if (inHandlerMode())
-   {
-      if (xQueueReceiveFromISR(queue_id, &event.value.v, &taskWoken) == pdTRUE)
-      {
-         /* We have mail */
-         event.status = osEventMessage;
-      }
-      else
-      {
-         event.status = osOK;
-      }
-      portEND_SWITCHING_ISR(taskWoken);
-   }
-   else
-   {
-      if (xQueueReceive(queue_id, &event.value.v, ticks) == pdTRUE)
-      {
-         /* We have mail */
-         event.status = osEventMessage;
-      }
-      else
-      {
-         event.status = (ticks == 0) ? osOK : osEventTimeout;
-      }
-   }
+    if(inHandlerMode()) {
+        if(xQueueReceiveFromISR(queue_id, &event.value.v, &taskWoken) == pdTRUE) {
+            /* We have mail */
+            event.status = osEventMessage;
+        }
+        else {
+            event.status = osOK;
+        }
+        portEND_SWITCHING_ISR(taskWoken);
+    }
+    else {
+        if(xQueueReceive(queue_id, &event.value.v, ticks) == pdTRUE) {
+            /* We have mail */
+            event.status = osEventMessage;
+        }
+        else {
+            event.status = (ticks == 0) ? osOK : osEventTimeout;
+        }
+    }
 
-   return event;
+    return event;
 }
 
 #endif /* Use Message Queues */
 
 /********************   Mail Queue Management Functions  ***********************/
 
-#if (defined(osFeature_MailQ) && (osFeature_MailQ != 0)) /* Use Mail Queues */
+#if(defined(osFeature_MailQ) && (osFeature_MailQ != 0)) /* Use Mail Queues */
 
-typedef struct os_mailQ_cb
-{
-   osMailQDef_t* queue_def;
-   xQueueHandle handle;
-   osPoolId pool;
+typedef struct os_mailQ_cb {
+    osMailQDef_t* queue_def;
+    xQueueHandle handle;
+    osPoolId pool;
 } os_mailQ_cb_t;
 
 /**
@@ -917,36 +844,33 @@ typedef struct os_mailQ_cb
  */
 osMailQId osMailCreate(osMailQDef_t* queue_def, osThreadId thread_id)
 {
-   (void)thread_id;
+    (void)thread_id;
 
-   osPoolDef_t pool_def = { queue_def->queue_sz, queue_def->item_sz };
+    osPoolDef_t pool_def = { queue_def->queue_sz, queue_def->item_sz };
 
-   /* Create a mail queue control block */
-   *(queue_def->cb) = pvPortMalloc(sizeof(struct os_mailQ_cb));
-   if (*(queue_def->cb) == NULL)
-   {
-      return NULL;
-   }
-   (*(queue_def->cb))->queue_def = queue_def;
+    /* Create a mail queue control block */
+    *(queue_def->cb) = pvPortMalloc(sizeof(struct os_mailQ_cb));
+    if(*(queue_def->cb) == NULL) {
+        return NULL;
+    }
+    (*(queue_def->cb))->queue_def = queue_def;
 
-   /* Create a queue in FreeRTOS */
-   (*(queue_def->cb))->handle = xQueueCreate(queue_def->queue_sz, sizeof(void*));
-   if ((*(queue_def->cb))->handle == NULL)
-   {
-      vPortFree(*(queue_def->cb));
-      return NULL;
-   }
+    /* Create a queue in FreeRTOS */
+    (*(queue_def->cb))->handle = xQueueCreate(queue_def->queue_sz, sizeof(void*));
+    if((*(queue_def->cb))->handle == NULL) {
+        vPortFree(*(queue_def->cb));
+        return NULL;
+    }
 
-   /* Create a mail pool */
-   (*(queue_def->cb))->pool = osPoolCreate(&pool_def);
-   if ((*(queue_def->cb))->pool == NULL)
-   {
-      // TODO: Delete queue. How to do it in FreeRTOS?
-      vPortFree(*(queue_def->cb));
-      return NULL;
-   }
+    /* Create a mail pool */
+    (*(queue_def->cb))->pool = osPoolCreate(&pool_def);
+    if((*(queue_def->cb))->pool == NULL) {
+        // TODO: Delete queue. How to do it in FreeRTOS?
+        vPortFree(*(queue_def->cb));
+        return NULL;
+    }
 
-   return *(queue_def->cb);
+    return *(queue_def->cb);
 }
 
 /**
@@ -958,17 +882,16 @@ osMailQId osMailCreate(osMailQDef_t* queue_def, osThreadId thread_id)
  */
 void* osMailAlloc(osMailQId queue_id, uint32_t millisec)
 {
-   (void)millisec;
-   void* p;
+    (void)millisec;
+    void* p;
 
-   if (queue_id == NULL)
-   {
-      return NULL;
-   }
+    if(queue_id == NULL) {
+        return NULL;
+    }
 
-   p = osPoolAlloc(queue_id->pool);
+    p = osPoolAlloc(queue_id->pool);
 
-   return p;
+    return p;
 }
 
 /**
@@ -980,18 +903,16 @@ void* osMailAlloc(osMailQId queue_id, uint32_t millisec)
  */
 void* osMailCAlloc(osMailQId queue_id, uint32_t millisec)
 {
-   uint32_t i;
-   void* p = osMailAlloc(queue_id, millisec);
+    uint32_t i;
+    void* p = osMailAlloc(queue_id, millisec);
 
-   if (p)
-   {
-      for (i = 0; i < sizeof(queue_id->queue_def->item_sz); i++)
-      {
-         ((uint8_t*)p)[i] = 0;
-      }
-   }
+    if(p) {
+        for(i = 0; i < sizeof(queue_id->queue_def->item_sz); i++) {
+            ((uint8_t*)p)[i] = 0;
+        }
+    }
 
-   return p;
+    return p;
 }
 
 /**
@@ -1003,32 +924,27 @@ void* osMailCAlloc(osMailQId queue_id, uint32_t millisec)
  */
 osStatus osMailPut(osMailQId queue_id, void* mail)
 {
-   portBASE_TYPE taskWoken;
+    portBASE_TYPE taskWoken;
 
-   if (queue_id == NULL)
-   {
-      return osErrorParameter;
-   }
+    if(queue_id == NULL) {
+        return osErrorParameter;
+    }
 
-   taskWoken = pdFALSE;
+    taskWoken = pdFALSE;
 
-   if (inHandlerMode())
-   {
-      if (xQueueSendFromISR(queue_id->handle, &mail, &taskWoken) != pdTRUE)
-      {
-         return osErrorOS;
-      }
-      portEND_SWITCHING_ISR(taskWoken);
-   }
-   else
-   {
-      if (xQueueSend(queue_id->handle, &mail, 0) != pdTRUE)
-      {
-         return osErrorOS;
-      }
-   }
+    if(inHandlerMode()) {
+        if(xQueueSendFromISR(queue_id->handle, &mail, &taskWoken) != pdTRUE) {
+            return osErrorOS;
+        }
+        portEND_SWITCHING_ISR(taskWoken);
+    }
+    else {
+        if(xQueueSend(queue_id->handle, &mail, 0) != pdTRUE) {
+            return osErrorOS;
+        }
+    }
 
-   return osOK;
+    return osOK;
 }
 
 /**
@@ -1040,61 +956,51 @@ osStatus osMailPut(osMailQId queue_id, void* mail)
  */
 osEvent osMailGet(osMailQId queue_id, uint32_t millisec)
 {
-   portBASE_TYPE taskWoken;
-   portTickType ticks;
-   osEvent event;
+    portBASE_TYPE taskWoken;
+    portTickType ticks;
+    osEvent event;
 
-   event.def.mail_id = queue_id;
+    event.def.mail_id = queue_id;
 
-   if (queue_id == NULL)
-   {
-      event.status = osErrorParameter;
-      return event;
-   }
+    if(queue_id == NULL) {
+        event.status = osErrorParameter;
+        return event;
+    }
 
-   taskWoken = pdFALSE;
+    taskWoken = pdFALSE;
 
-   ticks = 0;
-   if (millisec == osWaitForever)
-   {
-      ticks = portMAX_DELAY;
-   }
-   else if (millisec != 0)
-   {
-      ticks = millisec / portTICK_RATE_MS;
-      if (ticks == 0)
-      {
-         ticks = 1;
-      }
-   }
+    ticks = 0;
+    if(millisec == osWaitForever) {
+        ticks = portMAX_DELAY;
+    }
+    else if(millisec != 0) {
+        ticks = millisec / portTICK_RATE_MS;
+        if(ticks == 0) {
+            ticks = 1;
+        }
+    }
 
-   if (inHandlerMode())
-   {
-      if (xQueueReceiveFromISR(queue_id->handle, &event.value.p, &taskWoken) == pdTRUE)
-      {
-         /* We have mail */
-         event.status = osEventMail;
-      }
-      else
-      {
-         event.status = osOK;
-      }
-      portEND_SWITCHING_ISR(taskWoken);
-   }
-   else
-   {
-      if (xQueueReceive(queue_id->handle, &event.value.p, ticks) == pdTRUE)
-      {
-         /* We have mail */
-         event.status = osEventMail;
-      }
-      else
-      {
-         event.status = (ticks == 0) ? osOK : osEventTimeout;
-      }
-   }
+    if(inHandlerMode()) {
+        if(xQueueReceiveFromISR(queue_id->handle, &event.value.p, &taskWoken) == pdTRUE) {
+            /* We have mail */
+            event.status = osEventMail;
+        }
+        else {
+            event.status = osOK;
+        }
+        portEND_SWITCHING_ISR(taskWoken);
+    }
+    else {
+        if(xQueueReceive(queue_id->handle, &event.value.p, ticks) == pdTRUE) {
+            /* We have mail */
+            event.status = osEventMail;
+        }
+        else {
+            event.status = (ticks == 0) ? osOK : osEventTimeout;
+        }
+    }
 
-   return event;
+    return event;
 }
 
 /**
@@ -1106,14 +1012,13 @@ osEvent osMailGet(osMailQId queue_id, uint32_t millisec)
  */
 osStatus osMailFree(osMailQId queue_id, void* mail)
 {
-   if (queue_id == NULL)
-   {
-      return osErrorParameter;
-   }
+    if(queue_id == NULL) {
+        return osErrorParameter;
+    }
 
-   osPoolFree(queue_id->pool, mail);
+    osPoolFree(queue_id->pool, mail);
 
-   return osOK;
+    return osOK;
 }
 #endif /* Use Mail Queues */
 
@@ -1125,12 +1030,12 @@ osStatus osMailFree(osMailQId queue_id, void* mail)
  */
 osStatus osThreadSuspend(osThreadId thread_id)
 {
-#if (INCLUDE_vTaskSuspend == 1)
-   vTaskSuspend(thread_id);
+#if(INCLUDE_vTaskSuspend == 1)
+    vTaskSuspend(thread_id);
 
-   return osOK;
+    return osOK;
 #else
-   return osErrorResource;
+    return osErrorResource;
 #endif
 }
 
@@ -1141,18 +1046,16 @@ osStatus osThreadSuspend(osThreadId thread_id)
  */
 osStatus osThreadResume(osThreadId thread_id)
 {
-#if (INCLUDE_vTaskSuspend == 1)
-   if (inHandlerMode())
-   {
-      xTaskResumeFromISR(thread_id);
-   }
-   else
-   {
-      vTaskResume(thread_id);
-   }
-   return osOK;
+#if(INCLUDE_vTaskSuspend == 1)
+    if(inHandlerMode()) {
+        xTaskResumeFromISR(thread_id);
+    }
+    else {
+        vTaskResume(thread_id);
+    }
+    return osOK;
 #else
-   return osErrorResource;
+    return osErrorResource;
 #endif
 }
 
@@ -1162,9 +1065,9 @@ osStatus osThreadResume(osThreadId thread_id)
  */
 osStatus osThreadSuspendAll(void)
 {
-   vTaskSuspendAll();
+    vTaskSuspendAll();
 
-   return osOK;
+    return osOK;
 }
 
 /**
@@ -1173,9 +1076,9 @@ osStatus osThreadSuspendAll(void)
  */
 osStatus osThreadResumeAll(void)
 {
-   xTaskResumeAll();
+    xTaskResumeAll();
 
-   return osOK;
+    return osOK;
 }
 
 /**
@@ -1185,15 +1088,15 @@ osStatus osThreadResumeAll(void)
  */
 osStatus osThreadIsSuspended(osThreadId thread_id)
 {
-#if (INCLUDE_vTaskSuspend == 1)
-   extern signed portBASE_TYPE xTaskIsTaskSuspended(xTaskHandle xTask);
+#if(INCLUDE_vTaskSuspend == 1)
+    extern signed portBASE_TYPE xTaskIsTaskSuspended(xTaskHandle xTask);
 
-   if (xTaskIsTaskSuspended(thread_id) != pdFALSE)
-      return osOK;
-   else
-      return osErrorOS;
+    if(xTaskIsTaskSuspended(thread_id) != pdFALSE)
+        return osOK;
+    else
+        return osErrorOS;
 #else
-   return osErrorResource;
+    return osErrorResource;
 #endif
 }
 
@@ -1207,16 +1110,16 @@ osStatus osThreadIsSuspended(osThreadId thread_id)
 osStatus osDelayUntil(uint32_t PreviousWakeTime, uint32_t millisec)
 {
 #if INCLUDE_vTaskDelayUntil
-   portTickType ticks = (millisec / portTICK_RATE_MS);
-   portTickType previouswake = (portTickType)PreviousWakeTime;
-   vTaskDelayUntil(&previouswake, ticks ? ticks : 1);
+    portTickType ticks = (millisec / portTICK_RATE_MS);
+    portTickType previouswake = (portTickType)PreviousWakeTime;
+    vTaskDelayUntil(&previouswake, ticks ? ticks : 1);
 
-   return osOK;
+    return osOK;
 #else
-   (void)millisec;
-   (void)PreviousWakeTime;
+    (void)millisec;
+    (void)PreviousWakeTime;
 
-   return osErrorResource;
+    return osErrorResource;
 #endif
 }
 
@@ -1229,10 +1132,10 @@ osStatus osDelayUntil(uint32_t PreviousWakeTime, uint32_t millisec)
  */
 osStatus osThreadList(int8_t* buffer)
 {
-#if ((configUSE_TRACE_FACILITY == 1) && (configUSE_STATS_FORMATTING_FUNCTIONS == 1))
-   vTaskList(buffer);
+#if((configUSE_TRACE_FACILITY == 1) && (configUSE_STATS_FORMATTING_FUNCTIONS == 1))
+    vTaskList(buffer);
 #endif
-   return osOK;
+    return osOK;
 }
 
 /**
@@ -1243,42 +1146,36 @@ osStatus osThreadList(int8_t* buffer)
  */
 osEvent osMessagePeek(osMessageQId queue_id, uint32_t millisec)
 {
-   portTickType ticks;
-   osEvent event;
+    portTickType ticks;
+    osEvent event;
 
-   event.def.message_id = queue_id;
+    event.def.message_id = queue_id;
 
-   if (queue_id == NULL)
-   {
-      event.status = osErrorParameter;
-      return event;
-   }
+    if(queue_id == NULL) {
+        event.status = osErrorParameter;
+        return event;
+    }
 
-   ticks = 0;
-   if (millisec == osWaitForever)
-   {
-      ticks = portMAX_DELAY;
-   }
-   else if (millisec != 0)
-   {
-      ticks = millisec / portTICK_RATE_MS;
-      if (ticks == 0)
-      {
-         ticks = 1;
-      }
-   }
+    ticks = 0;
+    if(millisec == osWaitForever) {
+        ticks = portMAX_DELAY;
+    }
+    else if(millisec != 0) {
+        ticks = millisec / portTICK_RATE_MS;
+        if(ticks == 0) {
+            ticks = 1;
+        }
+    }
 
-   if (xQueuePeek(queue_id, &event.value.v, ticks) == pdTRUE)
-   {
-      /* We have mail */
-      event.status = osEventMessage;
-   }
-   else
-   {
-      event.status = (ticks == 0) ? osOK : osEventTimeout;
-   }
+    if(xQueuePeek(queue_id, &event.value.v, ticks) == pdTRUE) {
+        /* We have mail */
+        event.status = osEventMessage;
+    }
+    else {
+        event.status = (ticks == 0) ? osOK : osEventTimeout;
+    }
 
-   return event;
+    return event;
 }
 
 /**
@@ -1288,11 +1185,11 @@ osEvent osMessagePeek(osMessageQId queue_id, uint32_t millisec)
  */
 osMutexId osRecursiveMutexCreate(osMutexDef_t* mutex_def)
 {
-   (void)mutex_def;
-#if (configUSE_RECURSIVE_MUTEXES == 1)
-   return xSemaphoreCreateRecursiveMutex();
+    (void)mutex_def;
+#if(configUSE_RECURSIVE_MUTEXES == 1)
+    return xSemaphoreCreateRecursiveMutex();
 #else
-   return NULL;
+    return NULL;
 #endif
 }
 
@@ -1303,16 +1200,15 @@ osMutexId osRecursiveMutexCreate(osMutexDef_t* mutex_def)
  */
 osStatus osRecursiveMutexRelease(osMutexId mutex_id)
 {
-#if (configUSE_RECURSIVE_MUTEXES == 1)
-   osStatus result = osOK;
+#if(configUSE_RECURSIVE_MUTEXES == 1)
+    osStatus result = osOK;
 
-   if (xSemaphoreGiveRecursive(mutex_id) != pdTRUE)
-   {
-      result = osErrorOS;
-   }
-   return result;
+    if(xSemaphoreGiveRecursive(mutex_id) != pdTRUE) {
+        result = osErrorOS;
+    }
+    return result;
 #else
-   return osErrorResource;
+    return osErrorResource;
 #endif
 }
 
@@ -1324,34 +1220,29 @@ osStatus osRecursiveMutexRelease(osMutexId mutex_id)
  */
 osStatus osRecursiveMutexWait(osMutexId mutex_id, uint32_t millisec)
 {
-#if (configUSE_RECURSIVE_MUTEXES == 1)
-   portTickType ticks;
+#if(configUSE_RECURSIVE_MUTEXES == 1)
+    portTickType ticks;
 
-   if (mutex_id == NULL)
-   {
-      return osErrorParameter;
-   }
+    if(mutex_id == NULL) {
+        return osErrorParameter;
+    }
 
-   ticks = 0;
-   if (millisec == osWaitForever)
-   {
-      ticks = portMAX_DELAY;
-   }
-   else if (millisec != 0)
-   {
-      ticks = millisec / portTICK_RATE_MS;
-      if (ticks == 0)
-      {
-         ticks = 1;
-      }
-   }
+    ticks = 0;
+    if(millisec == osWaitForever) {
+        ticks = portMAX_DELAY;
+    }
+    else if(millisec != 0) {
+        ticks = millisec / portTICK_RATE_MS;
+        if(ticks == 0) {
+            ticks = 1;
+        }
+    }
 
-   if (xSemaphoreTakeRecursive(mutex_id, ticks) != pdTRUE)
-   {
-      return osErrorOS;
-   }
-   return osOK;
+    if(xSemaphoreTakeRecursive(mutex_id, ticks) != pdTRUE) {
+        return osErrorOS;
+    }
+    return osOK;
 #else
-   return osErrorResource;
+    return osErrorResource;
 #endif
 }

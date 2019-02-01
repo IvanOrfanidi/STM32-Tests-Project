@@ -5,27 +5,26 @@
 #include "stdint.h"
 
 #ifdef GPS_MODULE_IT520
-#   define GPS_PACKET_LEN 1
+#define GPS_PACKET_LEN 1
 #endif
 
 #ifdef GPS_MODULE_UBLOX
-#   define GPS_PACKET_LEN 0
+#define GPS_PACKET_LEN 0
 #endif
 
 #ifdef GPS_MODULE_SIMCOM
-#   define GPS_PACKET_LEN 1
+#define GPS_PACKET_LEN 1
 #endif
 
-enum
-{
-   GPS_RMC = 0,
-   GPS_VTG = 1,
-   GPS_GGA = 2,
-   GPS_GLL = 3,
-   GPS_GSA = 4,
-   GPS_GSV = 5,
-   GPS_TOTAL = 6,
-   GPS_START = 7
+enum {
+    GPS_RMC = 0,
+    GPS_VTG = 1,
+    GPS_GGA = 2,
+    GPS_GLL = 3,
+    GPS_GSA = 4,
+    GPS_GSV = 5,
+    GPS_TOTAL = 6,
+    GPS_START = 7
 };
 
 #define MASK_RMC (1 << GPS_RMC)
@@ -33,31 +32,31 @@ enum
 
 typedef __packed struct
 {
-   // GPRMC
-   uint32_t time;   // дата & время
-   double latitude;   // широта
-   double longitude;   // долгота
-   float course;   // курс
-   float speed;   // скорость
+    // GPRMC
+    uint32_t time;       // дата & время
+    double latitude;     // широта
+    double longitude;    // долгота
+    float course;        // курс
+    float speed;         // скорость
 
-   // GPGGA
-   float hdop;   // hdop
-   uint8_t sat;   // satelites
+    // GPGGA
+    float hdop;     // hdop
+    uint8_t sat;    // satelites
 
-   uint8_t status;
-   uint32_t cs_rmc;
-   uint32_t cs_gga;
+    uint8_t status;
+    uint32_t cs_rmc;
+    uint32_t cs_gga;
 } GPS_INFO;
 
 typedef __packed struct
 {
-   double latitude;   // широта
-   double longitude;   // долгота
-   float course;   // курс
-   float speed;   // скорость
+    double latitude;     // широта
+    double longitude;    // долгота
+    float course;        // курс
+    float speed;         // скорость
 
-   float hdop;   // hdop
-   uint8_t sat;   // satelites
+    float hdop;     // hdop
+    uint8_t sat;    // satelites
 } GPS_INFO_NOT_VALID;
 
 int gps_parser(GPS_INFO* const inf, unsigned char* buf, int size);

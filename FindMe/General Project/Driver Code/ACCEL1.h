@@ -16,7 +16,7 @@
 #define OUT_Z_H_REGISTER 0x2D
 
 //различные сообщения
-#define CMD_ACCEL_READ_IRQ 0   //прочитать прерывание из акселерометра
+#define CMD_ACCEL_READ_IRQ 0    //прочитать прерывание из акселерометра
 
 // void vAccelHandler(void *pvParameters);
 
@@ -34,7 +34,7 @@ int8_t GetTemperaturAccel(void);
 
 void ReadAxisDataAccel(TAcc_state* pAcc_state);
 
-void AccelHandler(void);   //Обработчик Акселерометра.
+void AccelHandler(void);    //Обработчик Акселерометра.
 
 void AccelSetMove(void);
 

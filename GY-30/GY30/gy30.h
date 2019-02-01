@@ -6,24 +6,24 @@
 #define _I2C_PORT_BH1750_ 2
 
 #if _I2C_PORT_BH1750_ == 1
-#   define BH1750_I2C I2C1
-#   define BH1750_I2C_RCC_Periph RCC_APB1Periph_I2C1
-#   define BH1750_I2C_Port GPIOB
-#   define BH1750_I2C_SCL_Pin GPIO_Pin_6
-#   define BH1750_I2C_SDA_Pin GPIO_Pin_7
-#   define BH1750_I2C_RCC_Port RCC_APB2Periph_GPIOB
+#define BH1750_I2C I2C1
+#define BH1750_I2C_RCC_Periph RCC_APB1Periph_I2C1
+#define BH1750_I2C_Port GPIOB
+#define BH1750_I2C_SCL_Pin GPIO_Pin_6
+#define BH1750_I2C_SDA_Pin GPIO_Pin_7
+#define BH1750_I2C_RCC_Port RCC_APB2Periph_GPIOB
 #elif _I2C_PORT_BH1750_ == 2
-#   define BH1750_I2C I2C2
-#   define BH1750_I2C_RCC_Periph RCC_APB1Periph_I2C2
-#   define BH1750_I2C_Port GPIOB
-#   define BH1750_I2C_SCL_Pin GPIO_Pin_10
-#   define BH1750_I2C_SDA_Pin GPIO_Pin_11
-#   define BH1750_I2C_RCC_Port RCC_APB2Periph_GPIOB
+#define BH1750_I2C I2C2
+#define BH1750_I2C_RCC_Periph RCC_APB1Periph_I2C2
+#define BH1750_I2C_Port GPIOB
+#define BH1750_I2C_SCL_Pin GPIO_Pin_10
+#define BH1750_I2C_SDA_Pin GPIO_Pin_11
+#define BH1750_I2C_RCC_Port RCC_APB2Periph_GPIOB
 #endif
 
 #define BH1750_I2C_Speed 100000
 
-#define BH1750_ADDRESS 0x46   // 0x23 // this device only has one address
+#define BH1750_ADDRESS 0x46    // 0x23 // this device only has one address
 
 // No active state
 #define BH1750_POWER_DOWN 0x00

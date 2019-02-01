@@ -37,13 +37,13 @@
  * @brief Define to prevent recursive inclusion
  */
 #ifndef __SYSTEM_STM32L1XX_H
-#   define __SYSTEM_STM32L1XX_H
+#define __SYSTEM_STM32L1XX_H
 
-#   ifdef __cplusplus
+#ifdef __cplusplus
 extern "C" {
-#   endif
+#endif
 
-#   define SYSCLK_FREQ 32000000 /*!< System Clock Frequency (Core Clock) */
+#define SYSCLK_FREQ 32000000 /*!< System Clock Frequency (Core Clock) */
 
 /**
  * @}
@@ -79,9 +79,9 @@ extern void SystemCoreClockUpdate(void);
  * @}
  */
 
-#   ifdef __cplusplus
+#ifdef __cplusplus
 }
-#   endif
+#endif
 
 #endif /*__SYSTEM_STM32L1XX_H */
 

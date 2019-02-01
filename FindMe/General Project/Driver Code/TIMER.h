@@ -12,11 +12,11 @@
 
 void TM3DeInit(void);
 
-void TM3Init(void);   // Timer delay(no use RTOS).
-void TM4Init(void);   // Timer Led.
-void TM6Init(void);   // Timer Buzzer.
-void TM9Init(void);   // Timer PWR Buzzer.
-void TM7Init(void);   // Timer One Sec.
+void TM3Init(void);    // Timer delay(no use RTOS).
+void TM4Init(void);    // Timer Led.
+void TM6Init(void);    // Timer Buzzer.
+void TM9Init(void);    // Timer PWR Buzzer.
+void TM7Init(void);    // Timer One Sec.
 void TIM3_IRQHandler(void);
 void TIM5_IRQHandler(void);
 int isEndWaitPeriod(const uint32_t wait);

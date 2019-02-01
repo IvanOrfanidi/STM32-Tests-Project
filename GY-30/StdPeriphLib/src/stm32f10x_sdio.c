@@ -160,15 +160,15 @@
  */
 void SDIO_DeInit(void)
 {
-   SDIO->POWER = 0x00000000;
-   SDIO->CLKCR = 0x00000000;
-   SDIO->ARG = 0x00000000;
-   SDIO->CMD = 0x00000000;
-   SDIO->DTIMER = 0x00000000;
-   SDIO->DLEN = 0x00000000;
-   SDIO->DCTRL = 0x00000000;
-   SDIO->ICR = 0x00C007FF;
-   SDIO->MASK = 0x00000000;
+    SDIO->POWER = 0x00000000;
+    SDIO->CLKCR = 0x00000000;
+    SDIO->ARG = 0x00000000;
+    SDIO->CMD = 0x00000000;
+    SDIO->DTIMER = 0x00000000;
+    SDIO->DLEN = 0x00000000;
+    SDIO->DCTRL = 0x00000000;
+    SDIO->ICR = 0x00C007FF;
+    SDIO->MASK = 0x00000000;
 }
 
 /**
@@ -180,34 +180,34 @@ void SDIO_DeInit(void)
  */
 void SDIO_Init(SDIO_InitTypeDef* SDIO_InitStruct)
 {
-   uint32_t tmpreg = 0;
+    uint32_t tmpreg = 0;
 
-   /* Check the parameters */
-   assert_param(IS_SDIO_CLOCK_EDGE(SDIO_InitStruct->SDIO_ClockEdge));
-   assert_param(IS_SDIO_CLOCK_BYPASS(SDIO_InitStruct->SDIO_ClockBypass));
-   assert_param(IS_SDIO_CLOCK_POWER_SAVE(SDIO_InitStruct->SDIO_ClockPowerSave));
-   assert_param(IS_SDIO_BUS_WIDE(SDIO_InitStruct->SDIO_BusWide));
-   assert_param(IS_SDIO_HARDWARE_FLOW_CONTROL(SDIO_InitStruct->SDIO_HardwareFlowControl));
+    /* Check the parameters */
+    assert_param(IS_SDIO_CLOCK_EDGE(SDIO_InitStruct->SDIO_ClockEdge));
+    assert_param(IS_SDIO_CLOCK_BYPASS(SDIO_InitStruct->SDIO_ClockBypass));
+    assert_param(IS_SDIO_CLOCK_POWER_SAVE(SDIO_InitStruct->SDIO_ClockPowerSave));
+    assert_param(IS_SDIO_BUS_WIDE(SDIO_InitStruct->SDIO_BusWide));
+    assert_param(IS_SDIO_HARDWARE_FLOW_CONTROL(SDIO_InitStruct->SDIO_HardwareFlowControl));
 
-   /*---------------------------- SDIO CLKCR Configuration ------------------------*/
-   /* Get the SDIO CLKCR value */
-   tmpreg = SDIO->CLKCR;
+    /*---------------------------- SDIO CLKCR Configuration ------------------------*/
+    /* Get the SDIO CLKCR value */
+    tmpreg = SDIO->CLKCR;
 
-   /* Clear CLKDIV, PWRSAV, BYPASS, WIDBUS, NEGEDGE, HWFC_EN bits */
-   tmpreg &= CLKCR_CLEAR_MASK;
+    /* Clear CLKDIV, PWRSAV, BYPASS, WIDBUS, NEGEDGE, HWFC_EN bits */
+    tmpreg &= CLKCR_CLEAR_MASK;
 
-   /* Set CLKDIV bits according to SDIO_ClockDiv value */
-   /* Set PWRSAV bit according to SDIO_ClockPowerSave value */
-   /* Set BYPASS bit according to SDIO_ClockBypass value */
-   /* Set WIDBUS bits according to SDIO_BusWide value */
-   /* Set NEGEDGE bits according to SDIO_ClockEdge value */
-   /* Set HWFC_EN bits according to SDIO_HardwareFlowControl value */
-   tmpreg |=
-      (SDIO_InitStruct->SDIO_ClockDiv | SDIO_InitStruct->SDIO_ClockPowerSave | SDIO_InitStruct->SDIO_ClockBypass |
-       SDIO_InitStruct->SDIO_BusWide | SDIO_InitStruct->SDIO_ClockEdge | SDIO_InitStruct->SDIO_HardwareFlowControl);
+    /* Set CLKDIV bits according to SDIO_ClockDiv value */
+    /* Set PWRSAV bit according to SDIO_ClockPowerSave value */
+    /* Set BYPASS bit according to SDIO_ClockBypass value */
+    /* Set WIDBUS bits according to SDIO_BusWide value */
+    /* Set NEGEDGE bits according to SDIO_ClockEdge value */
+    /* Set HWFC_EN bits according to SDIO_HardwareFlowControl value */
+    tmpreg |=
+        (SDIO_InitStruct->SDIO_ClockDiv | SDIO_InitStruct->SDIO_ClockPowerSave | SDIO_InitStruct->SDIO_ClockBypass |
+            SDIO_InitStruct->SDIO_BusWide | SDIO_InitStruct->SDIO_ClockEdge | SDIO_InitStruct->SDIO_HardwareFlowControl);
 
-   /* Write to SDIO CLKCR */
-   SDIO->CLKCR = tmpreg;
+    /* Write to SDIO CLKCR */
+    SDIO->CLKCR = tmpreg;
 }
 
 /**
@@ -218,13 +218,13 @@ void SDIO_Init(SDIO_InitTypeDef* SDIO_InitStruct)
  */
 void SDIO_StructInit(SDIO_InitTypeDef* SDIO_InitStruct)
 {
-   /* SDIO_InitStruct members default value */
-   SDIO_InitStruct->SDIO_ClockDiv = 0x00;
-   SDIO_InitStruct->SDIO_ClockEdge = SDIO_ClockEdge_Rising;
-   SDIO_InitStruct->SDIO_ClockBypass = SDIO_ClockBypass_Disable;
-   SDIO_InitStruct->SDIO_ClockPowerSave = SDIO_ClockPowerSave_Disable;
-   SDIO_InitStruct->SDIO_BusWide = SDIO_BusWide_1b;
-   SDIO_InitStruct->SDIO_HardwareFlowControl = SDIO_HardwareFlowControl_Disable;
+    /* SDIO_InitStruct members default value */
+    SDIO_InitStruct->SDIO_ClockDiv = 0x00;
+    SDIO_InitStruct->SDIO_ClockEdge = SDIO_ClockEdge_Rising;
+    SDIO_InitStruct->SDIO_ClockBypass = SDIO_ClockBypass_Disable;
+    SDIO_InitStruct->SDIO_ClockPowerSave = SDIO_ClockPowerSave_Disable;
+    SDIO_InitStruct->SDIO_BusWide = SDIO_BusWide_1b;
+    SDIO_InitStruct->SDIO_HardwareFlowControl = SDIO_HardwareFlowControl_Disable;
 }
 
 /**
@@ -234,10 +234,10 @@ void SDIO_StructInit(SDIO_InitTypeDef* SDIO_InitStruct)
  */
 void SDIO_ClockCmd(FunctionalState NewState)
 {
-   /* Check the parameters */
-   assert_param(IS_FUNCTIONAL_STATE(NewState));
+    /* Check the parameters */
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-   *(__IO uint32_t*)CLKCR_CLKEN_BB = (uint32_t)NewState;
+    *(__IO uint32_t*)CLKCR_CLKEN_BB = (uint32_t)NewState;
 }
 
 /**
@@ -250,11 +250,11 @@ void SDIO_ClockCmd(FunctionalState NewState)
  */
 void SDIO_SetPowerState(uint32_t SDIO_PowerState)
 {
-   /* Check the parameters */
-   assert_param(IS_SDIO_POWER_STATE(SDIO_PowerState));
+    /* Check the parameters */
+    assert_param(IS_SDIO_POWER_STATE(SDIO_PowerState));
 
-   SDIO->POWER &= PWR_PWRCTRL_MASK;
-   SDIO->POWER |= SDIO_PowerState;
+    SDIO->POWER &= PWR_PWRCTRL_MASK;
+    SDIO->POWER |= SDIO_PowerState;
 }
 
 /**
@@ -268,7 +268,7 @@ void SDIO_SetPowerState(uint32_t SDIO_PowerState)
  */
 uint32_t SDIO_GetPowerState(void)
 {
-   return (SDIO->POWER & (~PWR_PWRCTRL_MASK));
+    return (SDIO->POWER & (~PWR_PWRCTRL_MASK));
 }
 
 /**
@@ -306,20 +306,18 @@ uint32_t SDIO_GetPowerState(void)
  */
 void SDIO_ITConfig(uint32_t SDIO_IT, FunctionalState NewState)
 {
-   /* Check the parameters */
-   assert_param(IS_SDIO_IT(SDIO_IT));
-   assert_param(IS_FUNCTIONAL_STATE(NewState));
+    /* Check the parameters */
+    assert_param(IS_SDIO_IT(SDIO_IT));
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-   if (NewState != DISABLE)
-   {
-      /* Enable the SDIO interrupts */
-      SDIO->MASK |= SDIO_IT;
-   }
-   else
-   {
-      /* Disable the SDIO interrupts */
-      SDIO->MASK &= ~SDIO_IT;
-   }
+    if(NewState != DISABLE) {
+        /* Enable the SDIO interrupts */
+        SDIO->MASK |= SDIO_IT;
+    }
+    else {
+        /* Disable the SDIO interrupts */
+        SDIO->MASK &= ~SDIO_IT;
+    }
 }
 
 /**
@@ -330,10 +328,10 @@ void SDIO_ITConfig(uint32_t SDIO_IT, FunctionalState NewState)
  */
 void SDIO_DMACmd(FunctionalState NewState)
 {
-   /* Check the parameters */
-   assert_param(IS_FUNCTIONAL_STATE(NewState));
+    /* Check the parameters */
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-   *(__IO uint32_t*)DCTRL_DMAEN_BB = (uint32_t)NewState;
+    *(__IO uint32_t*)DCTRL_DMAEN_BB = (uint32_t)NewState;
 }
 
 /**
@@ -345,32 +343,32 @@ void SDIO_DMACmd(FunctionalState NewState)
  */
 void SDIO_SendCommand(SDIO_CmdInitTypeDef* SDIO_CmdInitStruct)
 {
-   uint32_t tmpreg = 0;
+    uint32_t tmpreg = 0;
 
-   /* Check the parameters */
-   assert_param(IS_SDIO_CMD_INDEX(SDIO_CmdInitStruct->SDIO_CmdIndex));
-   assert_param(IS_SDIO_RESPONSE(SDIO_CmdInitStruct->SDIO_Response));
-   assert_param(IS_SDIO_WAIT(SDIO_CmdInitStruct->SDIO_Wait));
-   assert_param(IS_SDIO_CPSM(SDIO_CmdInitStruct->SDIO_CPSM));
+    /* Check the parameters */
+    assert_param(IS_SDIO_CMD_INDEX(SDIO_CmdInitStruct->SDIO_CmdIndex));
+    assert_param(IS_SDIO_RESPONSE(SDIO_CmdInitStruct->SDIO_Response));
+    assert_param(IS_SDIO_WAIT(SDIO_CmdInitStruct->SDIO_Wait));
+    assert_param(IS_SDIO_CPSM(SDIO_CmdInitStruct->SDIO_CPSM));
 
-   /*---------------------------- SDIO ARG Configuration ------------------------*/
-   /* Set the SDIO Argument value */
-   SDIO->ARG = SDIO_CmdInitStruct->SDIO_Argument;
+    /*---------------------------- SDIO ARG Configuration ------------------------*/
+    /* Set the SDIO Argument value */
+    SDIO->ARG = SDIO_CmdInitStruct->SDIO_Argument;
 
-   /*---------------------------- SDIO CMD Configuration ------------------------*/
-   /* Get the SDIO CMD value */
-   tmpreg = SDIO->CMD;
-   /* Clear CMDINDEX, WAITRESP, WAITINT, WAITPEND, CPSMEN bits */
-   tmpreg &= CMD_CLEAR_MASK;
-   /* Set CMDINDEX bits according to SDIO_CmdIndex value */
-   /* Set WAITRESP bits according to SDIO_Response value */
-   /* Set WAITINT and WAITPEND bits according to SDIO_Wait value */
-   /* Set CPSMEN bits according to SDIO_CPSM value */
-   tmpreg |= (uint32_t)SDIO_CmdInitStruct->SDIO_CmdIndex | SDIO_CmdInitStruct->SDIO_Response |
-             SDIO_CmdInitStruct->SDIO_Wait | SDIO_CmdInitStruct->SDIO_CPSM;
+    /*---------------------------- SDIO CMD Configuration ------------------------*/
+    /* Get the SDIO CMD value */
+    tmpreg = SDIO->CMD;
+    /* Clear CMDINDEX, WAITRESP, WAITINT, WAITPEND, CPSMEN bits */
+    tmpreg &= CMD_CLEAR_MASK;
+    /* Set CMDINDEX bits according to SDIO_CmdIndex value */
+    /* Set WAITRESP bits according to SDIO_Response value */
+    /* Set WAITINT and WAITPEND bits according to SDIO_Wait value */
+    /* Set CPSMEN bits according to SDIO_CPSM value */
+    tmpreg |= (uint32_t)SDIO_CmdInitStruct->SDIO_CmdIndex | SDIO_CmdInitStruct->SDIO_Response |
+              SDIO_CmdInitStruct->SDIO_Wait | SDIO_CmdInitStruct->SDIO_CPSM;
 
-   /* Write to SDIO CMD */
-   SDIO->CMD = tmpreg;
+    /* Write to SDIO CMD */
+    SDIO->CMD = tmpreg;
 }
 
 /**
@@ -381,12 +379,12 @@ void SDIO_SendCommand(SDIO_CmdInitTypeDef* SDIO_CmdInitStruct)
  */
 void SDIO_CmdStructInit(SDIO_CmdInitTypeDef* SDIO_CmdInitStruct)
 {
-   /* SDIO_CmdInitStruct members default value */
-   SDIO_CmdInitStruct->SDIO_Argument = 0x00;
-   SDIO_CmdInitStruct->SDIO_CmdIndex = 0x00;
-   SDIO_CmdInitStruct->SDIO_Response = SDIO_Response_No;
-   SDIO_CmdInitStruct->SDIO_Wait = SDIO_Wait_No;
-   SDIO_CmdInitStruct->SDIO_CPSM = SDIO_CPSM_Disable;
+    /* SDIO_CmdInitStruct members default value */
+    SDIO_CmdInitStruct->SDIO_Argument = 0x00;
+    SDIO_CmdInitStruct->SDIO_CmdIndex = 0x00;
+    SDIO_CmdInitStruct->SDIO_Response = SDIO_Response_No;
+    SDIO_CmdInitStruct->SDIO_Wait = SDIO_Wait_No;
+    SDIO_CmdInitStruct->SDIO_CPSM = SDIO_CPSM_Disable;
 }
 
 /**
@@ -396,7 +394,7 @@ void SDIO_CmdStructInit(SDIO_CmdInitTypeDef* SDIO_CmdInitStruct)
  */
 uint8_t SDIO_GetCommandResponse(void)
 {
-   return (uint8_t)(SDIO->RESPCMD);
+    return (uint8_t)(SDIO->RESPCMD);
 }
 
 /**
@@ -411,14 +409,14 @@ uint8_t SDIO_GetCommandResponse(void)
  */
 uint32_t SDIO_GetResponse(uint32_t SDIO_RESP)
 {
-   __IO uint32_t tmp = 0;
+    __IO uint32_t tmp = 0;
 
-   /* Check the parameters */
-   assert_param(IS_SDIO_RESP(SDIO_RESP));
+    /* Check the parameters */
+    assert_param(IS_SDIO_RESP(SDIO_RESP));
 
-   tmp = SDIO_RESP_ADDR + SDIO_RESP;
+    tmp = SDIO_RESP_ADDR + SDIO_RESP;
 
-   return (*(__IO uint32_t*)tmp);
+    return (*(__IO uint32_t*)tmp);
 }
 
 /**
@@ -430,37 +428,37 @@ uint32_t SDIO_GetResponse(uint32_t SDIO_RESP)
  */
 void SDIO_DataConfig(SDIO_DataInitTypeDef* SDIO_DataInitStruct)
 {
-   uint32_t tmpreg = 0;
+    uint32_t tmpreg = 0;
 
-   /* Check the parameters */
-   assert_param(IS_SDIO_DATA_LENGTH(SDIO_DataInitStruct->SDIO_DataLength));
-   assert_param(IS_SDIO_BLOCK_SIZE(SDIO_DataInitStruct->SDIO_DataBlockSize));
-   assert_param(IS_SDIO_TRANSFER_DIR(SDIO_DataInitStruct->SDIO_TransferDir));
-   assert_param(IS_SDIO_TRANSFER_MODE(SDIO_DataInitStruct->SDIO_TransferMode));
-   assert_param(IS_SDIO_DPSM(SDIO_DataInitStruct->SDIO_DPSM));
+    /* Check the parameters */
+    assert_param(IS_SDIO_DATA_LENGTH(SDIO_DataInitStruct->SDIO_DataLength));
+    assert_param(IS_SDIO_BLOCK_SIZE(SDIO_DataInitStruct->SDIO_DataBlockSize));
+    assert_param(IS_SDIO_TRANSFER_DIR(SDIO_DataInitStruct->SDIO_TransferDir));
+    assert_param(IS_SDIO_TRANSFER_MODE(SDIO_DataInitStruct->SDIO_TransferMode));
+    assert_param(IS_SDIO_DPSM(SDIO_DataInitStruct->SDIO_DPSM));
 
-   /*---------------------------- SDIO DTIMER Configuration ---------------------*/
-   /* Set the SDIO Data TimeOut value */
-   SDIO->DTIMER = SDIO_DataInitStruct->SDIO_DataTimeOut;
+    /*---------------------------- SDIO DTIMER Configuration ---------------------*/
+    /* Set the SDIO Data TimeOut value */
+    SDIO->DTIMER = SDIO_DataInitStruct->SDIO_DataTimeOut;
 
-   /*---------------------------- SDIO DLEN Configuration -----------------------*/
-   /* Set the SDIO DataLength value */
-   SDIO->DLEN = SDIO_DataInitStruct->SDIO_DataLength;
+    /*---------------------------- SDIO DLEN Configuration -----------------------*/
+    /* Set the SDIO DataLength value */
+    SDIO->DLEN = SDIO_DataInitStruct->SDIO_DataLength;
 
-   /*---------------------------- SDIO DCTRL Configuration ----------------------*/
-   /* Get the SDIO DCTRL value */
-   tmpreg = SDIO->DCTRL;
-   /* Clear DEN, DTMODE, DTDIR and DBCKSIZE bits */
-   tmpreg &= DCTRL_CLEAR_MASK;
-   /* Set DEN bit according to SDIO_DPSM value */
-   /* Set DTMODE bit according to SDIO_TransferMode value */
-   /* Set DTDIR bit according to SDIO_TransferDir value */
-   /* Set DBCKSIZE bits according to SDIO_DataBlockSize value */
-   tmpreg |= (uint32_t)SDIO_DataInitStruct->SDIO_DataBlockSize | SDIO_DataInitStruct->SDIO_TransferDir |
-             SDIO_DataInitStruct->SDIO_TransferMode | SDIO_DataInitStruct->SDIO_DPSM;
+    /*---------------------------- SDIO DCTRL Configuration ----------------------*/
+    /* Get the SDIO DCTRL value */
+    tmpreg = SDIO->DCTRL;
+    /* Clear DEN, DTMODE, DTDIR and DBCKSIZE bits */
+    tmpreg &= DCTRL_CLEAR_MASK;
+    /* Set DEN bit according to SDIO_DPSM value */
+    /* Set DTMODE bit according to SDIO_TransferMode value */
+    /* Set DTDIR bit according to SDIO_TransferDir value */
+    /* Set DBCKSIZE bits according to SDIO_DataBlockSize value */
+    tmpreg |= (uint32_t)SDIO_DataInitStruct->SDIO_DataBlockSize | SDIO_DataInitStruct->SDIO_TransferDir |
+              SDIO_DataInitStruct->SDIO_TransferMode | SDIO_DataInitStruct->SDIO_DPSM;
 
-   /* Write to SDIO DCTRL */
-   SDIO->DCTRL = tmpreg;
+    /* Write to SDIO DCTRL */
+    SDIO->DCTRL = tmpreg;
 }
 
 /**
@@ -471,13 +469,13 @@ void SDIO_DataConfig(SDIO_DataInitTypeDef* SDIO_DataInitStruct)
  */
 void SDIO_DataStructInit(SDIO_DataInitTypeDef* SDIO_DataInitStruct)
 {
-   /* SDIO_DataInitStruct members default value */
-   SDIO_DataInitStruct->SDIO_DataTimeOut = 0xFFFFFFFF;
-   SDIO_DataInitStruct->SDIO_DataLength = 0x00;
-   SDIO_DataInitStruct->SDIO_DataBlockSize = SDIO_DataBlockSize_1b;
-   SDIO_DataInitStruct->SDIO_TransferDir = SDIO_TransferDir_ToCard;
-   SDIO_DataInitStruct->SDIO_TransferMode = SDIO_TransferMode_Block;
-   SDIO_DataInitStruct->SDIO_DPSM = SDIO_DPSM_Disable;
+    /* SDIO_DataInitStruct members default value */
+    SDIO_DataInitStruct->SDIO_DataTimeOut = 0xFFFFFFFF;
+    SDIO_DataInitStruct->SDIO_DataLength = 0x00;
+    SDIO_DataInitStruct->SDIO_DataBlockSize = SDIO_DataBlockSize_1b;
+    SDIO_DataInitStruct->SDIO_TransferDir = SDIO_TransferDir_ToCard;
+    SDIO_DataInitStruct->SDIO_TransferMode = SDIO_TransferMode_Block;
+    SDIO_DataInitStruct->SDIO_DPSM = SDIO_DPSM_Disable;
 }
 
 /**
@@ -487,7 +485,7 @@ void SDIO_DataStructInit(SDIO_DataInitTypeDef* SDIO_DataInitStruct)
  */
 uint32_t SDIO_GetDataCounter(void)
 {
-   return SDIO->DCOUNT;
+    return SDIO->DCOUNT;
 }
 
 /**
@@ -497,7 +495,7 @@ uint32_t SDIO_GetDataCounter(void)
  */
 uint32_t SDIO_ReadData(void)
 {
-   return SDIO->FIFO;
+    return SDIO->FIFO;
 }
 
 /**
@@ -507,7 +505,7 @@ uint32_t SDIO_ReadData(void)
  */
 void SDIO_WriteData(uint32_t Data)
 {
-   SDIO->FIFO = Data;
+    SDIO->FIFO = Data;
 }
 
 /**
@@ -517,7 +515,7 @@ void SDIO_WriteData(uint32_t Data)
  */
 uint32_t SDIO_GetFIFOCount(void)
 {
-   return SDIO->FIFOCNT;
+    return SDIO->FIFOCNT;
 }
 
 /**
@@ -528,10 +526,10 @@ uint32_t SDIO_GetFIFOCount(void)
  */
 void SDIO_StartSDIOReadWait(FunctionalState NewState)
 {
-   /* Check the parameters */
-   assert_param(IS_FUNCTIONAL_STATE(NewState));
+    /* Check the parameters */
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-   *(__IO uint32_t*)DCTRL_RWSTART_BB = (uint32_t)NewState;
+    *(__IO uint32_t*)DCTRL_RWSTART_BB = (uint32_t)NewState;
 }
 
 /**
@@ -542,10 +540,10 @@ void SDIO_StartSDIOReadWait(FunctionalState NewState)
  */
 void SDIO_StopSDIOReadWait(FunctionalState NewState)
 {
-   /* Check the parameters */
-   assert_param(IS_FUNCTIONAL_STATE(NewState));
+    /* Check the parameters */
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-   *(__IO uint32_t*)DCTRL_RWSTOP_BB = (uint32_t)NewState;
+    *(__IO uint32_t*)DCTRL_RWSTOP_BB = (uint32_t)NewState;
 }
 
 /**
@@ -558,10 +556,10 @@ void SDIO_StopSDIOReadWait(FunctionalState NewState)
  */
 void SDIO_SetSDIOReadWaitMode(uint32_t SDIO_ReadWaitMode)
 {
-   /* Check the parameters */
-   assert_param(IS_SDIO_READWAIT_MODE(SDIO_ReadWaitMode));
+    /* Check the parameters */
+    assert_param(IS_SDIO_READWAIT_MODE(SDIO_ReadWaitMode));
 
-   *(__IO uint32_t*)DCTRL_RWMOD_BB = SDIO_ReadWaitMode;
+    *(__IO uint32_t*)DCTRL_RWMOD_BB = SDIO_ReadWaitMode;
 }
 
 /**
@@ -572,10 +570,10 @@ void SDIO_SetSDIOReadWaitMode(uint32_t SDIO_ReadWaitMode)
  */
 void SDIO_SetSDIOOperation(FunctionalState NewState)
 {
-   /* Check the parameters */
-   assert_param(IS_FUNCTIONAL_STATE(NewState));
+    /* Check the parameters */
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-   *(__IO uint32_t*)DCTRL_SDIOEN_BB = (uint32_t)NewState;
+    *(__IO uint32_t*)DCTRL_SDIOEN_BB = (uint32_t)NewState;
 }
 
 /**
@@ -586,10 +584,10 @@ void SDIO_SetSDIOOperation(FunctionalState NewState)
  */
 void SDIO_SendSDIOSuspendCmd(FunctionalState NewState)
 {
-   /* Check the parameters */
-   assert_param(IS_FUNCTIONAL_STATE(NewState));
+    /* Check the parameters */
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-   *(__IO uint32_t*)CMD_SDIOSUSPEND_BB = (uint32_t)NewState;
+    *(__IO uint32_t*)CMD_SDIOSUSPEND_BB = (uint32_t)NewState;
 }
 
 /**
@@ -600,10 +598,10 @@ void SDIO_SendSDIOSuspendCmd(FunctionalState NewState)
  */
 void SDIO_CommandCompletionCmd(FunctionalState NewState)
 {
-   /* Check the parameters */
-   assert_param(IS_FUNCTIONAL_STATE(NewState));
+    /* Check the parameters */
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-   *(__IO uint32_t*)CMD_ENCMDCOMPL_BB = (uint32_t)NewState;
+    *(__IO uint32_t*)CMD_ENCMDCOMPL_BB = (uint32_t)NewState;
 }
 
 /**
@@ -613,10 +611,10 @@ void SDIO_CommandCompletionCmd(FunctionalState NewState)
  */
 void SDIO_CEATAITCmd(FunctionalState NewState)
 {
-   /* Check the parameters */
-   assert_param(IS_FUNCTIONAL_STATE(NewState));
+    /* Check the parameters */
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-   *(__IO uint32_t*)CMD_NIEN_BB = (uint32_t)((~((uint32_t)NewState)) & ((uint32_t)0x1));
+    *(__IO uint32_t*)CMD_NIEN_BB = (uint32_t)((~((uint32_t)NewState)) & ((uint32_t)0x1));
 }
 
 /**
@@ -626,10 +624,10 @@ void SDIO_CEATAITCmd(FunctionalState NewState)
  */
 void SDIO_SendCEATACmd(FunctionalState NewState)
 {
-   /* Check the parameters */
-   assert_param(IS_FUNCTIONAL_STATE(NewState));
+    /* Check the parameters */
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-   *(__IO uint32_t*)CMD_ATACMD_BB = (uint32_t)NewState;
+    *(__IO uint32_t*)CMD_ATACMD_BB = (uint32_t)NewState;
 }
 
 /**
@@ -665,20 +663,18 @@ void SDIO_SendCEATACmd(FunctionalState NewState)
  */
 FlagStatus SDIO_GetFlagStatus(uint32_t SDIO_FLAG)
 {
-   FlagStatus bitstatus = RESET;
+    FlagStatus bitstatus = RESET;
 
-   /* Check the parameters */
-   assert_param(IS_SDIO_FLAG(SDIO_FLAG));
+    /* Check the parameters */
+    assert_param(IS_SDIO_FLAG(SDIO_FLAG));
 
-   if ((SDIO->STA & SDIO_FLAG) != (uint32_t)RESET)
-   {
-      bitstatus = SET;
-   }
-   else
-   {
-      bitstatus = RESET;
-   }
-   return bitstatus;
+    if((SDIO->STA & SDIO_FLAG) != (uint32_t)RESET) {
+        bitstatus = SET;
+    }
+    else {
+        bitstatus = RESET;
+    }
+    return bitstatus;
 }
 
 /**
@@ -703,10 +699,10 @@ FlagStatus SDIO_GetFlagStatus(uint32_t SDIO_FLAG)
  */
 void SDIO_ClearFlag(uint32_t SDIO_FLAG)
 {
-   /* Check the parameters */
-   assert_param(IS_SDIO_CLEAR_FLAG(SDIO_FLAG));
+    /* Check the parameters */
+    assert_param(IS_SDIO_CLEAR_FLAG(SDIO_FLAG));
 
-   SDIO->ICR = SDIO_FLAG;
+    SDIO->ICR = SDIO_FLAG;
 }
 
 /**
@@ -742,19 +738,17 @@ void SDIO_ClearFlag(uint32_t SDIO_FLAG)
  */
 ITStatus SDIO_GetITStatus(uint32_t SDIO_IT)
 {
-   ITStatus bitstatus = RESET;
+    ITStatus bitstatus = RESET;
 
-   /* Check the parameters */
-   assert_param(IS_SDIO_GET_IT(SDIO_IT));
-   if ((SDIO->STA & SDIO_IT) != (uint32_t)RESET)
-   {
-      bitstatus = SET;
-   }
-   else
-   {
-      bitstatus = RESET;
-   }
-   return bitstatus;
+    /* Check the parameters */
+    assert_param(IS_SDIO_GET_IT(SDIO_IT));
+    if((SDIO->STA & SDIO_IT) != (uint32_t)RESET) {
+        bitstatus = SET;
+    }
+    else {
+        bitstatus = RESET;
+    }
+    return bitstatus;
 }
 
 /**
@@ -778,10 +772,10 @@ ITStatus SDIO_GetITStatus(uint32_t SDIO_IT)
  */
 void SDIO_ClearITPendingBit(uint32_t SDIO_IT)
 {
-   /* Check the parameters */
-   assert_param(IS_SDIO_CLEAR_IT(SDIO_IT));
+    /* Check the parameters */
+    assert_param(IS_SDIO_CLEAR_IT(SDIO_IT));
 
-   SDIO->ICR = SDIO_IT;
+    SDIO->ICR = SDIO_IT;
 }
 
 /**

@@ -8,18 +8,18 @@ extern "C" {
 
 #include "includes.h"
 
-#define _FAST_REGISTRATION_TO_BASE_ 0   // Регистрация в БС сервера FM911 без проверки GPS.
-#define _FAST_REGISTRATION_USER_ 0   // Регистрация пользователя в базе сервера FM911.
+#define _FAST_REGISTRATION_TO_BASE_ 0    // Регистрация в БС сервера FM911 без проверки GPS.
+#define _FAST_REGISTRATION_USER_ 0       // Регистрация пользователя в базе сервера FM911.
 
-#if (_FAST_REGISTRATION_USER_)
-#   define TEL_REG_USER "79119008502"
-#   define NAME_DEVICE "MyDevice"
+#if(_FAST_REGISTRATION_USER_)
+#define TEL_REG_USER "79119008502"
+#define NAME_DEVICE "MyDevice"
 #endif
 
 typedef __packed struct
 {
-   char strNameDevice[MAX_SIZE_NAME_DEVICE * 4];
-   char strNumUserTel[SIZE_TEL];
+    char strNameDevice[MAX_SIZE_NAME_DEVICE * 4];
+    char strNumUserTel[SIZE_TEL];
 } TUserConfigFm911;
 
 void stepGsmFindme911DataReady(TGsmStatus* pGsmStatus);

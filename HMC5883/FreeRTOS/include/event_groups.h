@@ -67,7 +67,7 @@
 #define EVENT_GROUPS_H
 
 #ifndef INC_FREERTOS_H
-#   error "include FreeRTOS.h" must appear in source files before "include event_groups.h"
+#error "include FreeRTOS.h" must appear in source files before "include event_groups.h"
 #endif
 
 #include "timers.h"
@@ -262,10 +262,10 @@ EventGroupHandle_t xEventGroupCreate(void) PRIVILEGED_FUNCTION;
  * \ingroup EventGroup
  */
 EventBits_t xEventGroupWaitBits(EventGroupHandle_t xEventGroup,
-                                const EventBits_t uxBitsToWaitFor,
-                                const BaseType_t xClearOnExit,
-                                const BaseType_t xWaitForAllBits,
-                                TickType_t xTicksToWait) PRIVILEGED_FUNCTION;
+    const EventBits_t uxBitsToWaitFor,
+    const BaseType_t xClearOnExit,
+    const BaseType_t xWaitForAllBits,
+    TickType_t xTicksToWait) PRIVILEGED_FUNCTION;
 
 /**
  * event_groups.h
@@ -337,7 +337,7 @@ EventBits_t xEventGroupClearBits(EventGroupHandle_t xEventGroup, const EventBits
  * \ingroup EventGroup
  */
 EventBits_t xEventGroupClearBitsFromISR(EventGroupHandle_t xEventGroup,
-                                        const EventBits_t uxBitsToClear) PRIVILEGED_FUNCTION;
+    const EventBits_t uxBitsToClear) PRIVILEGED_FUNCTION;
 
 /**
  * event_groups.h
@@ -486,14 +486,14 @@ EventBits_t xEventGroupSetBits(EventGroupHandle_t xEventGroup, const EventBits_t
  * \defgroup xEventGroupSetBitsFromISR xEventGroupSetBitsFromISR
  * \ingroup EventGroup
  */
-#if (configUSE_TRACE_FACILITY == 1)
+#if(configUSE_TRACE_FACILITY == 1)
 BaseType_t xEventGroupSetBitsFromISR(EventGroupHandle_t xEventGroup,
-                                     const EventBits_t uxBitsToSet,
-                                     BaseType_t* pxHigherPriorityTaskWoken);
+    const EventBits_t uxBitsToSet,
+    BaseType_t* pxHigherPriorityTaskWoken);
 #else
-#   define xEventGroupSetBitsFromISR(xEventGroup, uxBitsToSet, pxHigherPriorityTaskWoken) \
-      xTimerPendFunctionCallFromISR( \
-         vEventGroupSetBitsCallback, (void*)xEventGroup, (uint32_t)uxBitsToSet, pxHigherPriorityTaskWoken)
+#define xEventGroupSetBitsFromISR(xEventGroup, uxBitsToSet, pxHigherPriorityTaskWoken) \
+    xTimerPendFunctionCallFromISR( \
+        vEventGroupSetBitsCallback, (void*)xEventGroup, (uint32_t)uxBitsToSet, pxHigherPriorityTaskWoken)
 #endif
 
 /**
@@ -621,9 +621,9 @@ BaseType_t xEventGroupSetBitsFromISR(EventGroupHandle_t xEventGroup,
  * \ingroup EventGroup
  */
 EventBits_t xEventGroupSync(EventGroupHandle_t xEventGroup,
-                            const EventBits_t uxBitsToSet,
-                            const EventBits_t uxBitsToWaitFor,
-                            TickType_t xTicksToWait) PRIVILEGED_FUNCTION;
+    const EventBits_t uxBitsToSet,
+    const EventBits_t uxBitsToWaitFor,
+    TickType_t xTicksToWait) PRIVILEGED_FUNCTION;
 
 /**
  * event_groups.h
@@ -677,7 +677,7 @@ void vEventGroupDelete(EventGroupHandle_t xEventGroup);
 /* For internal use only. */
 void vEventGroupSetBitsCallback(void* pvEventGroup, const uint32_t ulBitsToSet);
 
-#if (configUSE_TRACE_FACILITY == 1)
+#if(configUSE_TRACE_FACILITY == 1)
 UBaseType_t uxEventGroupGetNumber(void* xEventGroup);
 #endif
 

@@ -20,11 +20,11 @@ extern "C" {
 
 #define AUTO_SET_BAUDRATE_GPS 1
 #if !(AUTO_SET_BAUDRATE_GPS)
-#   define DEF_GPS_BAUDRATE 115200
+#define DEF_GPS_BAUDRATE 115200
 #endif
 
 #define GPS_VALID \
-   (g_stGpsData.latitude && g_stGpsData.longitude && g_stGpsData.time && g_stGpsData.sat && g_stGpsData.status)
+    (g_stGpsData.latitude && g_stGpsData.longitude && g_stGpsData.time && g_stGpsData.sat && g_stGpsData.status)
 
 // Конфигурирование светодиода GPS приемника //
 //  #define LED_CONFIG_ENABLE
@@ -35,7 +35,7 @@ extern "C" {
 // Конфигурирование фильтра по остановке в GPS приемнике //
 #define GPS_FILTER_STOP_ENABLE
 
-#define TIME_NO_VALID_GPS 3600   // 4 часа(пока)
+#define TIME_NO_VALID_GPS 3600    // 4 часа(пока)
 
 void vGpsHandler(void* pvParameters);
 
@@ -47,10 +47,10 @@ void ReloadGpsRealTime(void);
 uint32_t GetDataNavigationalGpsPacket(char* pOutDataFrameBuffer, uint8_t TypePacket, uint32_t OffsetData);
 void GpsPowerMonitor(void);
 _Bool GpsFilterDataConfig(uint8_t MinSpeed,
-                          uint16_t GpsDistance,
-                          _Bool GpsAccelTrue,
-                          uint16_t GpsTime,
-                          uint8_t GpsCourse);
+    uint16_t GpsDistance,
+    _Bool GpsAccelTrue,
+    uint16_t GpsTime,
+    uint8_t GpsCourse);
 int FindPositionGps(void);
 _Bool GetPositionGps(GPS_INFO* ptrGpsData);
 void CpyGpsBuf(const char* pBuf, int Len);

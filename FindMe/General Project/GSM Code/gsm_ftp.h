@@ -4,7 +4,7 @@
 #include "includes.h"
 #include "ee_variable.h"
 
-#define TIMEOUT_FTP_CONNECT 30   //Ждем подключения
+#define TIMEOUT_FTP_CONNECT 30    //Ждем подключения
 
 RET_INFO DownloadFirmware(void);
 RET_INFO ProfileFtpSocketInit(void);

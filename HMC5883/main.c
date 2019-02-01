@@ -11,39 +11,38 @@ xTaskHandle xHandleCompassTask;
 
 int main()
 {
-   InitGPIO();
+    InitGPIO();
 
-   InitBKP();
+    InitBKP();
 
-   Set_System();
-   Set_USBClock();
-   USB_Interrupts_Config();
-   USB_Init();
+    Set_System();
+    Set_USBClock();
+    USB_Interrupts_Config();
+    USB_Init();
 
-   // Start Task //
-   xTaskCreate(
-      vCompassTask, "vCompassTask", configMINIMAL_STACK_SIZE * 1, NULL, tskIDLE_PRIORITY + 1, &xHandleCompassTask);
-   xTaskCreate(vDebugTask, "vDebugTask", configMINIMAL_STACK_SIZE * 1, NULL, tskIDLE_PRIORITY + 1, &xHandleDebugTask);
+    // Start Task //
+    xTaskCreate(
+        vCompassTask, "vCompassTask", configMINIMAL_STACK_SIZE * 1, NULL, tskIDLE_PRIORITY + 1, &xHandleCompassTask);
+    xTaskCreate(vDebugTask, "vDebugTask", configMINIMAL_STACK_SIZE * 1, NULL, tskIDLE_PRIORITY + 1, &xHandleDebugTask);
 
-   // Start scheduler //
-   osKernelStart(NULL, NULL);
+    // Start scheduler //
+    osKernelStart(NULL, NULL);
 }
 
 void vApplicationMallocFailedHook(void)
 {
-   for (;;)
-      ;
+    for(;;)
+        ;
 }
 void vApplicationStackOverflowHook(TaskHandle_t pxTask, char* pcTaskName)
 {
-   for (;;)
-      ;
+    for(;;)
+        ;
 }
 
 void vApplicationIdleHook(void)
-{   //это и есть поток Idle с минимальным приоритетом.
+{    //это и есть поток Idle с минимальным приоритетом.
 
-   while (1)
-   {
-   }
+    while(1) {
+    }
 }

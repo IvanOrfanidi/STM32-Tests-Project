@@ -27,9 +27,9 @@
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __PLATFORM_CONFIG_USB_H
-#   define __PLATFORM_CONFIG_USB_H
+#define __PLATFORM_CONFIG_USB_H
 
-#   include "stm32f10x.h"
+#include "stm32f10x.h"
 
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/
@@ -38,29 +38,29 @@
 
 /*Unique Devices IDs register set*/
 
-#   if defined(STM32L1XX_MD) || defined(STM32L1XX_HD) || defined(STM32L1XX_MD_PLUS)
+#if defined(STM32L1XX_MD) || defined(STM32L1XX_HD) || defined(STM32L1XX_MD_PLUS)
 
-#      define ID1 (0x1FF80050)
-#      define ID2 (0x1FF80054)
-#      define ID3 (0x1FF80064)
+#define ID1 (0x1FF80050)
+#define ID2 (0x1FF80054)
+#define ID3 (0x1FF80064)
 
-#   elif defined(STM32F37X) || defined(STM32F30X)
+#elif defined(STM32F37X) || defined(STM32F30X)
 
-#      define ID1 (0x1FFFF7AC)
-#      define ID2 (0x1FFFF7B0)
-#      define ID3 (0x1FFFF7B4)
+#define ID1 (0x1FFFF7AC)
+#define ID2 (0x1FFFF7B0)
+#define ID3 (0x1FFFF7B4)
 
-#   else /*STM32F1x*/
+#else /*STM32F1x*/
 
-#      define ID1 (0x1FFFF7E8)
-#      define ID2 (0x1FFFF7EC)
-#      define ID3 (0x1FFFF7F0)
+#define ID1 (0x1FFFF7E8)
+#define ID2 (0x1FFFF7EC)
+#define ID3 (0x1FFFF7F0)
 
-#   endif
+#endif
 
-#   define USB_DISCONNECT GPIOA
-#   define USB_DISCONNECT_PIN GPIO_Pin_12
-#   define RCC_APB2Periph_GPIO_DISCONNECT RCC_APB2Periph_GPIOA
+#define USB_DISCONNECT GPIOA
+#define USB_DISCONNECT_PIN GPIO_Pin_12
+#define RCC_APB2Periph_GPIO_DISCONNECT RCC_APB2Periph_GPIOA
 
 /* Exported macro ------------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */

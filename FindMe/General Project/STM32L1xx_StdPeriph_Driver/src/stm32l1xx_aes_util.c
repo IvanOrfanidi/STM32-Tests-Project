@@ -96,78 +96,74 @@
  */
 ErrorStatus AES_ECB_Encrypt(uint8_t* Key, uint8_t* Input, uint32_t Ilength, uint8_t* Output)
 {
-   AES_InitTypeDef AES_InitStructure;
-   AES_KeyInitTypeDef AES_KeyInitStructure;
-   ErrorStatus status = SUCCESS;
-   uint32_t keyaddr = (uint32_t)Key;
-   uint32_t inputaddr = (uint32_t)Input;
-   uint32_t outputaddr = (uint32_t)Output;
-   __IO uint32_t counter = 0;
-   uint32_t ccstatus = 0;
-   uint32_t i = 0;
+    AES_InitTypeDef AES_InitStructure;
+    AES_KeyInitTypeDef AES_KeyInitStructure;
+    ErrorStatus status = SUCCESS;
+    uint32_t keyaddr = (uint32_t)Key;
+    uint32_t inputaddr = (uint32_t)Input;
+    uint32_t outputaddr = (uint32_t)Output;
+    __IO uint32_t counter = 0;
+    uint32_t ccstatus = 0;
+    uint32_t i = 0;
 
-   /* AES Key initialisation */
-   AES_KeyInitStructure.AES_Key3 = __REV(*(uint32_t*)(keyaddr));
-   keyaddr += 4;
-   AES_KeyInitStructure.AES_Key2 = __REV(*(uint32_t*)(keyaddr));
-   keyaddr += 4;
-   AES_KeyInitStructure.AES_Key1 = __REV(*(uint32_t*)(keyaddr));
-   keyaddr += 4;
-   AES_KeyInitStructure.AES_Key0 = __REV(*(uint32_t*)(keyaddr));
-   AES_KeyInit(&AES_KeyInitStructure);
+    /* AES Key initialisation */
+    AES_KeyInitStructure.AES_Key3 = __REV(*(uint32_t*)(keyaddr));
+    keyaddr += 4;
+    AES_KeyInitStructure.AES_Key2 = __REV(*(uint32_t*)(keyaddr));
+    keyaddr += 4;
+    AES_KeyInitStructure.AES_Key1 = __REV(*(uint32_t*)(keyaddr));
+    keyaddr += 4;
+    AES_KeyInitStructure.AES_Key0 = __REV(*(uint32_t*)(keyaddr));
+    AES_KeyInit(&AES_KeyInitStructure);
 
-   /* AES configuration */
-   AES_InitStructure.AES_Operation = AES_Operation_Encryp;
-   AES_InitStructure.AES_Chaining = AES_Chaining_ECB;
-   AES_InitStructure.AES_DataType = AES_DataType_8b;
-   AES_Init(&AES_InitStructure);
+    /* AES configuration */
+    AES_InitStructure.AES_Operation = AES_Operation_Encryp;
+    AES_InitStructure.AES_Chaining = AES_Chaining_ECB;
+    AES_InitStructure.AES_DataType = AES_DataType_8b;
+    AES_Init(&AES_InitStructure);
 
-   /* Enable AES */
-   AES_Cmd(ENABLE);
+    /* Enable AES */
+    AES_Cmd(ENABLE);
 
-   for (i = 0; ((i < Ilength) && (status != ERROR)); i += 16)
-   {
-      AES_WriteSubData(*(uint32_t*)(inputaddr));
-      inputaddr += 4;
-      AES_WriteSubData(*(uint32_t*)(inputaddr));
-      inputaddr += 4;
-      AES_WriteSubData(*(uint32_t*)(inputaddr));
-      inputaddr += 4;
-      AES_WriteSubData(*(uint32_t*)(inputaddr));
-      inputaddr += 4;
+    for(i = 0; ((i < Ilength) && (status != ERROR)); i += 16) {
+        AES_WriteSubData(*(uint32_t*)(inputaddr));
+        inputaddr += 4;
+        AES_WriteSubData(*(uint32_t*)(inputaddr));
+        inputaddr += 4;
+        AES_WriteSubData(*(uint32_t*)(inputaddr));
+        inputaddr += 4;
+        AES_WriteSubData(*(uint32_t*)(inputaddr));
+        inputaddr += 4;
 
-      /* Wait for CCF flag to be set */
-      counter = 0;
-      do
-      {
-         ccstatus = AES_GetFlagStatus(AES_FLAG_CCF);
-         counter++;
-      } while ((counter != AES_CC_TIMEOUT) && (ccstatus == RESET));
+        /* Wait for CCF flag to be set */
+        counter = 0;
+        do {
+            ccstatus = AES_GetFlagStatus(AES_FLAG_CCF);
+            counter++;
+        } while((counter != AES_CC_TIMEOUT) && (ccstatus == RESET));
 
-      if (ccstatus == RESET)
-      {
-         status = ERROR;
-      }
-      else
-      {
-         /* Clear CCF flag */
-         AES_ClearFlag(AES_FLAG_CCF);
-         /* Read cipher text */
-         *(uint32_t*)(outputaddr) = AES_ReadSubData();
-         outputaddr += 4;
-         *(uint32_t*)(outputaddr) = AES_ReadSubData();
-         outputaddr += 4;
-         *(uint32_t*)(outputaddr) = AES_ReadSubData();
-         outputaddr += 4;
-         *(uint32_t*)(outputaddr) = AES_ReadSubData();
-         outputaddr += 4;
-      }
-   }
+        if(ccstatus == RESET) {
+            status = ERROR;
+        }
+        else {
+            /* Clear CCF flag */
+            AES_ClearFlag(AES_FLAG_CCF);
+            /* Read cipher text */
+            *(uint32_t*)(outputaddr) = AES_ReadSubData();
+            outputaddr += 4;
+            *(uint32_t*)(outputaddr) = AES_ReadSubData();
+            outputaddr += 4;
+            *(uint32_t*)(outputaddr) = AES_ReadSubData();
+            outputaddr += 4;
+            *(uint32_t*)(outputaddr) = AES_ReadSubData();
+            outputaddr += 4;
+        }
+    }
 
-   /* Disable AES before starting new processing */
-   AES_Cmd(DISABLE);
+    /* Disable AES before starting new processing */
+    AES_Cmd(DISABLE);
 
-   return status;
+    return status;
 }
 
 /**
@@ -182,79 +178,75 @@ ErrorStatus AES_ECB_Encrypt(uint8_t* Key, uint8_t* Input, uint32_t Ilength, uint
  */
 ErrorStatus AES_ECB_Decrypt(uint8_t* Key, uint8_t* Input, uint32_t Ilength, uint8_t* Output)
 {
-   AES_InitTypeDef AES_InitStructure;
-   AES_KeyInitTypeDef AES_KeyInitStructure;
-   ErrorStatus status = SUCCESS;
-   uint32_t keyaddr = (uint32_t)Key;
-   uint32_t inputaddr = (uint32_t)Input;
-   uint32_t outputaddr = (uint32_t)Output;
-   __IO uint32_t counter = 0;
-   uint32_t ccstatus = 0;
-   uint32_t i = 0;
+    AES_InitTypeDef AES_InitStructure;
+    AES_KeyInitTypeDef AES_KeyInitStructure;
+    ErrorStatus status = SUCCESS;
+    uint32_t keyaddr = (uint32_t)Key;
+    uint32_t inputaddr = (uint32_t)Input;
+    uint32_t outputaddr = (uint32_t)Output;
+    __IO uint32_t counter = 0;
+    uint32_t ccstatus = 0;
+    uint32_t i = 0;
 
-   /* AES Key initialisation */
-   AES_KeyInitStructure.AES_Key3 = __REV(*(uint32_t*)(keyaddr));
-   keyaddr += 4;
-   AES_KeyInitStructure.AES_Key2 = __REV(*(uint32_t*)(keyaddr));
-   keyaddr += 4;
-   AES_KeyInitStructure.AES_Key1 = __REV(*(uint32_t*)(keyaddr));
-   keyaddr += 4;
-   AES_KeyInitStructure.AES_Key0 = __REV(*(uint32_t*)(keyaddr));
-   AES_KeyInit(&AES_KeyInitStructure);
+    /* AES Key initialisation */
+    AES_KeyInitStructure.AES_Key3 = __REV(*(uint32_t*)(keyaddr));
+    keyaddr += 4;
+    AES_KeyInitStructure.AES_Key2 = __REV(*(uint32_t*)(keyaddr));
+    keyaddr += 4;
+    AES_KeyInitStructure.AES_Key1 = __REV(*(uint32_t*)(keyaddr));
+    keyaddr += 4;
+    AES_KeyInitStructure.AES_Key0 = __REV(*(uint32_t*)(keyaddr));
+    AES_KeyInit(&AES_KeyInitStructure);
 
-   /* AES configuration */
-   AES_InitStructure.AES_Operation = AES_Operation_KeyDerivAndDecryp;
-   AES_InitStructure.AES_Chaining = AES_Chaining_ECB;
-   AES_InitStructure.AES_DataType = AES_DataType_8b;
-   AES_Init(&AES_InitStructure);
+    /* AES configuration */
+    AES_InitStructure.AES_Operation = AES_Operation_KeyDerivAndDecryp;
+    AES_InitStructure.AES_Chaining = AES_Chaining_ECB;
+    AES_InitStructure.AES_DataType = AES_DataType_8b;
+    AES_Init(&AES_InitStructure);
 
-   /* Enable AES */
-   AES_Cmd(ENABLE);
+    /* Enable AES */
+    AES_Cmd(ENABLE);
 
-   for (i = 0; ((i < Ilength) && (status != ERROR)); i += 16)
-   {
-      AES_WriteSubData(*(uint32_t*)(inputaddr));
-      inputaddr += 4;
-      AES_WriteSubData(*(uint32_t*)(inputaddr));
-      inputaddr += 4;
-      AES_WriteSubData(*(uint32_t*)(inputaddr));
-      inputaddr += 4;
-      AES_WriteSubData(*(uint32_t*)(inputaddr));
-      inputaddr += 4;
+    for(i = 0; ((i < Ilength) && (status != ERROR)); i += 16) {
+        AES_WriteSubData(*(uint32_t*)(inputaddr));
+        inputaddr += 4;
+        AES_WriteSubData(*(uint32_t*)(inputaddr));
+        inputaddr += 4;
+        AES_WriteSubData(*(uint32_t*)(inputaddr));
+        inputaddr += 4;
+        AES_WriteSubData(*(uint32_t*)(inputaddr));
+        inputaddr += 4;
 
-      /* Wait for CCF flag to be set */
-      counter = 0;
-      do
-      {
-         ccstatus = AES_GetFlagStatus(AES_FLAG_CCF);
-         counter++;
-      } while ((counter != AES_CC_TIMEOUT) && (ccstatus == RESET));
+        /* Wait for CCF flag to be set */
+        counter = 0;
+        do {
+            ccstatus = AES_GetFlagStatus(AES_FLAG_CCF);
+            counter++;
+        } while((counter != AES_CC_TIMEOUT) && (ccstatus == RESET));
 
-      if (ccstatus == RESET)
-      {
-         status = ERROR;
-      }
-      else
-      {
-         /* Clear CCF flag */
-         AES_ClearFlag(AES_FLAG_CCF);
+        if(ccstatus == RESET) {
+            status = ERROR;
+        }
+        else {
+            /* Clear CCF flag */
+            AES_ClearFlag(AES_FLAG_CCF);
 
-         /* Read cipher text */
-         *(uint32_t*)(outputaddr) = AES_ReadSubData();
-         outputaddr += 4;
-         *(uint32_t*)(outputaddr) = AES_ReadSubData();
-         outputaddr += 4;
-         *(uint32_t*)(outputaddr) = AES_ReadSubData();
-         outputaddr += 4;
-         *(uint32_t*)(outputaddr) = AES_ReadSubData();
-         outputaddr += 4;
-      }
-   }
+            /* Read cipher text */
+            *(uint32_t*)(outputaddr) = AES_ReadSubData();
+            outputaddr += 4;
+            *(uint32_t*)(outputaddr) = AES_ReadSubData();
+            outputaddr += 4;
+            *(uint32_t*)(outputaddr) = AES_ReadSubData();
+            outputaddr += 4;
+            *(uint32_t*)(outputaddr) = AES_ReadSubData();
+            outputaddr += 4;
+        }
+    }
 
-   /* Disable AES before starting new processing */
-   AES_Cmd(DISABLE);
+    /* Disable AES before starting new processing */
+    AES_Cmd(DISABLE);
 
-   return status;
+    return status;
 }
 
 /**
@@ -270,91 +262,87 @@ ErrorStatus AES_ECB_Decrypt(uint8_t* Key, uint8_t* Input, uint32_t Ilength, uint
  */
 ErrorStatus AES_CBC_Encrypt(uint8_t* Key, uint8_t InitVectors[16], uint8_t* Input, uint32_t Ilength, uint8_t* Output)
 {
-   AES_InitTypeDef AES_InitStructure;
-   AES_KeyInitTypeDef AES_KeyInitStructure;
-   AES_IVInitTypeDef AES_IVInitStructure;
-   ErrorStatus status = SUCCESS;
-   uint32_t keyaddr = (uint32_t)Key;
-   uint32_t inputaddr = (uint32_t)Input;
-   uint32_t outputaddr = (uint32_t)Output;
-   uint32_t ivaddr = (uint32_t)InitVectors;
-   __IO uint32_t counter = 0;
-   uint32_t ccstatus = 0;
-   uint32_t i = 0;
+    AES_InitTypeDef AES_InitStructure;
+    AES_KeyInitTypeDef AES_KeyInitStructure;
+    AES_IVInitTypeDef AES_IVInitStructure;
+    ErrorStatus status = SUCCESS;
+    uint32_t keyaddr = (uint32_t)Key;
+    uint32_t inputaddr = (uint32_t)Input;
+    uint32_t outputaddr = (uint32_t)Output;
+    uint32_t ivaddr = (uint32_t)InitVectors;
+    __IO uint32_t counter = 0;
+    uint32_t ccstatus = 0;
+    uint32_t i = 0;
 
-   /* AES Key initialisation*/
-   AES_KeyInitStructure.AES_Key3 = __REV(*(uint32_t*)(keyaddr));
-   keyaddr += 4;
-   AES_KeyInitStructure.AES_Key2 = __REV(*(uint32_t*)(keyaddr));
-   keyaddr += 4;
-   AES_KeyInitStructure.AES_Key1 = __REV(*(uint32_t*)(keyaddr));
-   keyaddr += 4;
-   AES_KeyInitStructure.AES_Key0 = __REV(*(uint32_t*)(keyaddr));
-   AES_KeyInit(&AES_KeyInitStructure);
+    /* AES Key initialisation*/
+    AES_KeyInitStructure.AES_Key3 = __REV(*(uint32_t*)(keyaddr));
+    keyaddr += 4;
+    AES_KeyInitStructure.AES_Key2 = __REV(*(uint32_t*)(keyaddr));
+    keyaddr += 4;
+    AES_KeyInitStructure.AES_Key1 = __REV(*(uint32_t*)(keyaddr));
+    keyaddr += 4;
+    AES_KeyInitStructure.AES_Key0 = __REV(*(uint32_t*)(keyaddr));
+    AES_KeyInit(&AES_KeyInitStructure);
 
-   /* AES Initialization Vectors */
-   AES_IVInitStructure.AES_IV3 = __REV(*(uint32_t*)(ivaddr));
-   ivaddr += 4;
-   AES_IVInitStructure.AES_IV2 = __REV(*(uint32_t*)(ivaddr));
-   ivaddr += 4;
-   AES_IVInitStructure.AES_IV1 = __REV(*(uint32_t*)(ivaddr));
-   ivaddr += 4;
-   AES_IVInitStructure.AES_IV0 = __REV(*(uint32_t*)(ivaddr));
-   AES_IVInit(&AES_IVInitStructure);
+    /* AES Initialization Vectors */
+    AES_IVInitStructure.AES_IV3 = __REV(*(uint32_t*)(ivaddr));
+    ivaddr += 4;
+    AES_IVInitStructure.AES_IV2 = __REV(*(uint32_t*)(ivaddr));
+    ivaddr += 4;
+    AES_IVInitStructure.AES_IV1 = __REV(*(uint32_t*)(ivaddr));
+    ivaddr += 4;
+    AES_IVInitStructure.AES_IV0 = __REV(*(uint32_t*)(ivaddr));
+    AES_IVInit(&AES_IVInitStructure);
 
-   /* AES configuration */
-   AES_InitStructure.AES_Operation = AES_Operation_Encryp;
-   AES_InitStructure.AES_Chaining = AES_Chaining_CBC;
-   AES_InitStructure.AES_DataType = AES_DataType_8b;
-   AES_Init(&AES_InitStructure);
+    /* AES configuration */
+    AES_InitStructure.AES_Operation = AES_Operation_Encryp;
+    AES_InitStructure.AES_Chaining = AES_Chaining_CBC;
+    AES_InitStructure.AES_DataType = AES_DataType_8b;
+    AES_Init(&AES_InitStructure);
 
-   /* Enable AES */
-   AES_Cmd(ENABLE);
+    /* Enable AES */
+    AES_Cmd(ENABLE);
 
-   for (i = 0; ((i < Ilength) && (status != ERROR)); i += 16)
-   {
-      AES_WriteSubData(*(uint32_t*)(inputaddr));
-      inputaddr += 4;
-      AES_WriteSubData(*(uint32_t*)(inputaddr));
-      inputaddr += 4;
-      AES_WriteSubData(*(uint32_t*)(inputaddr));
-      inputaddr += 4;
-      AES_WriteSubData(*(uint32_t*)(inputaddr));
-      inputaddr += 4;
+    for(i = 0; ((i < Ilength) && (status != ERROR)); i += 16) {
+        AES_WriteSubData(*(uint32_t*)(inputaddr));
+        inputaddr += 4;
+        AES_WriteSubData(*(uint32_t*)(inputaddr));
+        inputaddr += 4;
+        AES_WriteSubData(*(uint32_t*)(inputaddr));
+        inputaddr += 4;
+        AES_WriteSubData(*(uint32_t*)(inputaddr));
+        inputaddr += 4;
 
-      /* Wait for CCF flag to be set */
-      counter = 0;
-      do
-      {
-         ccstatus = AES_GetFlagStatus(AES_FLAG_CCF);
-         counter++;
-      } while ((counter != AES_CC_TIMEOUT) && (ccstatus == RESET));
+        /* Wait for CCF flag to be set */
+        counter = 0;
+        do {
+            ccstatus = AES_GetFlagStatus(AES_FLAG_CCF);
+            counter++;
+        } while((counter != AES_CC_TIMEOUT) && (ccstatus == RESET));
 
-      if (ccstatus == RESET)
-      {
-         status = ERROR;
-      }
-      else
-      {
-         /* Clear CCF flag */
-         AES_ClearFlag(AES_FLAG_CCF);
+        if(ccstatus == RESET) {
+            status = ERROR;
+        }
+        else {
+            /* Clear CCF flag */
+            AES_ClearFlag(AES_FLAG_CCF);
 
-         /* Read cipher text */
-         *(uint32_t*)(outputaddr) = AES_ReadSubData();
-         outputaddr += 4;
-         *(uint32_t*)(outputaddr) = AES_ReadSubData();
-         outputaddr += 4;
-         *(uint32_t*)(outputaddr) = AES_ReadSubData();
-         outputaddr += 4;
-         *(uint32_t*)(outputaddr) = AES_ReadSubData();
-         outputaddr += 4;
-      }
-   }
+            /* Read cipher text */
+            *(uint32_t*)(outputaddr) = AES_ReadSubData();
+            outputaddr += 4;
+            *(uint32_t*)(outputaddr) = AES_ReadSubData();
+            outputaddr += 4;
+            *(uint32_t*)(outputaddr) = AES_ReadSubData();
+            outputaddr += 4;
+            *(uint32_t*)(outputaddr) = AES_ReadSubData();
+            outputaddr += 4;
+        }
+    }
 
-   /* Disable AES before starting new processing */
-   AES_Cmd(DISABLE);
+    /* Disable AES before starting new processing */
+    AES_Cmd(DISABLE);
 
-   return status;
+    return status;
 }
 
 /**
@@ -370,91 +358,87 @@ ErrorStatus AES_CBC_Encrypt(uint8_t* Key, uint8_t InitVectors[16], uint8_t* Inpu
  */
 ErrorStatus AES_CBC_Decrypt(uint8_t* Key, uint8_t InitVectors[16], uint8_t* Input, uint32_t Ilength, uint8_t* Output)
 {
-   AES_InitTypeDef AES_InitStructure;
-   AES_KeyInitTypeDef AES_KeyInitStructure;
-   AES_IVInitTypeDef AES_IVInitStructure;
-   ErrorStatus status = SUCCESS;
-   uint32_t keyaddr = (uint32_t)Key;
-   uint32_t inputaddr = (uint32_t)Input;
-   uint32_t outputaddr = (uint32_t)Output;
-   uint32_t ivaddr = (uint32_t)InitVectors;
-   __IO uint32_t counter = 0;
-   uint32_t ccstatus = 0;
-   uint32_t i = 0;
+    AES_InitTypeDef AES_InitStructure;
+    AES_KeyInitTypeDef AES_KeyInitStructure;
+    AES_IVInitTypeDef AES_IVInitStructure;
+    ErrorStatus status = SUCCESS;
+    uint32_t keyaddr = (uint32_t)Key;
+    uint32_t inputaddr = (uint32_t)Input;
+    uint32_t outputaddr = (uint32_t)Output;
+    uint32_t ivaddr = (uint32_t)InitVectors;
+    __IO uint32_t counter = 0;
+    uint32_t ccstatus = 0;
+    uint32_t i = 0;
 
-   /* AES Key initialisation*/
-   AES_KeyInitStructure.AES_Key3 = __REV(*(uint32_t*)(keyaddr));
-   keyaddr += 4;
-   AES_KeyInitStructure.AES_Key2 = __REV(*(uint32_t*)(keyaddr));
-   keyaddr += 4;
-   AES_KeyInitStructure.AES_Key1 = __REV(*(uint32_t*)(keyaddr));
-   keyaddr += 4;
-   AES_KeyInitStructure.AES_Key0 = __REV(*(uint32_t*)(keyaddr));
-   AES_KeyInit(&AES_KeyInitStructure);
+    /* AES Key initialisation*/
+    AES_KeyInitStructure.AES_Key3 = __REV(*(uint32_t*)(keyaddr));
+    keyaddr += 4;
+    AES_KeyInitStructure.AES_Key2 = __REV(*(uint32_t*)(keyaddr));
+    keyaddr += 4;
+    AES_KeyInitStructure.AES_Key1 = __REV(*(uint32_t*)(keyaddr));
+    keyaddr += 4;
+    AES_KeyInitStructure.AES_Key0 = __REV(*(uint32_t*)(keyaddr));
+    AES_KeyInit(&AES_KeyInitStructure);
 
-   /* AES Initialization Vectors */
-   AES_IVInitStructure.AES_IV3 = __REV(*(uint32_t*)(ivaddr));
-   ivaddr += 4;
-   AES_IVInitStructure.AES_IV2 = __REV(*(uint32_t*)(ivaddr));
-   ivaddr += 4;
-   AES_IVInitStructure.AES_IV1 = __REV(*(uint32_t*)(ivaddr));
-   ivaddr += 4;
-   AES_IVInitStructure.AES_IV0 = __REV(*(uint32_t*)(ivaddr));
-   AES_IVInit(&AES_IVInitStructure);
+    /* AES Initialization Vectors */
+    AES_IVInitStructure.AES_IV3 = __REV(*(uint32_t*)(ivaddr));
+    ivaddr += 4;
+    AES_IVInitStructure.AES_IV2 = __REV(*(uint32_t*)(ivaddr));
+    ivaddr += 4;
+    AES_IVInitStructure.AES_IV1 = __REV(*(uint32_t*)(ivaddr));
+    ivaddr += 4;
+    AES_IVInitStructure.AES_IV0 = __REV(*(uint32_t*)(ivaddr));
+    AES_IVInit(&AES_IVInitStructure);
 
-   /* AES configuration */
-   AES_InitStructure.AES_Operation = AES_Operation_KeyDerivAndDecryp;
-   AES_InitStructure.AES_Chaining = AES_Chaining_CBC;
-   AES_InitStructure.AES_DataType = AES_DataType_8b;
-   AES_Init(&AES_InitStructure);
+    /* AES configuration */
+    AES_InitStructure.AES_Operation = AES_Operation_KeyDerivAndDecryp;
+    AES_InitStructure.AES_Chaining = AES_Chaining_CBC;
+    AES_InitStructure.AES_DataType = AES_DataType_8b;
+    AES_Init(&AES_InitStructure);
 
-   /* Enable AES */
-   AES_Cmd(ENABLE);
+    /* Enable AES */
+    AES_Cmd(ENABLE);
 
-   for (i = 0; ((i < Ilength) && (status != ERROR)); i += 16)
-   {
-      AES_WriteSubData(*(uint32_t*)(inputaddr));
-      inputaddr += 4;
-      AES_WriteSubData(*(uint32_t*)(inputaddr));
-      inputaddr += 4;
-      AES_WriteSubData(*(uint32_t*)(inputaddr));
-      inputaddr += 4;
-      AES_WriteSubData(*(uint32_t*)(inputaddr));
-      inputaddr += 4;
+    for(i = 0; ((i < Ilength) && (status != ERROR)); i += 16) {
+        AES_WriteSubData(*(uint32_t*)(inputaddr));
+        inputaddr += 4;
+        AES_WriteSubData(*(uint32_t*)(inputaddr));
+        inputaddr += 4;
+        AES_WriteSubData(*(uint32_t*)(inputaddr));
+        inputaddr += 4;
+        AES_WriteSubData(*(uint32_t*)(inputaddr));
+        inputaddr += 4;
 
-      /* Wait for CCF flag to be set */
-      counter = 0;
-      do
-      {
-         ccstatus = AES_GetFlagStatus(AES_FLAG_CCF);
-         counter++;
-      } while ((counter != AES_CC_TIMEOUT) && (ccstatus == RESET));
+        /* Wait for CCF flag to be set */
+        counter = 0;
+        do {
+            ccstatus = AES_GetFlagStatus(AES_FLAG_CCF);
+            counter++;
+        } while((counter != AES_CC_TIMEOUT) && (ccstatus == RESET));
 
-      if (ccstatus == RESET)
-      {
-         status = ERROR;
-      }
-      else
-      {
-         /* Clear CCF flag */
-         AES_ClearFlag(AES_FLAG_CCF);
+        if(ccstatus == RESET) {
+            status = ERROR;
+        }
+        else {
+            /* Clear CCF flag */
+            AES_ClearFlag(AES_FLAG_CCF);
 
-         /* Read cipher text */
-         *(uint32_t*)(outputaddr) = AES_ReadSubData();
-         outputaddr += 4;
-         *(uint32_t*)(outputaddr) = AES_ReadSubData();
-         outputaddr += 4;
-         *(uint32_t*)(outputaddr) = AES_ReadSubData();
-         outputaddr += 4;
-         *(uint32_t*)(outputaddr) = AES_ReadSubData();
-         outputaddr += 4;
-      }
-   }
+            /* Read cipher text */
+            *(uint32_t*)(outputaddr) = AES_ReadSubData();
+            outputaddr += 4;
+            *(uint32_t*)(outputaddr) = AES_ReadSubData();
+            outputaddr += 4;
+            *(uint32_t*)(outputaddr) = AES_ReadSubData();
+            outputaddr += 4;
+            *(uint32_t*)(outputaddr) = AES_ReadSubData();
+            outputaddr += 4;
+        }
+    }
 
-   /* Disable AES before starting new processing */
-   AES_Cmd(DISABLE);
+    /* Disable AES before starting new processing */
+    AES_Cmd(DISABLE);
 
-   return status;
+    return status;
 }
 
 /**
@@ -470,92 +454,88 @@ ErrorStatus AES_CBC_Decrypt(uint8_t* Key, uint8_t InitVectors[16], uint8_t* Inpu
  */
 ErrorStatus AES_CTR_Encrypt(uint8_t* Key, uint8_t InitVectors[16], uint8_t* Input, uint32_t Ilength, uint8_t* Output)
 {
-   AES_InitTypeDef AES_InitStructure;
-   AES_KeyInitTypeDef AES_KeyInitStructure;
-   AES_IVInitTypeDef AES_IVInitStructure;
+    AES_InitTypeDef AES_InitStructure;
+    AES_KeyInitTypeDef AES_KeyInitStructure;
+    AES_IVInitTypeDef AES_IVInitStructure;
 
-   ErrorStatus status = SUCCESS;
-   uint32_t keyaddr = (uint32_t)Key;
-   uint32_t inputaddr = (uint32_t)Input;
-   uint32_t outputaddr = (uint32_t)Output;
-   uint32_t ivaddr = (uint32_t)InitVectors;
-   __IO uint32_t counter = 0;
-   uint32_t ccstatus = 0;
-   uint32_t i = 0;
+    ErrorStatus status = SUCCESS;
+    uint32_t keyaddr = (uint32_t)Key;
+    uint32_t inputaddr = (uint32_t)Input;
+    uint32_t outputaddr = (uint32_t)Output;
+    uint32_t ivaddr = (uint32_t)InitVectors;
+    __IO uint32_t counter = 0;
+    uint32_t ccstatus = 0;
+    uint32_t i = 0;
 
-   /* AES key initialisation*/
-   AES_KeyInitStructure.AES_Key3 = __REV(*(uint32_t*)(keyaddr));
-   keyaddr += 4;
-   AES_KeyInitStructure.AES_Key2 = __REV(*(uint32_t*)(keyaddr));
-   keyaddr += 4;
-   AES_KeyInitStructure.AES_Key1 = __REV(*(uint32_t*)(keyaddr));
-   keyaddr += 4;
-   AES_KeyInitStructure.AES_Key0 = __REV(*(uint32_t*)(keyaddr));
-   AES_KeyInit(&AES_KeyInitStructure);
+    /* AES key initialisation*/
+    AES_KeyInitStructure.AES_Key3 = __REV(*(uint32_t*)(keyaddr));
+    keyaddr += 4;
+    AES_KeyInitStructure.AES_Key2 = __REV(*(uint32_t*)(keyaddr));
+    keyaddr += 4;
+    AES_KeyInitStructure.AES_Key1 = __REV(*(uint32_t*)(keyaddr));
+    keyaddr += 4;
+    AES_KeyInitStructure.AES_Key0 = __REV(*(uint32_t*)(keyaddr));
+    AES_KeyInit(&AES_KeyInitStructure);
 
-   /* AES Initialization Vectors */
-   AES_IVInitStructure.AES_IV3 = __REV(*(uint32_t*)(ivaddr));
-   ivaddr += 4;
-   AES_IVInitStructure.AES_IV2 = __REV(*(uint32_t*)(ivaddr));
-   ivaddr += 4;
-   AES_IVInitStructure.AES_IV1 = __REV(*(uint32_t*)(ivaddr));
-   ivaddr += 4;
-   AES_IVInitStructure.AES_IV0 = __REV(*(uint32_t*)(ivaddr));
-   AES_IVInit(&AES_IVInitStructure);
+    /* AES Initialization Vectors */
+    AES_IVInitStructure.AES_IV3 = __REV(*(uint32_t*)(ivaddr));
+    ivaddr += 4;
+    AES_IVInitStructure.AES_IV2 = __REV(*(uint32_t*)(ivaddr));
+    ivaddr += 4;
+    AES_IVInitStructure.AES_IV1 = __REV(*(uint32_t*)(ivaddr));
+    ivaddr += 4;
+    AES_IVInitStructure.AES_IV0 = __REV(*(uint32_t*)(ivaddr));
+    AES_IVInit(&AES_IVInitStructure);
 
-   /* AES configuration */
-   AES_InitStructure.AES_Operation = AES_Operation_Encryp;
-   AES_InitStructure.AES_Chaining = AES_Chaining_CTR;
-   AES_InitStructure.AES_DataType = AES_DataType_8b;
-   AES_Init(&AES_InitStructure);
+    /* AES configuration */
+    AES_InitStructure.AES_Operation = AES_Operation_Encryp;
+    AES_InitStructure.AES_Chaining = AES_Chaining_CTR;
+    AES_InitStructure.AES_DataType = AES_DataType_8b;
+    AES_Init(&AES_InitStructure);
 
-   /* Enable AES */
-   AES_Cmd(ENABLE);
+    /* Enable AES */
+    AES_Cmd(ENABLE);
 
-   for (i = 0; ((i < Ilength) && (status != ERROR)); i += 16)
-   {
-      AES_WriteSubData(*(uint32_t*)(inputaddr));
-      inputaddr += 4;
-      AES_WriteSubData(*(uint32_t*)(inputaddr));
-      inputaddr += 4;
-      AES_WriteSubData(*(uint32_t*)(inputaddr));
-      inputaddr += 4;
-      AES_WriteSubData(*(uint32_t*)(inputaddr));
-      inputaddr += 4;
+    for(i = 0; ((i < Ilength) && (status != ERROR)); i += 16) {
+        AES_WriteSubData(*(uint32_t*)(inputaddr));
+        inputaddr += 4;
+        AES_WriteSubData(*(uint32_t*)(inputaddr));
+        inputaddr += 4;
+        AES_WriteSubData(*(uint32_t*)(inputaddr));
+        inputaddr += 4;
+        AES_WriteSubData(*(uint32_t*)(inputaddr));
+        inputaddr += 4;
 
-      /* Wait for CCF flag to be set */
-      counter = 0;
-      do
-      {
-         ccstatus = AES_GetFlagStatus(AES_FLAG_CCF);
-         counter++;
-      } while ((counter != AES_CC_TIMEOUT) && (ccstatus == RESET));
+        /* Wait for CCF flag to be set */
+        counter = 0;
+        do {
+            ccstatus = AES_GetFlagStatus(AES_FLAG_CCF);
+            counter++;
+        } while((counter != AES_CC_TIMEOUT) && (ccstatus == RESET));
 
-      if (ccstatus == RESET)
-      {
-         status = ERROR;
-      }
-      else
-      {
-         /* Clear CCF flag */
-         AES_ClearFlag(AES_FLAG_CCF);
+        if(ccstatus == RESET) {
+            status = ERROR;
+        }
+        else {
+            /* Clear CCF flag */
+            AES_ClearFlag(AES_FLAG_CCF);
 
-         /* Read cipher text */
-         *(uint32_t*)(outputaddr) = AES_ReadSubData();
-         outputaddr += 4;
-         *(uint32_t*)(outputaddr) = AES_ReadSubData();
-         outputaddr += 4;
-         *(uint32_t*)(outputaddr) = AES_ReadSubData();
-         outputaddr += 4;
-         *(uint32_t*)(outputaddr) = AES_ReadSubData();
-         outputaddr += 4;
-      }
-   }
+            /* Read cipher text */
+            *(uint32_t*)(outputaddr) = AES_ReadSubData();
+            outputaddr += 4;
+            *(uint32_t*)(outputaddr) = AES_ReadSubData();
+            outputaddr += 4;
+            *(uint32_t*)(outputaddr) = AES_ReadSubData();
+            outputaddr += 4;
+            *(uint32_t*)(outputaddr) = AES_ReadSubData();
+            outputaddr += 4;
+        }
+    }
 
-   /* Disable AES before starting new processing */
-   AES_Cmd(DISABLE);
+    /* Disable AES before starting new processing */
+    AES_Cmd(DISABLE);
 
-   return status;
+    return status;
 }
 
 /**
@@ -571,92 +551,88 @@ ErrorStatus AES_CTR_Encrypt(uint8_t* Key, uint8_t InitVectors[16], uint8_t* Inpu
  */
 ErrorStatus AES_CTR_Decrypt(uint8_t* Key, uint8_t InitVectors[16], uint8_t* Input, uint32_t Ilength, uint8_t* Output)
 {
-   AES_InitTypeDef AES_InitStructure;
-   AES_KeyInitTypeDef AES_KeyInitStructure;
-   AES_IVInitTypeDef AES_IVInitStructure;
+    AES_InitTypeDef AES_InitStructure;
+    AES_KeyInitTypeDef AES_KeyInitStructure;
+    AES_IVInitTypeDef AES_IVInitStructure;
 
-   ErrorStatus status = SUCCESS;
-   uint32_t keyaddr = (uint32_t)Key;
-   uint32_t inputaddr = (uint32_t)Input;
-   uint32_t outputaddr = (uint32_t)Output;
-   uint32_t ivaddr = (uint32_t)InitVectors;
-   __IO uint32_t counter = 0;
-   uint32_t ccstatus = 0;
-   uint32_t i = 0;
+    ErrorStatus status = SUCCESS;
+    uint32_t keyaddr = (uint32_t)Key;
+    uint32_t inputaddr = (uint32_t)Input;
+    uint32_t outputaddr = (uint32_t)Output;
+    uint32_t ivaddr = (uint32_t)InitVectors;
+    __IO uint32_t counter = 0;
+    uint32_t ccstatus = 0;
+    uint32_t i = 0;
 
-   /* AES Key initialisation*/
-   AES_KeyInitStructure.AES_Key3 = __REV(*(uint32_t*)(keyaddr));
-   keyaddr += 4;
-   AES_KeyInitStructure.AES_Key2 = __REV(*(uint32_t*)(keyaddr));
-   keyaddr += 4;
-   AES_KeyInitStructure.AES_Key1 = __REV(*(uint32_t*)(keyaddr));
-   keyaddr += 4;
-   AES_KeyInitStructure.AES_Key0 = __REV(*(uint32_t*)(keyaddr));
-   AES_KeyInit(&AES_KeyInitStructure);
+    /* AES Key initialisation*/
+    AES_KeyInitStructure.AES_Key3 = __REV(*(uint32_t*)(keyaddr));
+    keyaddr += 4;
+    AES_KeyInitStructure.AES_Key2 = __REV(*(uint32_t*)(keyaddr));
+    keyaddr += 4;
+    AES_KeyInitStructure.AES_Key1 = __REV(*(uint32_t*)(keyaddr));
+    keyaddr += 4;
+    AES_KeyInitStructure.AES_Key0 = __REV(*(uint32_t*)(keyaddr));
+    AES_KeyInit(&AES_KeyInitStructure);
 
-   /* AES Initialization Vectors */
-   AES_IVInitStructure.AES_IV3 = __REV(*(uint32_t*)(ivaddr));
-   ivaddr += 4;
-   AES_IVInitStructure.AES_IV2 = __REV(*(uint32_t*)(ivaddr));
-   ivaddr += 4;
-   AES_IVInitStructure.AES_IV1 = __REV(*(uint32_t*)(ivaddr));
-   ivaddr += 4;
-   AES_IVInitStructure.AES_IV0 = __REV(*(uint32_t*)(ivaddr));
-   AES_IVInit(&AES_IVInitStructure);
+    /* AES Initialization Vectors */
+    AES_IVInitStructure.AES_IV3 = __REV(*(uint32_t*)(ivaddr));
+    ivaddr += 4;
+    AES_IVInitStructure.AES_IV2 = __REV(*(uint32_t*)(ivaddr));
+    ivaddr += 4;
+    AES_IVInitStructure.AES_IV1 = __REV(*(uint32_t*)(ivaddr));
+    ivaddr += 4;
+    AES_IVInitStructure.AES_IV0 = __REV(*(uint32_t*)(ivaddr));
+    AES_IVInit(&AES_IVInitStructure);
 
-   /* AES configuration */
-   AES_InitStructure.AES_Operation = AES_Operation_KeyDerivAndDecryp;
-   AES_InitStructure.AES_Chaining = AES_Chaining_CTR;
-   AES_InitStructure.AES_DataType = AES_DataType_8b;
-   AES_Init(&AES_InitStructure);
+    /* AES configuration */
+    AES_InitStructure.AES_Operation = AES_Operation_KeyDerivAndDecryp;
+    AES_InitStructure.AES_Chaining = AES_Chaining_CTR;
+    AES_InitStructure.AES_DataType = AES_DataType_8b;
+    AES_Init(&AES_InitStructure);
 
-   /* Enable AES */
-   AES_Cmd(ENABLE);
+    /* Enable AES */
+    AES_Cmd(ENABLE);
 
-   for (i = 0; ((i < Ilength) && (status != ERROR)); i += 16)
-   {
-      AES_WriteSubData(*(uint32_t*)(inputaddr));
-      inputaddr += 4;
-      AES_WriteSubData(*(uint32_t*)(inputaddr));
-      inputaddr += 4;
-      AES_WriteSubData(*(uint32_t*)(inputaddr));
-      inputaddr += 4;
-      AES_WriteSubData(*(uint32_t*)(inputaddr));
-      inputaddr += 4;
+    for(i = 0; ((i < Ilength) && (status != ERROR)); i += 16) {
+        AES_WriteSubData(*(uint32_t*)(inputaddr));
+        inputaddr += 4;
+        AES_WriteSubData(*(uint32_t*)(inputaddr));
+        inputaddr += 4;
+        AES_WriteSubData(*(uint32_t*)(inputaddr));
+        inputaddr += 4;
+        AES_WriteSubData(*(uint32_t*)(inputaddr));
+        inputaddr += 4;
 
-      /* Wait for CCF flag to be set */
-      counter = 0;
-      do
-      {
-         ccstatus = AES_GetFlagStatus(AES_FLAG_CCF);
-         counter++;
-      } while ((counter != AES_CC_TIMEOUT) && (ccstatus == RESET));
+        /* Wait for CCF flag to be set */
+        counter = 0;
+        do {
+            ccstatus = AES_GetFlagStatus(AES_FLAG_CCF);
+            counter++;
+        } while((counter != AES_CC_TIMEOUT) && (ccstatus == RESET));
 
-      if (ccstatus == RESET)
-      {
-         status = ERROR;
-      }
-      else
-      {
-         /* Clear CCF flag */
-         AES_ClearFlag(AES_FLAG_CCF);
+        if(ccstatus == RESET) {
+            status = ERROR;
+        }
+        else {
+            /* Clear CCF flag */
+            AES_ClearFlag(AES_FLAG_CCF);
 
-         /* Read cipher text */
-         *(uint32_t*)(outputaddr) = AES_ReadSubData();
-         outputaddr += 4;
-         *(uint32_t*)(outputaddr) = AES_ReadSubData();
-         outputaddr += 4;
-         *(uint32_t*)(outputaddr) = AES_ReadSubData();
-         outputaddr += 4;
-         *(uint32_t*)(outputaddr) = AES_ReadSubData();
-         outputaddr += 4;
-      }
-   }
+            /* Read cipher text */
+            *(uint32_t*)(outputaddr) = AES_ReadSubData();
+            outputaddr += 4;
+            *(uint32_t*)(outputaddr) = AES_ReadSubData();
+            outputaddr += 4;
+            *(uint32_t*)(outputaddr) = AES_ReadSubData();
+            outputaddr += 4;
+            *(uint32_t*)(outputaddr) = AES_ReadSubData();
+            outputaddr += 4;
+        }
+    }
 
-   /* Disable AES before starting new processing */
-   AES_Cmd(DISABLE);
+    /* Disable AES before starting new processing */
+    AES_Cmd(DISABLE);
 
-   return status;
+    return status;
 }
 
 /**

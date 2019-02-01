@@ -6,10 +6,10 @@
 
 typedef __packed struct
 {
-   uint16_t Meas_VIN;
-   uint32_t SecADC;
+    uint16_t Meas_VIN;
+    uint32_t SecADC;
 } TPortInputCFG;
-GLOBAL TPortInputCFG g_stInput;   //Структура АЦП.
+GLOBAL TPortInputCFG g_stInput;    //Структура АЦП.
 
 void vPeriphHandler(void* pvParameters);
 void PwrHandler(void);

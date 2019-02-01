@@ -12,33 +12,32 @@ extern "C" {
 
 typedef struct
 {
-   u8 buf[16];
-   u8 size;
+    u8 buf[16];
+    u8 size;
 } SMS_TN;
 
 typedef struct
 {
-   _Bool code;
-   u8* buf;
-   u16 size;
+    _Bool code;
+    u8* buf;
+    u16 size;
 } SMS_TXT;
 
 typedef struct
 {
-   u8 number;
-   SMS_TN tn;
-   SMS_TXT txt;
+    u8 number;
+    SMS_TN tn;
+    SMS_TXT txt;
 } SMS_INFO;
 
-typedef enum
-{
-   UNSPECIFIED_ERROR = -128,
-   SIM_PIN_REQUIRED = -4,
-   OPERATION_NOT_ALLOWED = -3,
-   PARESER_FREEZES = -2,
-   DMA_OVERFLOW = -1,
-   SMS_FALSE = 0,
-   SMS_TRUE = 1,
+typedef enum {
+    UNSPECIFIED_ERROR = -128,
+    SIM_PIN_REQUIRED = -4,
+    OPERATION_NOT_ALLOWED = -3,
+    PARESER_FREEZES = -2,
+    DMA_OVERFLOW = -1,
+    SMS_FALSE = 0,
+    SMS_TRUE = 1,
 } SMS_RESPONSE;
 
 SMS_RESPONSE PDU_SMGL(u64* mask);

@@ -5,11 +5,10 @@
 
 #define MAX_LEN_FLASH 30
 
-typedef enum
-{
-   CMD_FLASH_FULL_ERASE = -2,   // стереть всю флеш
-   CMD_FLASH_ARCHIVE_ERASE = -1,   // стереть трек
-   //положительные значения - команда для стирания определенного сектора
+typedef enum {
+    CMD_FLASH_FULL_ERASE = -2,       // стереть всю флеш
+    CMD_FLASH_ARCHIVE_ERASE = -1,    // стереть трек
+                                     //положительные значения - команда для стирания определенного сектора
 } CMD_FLASH;
 
 //размер архива в Мб
@@ -20,7 +19,7 @@ typedef enum
 //конец архива в начале сектора!
 #define FLASH_ARCHIVE_END_PAGE (FLASH_ARCHIVE_SZ_MBIT * (32 * FLASH_SUB_SECTOR_PG_NUM))
 //минимальное число пустых секторов между началом и концом архива
-#define FLASH_ARCHIVE_FREE_SUB_SEC_NUM 2   // 8кб пустого места
+#define FLASH_ARCHIVE_FREE_SUB_SEC_NUM 2    // 8кб пустого места
 
 /****************************************
 разметка хранения данных на странице во флешке
@@ -32,10 +31,10 @@ typedef __packed struct
 #define FLASH_PAGE_DATA_LEN 249
 #define FLASH_PAGE_LEN 256
 
-   u8 data[FLASH_PAGE_DATA_LEN];
-   u32 ulPageID;
-   u8 ucStart;
-   u16 uiCRC;
+    u8 data[FLASH_PAGE_DATA_LEN];
+    u32 ulPageID;
+    u8 ucStart;
+    u16 uiCRC;
 } TFlashPage;
 
 /****************************************
@@ -46,28 +45,28 @@ backup регистрах RTC)
 ****************************************/
 typedef __packed struct
 {
-   u32 start_adr;   //начало архива (пока не используется)
-   u32 write_adr;   //адрес для записи архива
-   u32 read_adr;   //адрес с которого шлем данные на сервер
+    u32 start_adr;    //начало архива (пока не используется)
+    u32 write_adr;    //адрес для записи архива
+    u32 read_adr;     //адрес с которого шлем данные на сервер
 
-   u16 reserved;
-   u16 uiInitID;   //флаг инициализации данных
+    u16 reserved;
+    u16 uiInitID;    //флаг инициализации данных
 #define FLASH_INIT_ID 0x12AB
 #define FLASH_START_ADRESS RTC_BKP_DR1
 } TFlash_Pointers;
 
 typedef __packed struct
 {
-   u32 curr_read;   //текущая позиция чтения
-   u32 curr_id;   //счетчик записей во флеш, также уникальный номер каждой страницы
-#define FLASH_TMP_PAGE_ID 0xFFFFFF00   // id временного блока
+    u32 curr_read;                      //текущая позиция чтения
+    u32 curr_id;                        //счетчик записей во флеш, также уникальный номер каждой страницы
+#define FLASH_TMP_PAGE_ID 0xFFFFFF00    // id временного блока
 
-   //переменные для склейки данных между страницами
-   u8 data_shift;   //смещение у первой записи в текущей странице
-   u8 data_shift_tmp;   //смещение у первой записи в следующей странице
+    //переменные для склейки данных между страницами
+    u8 data_shift;        //смещение у первой записи в текущей странице
+    u8 data_shift_tmp;    //смещение у первой записи в следующей странице
 
-   //флаг инициализации флеши
-   u8 ucFlashInit;
+    //флаг инициализации флеши
+    u8 ucFlashInit;
 
 } TFlash;
 

@@ -3,20 +3,20 @@
 
 #include "includes.h"
 
-#if (USE_TEST_DEVICE)
-#   define TEST_UPWR 1
-#   define TEST_TEMPER 1
-#   define TEST_CSQ 1
-#   define TEST_HDOP 1
-#   define TEST_HSE 1
-#   define TEST_LSE 1
+#if(USE_TEST_DEVICE)
+#define TEST_UPWR 1
+#define TEST_TEMPER 1
+#define TEST_CSQ 1
+#define TEST_HDOP 1
+#define TEST_HSE 1
+#define TEST_LSE 1
 #else
-#   define TEST_UPWR 0
-#   define TEST_TEMPER 0
-#   define TEST_CSQ 0
-#   define TEST_HDOP 0
-#   define TEST_HSE 0
-#   define TEST_LSE 0
+#define TEST_UPWR 0
+#define TEST_TEMPER 0
+#define TEST_CSQ 0
+#define TEST_HDOP 0
+#define TEST_HSE 0
+#define TEST_LSE 0
 #endif
 
 /*

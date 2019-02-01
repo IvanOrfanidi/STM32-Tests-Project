@@ -9,8 +9,8 @@ extern "C" {
 #endif
 
 #define SPI1_CS_DELAY \
-   for (uint16_t _ii = 0; _ii < 50; _ii++) \
-      ;
+    for(uint16_t _ii = 0; _ii < 50; _ii++) \
+        ;
 #define SPI_TIMEOUT 2000
 
 #define CS_FLASH 0
