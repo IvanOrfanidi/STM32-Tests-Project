@@ -9,11 +9,11 @@
 
 // Правило одного определения
 #ifdef __ALLOCATE_NOW__
-#   define GLOBAL PUBLIC
-#   define _EQU(x) = (x)
+#define GLOBAL PUBLIC
+#define _EQU(x) = (x)
 #else
-#   define GLOBAL _EXTERN
-#   define _EQU(x)
+#define GLOBAL _EXTERN
+#define _EQU(x)
 #endif
 
 // В описании функции могут быть определены дополнительные коды ошибок (#define)
@@ -109,7 +109,7 @@ GLOBAL uint8_t BufferI2C_Rx1[I2C_RX_BUFFER_SIZE1];
 /* Buffer of data to be transmitted by I2C1 */
 GLOBAL uint8_t BufferI2C_Tx1[I2C_TX_BUFFER_SIZE1];
 
-GLOBAL xTaskHandle CurrentTaskHandle;   // ID текущего процесса(Debug)
-GLOBAL char* pNameCurrentTask;   //Имя текущего процесса(Debug)
+GLOBAL xTaskHandle CurrentTaskHandle;    // ID текущего процесса(Debug)
+GLOBAL char* pNameCurrentTask;           //Имя текущего процесса(Debug)
 
 #endif

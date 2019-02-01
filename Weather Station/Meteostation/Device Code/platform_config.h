@@ -49,20 +49,20 @@
 #define GPS_MODULE_UBLOX
 
 #ifdef GPS_MODULE_IT520
-#   define GPS_PACKET_LEN 1
+#define GPS_PACKET_LEN 1
 #endif
 
 #ifdef GPS_MODULE_UBLOX
-#   define GPS_PACKET_LEN 0
+#define GPS_PACKET_LEN 0
 #endif
 
 //// ----- GPS BAUDRATE ---- ////
 #ifdef GPS_MODULE_IT520
-#   define GPS_BAUDRATE 115200
+#define GPS_BAUDRATE 115200
 #endif
 
 #ifdef GPS_MODULE_UBLOX
-#   define GPS_BAUDRATE 9600
+#define GPS_BAUDRATE 9600
 #endif
 
 #define GSM_BAUDRATE 115200

@@ -59,33 +59,33 @@ extern LINE_CODING linecoding;
  *******************************************************************************/
 void Set_System(void)
 {
-   GPIO_InitTypeDef GPIO_InitStructure;
+    GPIO_InitTypeDef GPIO_InitStructure;
 
 #ifdef USB_DISCONNECT_PIN
-   RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIO_DISCONNECT, ENABLE);
-   GPIO_InitStructure.GPIO_Pin = USB_DISCONNECT_PIN;
-   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
-   GPIO_Init(USB_DISCONNECT, &GPIO_InitStructure);
-   USB_Cable_Config(DISABLE);
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIO_DISCONNECT, ENABLE);
+    GPIO_InitStructure.GPIO_Pin = USB_DISCONNECT_PIN;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
+    GPIO_Init(USB_DISCONNECT, &GPIO_InitStructure);
+    USB_Cable_Config(DISABLE);
 #endif
 
-   // CAN interact with USB
-   GPIO_PinRemapConfig(GPIO_Remap1_CAN1, ENABLE);   // xxx
-   RCC_APB1PeriphClockCmd(RCC_APB1Periph_CAN1, DISABLE);   // xxx
+    // CAN interact with USB
+    GPIO_PinRemapConfig(GPIO_Remap1_CAN1, ENABLE);           // xxx
+    RCC_APB1PeriphClockCmd(RCC_APB1Periph_CAN1, DISABLE);    // xxx
 
-   // Configure PA11, PA12 as USB lines
-   GPIO_InitStructure.GPIO_Pin = GPIO_Pin_11 | GPIO_Pin_12;
-   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
-   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-   GPIO_Init(GPIOA, &GPIO_InitStructure);
+    // Configure PA11, PA12 as USB lines
+    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_11 | GPIO_Pin_12;
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    GPIO_Init(GPIOA, &GPIO_InitStructure);
 
-   /* Configure the EXTI line 18 connected internally to the USB IP */
-   EXTI_ClearITPendingBit(EXTI_Line18);
-   EXTI_InitStructure.EXTI_Line = EXTI_Line18;
-   EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Rising;
-   EXTI_InitStructure.EXTI_LineCmd = ENABLE;
-   EXTI_Init(&EXTI_InitStructure);
+    /* Configure the EXTI line 18 connected internally to the USB IP */
+    EXTI_ClearITPendingBit(EXTI_Line18);
+    EXTI_InitStructure.EXTI_Line = EXTI_Line18;
+    EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Rising;
+    EXTI_InitStructure.EXTI_LineCmd = ENABLE;
+    EXTI_Init(&EXTI_InitStructure);
 }
 
 /*******************************************************************************
@@ -97,15 +97,15 @@ void Set_System(void)
 void Set_USBClock(void)
 {
 #if defined(STM32L1XX_MD) || defined(STM32L1XX_HD) || defined(STM32L1XX_MD_PLUS)
-   /* Enable USB clock */
-   RCC_APB1PeriphClockCmd(RCC_APB1Periph_USB, ENABLE);
+    /* Enable USB clock */
+    RCC_APB1PeriphClockCmd(RCC_APB1Periph_USB, ENABLE);
 
 #else
-   /* Select USBCLK source */
-   RCC_USBCLKConfig(RCC_USBCLKSource_PLLCLK_1Div5);
+    /* Select USBCLK source */
+    RCC_USBCLKConfig(RCC_USBCLKSource_PLLCLK_1Div5);
 
-   /* Enable the USB clock */
-   RCC_APB1PeriphClockCmd(RCC_APB1Periph_USB, ENABLE);
+    /* Enable the USB clock */
+    RCC_APB1PeriphClockCmd(RCC_APB1Periph_USB, ENABLE);
 #endif /* STM32L1XX_MD */
 }
 
@@ -117,8 +117,8 @@ void Set_USBClock(void)
  *******************************************************************************/
 void Enter_LowPowerMode(void)
 {
-   /* Set the device state to suspend */
-   bDeviceState = SUSPENDED;
+    /* Set the device state to suspend */
+    bDeviceState = SUSPENDED;
 }
 
 /*******************************************************************************
@@ -129,20 +129,18 @@ void Enter_LowPowerMode(void)
  *******************************************************************************/
 void Leave_LowPowerMode(void)
 {
-   DEVICE_INFO* pInfo = &Device_Info;
+    DEVICE_INFO* pInfo = &Device_Info;
 
-   /* Set the device state to the correct state */
-   if (pInfo->Current_Configuration != 0)
-   {
-      /* Device configured */
-      bDeviceState = CONFIGURED;
-   }
-   else
-   {
-      bDeviceState = ATTACHED;
-   }
-   /*Enable SystemCoreClock*/
-   SystemInit();
+    /* Set the device state to the correct state */
+    if(pInfo->Current_Configuration != 0) {
+        /* Device configured */
+        bDeviceState = CONFIGURED;
+    }
+    else {
+        bDeviceState = ATTACHED;
+    }
+    /*Enable SystemCoreClock*/
+    SystemInit();
 }
 
 /*******************************************************************************
@@ -153,22 +151,22 @@ void Leave_LowPowerMode(void)
  *******************************************************************************/
 void USB_Interrupts_Config(void)
 {
-   NVIC_InitTypeDef NVIC_InitStructure;
+    NVIC_InitTypeDef NVIC_InitStructure;
 
-   /* 2 bit for pre-emption priority, 2 bits for subpriority */
-   NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);
+    /* 2 bit for pre-emption priority, 2 bits for subpriority */
+    NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);
 
-   /* Enable the USB interrupt */
-   NVIC_InitStructure.NVIC_IRQChannel = USB_LP_CAN1_RX0_IRQn;
-   NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 2;
-   NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
-   NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
-   NVIC_Init(&NVIC_InitStructure);
+    /* Enable the USB interrupt */
+    NVIC_InitStructure.NVIC_IRQChannel = USB_LP_CAN1_RX0_IRQn;
+    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 2;
+    NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
+    NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+    NVIC_Init(&NVIC_InitStructure);
 
-   /* Enable the USB Wake-up interrupt */
-   NVIC_InitStructure.NVIC_IRQChannel = USBWakeUp_IRQn;
-   NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 3;
-   NVIC_Init(&NVIC_InitStructure);
+    /* Enable the USB Wake-up interrupt */
+    NVIC_InitStructure.NVIC_IRQChannel = USBWakeUp_IRQn;
+    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 3;
+    NVIC_Init(&NVIC_InitStructure);
 }
 
 /*******************************************************************************
@@ -179,15 +177,13 @@ void USB_Interrupts_Config(void)
 void USB_Cable_Config(FunctionalState NewState)
 {
 #ifdef USB_DISCONNECT_PIN
-   if (NewState != DISABLE)
-   {
-      GPIO_ResetBits(USB_DISCONNECT, USB_DISCONNECT_PIN);
-   }
-   else
-   {
-      GPIO_SetBits(USB_DISCONNECT, USB_DISCONNECT_PIN);
-   }
-#endif   // USB_DISCONNECT_PIN
+    if(NewState != DISABLE) {
+        GPIO_ResetBits(USB_DISCONNECT, USB_DISCONNECT_PIN);
+    }
+    else {
+        GPIO_SetBits(USB_DISCONNECT, USB_DISCONNECT_PIN);
+    }
+#endif    // USB_DISCONNECT_PIN
 }
 
 /*******************************************************************************
@@ -199,19 +195,18 @@ void USB_Cable_Config(FunctionalState NewState)
  *******************************************************************************/
 void Get_SerialNum(void)
 {
-   uint32_t Device_Serial0, Device_Serial1, Device_Serial2;
+    uint32_t Device_Serial0, Device_Serial1, Device_Serial2;
 
-   Device_Serial0 = *(uint32_t*)ID1;
-   Device_Serial1 = *(uint32_t*)ID2;
-   Device_Serial2 = *(uint32_t*)ID3;
+    Device_Serial0 = *(uint32_t*)ID1;
+    Device_Serial1 = *(uint32_t*)ID2;
+    Device_Serial2 = *(uint32_t*)ID3;
 
-   Device_Serial0 += Device_Serial2;
+    Device_Serial0 += Device_Serial2;
 
-   if (Device_Serial0 != 0)
-   {
-      IntToUnicode(Device_Serial0, &Virtual_Com_Port_StringSerial[2], 8);
-      IntToUnicode(Device_Serial1, &Virtual_Com_Port_StringSerial[18], 4);
-   }
+    if(Device_Serial0 != 0) {
+        IntToUnicode(Device_Serial0, &Virtual_Com_Port_StringSerial[2], 8);
+        IntToUnicode(Device_Serial1, &Virtual_Com_Port_StringSerial[18], 4);
+    }
 }
 
 /*******************************************************************************
@@ -223,23 +218,20 @@ void Get_SerialNum(void)
  *******************************************************************************/
 static void IntToUnicode(uint32_t value, uint8_t* pbuf, uint8_t len)
 {
-   uint8_t idx = 0;
+    uint8_t idx = 0;
 
-   for (idx = 0; idx < len; idx++)
-   {
-      if (((value >> 28)) < 0xA)
-      {
-         pbuf[2 * idx] = (value >> 28) + '0';
-      }
-      else
-      {
-         pbuf[2 * idx] = (value >> 28) + 'A' - 10;
-      }
+    for(idx = 0; idx < len; idx++) {
+        if(((value >> 28)) < 0xA) {
+            pbuf[2 * idx] = (value >> 28) + '0';
+        }
+        else {
+            pbuf[2 * idx] = (value >> 28) + 'A' - 10;
+        }
 
-      value = value << 4;
+        value = value << 4;
 
-      pbuf[2 * idx + 1] = 0;
-   }
+        pbuf[2 * idx + 1] = 0;
+    }
 }
 
 /*******************************************************************************
@@ -251,19 +243,17 @@ static void IntToUnicode(uint32_t value, uint8_t* pbuf, uint8_t len)
  *******************************************************************************/
 int CDC_Send_DATA(uint8_t* ptrBuffer, uint8_t Send_length)
 {
-   /*if max buffer is Not reached*/
-   if (Send_length < VIRTUAL_COM_PORT_DATA_SIZE)
-   {
-      /* send  packet to PMA*/
-      UserToPMABufferCopy((unsigned char*)ptrBuffer, ENDP1_TXADDR, Send_length);
-      SetEPTxCount(ENDP1, Send_length);
-      SetEPTxValid(ENDP1);
-   }
-   else
-   {
-      return 0;
-   }
-   return 1;
+    /*if max buffer is Not reached*/
+    if(Send_length < VIRTUAL_COM_PORT_DATA_SIZE) {
+        /* send  packet to PMA*/
+        UserToPMABufferCopy((unsigned char*)ptrBuffer, ENDP1_TXADDR, Send_length);
+        SetEPTxCount(ENDP1, Send_length);
+        SetEPTxValid(ENDP1);
+    }
+    else {
+        return 0;
+    }
+    return 1;
 }
 
 /*******************************************************************************
@@ -275,7 +265,7 @@ int CDC_Send_DATA(uint8_t* ptrBuffer, uint8_t Send_length)
  *******************************************************************************/
 void CDC_Receive_DATA(void)
 {
-   SetEPRxValid(ENDP3);
+    SetEPRxValid(ENDP3);
 }
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

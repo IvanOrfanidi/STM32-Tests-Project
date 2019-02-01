@@ -50,10 +50,10 @@
  */
 void NMI_Handler(void)
 {
-   // —бросим флаг системы контрол€ HSE
-   if (RCC->CIR & RCC_CIR_CSSF)
-      RCC->CIR |= RCC_CIR_CSSC;
-   // SetSysClockHSI();
+    // —бросим флаг системы контрол€ HSE
+    if(RCC->CIR & RCC_CIR_CSSF)
+        RCC->CIR |= RCC_CIR_CSSC;
+    // SetSysClockHSI();
 }
 
 /**
@@ -64,14 +64,13 @@ void NMI_Handler(void)
 void HardFault_Handler(void)
 {
 #ifdef FREERTOS_CONFIG_H
-   CurrentTaskHandle = xTaskGetCurrentTaskHandle();
-   pNameCurrentTask = pcTaskGetTaskName(CurrentTaskHandle);
+    CurrentTaskHandle = xTaskGetCurrentTaskHandle();
+    pNameCurrentTask = pcTaskGetTaskName(CurrentTaskHandle);
 #endif
 
-   /* Go to infinite loop when Hard Fault exception occurs */
-   while (1)
-   {
-   }
+    /* Go to infinite loop when Hard Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -81,10 +80,9 @@ void HardFault_Handler(void)
  */
 void MemManage_Handler(void)
 {
-   /* Go to infinite loop when Memory Manage exception occurs */
-   while (1)
-   {
-   }
+    /* Go to infinite loop when Memory Manage exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -94,10 +92,9 @@ void MemManage_Handler(void)
  */
 void BusFault_Handler(void)
 {
-   /* Go to infinite loop when Bus Fault exception occurs */
-   while (1)
-   {
-   }
+    /* Go to infinite loop when Bus Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -107,10 +104,9 @@ void BusFault_Handler(void)
  */
 void UsageFault_Handler(void)
 {
-   /* Go to infinite loop when Usage Fault exception occurs */
-   while (1)
-   {
-   }
+    /* Go to infinite loop when Usage Fault exception occurs */
+    while(1) {
+    }
 }
 
 #ifndef FREERTOS_CONFIG_H
@@ -165,12 +161,12 @@ void PendSV_Handler(void)
  */
 void I2C1_EV_IRQHandler(void)
 {
-   I2C1EvIrq();
+    I2C1EvIrq();
 }
 
 void I2C1_ER_IRQHandler(void)
 {
-   I2C1ErIrq();
+    I2C1ErIrq();
 }
 
 /******************* (C) COPYRIGHT 2011 STMicroelectronics *****END OF FILE****/

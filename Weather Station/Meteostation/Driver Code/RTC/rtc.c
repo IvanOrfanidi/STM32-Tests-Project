@@ -6,8 +6,8 @@
 
 #include "rtc.h"
 
-#define FIRSTYEAR 2000   // start year
-#define FIRSTDAY 6   // 0 = Sunday
+#define FIRSTYEAR 2000    // start year
+#define FIRSTDAY 6        // 0 = Sunday
 
 static const uint8_t DaysInMonth[] = { 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
 
@@ -22,33 +22,28 @@ static const uint8_t DaysInMonth[] = { 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 3
  *******************************************************************************/
 static uint8_t isDST(const RTC_t* t)
 {
-   uint8_t wday, month;   // locals for faster access
+    uint8_t wday, month;    // locals for faster access
 
-   month = t->month;
+    month = t->month;
 
-   if (month < 3 || month > 10)
-   {   // month 1, 2, 11, 12
-      return 0;   // -> Winter
-   }
+    if(month < 3 || month > 10) {    // month 1, 2, 11, 12
+        return 0;                    // -> Winter
+    }
 
-   wday = t->wday;
+    wday = t->wday;
 
-   if (t->mday - wday >= 25 && (wday || t->hour >= 2))
-   {   // after last Sunday 2:00
-      if (month == 10)
-      {   // October -> Winter
-         return 0;
-      }
-   }
-   else
-   {   // before last Sunday 2:00
-      if (month == 3)
-      {   // March -> Winter
-         return 0;
-      }
-   }
+    if(t->mday - wday >= 25 && (wday || t->hour >= 2)) {    // after last Sunday 2:00
+        if(month == 10) {                                   // October -> Winter
+            return 0;
+        }
+    }
+    else {                  // before last Sunday 2:00
+        if(month == 3) {    // March -> Winter
+            return 0;
+        }
+    }
 
-   return 1;
+    return 1;
 }
 
 /*******************************************************************************
@@ -62,43 +57,38 @@ static uint8_t isDST(const RTC_t* t)
  *******************************************************************************/
 static uint8_t adjustDST(RTC_t* t)
 {
-   uint8_t hour, day, wday, month;   // locals for faster access
+    uint8_t hour, day, wday, month;    // locals for faster access
 
-   hour = t->hour;
-   day = t->mday;
-   wday = t->wday;
-   month = t->month;
+    hour = t->hour;
+    day = t->mday;
+    wday = t->wday;
+    month = t->month;
 
-   if (isDST(t))
-   {
-      t->dst = 1;
-      hour++;   // add one hour
-      if (hour == 24)
-      {   // next day
-         hour = 0;
-         wday++;   // next weekday
-         if (wday == 7)
-         {
-            wday = 0;
-         }
-         if (day == DaysInMonth[month - 1])
-         {   // next month
-            day = 0;
-            month++;
-         }
-         day++;
-      }
-      t->month = month;
-      t->hour = hour;
-      t->mday = day;
-      t->wday = wday;
-      return 1;
-   }
-   else
-   {
-      t->dst = 0;
-      return 0;
-   }
+    if(isDST(t)) {
+        t->dst = 1;
+        hour++;             // add one hour
+        if(hour == 24) {    // next day
+            hour = 0;
+            wday++;    // next weekday
+            if(wday == 7) {
+                wday = 0;
+            }
+            if(day == DaysInMonth[month - 1]) {    // next month
+                day = 0;
+                month++;
+            }
+            day++;
+        }
+        t->month = month;
+        t->hour = hour;
+        t->mday = day;
+        t->wday = wday;
+        return 1;
+    }
+    else {
+        t->dst = 0;
+        return 0;
+    }
 }
 
 /*******************************************************************************
@@ -112,61 +102,54 @@ static uint8_t adjustDST(RTC_t* t)
  *******************************************************************************/
 void counter_to_struct(uint32_t sec, RTC_t* t)
 {
-   uint16_t day;
-   uint8_t year;
-   uint16_t dayofyear;
-   uint8_t leap400;
-   uint8_t month;
+    uint16_t day;
+    uint8_t year;
+    uint16_t dayofyear;
+    uint8_t leap400;
+    uint8_t month;
 
-   sec -= 946684800;
+    sec -= 946684800;
 
-   t->sec = sec % 60;
-   sec /= 60;
-   t->min = sec % 60;
-   sec /= 60;
-   t->hour = sec % 24;
-   day = (uint16_t)(sec / 24);
+    t->sec = sec % 60;
+    sec /= 60;
+    t->min = sec % 60;
+    sec /= 60;
+    t->hour = sec % 24;
+    day = (uint16_t)(sec / 24);
 
-   t->wday = (day + FIRSTDAY) % 7;   // weekday
+    t->wday = (day + FIRSTDAY) % 7;    // weekday
 
-   year = FIRSTYEAR % 100;   // 0..99
-   leap400 = 4 - ((FIRSTYEAR - 1) / 100 & 3);   // 4, 3, 2, 1
+    year = FIRSTYEAR % 100;                       // 0..99
+    leap400 = 4 - ((FIRSTYEAR - 1) / 100 & 3);    // 4, 3, 2, 1
 
-   for (;;)
-   {
-      dayofyear = 365;
-      if ((year & 3) == 0)
-      {
-         dayofyear = 366;   // leap year
-         if (year == 0 || year == 100 || year == 200)
-         {   // 100 year exception
-            if (--leap400)
-            {   // 400 year exception
-               dayofyear = 365;
+    for(;;) {
+        dayofyear = 365;
+        if((year & 3) == 0) {
+            dayofyear = 366;                                 // leap year
+            if(year == 0 || year == 100 || year == 200) {    // 100 year exception
+                if(--leap400) {                              // 400 year exception
+                    dayofyear = 365;
+                }
             }
-         }
-      }
-      if (day < dayofyear)
-      {
-         break;
-      }
-      day -= dayofyear;
-      year++;   // 00..136 / 99..235
-   }
-   t->year = year + FIRSTYEAR / 100 * 100;   // + century
+        }
+        if(day < dayofyear) {
+            break;
+        }
+        day -= dayofyear;
+        year++;    // 00..136 / 99..235
+    }
+    t->year = year + FIRSTYEAR / 100 * 100;    // + century
 
-   if (dayofyear & 1 && day > 58)
-   {   // no leap year and after 28.2.
-      day++;   // skip 29.2.
-   }
+    if(dayofyear & 1 && day > 58) {    // no leap year and after 28.2.
+        day++;                         // skip 29.2.
+    }
 
-   for (month = 1; day >= DaysInMonth[month - 1]; month++)
-   {
-      day -= DaysInMonth[month - 1];
-   }
+    for(month = 1; day >= DaysInMonth[month - 1]; month++) {
+        day -= DaysInMonth[month - 1];
+    }
 
-   t->month = month;   // 1..12
-   t->mday = day + 1;   // 1..31
+    t->month = month;     // 1..12
+    t->mday = day + 1;    // 1..31
 }
 
 /*******************************************************************************
@@ -179,54 +162,49 @@ void counter_to_struct(uint32_t sec, RTC_t* t)
  *******************************************************************************/
 uint32_t struct_to_counter(const RTC_t* t)
 {
-   uint8_t i;
-   uint32_t result = 0;
-   uint16_t idx, year;
+    uint8_t i;
+    uint32_t result = 0;
+    uint16_t idx, year;
 
-   year = t->year;
+    year = t->year;
 
-   /* Calculate days of years before */
-   result = (uint32_t)year * 365;
-   if (t->year >= 1)
-   {
-      result += (year + 3) / 4;
-      result -= (year - 1) / 100;
-      result += (year - 1) / 400;
-   }
+    /* Calculate days of years before */
+    result = (uint32_t)year * 365;
+    if(t->year >= 1) {
+        result += (year + 3) / 4;
+        result -= (year - 1) / 100;
+        result += (year - 1) / 400;
+    }
 
-   /* Start with 2000 a.d. */
-   result -= 730485UL;
+    /* Start with 2000 a.d. */
+    result -= 730485UL;
 
-   /* Make month an array index */
-   idx = t->month - 1;
+    /* Make month an array index */
+    idx = t->month - 1;
 
-   /* Loop thru each month, adding the days */
-   for (i = 0; i < idx; i++)
-   {
-      result += DaysInMonth[i];
-   }
+    /* Loop thru each month, adding the days */
+    for(i = 0; i < idx; i++) {
+        result += DaysInMonth[i];
+    }
 
-   /* Leap year? adjust February */
-   if (year % 400 == 0 || (year % 4 == 0 && year % 100 != 0))
-   {
-      ;
-   }
-   else
-   {
-      if (t->month > 1)
-      {
-         result--;
-      }
-   }
+    /* Leap year? adjust February */
+    if(year % 400 == 0 || (year % 4 == 0 && year % 100 != 0)) {
+        ;
+    }
+    else {
+        if(t->month > 1) {
+            result--;
+        }
+    }
 
-   /* Add remaining days */
-   result += t->mday;
+    /* Add remaining days */
+    result += t->mday;
 
-   /* Convert to seconds, add all the other stuff */
-   result = (result - 1) * 86400L + (uint32_t)t->hour * 3600 + (uint32_t)t->min * 60 + t->sec;
+    /* Convert to seconds, add all the other stuff */
+    result = (result - 1) * 86400L + (uint32_t)t->hour * 3600 + (uint32_t)t->min * 60 + t->sec;
 
-   result += 946684800;
-   return result;
+    result += 946684800;
+    return result;
 }
 
 /*******************************************************************************
@@ -239,15 +217,14 @@ uint32_t struct_to_counter(const RTC_t* t)
 
 void rtc_gettime(RTC_t* rtc)
 {
-   uint32_t t;
+    uint32_t t;
 
-   while ((t = RTC_GetCounter()) != RTC_GetCounter())
-   {
-      ;
-   }
-   t -= 946684800;
-   counter_to_struct(t, rtc);   // get non DST time
-   adjustDST(rtc);
+    while((t = RTC_GetCounter()) != RTC_GetCounter()) {
+        ;
+    }
+    t -= 946684800;
+    counter_to_struct(t, rtc);    // get non DST time
+    adjustDST(rtc);
 }
 
 /*******************************************************************************
@@ -259,12 +236,12 @@ void rtc_gettime(RTC_t* rtc)
  *******************************************************************************/
 void my_RTC_SetCounter(uint32_t cnt)
 {
-   /* Wait until last write operation on RTC registers has finished */
-   RTC_WaitForLastTask();
-   /* Change the current time */
-   RTC_SetCounter(cnt);
-   /* Wait until last write operation on RTC registers has finished */
-   RTC_WaitForLastTask();
+    /* Wait until last write operation on RTC registers has finished */
+    RTC_WaitForLastTask();
+    /* Change the current time */
+    RTC_SetCounter(cnt);
+    /* Wait until last write operation on RTC registers has finished */
+    RTC_WaitForLastTask();
 }
 
 /*******************************************************************************
@@ -277,20 +254,19 @@ void my_RTC_SetCounter(uint32_t cnt)
  *******************************************************************************/
 void rtc_settime(RTC_t* rtc)
 {
-   uint32_t cnt;
-   volatile uint16_t i;
-   RTC_t ts;
+    uint32_t cnt;
+    volatile uint16_t i;
+    RTC_t ts;
 
-   cnt = struct_to_counter(rtc);   // non-DST counter-value
-   cnt += 946684800;
-   counter_to_struct(cnt, &ts);   // normalize struct (for weekday)
-   if (isDST(&ts))
-   {
-      cnt -= 60 * 60;   // Subtract one hour
-   }
-   PWR_BackupAccessCmd(ENABLE);
-   my_RTC_SetCounter(cnt);
-   PWR_BackupAccessCmd(DISABLE);
+    cnt = struct_to_counter(rtc);    // non-DST counter-value
+    cnt += 946684800;
+    counter_to_struct(cnt, &ts);    // normalize struct (for weekday)
+    if(isDST(&ts)) {
+        cnt -= 60 * 60;    // Subtract one hour
+    }
+    PWR_BackupAccessCmd(ENABLE);
+    my_RTC_SetCounter(cnt);
+    PWR_BackupAccessCmd(DISABLE);
 }
 
 /*******************************************************************************
@@ -304,165 +280,159 @@ void rtc_settime(RTC_t* rtc)
  *******************************************************************************/
 int rtc_init(void)
 {
-   volatile uint16_t i;
+    volatile uint16_t i;
 
-   /* Enable PWR and BKP clocks */
-   RCC_APB1PeriphClockCmd(RCC_APB1Periph_PWR | RCC_APB1Periph_BKP, ENABLE);
+    /* Enable PWR and BKP clocks */
+    RCC_APB1PeriphClockCmd(RCC_APB1Periph_PWR | RCC_APB1Periph_BKP, ENABLE);
 
-   /* LSI clock stabilization time */
-   for (i = 0; i < 5000; i++)
-   {
-      ;
-   }
+    /* LSI clock stabilization time */
+    for(i = 0; i < 5000; i++) {
+        ;
+    }
 
-   if (BKP_ReadBackupRegister(BKP_DR1) != 0xA5A5)
-   {
-      /* Backup data register value is not correct or not yet programmed (when
+    if(BKP_ReadBackupRegister(BKP_DR1) != 0xA5A5) {
+        /* Backup data register value is not correct or not yet programmed (when
 the first time the program is executed) */
 
-      /* Allow access to BKP Domain */
-      PWR_BackupAccessCmd(ENABLE);
+        /* Allow access to BKP Domain */
+        PWR_BackupAccessCmd(ENABLE);
 
-      /* Reset Backup Domain */
-      BKP_DeInit();
+        /* Reset Backup Domain */
+        BKP_DeInit();
 
-      /* Enable LSE */
-      RCC_LSEConfig(RCC_LSE_ON);
+        /* Enable LSE */
+        RCC_LSEConfig(RCC_LSE_ON);
 
-      /* Wait till LSE is ready */
-      uint32_t Timeout = 800000;
-      while (RCC_GetFlagStatus(RCC_FLAG_LSERDY) == RESET)
-      {
-         Timeout--;
-         if (!(Timeout))
-            break;
-      }
+        /* Wait till LSE is ready */
+        uint32_t Timeout = 800000;
+        while(RCC_GetFlagStatus(RCC_FLAG_LSERDY) == RESET) {
+            Timeout--;
+            if(!(Timeout))
+                break;
+        }
 
-      if (Timeout)   // LSE - OK.
-      {
-         /* Select LSE as RTC Clock Source */
-         RCC_RTCCLKConfig(RCC_RTCCLKSource_LSE);   // LSE = 32.768 KHz
+        if(Timeout)    // LSE - OK.
+        {
+            /* Select LSE as RTC Clock Source */
+            RCC_RTCCLKConfig(RCC_RTCCLKSource_LSE);    // LSE = 32.768 KHz
 
-         /* Enable RTC Clock */
-         RCC_RTCCLKCmd(ENABLE);
+            /* Enable RTC Clock */
+            RCC_RTCCLKCmd(ENABLE);
 
-         /* Wait for RTC registers synchronization */
-         RTC_WaitForSynchro();
+            /* Wait for RTC registers synchronization */
+            RTC_WaitForSynchro();
 
-         /* Wait until last write operation on RTC registers has finished */
-         RTC_WaitForLastTask();
+            /* Wait until last write operation on RTC registers has finished */
+            RTC_WaitForLastTask();
 
-         /* Set RTC prescaler: set RTC period to 1sec */
-         RTC_SetPrescaler(32767); /* RTC period = RTCCLK/RTC_PR = (32.768 KHz)/(32767+1) */
-      }
-      else   // LSE - NO.
-      {
-         RCC_RTCCLKConfig(RCC_RTCCLKSource_HSE_Div128);   // HSE = 8.00 MHz
+            /* Set RTC prescaler: set RTC period to 1sec */
+            RTC_SetPrescaler(32767); /* RTC period = RTCCLK/RTC_PR = (32.768 KHz)/(32767+1) */
+        }
+        else    // LSE - NO.
+        {
+            RCC_RTCCLKConfig(RCC_RTCCLKSource_HSE_Div128);    // HSE = 8.00 MHz
 
-         /* Enable RTC Clock */
-         RCC_RTCCLKCmd(ENABLE);
+            /* Enable RTC Clock */
+            RCC_RTCCLKCmd(ENABLE);
 
-         /* Wait for RTC registers synchronization */
-         RTC_WaitForSynchro();
+            /* Wait for RTC registers synchronization */
+            RTC_WaitForSynchro();
 
-         /* Wait until last write operation on RTC registers has finished */
-         RTC_WaitForLastTask();
+            /* Wait until last write operation on RTC registers has finished */
+            RTC_WaitForLastTask();
 
-         /* Set RTC prescaler: set RTC period to 1sec */
-         RTC_SetPrescaler(62499);
+            /* Set RTC prescaler: set RTC period to 1sec */
+            RTC_SetPrescaler(62499);
 
-         // Error LSE.
-      }
+            // Error LSE.
+        }
 
-      /* Wait until last write operation on RTC registers has finished */
-      RTC_WaitForLastTask();
+        /* Wait until last write operation on RTC registers has finished */
+        RTC_WaitForLastTask();
 
-      /* Set initial value */
-      RTC_SetCounter((uint32_t)(1262304000));   // here: 1st January 2010 11:55:00
+        /* Set initial value */
+        RTC_SetCounter((uint32_t)(1262304000));    // here: 1st January 2010 11:55:00
 
-      /* Wait until last write operation on RTC registers has finished */
-      RTC_WaitForLastTask();
+        /* Wait until last write operation on RTC registers has finished */
+        RTC_WaitForLastTask();
 
-      BKP_WriteBackupRegister(BKP_DR1, 0xA5A5);
+        BKP_WriteBackupRegister(BKP_DR1, 0xA5A5);
 
-      /* Lock access to BKP Domain */
-      PWR_BackupAccessCmd(DISABLE);
-   }
-   else
-   {
-      /* Wait for RTC registers synchronization */
-      RTC_WaitForSynchro();
-   }
+        /* Lock access to BKP Domain */
+        PWR_BackupAccessCmd(DISABLE);
+    }
+    else {
+        /* Wait for RTC registers synchronization */
+        RTC_WaitForSynchro();
+    }
 
-   return 0;
+    return 0;
 }
 
 int RTC_LSE(void)
 {
-   uint32_t count = 0xFFFFFFFF;
+    uint32_t count = 0xFFFFFFFF;
 
-   // LSE Enable
-   RCC_LSEConfig(RCC_LSE_ON);
+    // LSE Enable
+    RCC_LSEConfig(RCC_LSE_ON);
 
-   // Wait till LSE is ready
-   while (RCC_GetFlagStatus(RCC_FLAG_LSERDY) == RESET && (--count) > 0)
-   {
-      __NOP();
-      __NOP();
-      __NOP();
-      __NOP();
-   }
-   if (count == 0)
-      return -1;
+    // Wait till LSE is ready
+    while(RCC_GetFlagStatus(RCC_FLAG_LSERDY) == RESET && (--count) > 0) {
+        __NOP();
+        __NOP();
+        __NOP();
+        __NOP();
+    }
+    if(count == 0)
+        return -1;
 
-   // LCD Clock Source Selection
-   RCC_RTCCLKConfig(RCC_RTCCLKSource_LSE);
+    // LCD Clock Source Selection
+    RCC_RTCCLKConfig(RCC_RTCCLKSource_LSE);
 
-   return 0;
+    return 0;
 }
 
 int RTC_LSI(void)
 {
-   uint32_t count = 0xFFFFFFFF;
+    uint32_t count = 0xFFFFFFFF;
 
-   // Enable the LSI OSC
-   RCC_LSICmd(ENABLE);
+    // Enable the LSI OSC
+    RCC_LSICmd(ENABLE);
 
-   // Wait till LSI is ready
-   while (RCC_GetFlagStatus(RCC_FLAG_LSIRDY) == RESET && (--count) > 0)
-   {
-      __NOP();
-      __NOP();
-      __NOP();
-      __NOP();
-   }
-   if (count == 0)
-      return -1;
+    // Wait till LSI is ready
+    while(RCC_GetFlagStatus(RCC_FLAG_LSIRDY) == RESET && (--count) > 0) {
+        __NOP();
+        __NOP();
+        __NOP();
+        __NOP();
+    }
+    if(count == 0)
+        return -1;
 
-   // Select the RTC Clock Source
-   RCC_RTCCLKConfig(RCC_RTCCLKSource_LSI);
+    // Select the RTC Clock Source
+    RCC_RTCCLKConfig(RCC_RTCCLKSource_LSI);
 
-   return 0;
+    return 0;
 }
 
 int rtc_isWork(void)
 {
-   int lse, lsi;
-   volatile int32_t count = SystemCoreClock / 8;
-   volatile uint32_t RTC_Counter_Clock;
+    int lse, lsi;
+    volatile int32_t count = SystemCoreClock / 8;
+    volatile uint32_t RTC_Counter_Clock;
 
-   lse = RCC_GetFlagStatus(RCC_FLAG_LSERDY);
-   lsi = RCC_GetFlagStatus(RCC_FLAG_LSIRDY);
+    lse = RCC_GetFlagStatus(RCC_FLAG_LSERDY);
+    lsi = RCC_GetFlagStatus(RCC_FLAG_LSIRDY);
 
-   if (!(lse || lsi))
-      return -1;   // RTC Disable
+    if(!(lse || lsi))
+        return -1;    // RTC Disable
 
-   RTC_Counter_Clock = RTC_GetCounter();
-   while (count > 0)
-      count--;
+    RTC_Counter_Clock = RTC_GetCounter();
+    while(count > 0)
+        count--;
 
-   if (RTC_Counter_Clock == RTC_GetCounter())
-      return -1;
+    if(RTC_Counter_Clock == RTC_GetCounter())
+        return -1;
 
-   return 0;
+    return 0;
 }

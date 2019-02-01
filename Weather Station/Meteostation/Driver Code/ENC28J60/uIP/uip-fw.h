@@ -44,21 +44,20 @@
  * $Id: uip-fw.h,v 1.2 2006/06/12 08:00:30 adam Exp $
  */
 #ifndef __UIP_FW_H__
-#   define __UIP_FW_H__
+#define __UIP_FW_H__
 
-#   include "uip.h"
+#include "uip.h"
 
 /**
  * Representation of a uIP network interface.
  */
-struct uip_fw_netif
-{
-   struct uip_fw_netif* next; /**< Pointer to the next interface when
+struct uip_fw_netif {
+    struct uip_fw_netif* next; /**< Pointer to the next interface when
              linked in a list. */
-   u16_t ipaddr[2]; /**< The IP address of this interface. */
-   u16_t netmask[2]; /**< The netmask of the interface. */
-   u8_t (*output)(void);
-   /**< A pointer to the function that
+    u16_t ipaddr[2];           /**< The IP address of this interface. */
+    u16_t netmask[2];          /**< The netmask of the interface. */
+    u8_t (*output)(void);
+    /**< A pointer to the function that
 sends a packet. */
 };
 
@@ -78,9 +77,9 @@ sends a packet. */
  *
  * \hideinitializer
  */
-#   define UIP_FW_NETIF(ip1, ip2, ip3, ip4, nm1, nm2, nm3, nm4, outputfunc) \
-      NULL, { HTONS((ip1 << 8) | ip2), HTONS((ip3 << 8) | ip4) }, \
-         { HTONS((nm1 << 8) | nm2), HTONS((nm3 << 8) | nm4) }, outputfunc
+#define UIP_FW_NETIF(ip1, ip2, ip3, ip4, nm1, nm2, nm3, nm4, outputfunc) \
+    NULL, { HTONS((ip1 << 8) | ip2), HTONS((ip3 << 8) | ip4) }, \
+        { HTONS((nm1 << 8) | nm2), HTONS((nm3 << 8) | nm4) }, outputfunc
 
 /**
  * Set the IP address of a network interface.
@@ -91,12 +90,11 @@ sends a packet. */
  *
  * \hideinitializer
  */
-#   define uip_fw_setipaddr(netif, addr) \
-      do \
-      { \
-         (netif)->ipaddr[0] = ((u16_t*)(addr))[0]; \
-         (netif)->ipaddr[1] = ((u16_t*)(addr))[1]; \
-      } while (0)
+#define uip_fw_setipaddr(netif, addr) \
+    do { \
+        (netif)->ipaddr[0] = ((u16_t*)(addr))[0]; \
+        (netif)->ipaddr[1] = ((u16_t*)(addr))[1]; \
+    } while(0)
 /**
  * Set the netmask of a network interface.
  *
@@ -106,12 +104,11 @@ sends a packet. */
  *
  * \hideinitializer
  */
-#   define uip_fw_setnetmask(netif, addr) \
-      do \
-      { \
-         (netif)->netmask[0] = ((u16_t*)(addr))[0]; \
-         (netif)->netmask[1] = ((u16_t*)(addr))[1]; \
-      } while (0)
+#define uip_fw_setnetmask(netif, addr) \
+    do { \
+        (netif)->netmask[0] = ((u16_t*)(addr))[0]; \
+        (netif)->netmask[1] = ((u16_t*)(addr))[1]; \
+    } while(0)
 
 void uip_fw_init(void);
 u8_t uip_fw_forward(void);
@@ -126,21 +123,21 @@ void uip_fw_periodic(void);
  *
  * \hideinitializer
  */
-#   define UIP_FW_LOCAL 0
+#define UIP_FW_LOCAL 0
 
 /**
  * A non-error message that indicates that something went OK.
  *
  * \hideinitializer
  */
-#   define UIP_FW_OK 0
+#define UIP_FW_OK 0
 
 /**
  * A non-error message that indicates that a packet was forwarded.
  *
  * \hideinitializer
  */
-#   define UIP_FW_FORWARDED 1
+#define UIP_FW_FORWARDED 1
 
 /**
  * A non-error message that indicates that a zero-length packet
@@ -148,7 +145,7 @@ void uip_fw_periodic(void);
  *
  * \hideinitializer
  */
-#   define UIP_FW_ZEROLEN 2
+#define UIP_FW_ZEROLEN 2
 
 /**
  * An error message that indicates that a packet that was too large
@@ -156,7 +153,7 @@ void uip_fw_periodic(void);
  *
  * \hideinitializer
  */
-#   define UIP_FW_TOOLARGE 3
+#define UIP_FW_TOOLARGE 3
 
 /**
  * An error message that indicates that no suitable interface could be
@@ -164,7 +161,7 @@ void uip_fw_periodic(void);
  *
  * \hideinitializer
  */
-#   define UIP_FW_NOROUTE 4
+#define UIP_FW_NOROUTE 4
 
 /**
  * An error message that indicates that a packet that should be
@@ -172,7 +169,7 @@ void uip_fw_periodic(void);
  *
  * \hideinitializer
  */
-#   define UIP_FW_DROPPED 5
+#define UIP_FW_DROPPED 5
 
 #endif /* __UIP_FW_H__ */
 

@@ -69,7 +69,7 @@
  */
 
 #ifndef __UIP_SPLIT_H__
-#   define __UIP_SPLIT_H__
+#define __UIP_SPLIT_H__
 
 /**
  * Handle outgoing packets.

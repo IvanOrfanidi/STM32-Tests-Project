@@ -27,10 +27,10 @@
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __USB_ISTR_H
-#   define __USB_ISTR_H
+#define __USB_ISTR_H
 
 /* Includes ------------------------------------------------------------------*/
-#   include "usb_conf.h"
+#include "usb_conf.h"
 
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/
@@ -57,37 +57,37 @@ void EP5_OUT_Callback(void);
 void EP6_OUT_Callback(void);
 void EP7_OUT_Callback(void);
 
-#   ifdef CTR_CALLBACK
+#ifdef CTR_CALLBACK
 void CTR_Callback(void);
-#   endif
+#endif
 
-#   ifdef DOVR_CALLBACK
+#ifdef DOVR_CALLBACK
 void DOVR_Callback(void);
-#   endif
+#endif
 
-#   ifdef ERR_CALLBACK
+#ifdef ERR_CALLBACK
 void ERR_Callback(void);
-#   endif
+#endif
 
-#   ifdef WKUP_CALLBACK
+#ifdef WKUP_CALLBACK
 void WKUP_Callback(void);
-#   endif
+#endif
 
-#   ifdef SUSP_CALLBACK
+#ifdef SUSP_CALLBACK
 void SUSP_Callback(void);
-#   endif
+#endif
 
-#   ifdef RESET_CALLBACK
+#ifdef RESET_CALLBACK
 void RESET_Callback(void);
-#   endif
+#endif
 
-#   ifdef SOF_CALLBACK
+#ifdef SOF_CALLBACK
 void SOF_Callback(void);
-#   endif
+#endif
 
-#   ifdef ESOF_CALLBACK
+#ifdef ESOF_CALLBACK
 void ESOF_Callback(void);
-#   endif
+#endif
 #endif /*__USB_ISTR_H*/
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

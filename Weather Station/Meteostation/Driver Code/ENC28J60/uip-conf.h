@@ -53,10 +53,10 @@
  */
 
 #ifndef __UIP_CONF_H__
-#   define __UIP_CONF_H__
+#define __UIP_CONF_H__
 
 //#include <inttypes.h>
-#   include <stdint.h>
+#include <stdint.h>
 
 /**
  * 8 bit datatype
@@ -91,61 +91,61 @@ typedef unsigned short uip_stats_t;
  *
  * \hideinitializer
  */
-#   define UIP_CONF_MAX_CONNECTIONS 40
+#define UIP_CONF_MAX_CONNECTIONS 40
 
 /**
  * Maximum number of listening TCP ports.
  *
  * \hideinitializer
  */
-#   define UIP_CONF_MAX_LISTENPORTS 40
+#define UIP_CONF_MAX_LISTENPORTS 40
 
 /**
  * uIP buffer size.
  *
  * \hideinitializer
  */
-#   define UIP_CONF_BUFFER_SIZE 420
+#define UIP_CONF_BUFFER_SIZE 420
 
 /**
  * CPU byte order.
  *
  * \hideinitializer
  */
-#   define UIP_CONF_BYTE_ORDER LITTLE_ENDIAN
+#define UIP_CONF_BYTE_ORDER LITTLE_ENDIAN
 
 /**
  * Logging on or off
  *
  * \hideinitializer
  */
-#   define UIP_CONF_LOGGING 1
+#define UIP_CONF_LOGGING 1
 
 /**
  * UDP support on or off
  *
  * \hideinitializer
  */
-#   define UIP_CONF_UDP 0
+#define UIP_CONF_UDP 0
 
 /**
  * UDP checksums on or off
  *
  * \hideinitializer
  */
-#   define UIP_CONF_UDP_CHECKSUMS 1
+#define UIP_CONF_UDP_CHECKSUMS 1
 
 /**
  * uIP statistics on or off
  *
  * \hideinitializer
  */
-#   define UIP_CONF_STATISTICS 1
+#define UIP_CONF_STATISTICS 1
 
 /* Here we include the header file for the application(s) we use in
    our project. */
 /*#include "smtp.h"*/
-#   include "hello-world.h"
+#include "hello-world.h"
 /*#include "telnetd.h"*/
 //#include "webserver.h"
 //#include "dhcpc.h"

@@ -8,18 +8,18 @@
 
 int main()
 {
-   InitGPIO();
+    InitGPIO();
 
-   InitBKP();
+    InitBKP();
 
-   Set_System();
-   Set_USBClock();
-   USB_Interrupts_Config();
-   USB_Init();
+    Set_System();
+    Set_USBClock();
+    USB_Interrupts_Config();
+    USB_Init();
 
-   rtc_init();
+    rtc_init();
 
-   /*
+    /*
    RTC_t date;
    date.year = 2015;
    date.month = 10;
@@ -31,12 +31,12 @@ int main()
    rtc_settime(&date);
    */
 
-   // spi_sd_card_init();
+    // spi_sd_card_init();
 
-   // InitTIM4();
+    // InitTIM4();
 
-   InitRTOS();
+    InitRTOS();
 
-   while (1)
-      ;
+    while(1)
+        ;
 }

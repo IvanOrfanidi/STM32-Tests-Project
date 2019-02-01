@@ -9,11 +9,11 @@
 
 // Правило одного определения
 #ifdef __ALLOCATE_NOW__
-#   define GLOBAL PUBLIC
-#   define _EQU(x) = (x)
+#define GLOBAL PUBLIC
+#define _EQU(x) = (x)
 #else
-#   define GLOBAL _EXTERN
-#   define _EQU(x)
+#define GLOBAL _EXTERN
+#define _EQU(x)
 #endif
 
 // В описании функции могут быть определены дополнительные коды ошибок (#define)
@@ -108,30 +108,30 @@
 
 typedef __packed struct
 {
-   int32_t iRealTemperatur;
-   _Bool bDataValid;
+    int32_t iRealTemperatur;
+    _Bool bDataValid;
 } TOnewire_Data;
 
 typedef __packed struct
 {
-   int32_t iRealTemperatur;
-   int32_t iRealPressurePa;
-   int32_t iRealPressureHg;
-   _Bool bDataValid;
+    int32_t iRealTemperatur;
+    int32_t iRealPressurePa;
+    int32_t iRealPressureHg;
+    _Bool bDataValid;
 } TPressure_Data;
 
 typedef __packed struct
 {
-   uint16_t usRealTemperatur;   //
-   uint16_t usRealHumidity;   //
-   _Bool bDataValid;
+    uint16_t usRealTemperatur;    //
+    uint16_t usRealHumidity;      //
+    _Bool bDataValid;
 } THumidity_Data;
 
 typedef struct
 {
-   uint16_t usValue1;
-   uint16_t usValue2;
-   uint16_t usValue3;
+    uint16_t usValue1;
+    uint16_t usValue2;
+    uint16_t usValue3;
 } ADCmeasCFG;
 
 // ID Task
@@ -145,22 +145,22 @@ GLOBAL xTaskHandle xHandleLcdTask;
 GLOBAL xTaskHandle xHandleDebugTask;
 //**********************//
 
-GLOBAL xQueueHandle xQueueAdcDataToUsart;   //Очередь данных с АЦП.
+GLOBAL xQueueHandle xQueueAdcDataToUsart;    //Очередь данных с АЦП.
 
-GLOBAL xQueueHandle xQueuePressureDataToLcd;   // Очередь данных о давлении.
-GLOBAL xQueueHandle xQueuePressureDataToUsart;   // Очередь данных о давлении.
+GLOBAL xQueueHandle xQueuePressureDataToLcd;      // Очередь данных о давлении.
+GLOBAL xQueueHandle xQueuePressureDataToUsart;    // Очередь данных о давлении.
 
-GLOBAL xQueueHandle xQueueHumidityDataToLcd;   // Очередь данных о влажности.
-GLOBAL xQueueHandle xQueueHumidityDataToUsart;   // Очередь данных о влажности.
+GLOBAL xQueueHandle xQueueHumidityDataToLcd;      // Очередь данных о влажности.
+GLOBAL xQueueHandle xQueueHumidityDataToUsart;    // Очередь данных о влажности.
 
-GLOBAL xQueueHandle xQueueOnewireDataToUsart;   // Очередь данных о температуре.
-GLOBAL xQueueHandle xQueueOnewireDataToLcd;   // Очередь данных о температуре.
+GLOBAL xQueueHandle xQueueOnewireDataToUsart;    // Очередь данных о температуре.
+GLOBAL xQueueHandle xQueueOnewireDataToLcd;      // Очередь данных о температуре.
 GLOBAL xQueueHandle xQueueOnewireDataToSdcard;
 
 //**********************//
 
-GLOBAL xTaskHandle CurrentTaskHandle;   // ID текущего процесса(Debug)
-GLOBAL char* pNameCurrentTask;   //Имя текущего процесса(Debug)
+GLOBAL xTaskHandle CurrentTaskHandle;    // ID текущего процесса(Debug)
+GLOBAL char* pNameCurrentTask;           //Имя текущего процесса(Debug)
 
 // buffer
 GLOBAL uint8_t g_aucRxBufferUSART1[RX_BUFFER_SIZE1];

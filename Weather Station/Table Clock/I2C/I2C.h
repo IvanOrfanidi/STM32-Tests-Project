@@ -69,10 +69,9 @@
 #define I2C_IT_EVT ((uint16_t)0x0200)
 #define I2C_IT_ERR ((uint16_t)0x0100)
 
-typedef enum
-{
-   Error = 0,
-   Success = !Error
+typedef enum {
+    Error = 0,
+    Success = !Error
 } Status;
 
 void I2C1EvIrq(void);

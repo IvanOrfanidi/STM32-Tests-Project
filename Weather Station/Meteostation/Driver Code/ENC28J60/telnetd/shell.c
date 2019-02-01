@@ -36,10 +36,9 @@
 
 #include <string.h>
 
-struct ptentry
-{
-   char* commandstr;
-   void (*pfunc)(char* str);
+struct ptentry {
+    char* commandstr;
+    void (*pfunc)(char* str);
 };
 
 #define SHELL_PROMPT "uIP 1.0> "
@@ -47,60 +46,55 @@ struct ptentry
 /*---------------------------------------------------------------------------*/
 static void parse(register char* str, struct ptentry* t)
 {
-   struct ptentry* p;
-   for (p = t; p->commandstr != NULL; ++p)
-   {
-      if (strncmp(p->commandstr, str, strlen(p->commandstr)) == 0)
-      {
-         break;
-      }
-   }
+    struct ptentry* p;
+    for(p = t; p->commandstr != NULL; ++p) {
+        if(strncmp(p->commandstr, str, strlen(p->commandstr)) == 0) {
+            break;
+        }
+    }
 
-   p->pfunc(str);
+    p->pfunc(str);
 }
 /*---------------------------------------------------------------------------*/
 static void inttostr(register char* str, unsigned int i)
 {
-   str[0] = '0' + i / 100;
-   if (str[0] == '0')
-   {
-      str[0] = ' ';
-   }
-   str[1] = '0' + (i / 10) % 10;
-   if (str[0] == ' ' && str[1] == '0')
-   {
-      str[1] = ' ';
-   }
-   str[2] = '0' + i % 10;
-   str[3] = ' ';
-   str[4] = 0;
+    str[0] = '0' + i / 100;
+    if(str[0] == '0') {
+        str[0] = ' ';
+    }
+    str[1] = '0' + (i / 10) % 10;
+    if(str[0] == ' ' && str[1] == '0') {
+        str[1] = ' ';
+    }
+    str[2] = '0' + i % 10;
+    str[3] = ' ';
+    str[4] = 0;
 }
 /*---------------------------------------------------------------------------*/
 static void help(char* str)
 {
-   shell_output("Available commands:", "");
-   shell_output("stats   - show network statistics", "");
-   shell_output("conn    - show TCP connections", "");
-   shell_output("help, ? - show help", "");
-   shell_output("exit    - exit shell", "");
+    shell_output("Available commands:", "");
+    shell_output("stats   - show network statistics", "");
+    shell_output("conn    - show TCP connections", "");
+    shell_output("help, ? - show help", "");
+    shell_output("exit    - exit shell", "");
 }
 /*---------------------------------------------------------------------------*/
 static void unknown(char* str)
 {
-   if (strlen(str) > 0)
-   {
-      shell_output("Unknown command: ", str);
-   }
+    if(strlen(str) > 0) {
+        shell_output("Unknown command: ", str);
+    }
 }
 /*---------------------------------------------------------------------------*/
 static struct ptentry parsetab[] = { { "stats", help },
-                                     { "conn", help },
-                                     { "help", help },
-                                     { "exit", shell_quit },
-                                     { "?", help },
+    { "conn", help },
+    { "help", help },
+    { "exit", shell_quit },
+    { "?", help },
 
-                                     /* Default action */
-                                     { NULL, unknown } };
+    /* Default action */
+    { NULL, unknown } };
 /*---------------------------------------------------------------------------*/
 void shell_init(void)
 {
@@ -108,14 +102,14 @@ void shell_init(void)
 /*---------------------------------------------------------------------------*/
 void shell_start(void)
 {
-   shell_output("uIP command shell", "");
-   shell_output("Type '?' and return for help", "");
-   shell_prompt(SHELL_PROMPT);
+    shell_output("uIP command shell", "");
+    shell_output("Type '?' and return for help", "");
+    shell_prompt(SHELL_PROMPT);
 }
 /*---------------------------------------------------------------------------*/
 void shell_input(char* cmd)
 {
-   parse(cmd, parsetab);
-   shell_prompt(SHELL_PROMPT);
+    parse(cmd, parsetab);
+    shell_prompt(SHELL_PROMPT);
 }
 /*---------------------------------------------------------------------------*/
