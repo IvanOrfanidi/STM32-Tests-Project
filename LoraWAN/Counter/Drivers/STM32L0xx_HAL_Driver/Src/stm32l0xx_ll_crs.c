@@ -37,14 +37,14 @@
 #if defined(USE_FULL_LL_DRIVER)
 
 /* Includes ------------------------------------------------------------------*/
-#   include "stm32l0xx_ll_crs.h"
-#   include "stm32l0xx_ll_bus.h"
+#include "stm32l0xx_ll_crs.h"
+#include "stm32l0xx_ll_bus.h"
 
 /** @addtogroup STM32L0xx_LL_Driver
  * @{
  */
 
-#   if defined(CRS)
+#if defined(CRS)
 
 /** @defgroup CRS_LL CRS
  * @{
@@ -73,10 +73,10 @@
  */
 ErrorStatus LL_CRS_DeInit(void)
 {
-   LL_APB1_GRP1_ForceReset(LL_APB1_GRP1_PERIPH_CRS);
-   LL_APB1_GRP1_ReleaseReset(LL_APB1_GRP1_PERIPH_CRS);
+    LL_APB1_GRP1_ForceReset(LL_APB1_GRP1_PERIPH_CRS);
+    LL_APB1_GRP1_ReleaseReset(LL_APB1_GRP1_PERIPH_CRS);
 
-   return SUCCESS;
+    return SUCCESS;
 }
 
 /**
@@ -91,7 +91,7 @@ ErrorStatus LL_CRS_DeInit(void)
  * @}
  */
 
-#   endif /* defined(CRS) */
+#endif /* defined(CRS) */
 
 /**
  * @}

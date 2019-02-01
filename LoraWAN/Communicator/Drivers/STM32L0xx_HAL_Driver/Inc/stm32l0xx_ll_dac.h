@@ -37,20 +37,20 @@
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __STM32L0xx_LL_DAC_H
-#   define __STM32L0xx_LL_DAC_H
+#define __STM32L0xx_LL_DAC_H
 
-#   ifdef __cplusplus
+#ifdef __cplusplus
 extern "C" {
-#   endif
+#endif
 
 /* Includes ------------------------------------------------------------------*/
-#   include "stm32l0xx.h"
+#include "stm32l0xx.h"
 
 /** @addtogroup STM32L0xx_LL_Driver
  * @{
  */
 
-#   if defined(DAC1)
+#if defined(DAC1)
 
 /** @defgroup DAC_LL DAC
  * @{
@@ -70,80 +70,80 @@ extern "C" {
 /* - channel bits position into register SWTRIG                               */
 /* - channel register offset of data holding register DHRx                    */
 /* - channel register offset of data output register DORx                     */
-#      define DAC_CR_CH1_BITOFFSET \
-         0U /* Position of channel bits into registers CR, MCR, CCR, SHHR, SHRR of channel 1 */
-#      define DAC_CR_CH2_BITOFFSET \
-         16U /* Position of channel bits into registers CR, MCR, CCR, SHHR, SHRR of channel 2 */
-#      define DAC_CR_CHX_BITOFFSET_MASK (DAC_CR_CH1_BITOFFSET | DAC_CR_CH2_BITOFFSET)
+#define DAC_CR_CH1_BITOFFSET \
+    0U /* Position of channel bits into registers CR, MCR, CCR, SHHR, SHRR of channel 1 */
+#define DAC_CR_CH2_BITOFFSET \
+    16U /* Position of channel bits into registers CR, MCR, CCR, SHHR, SHRR of channel 2 */
+#define DAC_CR_CHX_BITOFFSET_MASK (DAC_CR_CH1_BITOFFSET | DAC_CR_CH2_BITOFFSET)
 
-#      define DAC_SWTR_CH1 \
-         (DAC_SWTRIGR_SWTRIG1) /* Channel bit into register SWTRIGR of channel 1. This bit is into area of \
+#define DAC_SWTR_CH1 \
+    (DAC_SWTRIGR_SWTRIG1) /* Channel bit into register SWTRIGR of channel 1. This bit is into area of \
                                   LL_DAC_CR_CHx_BITOFFSET but excluded by mask DAC_CR_CHX_BITOFFSET_MASK (done to be \
                                   enable to trig SW start of both DAC channels simultaneously). */
-#      if defined(DAC_CHANNEL2_SUPPORT)
-#         define DAC_SWTR_CH2 \
-            (DAC_SWTRIGR_SWTRIG2) /* Channel bit into register SWTRIGR of channel 2. This bit is into area of \
+#if defined(DAC_CHANNEL2_SUPPORT)
+#define DAC_SWTR_CH2 \
+    (DAC_SWTRIGR_SWTRIG2) /* Channel bit into register SWTRIGR of channel 2. This bit is into area of \
                                      LL_DAC_CR_CHx_BITOFFSET but excluded by mask DAC_CR_CHX_BITOFFSET_MASK (done to \
                                      be enable to trig SW start of both DAC channels simultaneously). */
-#         define DAC_SWTR_CHX_MASK (DAC_SWTR_CH1 | DAC_SWTR_CH2)
-#      else
-#         define DAC_SWTR_CHX_MASK (DAC_SWTR_CH1)
-#      endif /* DAC_CHANNEL2_SUPPORT */
+#define DAC_SWTR_CHX_MASK (DAC_SWTR_CH1 | DAC_SWTR_CH2)
+#else
+#define DAC_SWTR_CHX_MASK (DAC_SWTR_CH1)
+#endif /* DAC_CHANNEL2_SUPPORT */
 
-#      define DAC_REG_DHR12R1_REGOFFSET 0x00000000U /* Register DHR12Rx channel 1 taken as reference */
-#      define DAC_REG_DHR12L1_REGOFFSET \
-         0x00100000U /* Register offset of DHR12Lx channel 1 versus DHR12Rx channel 1 (shifted left of 20 bits) */
-#      define DAC_REG_DHR8R1_REGOFFSET \
-         0x02000000U /* Register offset of DHR8Rx  channel 1 versus DHR12Rx channel 1 (shifted left of 24 bits) */
-#      if defined(DAC_CHANNEL2_SUPPORT)
-#         define DAC_REG_DHR12R2_REGOFFSET \
-            0x00030000U /* Register offset of DHR12Rx channel 2 versus DHR12Rx channel 1 (shifted left of 16 bits) */
-#         define DAC_REG_DHR12L2_REGOFFSET \
-            0x00400000U /* Register offset of DHR12Lx channel 2 versus DHR12Rx channel 1 (shifted left of 20 bits) */
-#         define DAC_REG_DHR8R2_REGOFFSET \
-            0x05000000U /* Register offset of DHR8Rx  channel 2 versus DHR12Rx channel 1 (shifted left of 24 bits) */
-#      endif /* DAC_CHANNEL2_SUPPORT */
-#      define DAC_REG_DHR12RX_REGOFFSET_MASK 0x000F0000U
-#      define DAC_REG_DHR12LX_REGOFFSET_MASK 0x00F00000U
-#      define DAC_REG_DHR8RX_REGOFFSET_MASK 0x0F000000U
-#      define DAC_REG_DHRX_REGOFFSET_MASK \
-         (DAC_REG_DHR12RX_REGOFFSET_MASK | DAC_REG_DHR12LX_REGOFFSET_MASK | DAC_REG_DHR8RX_REGOFFSET_MASK)
+#define DAC_REG_DHR12R1_REGOFFSET 0x00000000U /* Register DHR12Rx channel 1 taken as reference */
+#define DAC_REG_DHR12L1_REGOFFSET \
+    0x00100000U /* Register offset of DHR12Lx channel 1 versus DHR12Rx channel 1 (shifted left of 20 bits) */
+#define DAC_REG_DHR8R1_REGOFFSET \
+    0x02000000U /* Register offset of DHR8Rx  channel 1 versus DHR12Rx channel 1 (shifted left of 24 bits) */
+#if defined(DAC_CHANNEL2_SUPPORT)
+#define DAC_REG_DHR12R2_REGOFFSET \
+    0x00030000U /* Register offset of DHR12Rx channel 2 versus DHR12Rx channel 1 (shifted left of 16 bits) */
+#define DAC_REG_DHR12L2_REGOFFSET \
+    0x00400000U /* Register offset of DHR12Lx channel 2 versus DHR12Rx channel 1 (shifted left of 20 bits) */
+#define DAC_REG_DHR8R2_REGOFFSET \
+    0x05000000U /* Register offset of DHR8Rx  channel 2 versus DHR12Rx channel 1 (shifted left of 24 bits) */
+#endif          /* DAC_CHANNEL2_SUPPORT */
+#define DAC_REG_DHR12RX_REGOFFSET_MASK 0x000F0000U
+#define DAC_REG_DHR12LX_REGOFFSET_MASK 0x00F00000U
+#define DAC_REG_DHR8RX_REGOFFSET_MASK 0x0F000000U
+#define DAC_REG_DHRX_REGOFFSET_MASK \
+    (DAC_REG_DHR12RX_REGOFFSET_MASK | DAC_REG_DHR12LX_REGOFFSET_MASK | DAC_REG_DHR8RX_REGOFFSET_MASK)
 
-#      define DAC_REG_DOR1_REGOFFSET 0x00000000U /* Register DORx channel 1 taken as reference */
-#      if defined(DAC_CHANNEL2_SUPPORT)
-#         define DAC_REG_DOR2_REGOFFSET \
-            0x10000000U /* Register offset of DORx channel 1 versus DORx channel 2 (shifted left of 28 bits) */
-#         define DAC_REG_DORX_REGOFFSET_MASK (DAC_REG_DOR1_REGOFFSET | DAC_REG_DOR2_REGOFFSET)
-#      else
-#         define DAC_REG_DORX_REGOFFSET_MASK (DAC_REG_DOR1_REGOFFSET)
-#      endif /* DAC_CHANNEL2_SUPPORT */
+#define DAC_REG_DOR1_REGOFFSET 0x00000000U /* Register DORx channel 1 taken as reference */
+#if defined(DAC_CHANNEL2_SUPPORT)
+#define DAC_REG_DOR2_REGOFFSET \
+    0x10000000U /* Register offset of DORx channel 1 versus DORx channel 2 (shifted left of 28 bits) */
+#define DAC_REG_DORX_REGOFFSET_MASK (DAC_REG_DOR1_REGOFFSET | DAC_REG_DOR2_REGOFFSET)
+#else
+#define DAC_REG_DORX_REGOFFSET_MASK (DAC_REG_DOR1_REGOFFSET)
+#endif /* DAC_CHANNEL2_SUPPORT */
 
-#      define DAC_REG_REGOFFSET_MASK_POSBIT0 \
-         0x0000000FU /* Mask of registers offset (DHR12Rx, DHR12Lx, DHR8Rx, DORx, ...) when shifted to position 0 */
+#define DAC_REG_REGOFFSET_MASK_POSBIT0 \
+    0x0000000FU /* Mask of registers offset (DHR12Rx, DHR12Lx, DHR8Rx, DORx, ...) when shifted to position 0 */
 
-#      define DAC_REG_DHR12RX_REGOFFSET_BITOFFSET_POS \
-         16U /* Position of bits register offset of DHR12Rx channel 1 or 2 versus DHR12Rx channel 1 (shifted left of \
+#define DAC_REG_DHR12RX_REGOFFSET_BITOFFSET_POS \
+    16U /* Position of bits register offset of DHR12Rx channel 1 or 2 versus DHR12Rx channel 1 (shifted left of \
                 16 bits) */
-#      define DAC_REG_DHR12LX_REGOFFSET_BITOFFSET_POS \
-         20U /* Position of bits register offset of DHR12Lx channel 1 or 2 versus DHR12Rx channel 1 (shifted left of \
+#define DAC_REG_DHR12LX_REGOFFSET_BITOFFSET_POS \
+    20U /* Position of bits register offset of DHR12Lx channel 1 or 2 versus DHR12Rx channel 1 (shifted left of \
                 20 bits) */
-#      define DAC_REG_DHR8RX_REGOFFSET_BITOFFSET_POS \
-         24U /* Position of bits register offset of DHR8Rx  channel 1 or 2 versus DHR12Rx channel 1 (shifted left of \
+#define DAC_REG_DHR8RX_REGOFFSET_BITOFFSET_POS \
+    24U /* Position of bits register offset of DHR8Rx  channel 1 or 2 versus DHR12Rx channel 1 (shifted left of \
                 24 bits) */
-#      define DAC_REG_DORX_REGOFFSET_BITOFFSET_POS \
-         28U /* Position of bits register offset of DORx channel 1 or 2 versus DORx channel 1 (shifted left of 28 \
+#define DAC_REG_DORX_REGOFFSET_BITOFFSET_POS \
+    28U /* Position of bits register offset of DORx channel 1 or 2 versus DORx channel 1 (shifted left of 28 \
                 bits) */
 
 /* DAC registers bits positions */
-#      if defined(DAC_CHANNEL2_SUPPORT)
-#         define DAC_DHR12RD_DACC2DHR_BITOFFSET_POS 16U /* Value equivalent to POSITION_VAL(DAC_DHR12RD_DACC2DHR) */
-#         define DAC_DHR12LD_DACC2DHR_BITOFFSET_POS 20U /* Value equivalent to POSITION_VAL(DAC_DHR12LD_DACC2DHR) */
-#         define DAC_DHR8RD_DACC2DHR_BITOFFSET_POS 8U /* Value equivalent to POSITION_VAL(DAC_DHR8RD_DACC2DHR) */
-#      endif /* DAC_CHANNEL2_SUPPORT */
+#if defined(DAC_CHANNEL2_SUPPORT)
+#define DAC_DHR12RD_DACC2DHR_BITOFFSET_POS 16U /* Value equivalent to POSITION_VAL(DAC_DHR12RD_DACC2DHR) */
+#define DAC_DHR12LD_DACC2DHR_BITOFFSET_POS 20U /* Value equivalent to POSITION_VAL(DAC_DHR12LD_DACC2DHR) */
+#define DAC_DHR8RD_DACC2DHR_BITOFFSET_POS 8U   /* Value equivalent to POSITION_VAL(DAC_DHR8RD_DACC2DHR) */
+#endif                                         /* DAC_CHANNEL2_SUPPORT */
 
 /* Miscellaneous data */
-#      define DAC_DIGITAL_SCALE_12BITS \
-         4095U /* Full-scale digital value with a resolution of 12 bits (voltage range determined by analog voltage \
+#define DAC_DIGITAL_SCALE_12BITS \
+    4095U /* Full-scale digital value with a resolution of 12 bits (voltage range determined by analog voltage \
                   references Vref+ and Vref-, refer to reference manual) */
 
 /**
@@ -163,15 +163,15 @@ extern "C" {
  * @param  __REG_OFFFSET__ Offset to be applied (unit: number of registers).
  * @retval Pointer to register address
  */
-#      define __DAC_PTR_REG_OFFSET(__REG__, __REG_OFFFSET__) \
-         ((uint32_t*)((uint32_t)((uint32_t)(&(__REG__)) + ((__REG_OFFFSET__) << 2U))))
+#define __DAC_PTR_REG_OFFSET(__REG__, __REG_OFFFSET__) \
+    ((uint32_t*)((uint32_t)((uint32_t)(&(__REG__)) + ((__REG_OFFFSET__) << 2U))))
 
 /**
  * @}
  */
 
 /* Exported types ------------------------------------------------------------*/
-#      if defined(USE_FULL_LL_DRIVER)
+#if defined(USE_FULL_LL_DRIVER)
 /** @defgroup DAC_LL_ES_INIT DAC Exported Init structure
  * @{
  */
@@ -181,20 +181,20 @@ extern "C" {
  */
 typedef struct
 {
-   uint32_t TriggerSource; /*!< Set the conversion trigger source for the selected DAC channel: internal (SW start) or
+    uint32_t TriggerSource; /*!< Set the conversion trigger source for the selected DAC channel: internal (SW start) or
                               from external IP (timer event, external interrupt line). This parameter can be a value of
                               @ref DAC_LL_EC_TRIGGER_SOURCE
                                 
                                 This feature can be modified afterwards using unitary function @ref
                               LL_DAC_SetTriggerSource(). */
 
-   uint32_t WaveAutoGeneration; /*!< Set the waveform automatic generation mode for the selected DAC channel.
+    uint32_t WaveAutoGeneration; /*!< Set the waveform automatic generation mode for the selected DAC channel.
                                      This parameter can be a value of @ref DAC_LL_EC_WAVE_AUTO_GENERATION_MODE
                                      
                                      This feature can be modified afterwards using unitary function @ref
                                    LL_DAC_SetWaveAutoGeneration(). */
 
-   uint32_t WaveAutoGenerationConfig; /*!< Set the waveform automatic generation mode for the selected DAC channel.
+    uint32_t WaveAutoGenerationConfig; /*!< Set the waveform automatic generation mode for the selected DAC channel.
                                            If waveform automatic generation mode is set to noise, this parameter can be
                                          a value of @ref DAC_LL_EC_WAVE_NOISE_LFSR_UNMASK_BITS If waveform automatic
                                          generation mode is set to triangle, this parameter can be a value of @ref
@@ -206,7 +206,7 @@ typedef struct
                                          LL_DAC_SetWaveNoiseLFSR() or @ref LL_DAC_SetWaveTriangleAmplitude(), depending
                                          on the wave automatic generation selected. */
 
-   uint32_t OutputBuffer; /*!< Set the output buffer for the selected DAC channel.
+    uint32_t OutputBuffer; /*!< Set the output buffer for the selected DAC channel.
                                This parameter can be a value of @ref DAC_LL_EC_OUTPUT_BUFFER
                                
                                This feature can be modified afterwards using unitary function @ref
@@ -217,7 +217,7 @@ typedef struct
 /**
  * @}
  */
-#      endif /* USE_FULL_LL_DRIVER */
+#endif /* USE_FULL_LL_DRIVER */
 
 /* Exported constants --------------------------------------------------------*/
 /** @defgroup DAC_LL_Exported_Constants DAC Exported Constants
@@ -229,12 +229,12 @@ typedef struct
  * @{
  */
 /* DAC channel 1 flags */
-#      define LL_DAC_FLAG_DMAUDR1 (DAC_SR_DMAUDR1) /*!< DAC channel 1 flag DMA underrun */
+#define LL_DAC_FLAG_DMAUDR1 (DAC_SR_DMAUDR1) /*!< DAC channel 1 flag DMA underrun */
 
-#      if defined(DAC_CHANNEL2_SUPPORT)
+#if defined(DAC_CHANNEL2_SUPPORT)
 /* DAC channel 2 flags */
-#         define LL_DAC_FLAG_DMAUDR2 (DAC_SR_DMAUDR2) /*!< DAC channel 2 flag DMA underrun */
-#      endif /* DAC_CHANNEL2_SUPPORT */
+#define LL_DAC_FLAG_DMAUDR2 (DAC_SR_DMAUDR2) /*!< DAC channel 2 flag DMA underrun */
+#endif                                       /* DAC_CHANNEL2_SUPPORT */
 /**
  * @}
  */
@@ -243,10 +243,10 @@ typedef struct
  * @brief    IT defines which can be used with LL_DAC_ReadReg and  LL_DAC_WriteReg functions
  * @{
  */
-#      define LL_DAC_IT_DMAUDRIE1 (DAC_CR_DMAUDRIE1) /*!< DAC channel 1 interruption DMA underrun */
-#      if defined(DAC_CHANNEL2_SUPPORT)
-#         define LL_DAC_IT_DMAUDRIE2 (DAC_CR_DMAUDRIE2) /*!< DAC channel 2 interruption DMA underrun */
-#      endif /* DAC_CHANNEL2_SUPPORT */
+#define LL_DAC_IT_DMAUDRIE1 (DAC_CR_DMAUDRIE1) /*!< DAC channel 1 interruption DMA underrun */
+#if defined(DAC_CHANNEL2_SUPPORT)
+#define LL_DAC_IT_DMAUDRIE2 (DAC_CR_DMAUDRIE2) /*!< DAC channel 2 interruption DMA underrun */
+#endif                                         /* DAC_CHANNEL2_SUPPORT */
 /**
  * @}
  */
@@ -254,14 +254,14 @@ typedef struct
 /** @defgroup DAC_LL_EC_CHANNEL DAC channels
  * @{
  */
-#      define LL_DAC_CHANNEL_1 \
-         (DAC_REG_DOR1_REGOFFSET | DAC_REG_DHR12R1_REGOFFSET | DAC_REG_DHR12L1_REGOFFSET | DAC_REG_DHR8R1_REGOFFSET | \
-          DAC_CR_CH1_BITOFFSET | DAC_SWTR_CH1) /*!< DAC channel 1 */
-#      if defined(DAC_CHANNEL2_SUPPORT)
-#         define LL_DAC_CHANNEL_2 \
-            (DAC_REG_DOR2_REGOFFSET | DAC_REG_DHR12R2_REGOFFSET | DAC_REG_DHR12L2_REGOFFSET | \
-             DAC_REG_DHR8R2_REGOFFSET | DAC_CR_CH2_BITOFFSET | DAC_SWTR_CH2) /*!< DAC channel 2 */
-#      endif /* DAC_CHANNEL2_SUPPORT */
+#define LL_DAC_CHANNEL_1 \
+    (DAC_REG_DOR1_REGOFFSET | DAC_REG_DHR12R1_REGOFFSET | DAC_REG_DHR12L1_REGOFFSET | DAC_REG_DHR8R1_REGOFFSET | \
+        DAC_CR_CH1_BITOFFSET | DAC_SWTR_CH1) /*!< DAC channel 1 */
+#if defined(DAC_CHANNEL2_SUPPORT)
+#define LL_DAC_CHANNEL_2 \
+    (DAC_REG_DOR2_REGOFFSET | DAC_REG_DHR12R2_REGOFFSET | DAC_REG_DHR12L2_REGOFFSET | \
+        DAC_REG_DHR8R2_REGOFFSET | DAC_CR_CH2_BITOFFSET | DAC_SWTR_CH2) /*!< DAC channel 2 */
+#endif                                                                  /* DAC_CHANNEL2_SUPPORT */
 /**
  * @}
  */
@@ -269,24 +269,24 @@ typedef struct
 /** @defgroup DAC_LL_EC_TRIGGER_SOURCE DAC trigger source
  * @{
  */
-#      define LL_DAC_TRIG_SOFTWARE \
-         (DAC_CR_TSEL1_2 | DAC_CR_TSEL1_1 | DAC_CR_TSEL1_0) /*!< DAC channel conversion trigger internal (SW start) */
-#      define LL_DAC_TRIG_EXT_TIM2_TRGO \
-         (DAC_CR_TSEL1_2) /*!< DAC channel conversion trigger from external IP: TIM2 TRGO. */
-#      define LL_DAC_TRIG_EXT_TIM3_TRGO \
-         (DAC_CR_TSEL1_0) /*!< DAC channel conversion trigger from external IP: TIM3 TRGO. */
-#      define LL_DAC_TRIG_EXT_TIM3_CH3 \
-         (DAC_CR_TSEL1_1) /*!< DAC channel conversion trigger from external IP: TIM3 CH3 event. */
-#      define LL_DAC_TRIG_EXT_TIM6_TRGO \
-         0x00000000U /*!< DAC channel conversion trigger from external IP: TIM6 TRGO. \
+#define LL_DAC_TRIG_SOFTWARE \
+    (DAC_CR_TSEL1_2 | DAC_CR_TSEL1_1 | DAC_CR_TSEL1_0) /*!< DAC channel conversion trigger internal (SW start) */
+#define LL_DAC_TRIG_EXT_TIM2_TRGO \
+    (DAC_CR_TSEL1_2) /*!< DAC channel conversion trigger from external IP: TIM2 TRGO. */
+#define LL_DAC_TRIG_EXT_TIM3_TRGO \
+    (DAC_CR_TSEL1_0) /*!< DAC channel conversion trigger from external IP: TIM3 TRGO. */
+#define LL_DAC_TRIG_EXT_TIM3_CH3 \
+    (DAC_CR_TSEL1_1) /*!< DAC channel conversion trigger from external IP: TIM3 CH3 event. */
+#define LL_DAC_TRIG_EXT_TIM6_TRGO \
+    0x00000000U /*!< DAC channel conversion trigger from external IP: TIM6 TRGO. \
                       */
-#      define LL_DAC_TRIG_EXT_TIM7_TRGO \
-         (DAC_CR_TSEL1_2 | DAC_CR_TSEL1_0) /*!< DAC channel conversion trigger from external IP: TIM7 TRGO. */
-#      define LL_DAC_TRIG_EXT_TIM21_TRGO \
-         (DAC_CR_TSEL1_1 | DAC_CR_TSEL1_0) /*!< DAC channel conversion trigger from external IP: TIM21 TRGO. */
-#      define LL_DAC_TRIG_EXT_EXTI_LINE9 \
-         (DAC_CR_TSEL1_2 | \
-          DAC_CR_TSEL1_1) /*!< DAC channel conversion trigger from external IP: external interrupt line 9. */
+#define LL_DAC_TRIG_EXT_TIM7_TRGO \
+    (DAC_CR_TSEL1_2 | DAC_CR_TSEL1_0) /*!< DAC channel conversion trigger from external IP: TIM7 TRGO. */
+#define LL_DAC_TRIG_EXT_TIM21_TRGO \
+    (DAC_CR_TSEL1_1 | DAC_CR_TSEL1_0) /*!< DAC channel conversion trigger from external IP: TIM21 TRGO. */
+#define LL_DAC_TRIG_EXT_EXTI_LINE9 \
+    (DAC_CR_TSEL1_2 | \
+        DAC_CR_TSEL1_1) /*!< DAC channel conversion trigger from external IP: external interrupt line 9. */
 /**
  * @}
  */
@@ -294,11 +294,11 @@ typedef struct
 /** @defgroup DAC_LL_EC_WAVE_AUTO_GENERATION_MODE DAC waveform automatic generation mode
  * @{
  */
-#      define LL_DAC_WAVE_AUTO_GENERATION_NONE 0x00000000U /*!< DAC channel wave auto generation mode disabled. */
-#      define LL_DAC_WAVE_AUTO_GENERATION_NOISE \
-         (DAC_CR_WAVE1_0) /*!< DAC channel wave auto generation mode enabled, set generated noise waveform. */
-#      define LL_DAC_WAVE_AUTO_GENERATION_TRIANGLE \
-         (DAC_CR_WAVE1_1) /*!< DAC channel wave auto generation mode enabled, set generated triangle waveform. */
+#define LL_DAC_WAVE_AUTO_GENERATION_NONE 0x00000000U /*!< DAC channel wave auto generation mode disabled. */
+#define LL_DAC_WAVE_AUTO_GENERATION_NOISE \
+    (DAC_CR_WAVE1_0) /*!< DAC channel wave auto generation mode enabled, set generated noise waveform. */
+#define LL_DAC_WAVE_AUTO_GENERATION_TRIANGLE \
+    (DAC_CR_WAVE1_1) /*!< DAC channel wave auto generation mode enabled, set generated triangle waveform. */
 /**
  * @}
  */
@@ -306,37 +306,37 @@ typedef struct
 /** @defgroup DAC_LL_EC_WAVE_NOISE_LFSR_UNMASK_BITS DAC wave generation - Noise LFSR unmask bits
  * @{
  */
-#      define LL_DAC_NOISE_LFSR_UNMASK_BIT0 \
-         0x00000000U /*!< Noise wave generation, unmask LFSR bit0, for the selected DAC channel */
-#      define LL_DAC_NOISE_LFSR_UNMASK_BITS1_0 \
-         (DAC_CR_MAMP1_0) /*!< Noise wave generation, unmask LFSR bits[1:0], for the selected DAC channel */
-#      define LL_DAC_NOISE_LFSR_UNMASK_BITS2_0 \
-         (DAC_CR_MAMP1_1) /*!< Noise wave generation, unmask LFSR bits[2:0], for the selected DAC channel */
-#      define LL_DAC_NOISE_LFSR_UNMASK_BITS3_0 \
-         (DAC_CR_MAMP1_1 | \
-          DAC_CR_MAMP1_0) /*!< Noise wave generation, unmask LFSR bits[3:0], for the selected DAC channel */
-#      define LL_DAC_NOISE_LFSR_UNMASK_BITS4_0 \
-         (DAC_CR_MAMP1_2) /*!< Noise wave generation, unmask LFSR bits[4:0], for the selected DAC channel */
-#      define LL_DAC_NOISE_LFSR_UNMASK_BITS5_0 \
-         (DAC_CR_MAMP1_2 | \
-          DAC_CR_MAMP1_0) /*!< Noise wave generation, unmask LFSR bits[5:0], for the selected DAC channel */
-#      define LL_DAC_NOISE_LFSR_UNMASK_BITS6_0 \
-         (DAC_CR_MAMP1_2 | \
-          DAC_CR_MAMP1_1) /*!< Noise wave generation, unmask LFSR bits[6:0], for the selected DAC channel */
-#      define LL_DAC_NOISE_LFSR_UNMASK_BITS7_0 \
-         (DAC_CR_MAMP1_2 | DAC_CR_MAMP1_1 | \
-          DAC_CR_MAMP1_0) /*!< Noise wave generation, unmask LFSR bits[7:0], for the selected DAC channel */
-#      define LL_DAC_NOISE_LFSR_UNMASK_BITS8_0 \
-         (DAC_CR_MAMP1_3) /*!< Noise wave generation, unmask LFSR bits[8:0], for the selected DAC channel */
-#      define LL_DAC_NOISE_LFSR_UNMASK_BITS9_0 \
-         (DAC_CR_MAMP1_3 | \
-          DAC_CR_MAMP1_0) /*!< Noise wave generation, unmask LFSR bits[9:0], for the selected DAC channel */
-#      define LL_DAC_NOISE_LFSR_UNMASK_BITS10_0 \
-         (DAC_CR_MAMP1_3 | \
-          DAC_CR_MAMP1_1) /*!< Noise wave generation, unmask LFSR bits[10:0], for the selected DAC channel */
-#      define LL_DAC_NOISE_LFSR_UNMASK_BITS11_0 \
-         (DAC_CR_MAMP1_3 | DAC_CR_MAMP1_1 | \
-          DAC_CR_MAMP1_0) /*!< Noise wave generation, unmask LFSR bits[11:0], for the selected DAC channel */
+#define LL_DAC_NOISE_LFSR_UNMASK_BIT0 \
+    0x00000000U /*!< Noise wave generation, unmask LFSR bit0, for the selected DAC channel */
+#define LL_DAC_NOISE_LFSR_UNMASK_BITS1_0 \
+    (DAC_CR_MAMP1_0) /*!< Noise wave generation, unmask LFSR bits[1:0], for the selected DAC channel */
+#define LL_DAC_NOISE_LFSR_UNMASK_BITS2_0 \
+    (DAC_CR_MAMP1_1) /*!< Noise wave generation, unmask LFSR bits[2:0], for the selected DAC channel */
+#define LL_DAC_NOISE_LFSR_UNMASK_BITS3_0 \
+    (DAC_CR_MAMP1_1 | \
+        DAC_CR_MAMP1_0) /*!< Noise wave generation, unmask LFSR bits[3:0], for the selected DAC channel */
+#define LL_DAC_NOISE_LFSR_UNMASK_BITS4_0 \
+    (DAC_CR_MAMP1_2) /*!< Noise wave generation, unmask LFSR bits[4:0], for the selected DAC channel */
+#define LL_DAC_NOISE_LFSR_UNMASK_BITS5_0 \
+    (DAC_CR_MAMP1_2 | \
+        DAC_CR_MAMP1_0) /*!< Noise wave generation, unmask LFSR bits[5:0], for the selected DAC channel */
+#define LL_DAC_NOISE_LFSR_UNMASK_BITS6_0 \
+    (DAC_CR_MAMP1_2 | \
+        DAC_CR_MAMP1_1) /*!< Noise wave generation, unmask LFSR bits[6:0], for the selected DAC channel */
+#define LL_DAC_NOISE_LFSR_UNMASK_BITS7_0 \
+    (DAC_CR_MAMP1_2 | DAC_CR_MAMP1_1 | \
+        DAC_CR_MAMP1_0) /*!< Noise wave generation, unmask LFSR bits[7:0], for the selected DAC channel */
+#define LL_DAC_NOISE_LFSR_UNMASK_BITS8_0 \
+    (DAC_CR_MAMP1_3) /*!< Noise wave generation, unmask LFSR bits[8:0], for the selected DAC channel */
+#define LL_DAC_NOISE_LFSR_UNMASK_BITS9_0 \
+    (DAC_CR_MAMP1_3 | \
+        DAC_CR_MAMP1_0) /*!< Noise wave generation, unmask LFSR bits[9:0], for the selected DAC channel */
+#define LL_DAC_NOISE_LFSR_UNMASK_BITS10_0 \
+    (DAC_CR_MAMP1_3 | \
+        DAC_CR_MAMP1_1) /*!< Noise wave generation, unmask LFSR bits[10:0], for the selected DAC channel */
+#define LL_DAC_NOISE_LFSR_UNMASK_BITS11_0 \
+    (DAC_CR_MAMP1_3 | DAC_CR_MAMP1_1 | \
+        DAC_CR_MAMP1_0) /*!< Noise wave generation, unmask LFSR bits[11:0], for the selected DAC channel */
 /**
  * @}
  */
@@ -344,41 +344,41 @@ typedef struct
 /** @defgroup DAC_LL_EC_WAVE_TRIANGLE_AMPLITUDE DAC wave generation - Triangle amplitude
  * @{
  */
-#      define LL_DAC_TRIANGLE_AMPLITUDE_1 \
-         0x00000000U /*!< Triangle wave generation, amplitude of 1 LSB of DAC output range, for the selected DAC \
+#define LL_DAC_TRIANGLE_AMPLITUDE_1 \
+    0x00000000U /*!< Triangle wave generation, amplitude of 1 LSB of DAC output range, for the selected DAC \
                         channel */
-#      define LL_DAC_TRIANGLE_AMPLITUDE_3 \
-         (DAC_CR_MAMP1_0) /*!< Triangle wave generation, amplitude of 3 LSB of DAC output range, for the selected DAC \
+#define LL_DAC_TRIANGLE_AMPLITUDE_3 \
+    (DAC_CR_MAMP1_0) /*!< Triangle wave generation, amplitude of 3 LSB of DAC output range, for the selected DAC \
                              channel */
-#      define LL_DAC_TRIANGLE_AMPLITUDE_7 \
-         (DAC_CR_MAMP1_1) /*!< Triangle wave generation, amplitude of 7 LSB of DAC output range, for the selected DAC \
+#define LL_DAC_TRIANGLE_AMPLITUDE_7 \
+    (DAC_CR_MAMP1_1) /*!< Triangle wave generation, amplitude of 7 LSB of DAC output range, for the selected DAC \
                              channel */
-#      define LL_DAC_TRIANGLE_AMPLITUDE_15 \
-         (DAC_CR_MAMP1_1 | DAC_CR_MAMP1_0) /*!< Triangle wave generation, amplitude of 15 LSB of DAC output range, for \
+#define LL_DAC_TRIANGLE_AMPLITUDE_15 \
+    (DAC_CR_MAMP1_1 | DAC_CR_MAMP1_0) /*!< Triangle wave generation, amplitude of 15 LSB of DAC output range, for \
                                               the selected DAC channel */
-#      define LL_DAC_TRIANGLE_AMPLITUDE_31 \
-         (DAC_CR_MAMP1_2) /*!< Triangle wave generation, amplitude of 31 LSB of DAC output range, for the selected DAC \
+#define LL_DAC_TRIANGLE_AMPLITUDE_31 \
+    (DAC_CR_MAMP1_2) /*!< Triangle wave generation, amplitude of 31 LSB of DAC output range, for the selected DAC \
                              channel */
-#      define LL_DAC_TRIANGLE_AMPLITUDE_63 \
-         (DAC_CR_MAMP1_2 | DAC_CR_MAMP1_0) /*!< Triangle wave generation, amplitude of 63 LSB of DAC output range, for \
+#define LL_DAC_TRIANGLE_AMPLITUDE_63 \
+    (DAC_CR_MAMP1_2 | DAC_CR_MAMP1_0) /*!< Triangle wave generation, amplitude of 63 LSB of DAC output range, for \
                                               the selected DAC channel */
-#      define LL_DAC_TRIANGLE_AMPLITUDE_127 \
-         (DAC_CR_MAMP1_2 | DAC_CR_MAMP1_1) /*!< Triangle wave generation, amplitude of 127 LSB of DAC output range, \
+#define LL_DAC_TRIANGLE_AMPLITUDE_127 \
+    (DAC_CR_MAMP1_2 | DAC_CR_MAMP1_1) /*!< Triangle wave generation, amplitude of 127 LSB of DAC output range, \
                                               for the selected DAC channel */
-#      define LL_DAC_TRIANGLE_AMPLITUDE_255 \
-         (DAC_CR_MAMP1_2 | DAC_CR_MAMP1_1 | DAC_CR_MAMP1_0) /*!< Triangle wave generation, amplitude of 255 LSB of DAC \
+#define LL_DAC_TRIANGLE_AMPLITUDE_255 \
+    (DAC_CR_MAMP1_2 | DAC_CR_MAMP1_1 | DAC_CR_MAMP1_0) /*!< Triangle wave generation, amplitude of 255 LSB of DAC \
                                                                output range, for the selected DAC channel */
-#      define LL_DAC_TRIANGLE_AMPLITUDE_511 \
-         (DAC_CR_MAMP1_3) /*!< Triangle wave generation, amplitude of 512 LSB of DAC output range, for the selected \
+#define LL_DAC_TRIANGLE_AMPLITUDE_511 \
+    (DAC_CR_MAMP1_3) /*!< Triangle wave generation, amplitude of 512 LSB of DAC output range, for the selected \
                              DAC channel */
-#      define LL_DAC_TRIANGLE_AMPLITUDE_1023 \
-         (DAC_CR_MAMP1_3 | DAC_CR_MAMP1_0) /*!< Triangle wave generation, amplitude of 1023 LSB of DAC output range, \
+#define LL_DAC_TRIANGLE_AMPLITUDE_1023 \
+    (DAC_CR_MAMP1_3 | DAC_CR_MAMP1_0) /*!< Triangle wave generation, amplitude of 1023 LSB of DAC output range, \
                                               for the selected DAC channel */
-#      define LL_DAC_TRIANGLE_AMPLITUDE_2047 \
-         (DAC_CR_MAMP1_3 | DAC_CR_MAMP1_1) /*!< Triangle wave generation, amplitude of 2047 LSB of DAC output range, \
+#define LL_DAC_TRIANGLE_AMPLITUDE_2047 \
+    (DAC_CR_MAMP1_3 | DAC_CR_MAMP1_1) /*!< Triangle wave generation, amplitude of 2047 LSB of DAC output range, \
                                               for the selected DAC channel */
-#      define LL_DAC_TRIANGLE_AMPLITUDE_4095 \
-         (DAC_CR_MAMP1_3 | DAC_CR_MAMP1_1 | DAC_CR_MAMP1_0) /*!< Triangle wave generation, amplitude of 4095 LSB of \
+#define LL_DAC_TRIANGLE_AMPLITUDE_4095 \
+    (DAC_CR_MAMP1_3 | DAC_CR_MAMP1_1 | DAC_CR_MAMP1_0) /*!< Triangle wave generation, amplitude of 4095 LSB of \
                                                                DAC output range, for the selected DAC channel */
 /**
  * @}
@@ -387,11 +387,11 @@ typedef struct
 /** @defgroup DAC_LL_EC_OUTPUT_BUFFER DAC channel output buffer
  * @{
  */
-#      define LL_DAC_OUTPUT_BUFFER_ENABLE \
-         0x00000000U /*!< The selected DAC channel output is buffered: higher drive current capability, but also \
+#define LL_DAC_OUTPUT_BUFFER_ENABLE \
+    0x00000000U /*!< The selected DAC channel output is buffered: higher drive current capability, but also \
                         higher current consumption */
-#      define LL_DAC_OUTPUT_BUFFER_DISABLE \
-         (DAC_CR_BOFF1) /*!< The selected DAC channel output is not buffered: lower drive current capability, but also \
+#define LL_DAC_OUTPUT_BUFFER_DISABLE \
+    (DAC_CR_BOFF1) /*!< The selected DAC channel output is not buffered: lower drive current capability, but also \
                            lower current consumption */
 /**
  * @}
@@ -400,8 +400,8 @@ typedef struct
 /** @defgroup DAC_LL_EC_RESOLUTION  DAC channel output resolution
  * @{
  */
-#      define LL_DAC_RESOLUTION_12B 0x00000000U /*!< DAC channel resolution 12 bits */
-#      define LL_DAC_RESOLUTION_8B 0x00000002U /*!< DAC channel resolution 8 bits */
+#define LL_DAC_RESOLUTION_12B 0x00000000U /*!< DAC channel resolution 12 bits */
+#define LL_DAC_RESOLUTION_8B 0x00000002U  /*!< DAC channel resolution 8 bits */
 /**
  * @}
  */
@@ -412,12 +412,12 @@ typedef struct
 /* List of DAC registers intended to be used (most commonly) with             */
 /* DMA transfer.                                                              */
 /* Refer to function @ref LL_DAC_DMA_GetRegAddr().                            */
-#      define LL_DAC_DMA_REG_DATA_12BITS_RIGHT_ALIGNED \
-         DAC_REG_DHR12RX_REGOFFSET_BITOFFSET_POS /*!< DAC channel data holding register 12 bits right aligned */
-#      define LL_DAC_DMA_REG_DATA_12BITS_LEFT_ALIGNED \
-         DAC_REG_DHR12LX_REGOFFSET_BITOFFSET_POS /*!< DAC channel data holding register 12 bits left aligned */
-#      define LL_DAC_DMA_REG_DATA_8BITS_RIGHT_ALIGNED \
-         DAC_REG_DHR8RX_REGOFFSET_BITOFFSET_POS /*!< DAC channel data holding register 8 bits right aligned */
+#define LL_DAC_DMA_REG_DATA_12BITS_RIGHT_ALIGNED \
+    DAC_REG_DHR12RX_REGOFFSET_BITOFFSET_POS /*!< DAC channel data holding register 12 bits right aligned */
+#define LL_DAC_DMA_REG_DATA_12BITS_LEFT_ALIGNED \
+    DAC_REG_DHR12LX_REGOFFSET_BITOFFSET_POS /*!< DAC channel data holding register 12 bits left aligned */
+#define LL_DAC_DMA_REG_DATA_8BITS_RIGHT_ALIGNED \
+    DAC_REG_DHR8RX_REGOFFSET_BITOFFSET_POS /*!< DAC channel data holding register 8 bits right aligned */
 /**
  * @}
  */
@@ -442,8 +442,8 @@ typedef struct
 /* Literal set to maximum value (refer to device datasheet,                   */
 /* parameter "tWAKEUP").                                                      */
 /* Unit: us                                                                   */
-#      define LL_DAC_DELAY_STARTUP_VOLTAGE_SETTLING_US \
-         15U /*!< Delay for DAC channel voltage settling time from DAC channel startup (transition from disable to \
+#define LL_DAC_DELAY_STARTUP_VOLTAGE_SETTLING_US \
+    15U /*!< Delay for DAC channel voltage settling time from DAC channel startup (transition from disable to \
                 enable) */
 
 /* Delay for DAC channel voltage settling time.                               */
@@ -457,7 +457,7 @@ typedef struct
 /* Literal set to maximum value (refer to device datasheet,                   */
 /* parameter "tSETTLING").                                                    */
 /* Unit: us                                                                   */
-#      define LL_DAC_DELAY_VOLTAGE_SETTLING_US 12U /*!< Delay for DAC channel voltage settling time */
+#define LL_DAC_DELAY_VOLTAGE_SETTLING_US 12U /*!< Delay for DAC channel voltage settling time */
 /**
  * @}
  */
@@ -482,7 +482,7 @@ typedef struct
  * @param  __VALUE__ Value to be written in the register
  * @retval None
  */
-#      define LL_DAC_WriteReg(__INSTANCE__, __REG__, __VALUE__) WRITE_REG(__INSTANCE__->__REG__, (__VALUE__))
+#define LL_DAC_WriteReg(__INSTANCE__, __REG__, __VALUE__) WRITE_REG(__INSTANCE__->__REG__, (__VALUE__))
 
 /**
  * @brief  Read a value in DAC register
@@ -490,7 +490,7 @@ typedef struct
  * @param  __REG__ Register to be read
  * @retval Register value
  */
-#      define LL_DAC_ReadReg(__INSTANCE__, __REG__) READ_REG(__INSTANCE__->__REG__)
+#define LL_DAC_ReadReg(__INSTANCE__, __REG__) READ_REG(__INSTANCE__->__REG__)
 
 /**
  * @}
@@ -516,7 +516,7 @@ typedef struct
  *             Refer to device datasheet for channels availability.
  * @retval 1...2 (value "2" depending on DAC channel 2 availability)
  */
-#      define __LL_DAC_CHANNEL_TO_DECIMAL_NB(__CHANNEL__) ((__CHANNEL__)&DAC_SWTR_CHX_MASK)
+#define __LL_DAC_CHANNEL_TO_DECIMAL_NB(__CHANNEL__) ((__CHANNEL__)&DAC_SWTR_CHX_MASK)
 
 /**
  * @brief  Helper macro to get DAC channel in literal format LL_DAC_CHANNEL_x
@@ -534,12 +534,12 @@ typedef struct
  *         (1) On this STM32 serie, parameter not available on all devices.
  *             Refer to device datasheet for channels availability.
  */
-#      if defined(DAC_CHANNEL2_SUPPORT)
-#         define __LL_DAC_DECIMAL_NB_TO_CHANNEL(__DECIMAL_NB__) \
-            (((__DECIMAL_NB__) == 1U) ? (LL_DAC_CHANNEL_1) : (((__DECIMAL_NB__) == 2U) ? (LL_DAC_CHANNEL_2) : (0)))
-#      else
-#         define __LL_DAC_DECIMAL_NB_TO_CHANNEL(__DECIMAL_NB__) (((__DECIMAL_NB__) == 1U) ? (LL_DAC_CHANNEL_1) : (0))
-#      endif /* DAC_CHANNEL2_SUPPORT */
+#if defined(DAC_CHANNEL2_SUPPORT)
+#define __LL_DAC_DECIMAL_NB_TO_CHANNEL(__DECIMAL_NB__) \
+    (((__DECIMAL_NB__) == 1U) ? (LL_DAC_CHANNEL_1) : (((__DECIMAL_NB__) == 2U) ? (LL_DAC_CHANNEL_2) : (0)))
+#else
+#define __LL_DAC_DECIMAL_NB_TO_CHANNEL(__DECIMAL_NB__) (((__DECIMAL_NB__) == 1U) ? (LL_DAC_CHANNEL_1) : (0))
+#endif /* DAC_CHANNEL2_SUPPORT */
 
 /**
  * @brief  Helper macro to define the DAC conversion data full-scale digital
@@ -552,7 +552,7 @@ typedef struct
  *         @arg @ref LL_DAC_RESOLUTION_8B
  * @retval ADC conversion data equivalent voltage value (unit: mVolt)
  */
-#      define __LL_DAC_DIGITAL_SCALE(__DAC_RESOLUTION__) ((0x00000FFFU) >> ((__DAC_RESOLUTION__) << 1U))
+#define __LL_DAC_DIGITAL_SCALE(__DAC_RESOLUTION__) ((0x00000FFFU) >> ((__DAC_RESOLUTION__) << 1U))
 
 /**
  * @brief  Helper macro to calculate the DAC conversion data (unit: digital
@@ -572,8 +572,8 @@ typedef struct
  *         @arg @ref LL_DAC_RESOLUTION_8B
  * @retval DAC conversion data (unit: digital value)
  */
-#      define __LL_DAC_CALC_VOLTAGE_TO_DATA(__VREFANALOG_VOLTAGE__, __DAC_VOLTAGE__, __DAC_RESOLUTION__) \
-         ((__DAC_VOLTAGE__)*__LL_DAC_DIGITAL_SCALE(__DAC_RESOLUTION__) / (__VREFANALOG_VOLTAGE__))
+#define __LL_DAC_CALC_VOLTAGE_TO_DATA(__VREFANALOG_VOLTAGE__, __DAC_VOLTAGE__, __DAC_RESOLUTION__) \
+    ((__DAC_VOLTAGE__)*__LL_DAC_DIGITAL_SCALE(__DAC_RESOLUTION__) / (__VREFANALOG_VOLTAGE__))
 
 /**
  * @}
@@ -621,9 +621,9 @@ typedef struct
  */
 __STATIC_INLINE void LL_DAC_SetTriggerSource(DAC_TypeDef* DACx, uint32_t DAC_Channel, uint32_t TriggerSource)
 {
-   MODIFY_REG(DACx->CR,
-              DAC_CR_TSEL1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK),
-              TriggerSource << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK));
+    MODIFY_REG(DACx->CR,
+        DAC_CR_TSEL1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK),
+        TriggerSource << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK));
 }
 
 /**
@@ -653,8 +653,8 @@ __STATIC_INLINE void LL_DAC_SetTriggerSource(DAC_TypeDef* DACx, uint32_t DAC_Cha
  */
 __STATIC_INLINE uint32_t LL_DAC_GetTriggerSource(DAC_TypeDef* DACx, uint32_t DAC_Channel)
 {
-   return (uint32_t)(READ_BIT(DACx->CR, DAC_CR_TSEL1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK)) >>
-                     (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK));
+    return (uint32_t)(READ_BIT(DACx->CR, DAC_CR_TSEL1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK)) >>
+                      (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK));
 }
 
 /**
@@ -677,9 +677,9 @@ __STATIC_INLINE uint32_t LL_DAC_GetTriggerSource(DAC_TypeDef* DACx, uint32_t DAC
  */
 __STATIC_INLINE void LL_DAC_SetWaveAutoGeneration(DAC_TypeDef* DACx, uint32_t DAC_Channel, uint32_t WaveAutoGeneration)
 {
-   MODIFY_REG(DACx->CR,
-              DAC_CR_WAVE1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK),
-              WaveAutoGeneration << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK));
+    MODIFY_REG(DACx->CR,
+        DAC_CR_WAVE1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK),
+        WaveAutoGeneration << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK));
 }
 
 /**
@@ -701,8 +701,8 @@ __STATIC_INLINE void LL_DAC_SetWaveAutoGeneration(DAC_TypeDef* DACx, uint32_t DA
  */
 __STATIC_INLINE uint32_t LL_DAC_GetWaveAutoGeneration(DAC_TypeDef* DACx, uint32_t DAC_Channel)
 {
-   return (uint32_t)(READ_BIT(DACx->CR, DAC_CR_WAVE1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK)) >>
-                     (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK));
+    return (uint32_t)(READ_BIT(DACx->CR, DAC_CR_WAVE1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK)) >>
+                      (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK));
 }
 
 /**
@@ -739,9 +739,9 @@ __STATIC_INLINE uint32_t LL_DAC_GetWaveAutoGeneration(DAC_TypeDef* DACx, uint32_
  */
 __STATIC_INLINE void LL_DAC_SetWaveNoiseLFSR(DAC_TypeDef* DACx, uint32_t DAC_Channel, uint32_t NoiseLFSRMask)
 {
-   MODIFY_REG(DACx->CR,
-              DAC_CR_MAMP1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK),
-              NoiseLFSRMask << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK));
+    MODIFY_REG(DACx->CR,
+        DAC_CR_MAMP1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK),
+        NoiseLFSRMask << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK));
 }
 
 /**
@@ -772,8 +772,8 @@ __STATIC_INLINE void LL_DAC_SetWaveNoiseLFSR(DAC_TypeDef* DACx, uint32_t DAC_Cha
  */
 __STATIC_INLINE uint32_t LL_DAC_GetWaveNoiseLFSR(DAC_TypeDef* DACx, uint32_t DAC_Channel)
 {
-   return (uint32_t)(READ_BIT(DACx->CR, DAC_CR_MAMP1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK)) >>
-                     (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK));
+    return (uint32_t)(READ_BIT(DACx->CR, DAC_CR_MAMP1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK)) >>
+                      (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK));
 }
 
 /**
@@ -809,12 +809,12 @@ __STATIC_INLINE uint32_t LL_DAC_GetWaveNoiseLFSR(DAC_TypeDef* DACx, uint32_t DAC
  * @retval None
  */
 __STATIC_INLINE void LL_DAC_SetWaveTriangleAmplitude(DAC_TypeDef* DACx,
-                                                     uint32_t DAC_Channel,
-                                                     uint32_t TriangleAmplitude)
+    uint32_t DAC_Channel,
+    uint32_t TriangleAmplitude)
 {
-   MODIFY_REG(DACx->CR,
-              DAC_CR_MAMP1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK),
-              TriangleAmplitude << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK));
+    MODIFY_REG(DACx->CR,
+        DAC_CR_MAMP1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK),
+        TriangleAmplitude << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK));
 }
 
 /**
@@ -845,8 +845,8 @@ __STATIC_INLINE void LL_DAC_SetWaveTriangleAmplitude(DAC_TypeDef* DACx,
  */
 __STATIC_INLINE uint32_t LL_DAC_GetWaveTriangleAmplitude(DAC_TypeDef* DACx, uint32_t DAC_Channel)
 {
-   return (uint32_t)(READ_BIT(DACx->CR, DAC_CR_MAMP1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK)) >>
-                     (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK));
+    return (uint32_t)(READ_BIT(DACx->CR, DAC_CR_MAMP1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK)) >>
+                      (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK));
 }
 
 /**
@@ -867,9 +867,9 @@ __STATIC_INLINE uint32_t LL_DAC_GetWaveTriangleAmplitude(DAC_TypeDef* DACx, uint
  */
 __STATIC_INLINE void LL_DAC_SetOutputBuffer(DAC_TypeDef* DACx, uint32_t DAC_Channel, uint32_t OutputBuffer)
 {
-   MODIFY_REG(DACx->CR,
-              DAC_CR_BOFF1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK),
-              OutputBuffer << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK));
+    MODIFY_REG(DACx->CR,
+        DAC_CR_BOFF1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK),
+        OutputBuffer << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK));
 }
 
 /**
@@ -889,8 +889,8 @@ __STATIC_INLINE void LL_DAC_SetOutputBuffer(DAC_TypeDef* DACx, uint32_t DAC_Chan
  */
 __STATIC_INLINE uint32_t LL_DAC_GetOutputBuffer(DAC_TypeDef* DACx, uint32_t DAC_Channel)
 {
-   return (uint32_t)(READ_BIT(DACx->CR, DAC_CR_BOFF1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK)) >>
-                     (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK));
+    return (uint32_t)(READ_BIT(DACx->CR, DAC_CR_BOFF1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK)) >>
+                      (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK));
 }
 
 /**
@@ -918,7 +918,7 @@ __STATIC_INLINE uint32_t LL_DAC_GetOutputBuffer(DAC_TypeDef* DACx, uint32_t DAC_
  */
 __STATIC_INLINE void LL_DAC_EnableDMAReq(DAC_TypeDef* DACx, uint32_t DAC_Channel)
 {
-   SET_BIT(DACx->CR, DAC_CR_DMAEN1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK));
+    SET_BIT(DACx->CR, DAC_CR_DMAEN1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK));
 }
 
 /**
@@ -938,7 +938,7 @@ __STATIC_INLINE void LL_DAC_EnableDMAReq(DAC_TypeDef* DACx, uint32_t DAC_Channel
  */
 __STATIC_INLINE void LL_DAC_DisableDMAReq(DAC_TypeDef* DACx, uint32_t DAC_Channel)
 {
-   CLEAR_BIT(DACx->CR, DAC_CR_DMAEN1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK));
+    CLEAR_BIT(DACx->CR, DAC_CR_DMAEN1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK));
 }
 
 /**
@@ -957,8 +957,8 @@ __STATIC_INLINE void LL_DAC_DisableDMAReq(DAC_TypeDef* DACx, uint32_t DAC_Channe
  */
 __STATIC_INLINE uint32_t LL_DAC_IsDMAReqEnabled(DAC_TypeDef* DACx, uint32_t DAC_Channel)
 {
-   return (READ_BIT(DACx->CR, DAC_CR_DMAEN1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK)) ==
-           (DAC_CR_DMAEN1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK)));
+    return (READ_BIT(DACx->CR, DAC_CR_DMAEN1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK)) ==
+            (DAC_CR_DMAEN1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK)));
 }
 
 /**
@@ -997,10 +997,10 @@ __STATIC_INLINE uint32_t LL_DAC_IsDMAReqEnabled(DAC_TypeDef* DACx, uint32_t DAC_
  */
 __STATIC_INLINE uint32_t LL_DAC_DMA_GetRegAddr(DAC_TypeDef* DACx, uint32_t DAC_Channel, uint32_t Register)
 {
-   /* Retrieve address of register DHR12Rx, DHR12Lx or DHR8Rx depending on     */
-   /* DAC channel selected.                                                    */
-   return (
-      (uint32_t)(__DAC_PTR_REG_OFFSET((DACx)->DHR12R1, ((DAC_Channel >> Register) & DAC_REG_REGOFFSET_MASK_POSBIT0))));
+    /* Retrieve address of register DHR12Rx, DHR12Lx or DHR8Rx depending on     */
+    /* DAC channel selected.                                                    */
+    return (
+        (uint32_t)(__DAC_PTR_REG_OFFSET((DACx)->DHR12R1, ((DAC_Channel >> Register) & DAC_REG_REGOFFSET_MASK_POSBIT0))));
 }
 /**
  * @}
@@ -1028,7 +1028,7 @@ __STATIC_INLINE uint32_t LL_DAC_DMA_GetRegAddr(DAC_TypeDef* DACx, uint32_t DAC_C
  */
 __STATIC_INLINE void LL_DAC_Enable(DAC_TypeDef* DACx, uint32_t DAC_Channel)
 {
-   SET_BIT(DACx->CR, DAC_CR_EN1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK));
+    SET_BIT(DACx->CR, DAC_CR_EN1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK));
 }
 
 /**
@@ -1046,7 +1046,7 @@ __STATIC_INLINE void LL_DAC_Enable(DAC_TypeDef* DACx, uint32_t DAC_Channel)
  */
 __STATIC_INLINE void LL_DAC_Disable(DAC_TypeDef* DACx, uint32_t DAC_Channel)
 {
-   CLEAR_BIT(DACx->CR, DAC_CR_EN1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK));
+    CLEAR_BIT(DACx->CR, DAC_CR_EN1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK));
 }
 
 /**
@@ -1065,8 +1065,8 @@ __STATIC_INLINE void LL_DAC_Disable(DAC_TypeDef* DACx, uint32_t DAC_Channel)
  */
 __STATIC_INLINE uint32_t LL_DAC_IsEnabled(DAC_TypeDef* DACx, uint32_t DAC_Channel)
 {
-   return (READ_BIT(DACx->CR, DAC_CR_EN1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK)) ==
-           (DAC_CR_EN1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK)));
+    return (READ_BIT(DACx->CR, DAC_CR_EN1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK)) ==
+            (DAC_CR_EN1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK)));
 }
 
 /**
@@ -1092,7 +1092,7 @@ __STATIC_INLINE uint32_t LL_DAC_IsEnabled(DAC_TypeDef* DACx, uint32_t DAC_Channe
  */
 __STATIC_INLINE void LL_DAC_EnableTrigger(DAC_TypeDef* DACx, uint32_t DAC_Channel)
 {
-   SET_BIT(DACx->CR, DAC_CR_TEN1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK));
+    SET_BIT(DACx->CR, DAC_CR_TEN1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK));
 }
 
 /**
@@ -1110,7 +1110,7 @@ __STATIC_INLINE void LL_DAC_EnableTrigger(DAC_TypeDef* DACx, uint32_t DAC_Channe
  */
 __STATIC_INLINE void LL_DAC_DisableTrigger(DAC_TypeDef* DACx, uint32_t DAC_Channel)
 {
-   CLEAR_BIT(DACx->CR, DAC_CR_TEN1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK));
+    CLEAR_BIT(DACx->CR, DAC_CR_TEN1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK));
 }
 
 /**
@@ -1129,8 +1129,8 @@ __STATIC_INLINE void LL_DAC_DisableTrigger(DAC_TypeDef* DACx, uint32_t DAC_Chann
  */
 __STATIC_INLINE uint32_t LL_DAC_IsTriggerEnabled(DAC_TypeDef* DACx, uint32_t DAC_Channel)
 {
-   return (READ_BIT(DACx->CR, DAC_CR_TEN1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK)) ==
-           (DAC_CR_TEN1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK)));
+    return (READ_BIT(DACx->CR, DAC_CR_TEN1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK)) ==
+            (DAC_CR_TEN1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK)));
 }
 
 /**
@@ -1157,7 +1157,7 @@ __STATIC_INLINE uint32_t LL_DAC_IsTriggerEnabled(DAC_TypeDef* DACx, uint32_t DAC
  */
 __STATIC_INLINE void LL_DAC_TrigSWConversion(DAC_TypeDef* DACx, uint32_t DAC_Channel)
 {
-   SET_BIT(DACx->SWTRIGR, (DAC_Channel & DAC_SWTR_CHX_MASK));
+    SET_BIT(DACx->SWTRIGR, (DAC_Channel & DAC_SWTR_CHX_MASK));
 }
 
 /**
@@ -1178,10 +1178,10 @@ __STATIC_INLINE void LL_DAC_TrigSWConversion(DAC_TypeDef* DACx, uint32_t DAC_Cha
  */
 __STATIC_INLINE void LL_DAC_ConvertData12RightAligned(DAC_TypeDef* DACx, uint32_t DAC_Channel, uint32_t Data)
 {
-   register uint32_t* preg = __DAC_PTR_REG_OFFSET(
-      DACx->DHR12R1, (DAC_Channel >> DAC_REG_DHR12RX_REGOFFSET_BITOFFSET_POS) & DAC_REG_REGOFFSET_MASK_POSBIT0);
+    register uint32_t* preg = __DAC_PTR_REG_OFFSET(
+        DACx->DHR12R1, (DAC_Channel >> DAC_REG_DHR12RX_REGOFFSET_BITOFFSET_POS) & DAC_REG_REGOFFSET_MASK_POSBIT0);
 
-   MODIFY_REG(*preg, DAC_DHR12R1_DACC1DHR, Data);
+    MODIFY_REG(*preg, DAC_DHR12R1_DACC1DHR, Data);
 }
 
 /**
@@ -1202,10 +1202,10 @@ __STATIC_INLINE void LL_DAC_ConvertData12RightAligned(DAC_TypeDef* DACx, uint32_
  */
 __STATIC_INLINE void LL_DAC_ConvertData12LeftAligned(DAC_TypeDef* DACx, uint32_t DAC_Channel, uint32_t Data)
 {
-   register uint32_t* preg = __DAC_PTR_REG_OFFSET(
-      DACx->DHR12R1, (DAC_Channel >> DAC_REG_DHR12LX_REGOFFSET_BITOFFSET_POS) & DAC_REG_REGOFFSET_MASK_POSBIT0);
+    register uint32_t* preg = __DAC_PTR_REG_OFFSET(
+        DACx->DHR12R1, (DAC_Channel >> DAC_REG_DHR12LX_REGOFFSET_BITOFFSET_POS) & DAC_REG_REGOFFSET_MASK_POSBIT0);
 
-   MODIFY_REG(*preg, DAC_DHR12L1_DACC1DHR, Data);
+    MODIFY_REG(*preg, DAC_DHR12L1_DACC1DHR, Data);
 }
 
 /**
@@ -1226,13 +1226,13 @@ __STATIC_INLINE void LL_DAC_ConvertData12LeftAligned(DAC_TypeDef* DACx, uint32_t
  */
 __STATIC_INLINE void LL_DAC_ConvertData8RightAligned(DAC_TypeDef* DACx, uint32_t DAC_Channel, uint32_t Data)
 {
-   register uint32_t* preg = __DAC_PTR_REG_OFFSET(
-      DACx->DHR12R1, (DAC_Channel >> DAC_REG_DHR8RX_REGOFFSET_BITOFFSET_POS) & DAC_REG_REGOFFSET_MASK_POSBIT0);
+    register uint32_t* preg = __DAC_PTR_REG_OFFSET(
+        DACx->DHR12R1, (DAC_Channel >> DAC_REG_DHR8RX_REGOFFSET_BITOFFSET_POS) & DAC_REG_REGOFFSET_MASK_POSBIT0);
 
-   MODIFY_REG(*preg, DAC_DHR8R1_DACC1DHR, Data);
+    MODIFY_REG(*preg, DAC_DHR8R1_DACC1DHR, Data);
 }
 
-#      if defined(DAC_CHANNEL2_SUPPORT)
+#if defined(DAC_CHANNEL2_SUPPORT)
 /**
  * @brief  Set the data to be loaded in the data holding register
  *         in format 12 bits left alignment (LSB aligned on bit 0),
@@ -1245,12 +1245,12 @@ __STATIC_INLINE void LL_DAC_ConvertData8RightAligned(DAC_TypeDef* DACx, uint32_t
  * @retval None
  */
 __STATIC_INLINE void LL_DAC_ConvertDualData12RightAligned(DAC_TypeDef* DACx,
-                                                          uint32_t DataChannel1,
-                                                          uint32_t DataChannel2)
+    uint32_t DataChannel1,
+    uint32_t DataChannel2)
 {
-   MODIFY_REG(DACx->DHR12RD,
-              (DAC_DHR12RD_DACC2DHR | DAC_DHR12RD_DACC1DHR),
-              ((DataChannel2 << DAC_DHR12RD_DACC2DHR_BITOFFSET_POS) | DataChannel1));
+    MODIFY_REG(DACx->DHR12RD,
+        (DAC_DHR12RD_DACC2DHR | DAC_DHR12RD_DACC1DHR),
+        ((DataChannel2 << DAC_DHR12RD_DACC2DHR_BITOFFSET_POS) | DataChannel1));
 }
 
 /**
@@ -1265,15 +1265,15 @@ __STATIC_INLINE void LL_DAC_ConvertDualData12RightAligned(DAC_TypeDef* DACx,
  * @retval None
  */
 __STATIC_INLINE void LL_DAC_ConvertDualData12LeftAligned(DAC_TypeDef* DACx,
-                                                         uint32_t DataChannel1,
-                                                         uint32_t DataChannel2)
+    uint32_t DataChannel1,
+    uint32_t DataChannel2)
 {
-   /* Note: Data of DAC channel 2 shift value subtracted of 4 because          */
-   /*       data on 16 bits and DAC channel 2 bits field is on the 12 MSB,     */
-   /*       the 4 LSB must be taken into account for the shift value.          */
-   MODIFY_REG(DACx->DHR12LD,
-              (DAC_DHR12LD_DACC2DHR | DAC_DHR12LD_DACC1DHR),
-              ((DataChannel2 << (DAC_DHR12LD_DACC2DHR_BITOFFSET_POS - 4U)) | DataChannel1));
+    /* Note: Data of DAC channel 2 shift value subtracted of 4 because          */
+    /*       data on 16 bits and DAC channel 2 bits field is on the 12 MSB,     */
+    /*       the 4 LSB must be taken into account for the shift value.          */
+    MODIFY_REG(DACx->DHR12LD,
+        (DAC_DHR12LD_DACC2DHR | DAC_DHR12LD_DACC1DHR),
+        ((DataChannel2 << (DAC_DHR12LD_DACC2DHR_BITOFFSET_POS - 4U)) | DataChannel1));
 }
 
 /**
@@ -1288,15 +1288,15 @@ __STATIC_INLINE void LL_DAC_ConvertDualData12LeftAligned(DAC_TypeDef* DACx,
  * @retval None
  */
 __STATIC_INLINE void LL_DAC_ConvertDualData8RightAligned(DAC_TypeDef* DACx,
-                                                         uint32_t DataChannel1,
-                                                         uint32_t DataChannel2)
+    uint32_t DataChannel1,
+    uint32_t DataChannel2)
 {
-   MODIFY_REG(DACx->DHR8RD,
-              (DAC_DHR8RD_DACC2DHR | DAC_DHR8RD_DACC1DHR),
-              ((DataChannel2 << DAC_DHR8RD_DACC2DHR_BITOFFSET_POS) | DataChannel1));
+    MODIFY_REG(DACx->DHR8RD,
+        (DAC_DHR8RD_DACC2DHR | DAC_DHR8RD_DACC1DHR),
+        ((DataChannel2 << DAC_DHR8RD_DACC2DHR_BITOFFSET_POS) | DataChannel1));
 }
 
-#      endif /* DAC_CHANNEL2_SUPPORT */
+#endif /* DAC_CHANNEL2_SUPPORT */
 /**
  * @brief  Retrieve output data currently generated for the selected DAC channel.
  * @note   Whatever alignment and resolution settings
@@ -1316,10 +1316,10 @@ __STATIC_INLINE void LL_DAC_ConvertDualData8RightAligned(DAC_TypeDef* DACx,
  */
 __STATIC_INLINE uint32_t LL_DAC_RetrieveOutputData(DAC_TypeDef* DACx, uint32_t DAC_Channel)
 {
-   register uint32_t* preg = __DAC_PTR_REG_OFFSET(
-      DACx->DOR1, (DAC_Channel >> DAC_REG_DORX_REGOFFSET_BITOFFSET_POS) & DAC_REG_REGOFFSET_MASK_POSBIT0);
+    register uint32_t* preg = __DAC_PTR_REG_OFFSET(
+        DACx->DOR1, (DAC_Channel >> DAC_REG_DORX_REGOFFSET_BITOFFSET_POS) & DAC_REG_REGOFFSET_MASK_POSBIT0);
 
-   return (uint16_t)READ_BIT(*preg, DAC_DOR1_DACC1DOR);
+    return (uint16_t)READ_BIT(*preg, DAC_DOR1_DACC1DOR);
 }
 
 /**
@@ -1337,10 +1337,10 @@ __STATIC_INLINE uint32_t LL_DAC_RetrieveOutputData(DAC_TypeDef* DACx, uint32_t D
  */
 __STATIC_INLINE uint32_t LL_DAC_IsActiveFlag_DMAUDR1(DAC_TypeDef* DACx)
 {
-   return (READ_BIT(DACx->SR, LL_DAC_FLAG_DMAUDR1) == (LL_DAC_FLAG_DMAUDR1));
+    return (READ_BIT(DACx->SR, LL_DAC_FLAG_DMAUDR1) == (LL_DAC_FLAG_DMAUDR1));
 }
 
-#      if defined(DAC_CHANNEL2_SUPPORT)
+#if defined(DAC_CHANNEL2_SUPPORT)
 /**
  * @brief  Get DAC underrun flag for DAC channel 2
  * @rmtoll SR       DMAUDR2        LL_DAC_IsActiveFlag_DMAUDR2
@@ -1349,9 +1349,9 @@ __STATIC_INLINE uint32_t LL_DAC_IsActiveFlag_DMAUDR1(DAC_TypeDef* DACx)
  */
 __STATIC_INLINE uint32_t LL_DAC_IsActiveFlag_DMAUDR2(DAC_TypeDef* DACx)
 {
-   return (READ_BIT(DACx->SR, LL_DAC_FLAG_DMAUDR2) == (LL_DAC_FLAG_DMAUDR2));
+    return (READ_BIT(DACx->SR, LL_DAC_FLAG_DMAUDR2) == (LL_DAC_FLAG_DMAUDR2));
 }
-#      endif /* DAC_CHANNEL2_SUPPORT */
+#endif /* DAC_CHANNEL2_SUPPORT */
 
 /**
  * @brief  Clear DAC underrun flag for DAC channel 1
@@ -1361,10 +1361,10 @@ __STATIC_INLINE uint32_t LL_DAC_IsActiveFlag_DMAUDR2(DAC_TypeDef* DACx)
  */
 __STATIC_INLINE void LL_DAC_ClearFlag_DMAUDR1(DAC_TypeDef* DACx)
 {
-   WRITE_REG(DACx->SR, LL_DAC_FLAG_DMAUDR1);
+    WRITE_REG(DACx->SR, LL_DAC_FLAG_DMAUDR1);
 }
 
-#      if defined(DAC_CHANNEL2_SUPPORT)
+#if defined(DAC_CHANNEL2_SUPPORT)
 /**
  * @brief  Clear DAC underrun flag for DAC channel 2
  * @rmtoll SR       DMAUDR2        LL_DAC_ClearFlag_DMAUDR2
@@ -1373,9 +1373,9 @@ __STATIC_INLINE void LL_DAC_ClearFlag_DMAUDR1(DAC_TypeDef* DACx)
  */
 __STATIC_INLINE void LL_DAC_ClearFlag_DMAUDR2(DAC_TypeDef* DACx)
 {
-   WRITE_REG(DACx->SR, LL_DAC_FLAG_DMAUDR2);
+    WRITE_REG(DACx->SR, LL_DAC_FLAG_DMAUDR2);
 }
-#      endif /* DAC_CHANNEL2_SUPPORT */
+#endif /* DAC_CHANNEL2_SUPPORT */
 
 /**
  * @}
@@ -1393,10 +1393,10 @@ __STATIC_INLINE void LL_DAC_ClearFlag_DMAUDR2(DAC_TypeDef* DACx)
  */
 __STATIC_INLINE void LL_DAC_EnableIT_DMAUDR1(DAC_TypeDef* DACx)
 {
-   SET_BIT(DACx->CR, LL_DAC_IT_DMAUDRIE1);
+    SET_BIT(DACx->CR, LL_DAC_IT_DMAUDRIE1);
 }
 
-#      if defined(DAC_CHANNEL2_SUPPORT)
+#if defined(DAC_CHANNEL2_SUPPORT)
 /**
  * @brief  Enable DMA underrun interrupt for DAC channel 2
  * @rmtoll CR       DMAUDRIE2      LL_DAC_EnableIT_DMAUDR2
@@ -1405,9 +1405,9 @@ __STATIC_INLINE void LL_DAC_EnableIT_DMAUDR1(DAC_TypeDef* DACx)
  */
 __STATIC_INLINE void LL_DAC_EnableIT_DMAUDR2(DAC_TypeDef* DACx)
 {
-   SET_BIT(DACx->CR, LL_DAC_IT_DMAUDRIE2);
+    SET_BIT(DACx->CR, LL_DAC_IT_DMAUDRIE2);
 }
-#      endif /* DAC_CHANNEL2_SUPPORT */
+#endif /* DAC_CHANNEL2_SUPPORT */
 
 /**
  * @brief  Disable DMA underrun interrupt for DAC channel 1
@@ -1417,10 +1417,10 @@ __STATIC_INLINE void LL_DAC_EnableIT_DMAUDR2(DAC_TypeDef* DACx)
  */
 __STATIC_INLINE void LL_DAC_DisableIT_DMAUDR1(DAC_TypeDef* DACx)
 {
-   CLEAR_BIT(DACx->CR, LL_DAC_IT_DMAUDRIE1);
+    CLEAR_BIT(DACx->CR, LL_DAC_IT_DMAUDRIE1);
 }
 
-#      if defined(DAC_CHANNEL2_SUPPORT)
+#if defined(DAC_CHANNEL2_SUPPORT)
 /**
  * @brief  Disable DMA underrun interrupt for DAC channel 2
  * @rmtoll CR       DMAUDRIE2      LL_DAC_DisableIT_DMAUDR2
@@ -1429,9 +1429,9 @@ __STATIC_INLINE void LL_DAC_DisableIT_DMAUDR1(DAC_TypeDef* DACx)
  */
 __STATIC_INLINE void LL_DAC_DisableIT_DMAUDR2(DAC_TypeDef* DACx)
 {
-   CLEAR_BIT(DACx->CR, LL_DAC_IT_DMAUDRIE2);
+    CLEAR_BIT(DACx->CR, LL_DAC_IT_DMAUDRIE2);
 }
-#      endif /* DAC_CHANNEL2_SUPPORT */
+#endif /* DAC_CHANNEL2_SUPPORT */
 
 /**
  * @brief  Get DMA underrun interrupt for DAC channel 1
@@ -1441,10 +1441,10 @@ __STATIC_INLINE void LL_DAC_DisableIT_DMAUDR2(DAC_TypeDef* DACx)
  */
 __STATIC_INLINE uint32_t LL_DAC_IsEnabledIT_DMAUDR1(DAC_TypeDef* DACx)
 {
-   return (READ_BIT(DACx->CR, LL_DAC_IT_DMAUDRIE1) == (LL_DAC_IT_DMAUDRIE1));
+    return (READ_BIT(DACx->CR, LL_DAC_IT_DMAUDRIE1) == (LL_DAC_IT_DMAUDRIE1));
 }
 
-#      if defined(DAC_CHANNEL2_SUPPORT)
+#if defined(DAC_CHANNEL2_SUPPORT)
 /**
  * @brief  Get DMA underrun interrupt for DAC channel 2
  * @rmtoll CR       DMAUDRIE2      LL_DAC_IsEnabledIT_DMAUDR2
@@ -1453,15 +1453,15 @@ __STATIC_INLINE uint32_t LL_DAC_IsEnabledIT_DMAUDR1(DAC_TypeDef* DACx)
  */
 __STATIC_INLINE uint32_t LL_DAC_IsEnabledIT_DMAUDR2(DAC_TypeDef* DACx)
 {
-   return (READ_BIT(DACx->CR, LL_DAC_IT_DMAUDRIE2) == (LL_DAC_IT_DMAUDRIE2));
+    return (READ_BIT(DACx->CR, LL_DAC_IT_DMAUDRIE2) == (LL_DAC_IT_DMAUDRIE2));
 }
-#      endif /* DAC_CHANNEL2_SUPPORT */
+#endif /* DAC_CHANNEL2_SUPPORT */
 
 /**
  * @}
  */
 
-#      if defined(USE_FULL_LL_DRIVER)
+#if defined(USE_FULL_LL_DRIVER)
 /** @defgroup DAC_LL_EF_Init Initialization and de-initialization functions
  * @{
  */
@@ -1473,7 +1473,7 @@ void LL_DAC_StructInit(LL_DAC_InitTypeDef* DAC_InitStruct);
 /**
  * @}
  */
-#      endif /* USE_FULL_LL_DRIVER */
+#endif /* USE_FULL_LL_DRIVER */
 
 /**
  * @}
@@ -1483,15 +1483,15 @@ void LL_DAC_StructInit(LL_DAC_InitTypeDef* DAC_InitStruct);
  * @}
  */
 
-#   endif /* DAC1 */
+#endif /* DAC1 */
 
 /**
  * @}
  */
 
-#   ifdef __cplusplus
+#ifdef __cplusplus
 }
-#   endif
+#endif
 
 #endif /* __STM32L0xx_LL_DAC_H */
 

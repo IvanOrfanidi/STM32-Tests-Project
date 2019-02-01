@@ -37,14 +37,14 @@
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __STM32L0xx_HAL_PCD_EX_H
-#   define __STM32L0xx_HAL_PCD_EX_H
+#define __STM32L0xx_HAL_PCD_EX_H
 
-#   ifdef __cplusplus
+#ifdef __cplusplus
 extern "C" {
-#   endif
+#endif
 
 /* Includes ------------------------------------------------------------------*/
-#   include "stm32l0xx_hal_def.h"
+#include "stm32l0xx_hal_def.h"
 
 /** @addtogroup STM32L0xx_HAL_Driver
  * @{
@@ -54,20 +54,18 @@ extern "C" {
  * @{
  */
 /* Exported types ------------------------------------------------------------*/
-typedef enum
-{
-   PCD_LPM_L0_ACTIVE = 0x00, /* on */
-   PCD_LPM_L1_ACTIVE = 0x01, /* LPM L1 sleep */
+typedef enum {
+    PCD_LPM_L0_ACTIVE = 0x00, /* on */
+    PCD_LPM_L1_ACTIVE = 0x01, /* LPM L1 sleep */
 } PCD_LPM_MsgTypeDef;
 
-typedef enum
-{
-   PCD_BCD_ERROR = 0xFF,
-   PCD_BCD_CONTACT_DETECTION = 0xFE,
-   PCD_BCD_STD_DOWNSTREAM_PORT = 0xFD,
-   PCD_BCD_CHARGING_DOWNSTREAM_PORT = 0xFC,
-   PCD_BCD_DEDICATED_CHARGING_PORT = 0xFB,
-   PCD_BCD_DISCOVERY_COMPLETED = 0x00,
+typedef enum {
+    PCD_BCD_ERROR = 0xFF,
+    PCD_BCD_CONTACT_DETECTION = 0xFE,
+    PCD_BCD_STD_DOWNSTREAM_PORT = 0xFD,
+    PCD_BCD_CHARGING_DOWNSTREAM_PORT = 0xFC,
+    PCD_BCD_DEDICATED_CHARGING_PORT = 0xFB,
+    PCD_BCD_DISCOVERY_COMPLETED = 0x00,
 
 } PCD_BCD_MsgTypeDef;
 
@@ -103,9 +101,9 @@ void HAL_PCDEx_BCD_Callback(PCD_HandleTypeDef* hpcd, PCD_BCD_MsgTypeDef msg);
  * @}
  */
 
-#   ifdef __cplusplus
+#ifdef __cplusplus
 }
-#   endif
+#endif
 
 #endif /* __STM32L0xx_HAL_PCD_EX_H */
 

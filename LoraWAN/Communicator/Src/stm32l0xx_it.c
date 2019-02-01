@@ -43,7 +43,7 @@ extern PCD_HandleTypeDef hpcd_USB_FS;
 /******************************************************************************/
 void NMI_Handler(void)
 {
-   HAL_RCC_NMI_IRQHandler();
+    HAL_RCC_NMI_IRQHandler();
 }
 
 /**
@@ -51,9 +51,8 @@ void NMI_Handler(void)
  */
 void HardFault_Handler(void)
 {
-   while (1)
-   {
-   }
+    while(1) {
+    }
 }
 
 /**
@@ -61,8 +60,8 @@ void HardFault_Handler(void)
  */
 void SysTick_Handler(void)
 {
-   HAL_IncTick();
-   HAL_SYSTICK_IRQHandler();
+    HAL_IncTick();
+    HAL_SYSTICK_IRQHandler();
 }
 
 /******************************************************************************/
@@ -122,6 +121,6 @@ __weak void LPUART1_IRQHandler(void)
  */
 __weak void USB_IRQHandler(void)
 {
-   HAL_PCD_IRQHandler(&hpcd_USB_FS);
+    HAL_PCD_IRQHandler(&hpcd_USB_FS);
 }
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

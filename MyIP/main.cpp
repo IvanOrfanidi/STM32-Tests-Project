@@ -10,7 +10,6 @@
 #include <iostream>
 using namespace std;
 
-
 /* User lib */
 #include "board.hpp"
 #include "stm32f10x_conf.h"
@@ -18,12 +17,9 @@ using namespace std;
 #include "enc28j60.hpp"
 #include "exti.hpp"
 
-
 static void LanTask();
 
-
 Enc* Lan = nullptr;
-
 
 int main()
 {
@@ -39,7 +35,7 @@ int main()
 
     /* Initialisation Backup */
     Board::InitBKP();
-    
+
     /* Create and initialisation class SPI for nRF24L01 */
     SPI_InitTypeDef initStruct;
     initStruct.SPI_Mode = SPI_Mode_Master;
@@ -51,30 +47,28 @@ int main()
     initStruct.SPI_FirstBit = SPI_FirstBit_MSB;
     initStruct.SPI_NSS = SPI_NSS_Soft;
     initStruct.SPI_CRCPolynomial = 7;
-    
+
     Spi Spi2(SPI2, &initStruct);
     VirtualPort* const VPortSpi = &Spi2;
-    
+
     Lan = new Enc(VPortSpi, GPIOB, GPIO_Pin_11, GPIOB, GPIO_Pin_12);
-    
-    uint8_t myMac[] = { 0x00,0x2F,0x68,0x12,0xAC,0x30 };
+
+    uint8_t myMac[] = { 0x00, 0x2F, 0x68, 0x12, 0xAC, 0x30 };
     uint8_t myIp[] = { 192, 168, 0, 110 };
     const uint16_t tcpPort = 80;
-    
+
     Lan->Init(myMac, myIp, tcpPort);
-        
+
     Exti* Interrupt = new Exti(GPIOC, GPIO_Pin_6, LanTask);
     Interrupt->SetTypeTrigger(EXTI_Trigger_Falling);
     Interrupt->SetPriority(0, 0);
     Interrupt->Enable();
-    
-    while(true)
-    {
+
+    while(true) {
         Board::DelayMS(1000);
         IWDG_ReloadCounter();
     }
 }
-
 
 static void LanTask()
 {

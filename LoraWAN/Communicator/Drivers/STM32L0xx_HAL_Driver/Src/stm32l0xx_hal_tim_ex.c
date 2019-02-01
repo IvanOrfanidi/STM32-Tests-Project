@@ -124,35 +124,35 @@
  */
 HAL_StatusTypeDef HAL_TIMEx_MasterConfigSynchronization(TIM_HandleTypeDef* htim, TIM_MasterConfigTypeDef* sMasterConfig)
 {
-   /* Check the parameters */
-   assert_param(IS_TIM_MASTER_INSTANCE(htim->Instance));
-   assert_param(IS_TIM_TRGO_SOURCE(sMasterConfig->MasterOutputTrigger));
-   assert_param(IS_TIM_MSM_STATE(sMasterConfig->MasterSlaveMode));
+    /* Check the parameters */
+    assert_param(IS_TIM_MASTER_INSTANCE(htim->Instance));
+    assert_param(IS_TIM_TRGO_SOURCE(sMasterConfig->MasterOutputTrigger));
+    assert_param(IS_TIM_MSM_STATE(sMasterConfig->MasterSlaveMode));
 
-   __HAL_LOCK(htim);
+    __HAL_LOCK(htim);
 
-   /* Change the handler state */
-   htim->State = HAL_TIM_STATE_BUSY;
+    /* Change the handler state */
+    htim->State = HAL_TIM_STATE_BUSY;
 
-   /* Reset the MMS Bits */
-   htim->Instance->CR2 &= ~TIM_CR2_MMS;
-   /* Select the TRGO source */
-   htim->Instance->CR2 |= sMasterConfig->MasterOutputTrigger;
+    /* Reset the MMS Bits */
+    htim->Instance->CR2 &= ~TIM_CR2_MMS;
+    /* Select the TRGO source */
+    htim->Instance->CR2 |= sMasterConfig->MasterOutputTrigger;
 
-   /* Reset the MSM Bit */
-   htim->Instance->SMCR &= ~TIM_SMCR_MSM;
-   /* Set or Reset the MSM Bit */
-   htim->Instance->SMCR |= sMasterConfig->MasterSlaveMode;
+    /* Reset the MSM Bit */
+    htim->Instance->SMCR &= ~TIM_SMCR_MSM;
+    /* Set or Reset the MSM Bit */
+    htim->Instance->SMCR |= sMasterConfig->MasterSlaveMode;
 
-   htim->State = HAL_TIM_STATE_READY;
+    htim->State = HAL_TIM_STATE_READY;
 
-   __HAL_UNLOCK(htim);
+    __HAL_UNLOCK(htim);
 
-   return HAL_OK;
+    return HAL_OK;
 }
 
-#   if defined(STM32L071xx) || defined(STM32L072xx) || defined(STM32L073xx) || defined(STM32L081xx) || \
-      defined(STM32L082xx) || defined(STM32L083xx)
+#if defined(STM32L071xx) || defined(STM32L072xx) || defined(STM32L073xx) || defined(STM32L081xx) || \
+    defined(STM32L082xx) || defined(STM32L083xx)
 
 /**
  * @brief  Configures the remapping of the TIM2, TIM3, TIM21 and TIM22 inputs.
@@ -246,7 +246,7 @@ HAL_StatusTypeDef HAL_TIMEx_MasterConfigSynchronization(TIM_HandleTypeDef* htim,
  *
  * @retval HAL status
  */
-#   elif defined(STM32L031xx) || defined(STM32L041xx)
+#elif defined(STM32L031xx) || defined(STM32L041xx)
 /**
  * @brief  Configures the remapping of the TIM2, TIM21 and TIM22 inputs.
  *         The channel inputs (T1..T4) and the Trigger input (ETR) of the
@@ -307,7 +307,7 @@ HAL_StatusTypeDef HAL_TIMEx_MasterConfigSynchronization(TIM_HandleTypeDef* htim,
  *
  * @retval HAL status
  */
-#   elif defined(STM32L011xx) || defined(STM32L021xx)
+#elif defined(STM32L011xx) || defined(STM32L021xx)
 /**
  * @brief  Configures the remapping of the TIM2 and TIM21 inputs.
  *         The channel inputs (T1..T4) and the Trigger input (ETR) of the
@@ -354,7 +354,7 @@ HAL_StatusTypeDef HAL_TIMEx_MasterConfigSynchronization(TIM_HandleTypeDef* htim,
  *
  * @retval HAL status
  */
-#   else
+#else
 /**
  * @brief  Configures the remapping of the TIM2, TIM21 and TIM22 inputs.
  *         The channel inputs (T1..T4) and the Trigger input (ETR) of the
@@ -424,23 +424,23 @@ HAL_StatusTypeDef HAL_TIMEx_MasterConfigSynchronization(TIM_HandleTypeDef* htim,
  * @retval HAL status
  */
 
-#   endif /* STM32L07xxx or STM32L08xxx */
+#endif /* STM32L07xxx or STM32L08xxx */
 
 HAL_StatusTypeDef HAL_TIMEx_RemapConfig(TIM_HandleTypeDef* htim, uint32_t Remap)
 {
-   __HAL_LOCK(htim);
+    __HAL_LOCK(htim);
 
-   /* Check parameters */
-   assert_param(IS_TIM_REMAP(htim->Instance, Remap));
+    /* Check parameters */
+    assert_param(IS_TIM_REMAP(htim->Instance, Remap));
 
-   /* Set the Timer remapping configuration */
-   htim->Instance->OR = Remap;
+    /* Set the Timer remapping configuration */
+    htim->Instance->OR = Remap;
 
-   htim->State = HAL_TIM_STATE_READY;
+    htim->State = HAL_TIM_STATE_READY;
 
-   __HAL_UNLOCK(htim);
+    __HAL_UNLOCK(htim);
 
-   return HAL_OK;
+    return HAL_OK;
 }
 
 /**

@@ -185,11 +185,11 @@
   */
 
 #if !defined(STM32L011xx) && !defined(STM32L021xx) && !defined(STM32L031xx) && !defined(STM32L041xx) && \
-   !defined(STM32L051xx) && !defined(STM32L061xx) && !defined(STM32L071xx) && !defined(STM32L081xx)
+    !defined(STM32L051xx) && !defined(STM32L061xx) && !defined(STM32L071xx) && !defined(STM32L081xx)
 /* Includes ------------------------------------------------------------------*/
-#   include "stm32l0xx_hal.h"
+#include "stm32l0xx_hal.h"
 
-#   ifdef HAL_DAC_MODULE_ENABLED
+#ifdef HAL_DAC_MODULE_ENABLED
 /** @addtogroup STM32L0xx_HAL_Driver
  * @{
  */
@@ -235,34 +235,32 @@
  */
 HAL_StatusTypeDef HAL_DAC_Init(DAC_HandleTypeDef* hdac)
 {
-   /* Check DAC handle */
-   if (hdac == NULL)
-   {
-      return HAL_ERROR;
-   }
-   /* Check the parameters */
-   assert_param(IS_DAC_ALL_INSTANCE(hdac->Instance));
+    /* Check DAC handle */
+    if(hdac == NULL) {
+        return HAL_ERROR;
+    }
+    /* Check the parameters */
+    assert_param(IS_DAC_ALL_INSTANCE(hdac->Instance));
 
-   if (hdac->State == HAL_DAC_STATE_RESET)
-   {
-      /* Allocate lock resource and initialize it */
-      hdac->Lock = HAL_UNLOCKED;
+    if(hdac->State == HAL_DAC_STATE_RESET) {
+        /* Allocate lock resource and initialize it */
+        hdac->Lock = HAL_UNLOCKED;
 
-      /* Init the low level hardware */
-      HAL_DAC_MspInit(hdac);
-   }
+        /* Init the low level hardware */
+        HAL_DAC_MspInit(hdac);
+    }
 
-   /* Initialize the DAC state*/
-   hdac->State = HAL_DAC_STATE_BUSY;
+    /* Initialize the DAC state*/
+    hdac->State = HAL_DAC_STATE_BUSY;
 
-   /* Set DAC error code to none */
-   hdac->ErrorCode = HAL_DAC_ERROR_NONE;
+    /* Set DAC error code to none */
+    hdac->ErrorCode = HAL_DAC_ERROR_NONE;
 
-   /* Initialize the DAC state*/
-   hdac->State = HAL_DAC_STATE_READY;
+    /* Initialize the DAC state*/
+    hdac->State = HAL_DAC_STATE_READY;
 
-   /* Return function status */
-   return HAL_OK;
+    /* Return function status */
+    return HAL_OK;
 }
 
 /**
@@ -273,32 +271,31 @@ HAL_StatusTypeDef HAL_DAC_Init(DAC_HandleTypeDef* hdac)
  */
 HAL_StatusTypeDef HAL_DAC_DeInit(DAC_HandleTypeDef* hdac)
 {
-   /* Check DAC handle */
-   if (hdac == NULL)
-   {
-      return HAL_ERROR;
-   }
+    /* Check DAC handle */
+    if(hdac == NULL) {
+        return HAL_ERROR;
+    }
 
-   /* Check the parameters */
-   assert_param(IS_DAC_ALL_INSTANCE(hdac->Instance));
+    /* Check the parameters */
+    assert_param(IS_DAC_ALL_INSTANCE(hdac->Instance));
 
-   /* Change DAC state */
-   hdac->State = HAL_DAC_STATE_BUSY;
+    /* Change DAC state */
+    hdac->State = HAL_DAC_STATE_BUSY;
 
-   /* DeInit the low level hardware */
-   HAL_DAC_MspDeInit(hdac);
+    /* DeInit the low level hardware */
+    HAL_DAC_MspDeInit(hdac);
 
-   /* Set DAC error code to none */
-   hdac->ErrorCode = HAL_DAC_ERROR_NONE;
+    /* Set DAC error code to none */
+    hdac->ErrorCode = HAL_DAC_ERROR_NONE;
 
-   /* Change DAC state */
-   hdac->State = HAL_DAC_STATE_RESET;
+    /* Change DAC state */
+    hdac->State = HAL_DAC_STATE_RESET;
 
-   /* Release Lock */
-   __HAL_UNLOCK(hdac);
+    /* Release Lock */
+    __HAL_UNLOCK(hdac);
 
-   /* Return function status */
-   return HAL_OK;
+    /* Return function status */
+    return HAL_OK;
 }
 
 /**
@@ -309,10 +306,10 @@ HAL_StatusTypeDef HAL_DAC_DeInit(DAC_HandleTypeDef* hdac)
  */
 __weak void HAL_DAC_MspInit(DAC_HandleTypeDef* hdac)
 {
-   /* Prevent unused argument(s) compilation warning */
-   UNUSED(hdac);
+    /* Prevent unused argument(s) compilation warning */
+    UNUSED(hdac);
 
-   /* NOTE : This function Should not be modified, when the callback is needed,
+    /* NOTE : This function Should not be modified, when the callback is needed,
              the HAL_DAC_MspInit could be implemented in the user file
     */
 }
@@ -325,10 +322,10 @@ __weak void HAL_DAC_MspInit(DAC_HandleTypeDef* hdac)
  */
 __weak void HAL_DAC_MspDeInit(DAC_HandleTypeDef* hdac)
 {
-   /* Prevent unused argument(s) compilation warning */
-   UNUSED(hdac);
+    /* Prevent unused argument(s) compilation warning */
+    UNUSED(hdac);
 
-   /* NOTE : This function Should not be modified, when the callback is needed,
+    /* NOTE : This function Should not be modified, when the callback is needed,
              the HAL_DAC_MspDeInit could be implemented in the user file
     */
 }
@@ -368,15 +365,15 @@ __weak void HAL_DAC_MspDeInit(DAC_HandleTypeDef* hdac)
  */
 __weak HAL_StatusTypeDef HAL_DAC_Start(DAC_HandleTypeDef* hdac, uint32_t Channel)
 {
-   /* Prevent unused argument(s) compilation warning */
-   UNUSED(hdac);
-   UNUSED(Channel);
+    /* Prevent unused argument(s) compilation warning */
+    UNUSED(hdac);
+    UNUSED(Channel);
 
-   /* Note : This function is defined into this file for library reference. */
-   /*        Function content is located into file stm32l0xx_hal_dac_ex.c   */
+    /* Note : This function is defined into this file for library reference. */
+    /*        Function content is located into file stm32l0xx_hal_dac_ex.c   */
 
-   /* Return function status */
-   return HAL_OK;
+    /* Return function status */
+    return HAL_OK;
 }
 
 /**
@@ -391,17 +388,17 @@ __weak HAL_StatusTypeDef HAL_DAC_Start(DAC_HandleTypeDef* hdac, uint32_t Channel
  */
 HAL_StatusTypeDef HAL_DAC_Stop(DAC_HandleTypeDef* hdac, uint32_t Channel)
 {
-   /* Check the parameters */
-   assert_param(IS_DAC_CHANNEL(Channel));
+    /* Check the parameters */
+    assert_param(IS_DAC_CHANNEL(Channel));
 
-   /* Disable the Peripheral */
-   __HAL_DAC_DISABLE(hdac, Channel);
+    /* Disable the Peripheral */
+    __HAL_DAC_DISABLE(hdac, Channel);
 
-   /* Change DAC state */
-   hdac->State = HAL_DAC_STATE_READY;
+    /* Change DAC state */
+    hdac->State = HAL_DAC_STATE_READY;
 
-   /* Return function status */
-   return HAL_OK;
+    /* Return function status */
+    return HAL_OK;
 }
 
 /**
@@ -424,18 +421,18 @@ HAL_StatusTypeDef HAL_DAC_Stop(DAC_HandleTypeDef* hdac, uint32_t Channel)
 __weak HAL_StatusTypeDef
 HAL_DAC_Start_DMA(DAC_HandleTypeDef* hdac, uint32_t Channel, uint32_t* pData, uint32_t Length, uint32_t Alignment)
 {
-   /* Prevent unused argument(s) compilation warning */
-   UNUSED(hdac);
-   UNUSED(Channel);
-   UNUSED(pData);
-   UNUSED(Length);
-   UNUSED(Alignment);
+    /* Prevent unused argument(s) compilation warning */
+    UNUSED(hdac);
+    UNUSED(Channel);
+    UNUSED(pData);
+    UNUSED(Length);
+    UNUSED(Alignment);
 
-   /* Note : This function is defined into this file for library reference. */
-   /*        Function content is located into file stm32l0xx_hal_dac_ex.c   */
+    /* Note : This function is defined into this file for library reference. */
+    /*        Function content is located into file stm32l0xx_hal_dac_ex.c   */
 
-   /* Return function status */
-   return HAL_OK;
+    /* Return function status */
+    return HAL_OK;
 }
 
 /**
@@ -450,15 +447,15 @@ HAL_DAC_Start_DMA(DAC_HandleTypeDef* hdac, uint32_t Channel, uint32_t* pData, ui
  */
 __weak HAL_StatusTypeDef HAL_DAC_Stop_DMA(DAC_HandleTypeDef* hdac, uint32_t Channel)
 {
-   /* Prevent unused argument(s) compilation warning */
-   UNUSED(hdac);
-   UNUSED(Channel);
+    /* Prevent unused argument(s) compilation warning */
+    UNUSED(hdac);
+    UNUSED(Channel);
 
-   /* Note : This function is defined into this file for library reference. */
-   /*        Function content is located into file stm32l0xx_hal_dac_ex.c   */
+    /* Note : This function is defined into this file for library reference. */
+    /*        Function content is located into file stm32l0xx_hal_dac_ex.c   */
 
-   /* Return function status */
-   return HAL_OK;
+    /* Return function status */
+    return HAL_OK;
 }
 
 /**
@@ -473,15 +470,15 @@ __weak HAL_StatusTypeDef HAL_DAC_Stop_DMA(DAC_HandleTypeDef* hdac, uint32_t Chan
  */
 __weak uint32_t HAL_DAC_GetValue(DAC_HandleTypeDef* hdac, uint32_t Channel)
 {
-   /* Prevent unused argument(s) compilation warning */
-   UNUSED(hdac);
-   UNUSED(Channel);
+    /* Prevent unused argument(s) compilation warning */
+    UNUSED(hdac);
+    UNUSED(Channel);
 
-   /* Note : This function is defined into this file for library reference. */
-   /*        Function content is located into file stm32l0xx_hal_dac_ex.c   */
+    /* Note : This function is defined into this file for library reference. */
+    /*        Function content is located into file stm32l0xx_hal_dac_ex.c   */
 
-   /* Return function status */
-   return 0U;
+    /* Return function status */
+    return 0U;
 }
 
 /**
@@ -492,11 +489,11 @@ __weak uint32_t HAL_DAC_GetValue(DAC_HandleTypeDef* hdac, uint32_t Channel)
  */
 __weak void HAL_DAC_IRQHandler(DAC_HandleTypeDef* hdac)
 {
-   /* Prevent unused argument(s) compilation warning */
-   UNUSED(hdac);
+    /* Prevent unused argument(s) compilation warning */
+    UNUSED(hdac);
 
-   /* Note : This function is defined into this file for library reference. */
-   /*        Function content is located into file stm32l0xx_hal_dac_ex.c   */
+    /* Note : This function is defined into this file for library reference. */
+    /*        Function content is located into file stm32l0xx_hal_dac_ex.c   */
 }
 
 /**
@@ -507,10 +504,10 @@ __weak void HAL_DAC_IRQHandler(DAC_HandleTypeDef* hdac)
  */
 __weak void HAL_DAC_ConvCpltCallbackCh1(DAC_HandleTypeDef* hdac)
 {
-   /* Prevent unused argument(s) compilation warning */
-   UNUSED(hdac);
+    /* Prevent unused argument(s) compilation warning */
+    UNUSED(hdac);
 
-   /* NOTE : This function Should not be modified, when the callback is needed,
+    /* NOTE : This function Should not be modified, when the callback is needed,
              the HAL_DAC_ConvCpltCallbackCh1 could be implemented in the user file
     */
 }
@@ -523,10 +520,10 @@ __weak void HAL_DAC_ConvCpltCallbackCh1(DAC_HandleTypeDef* hdac)
  */
 __weak void HAL_DAC_ConvHalfCpltCallbackCh1(DAC_HandleTypeDef* hdac)
 {
-   /* Prevent unused argument(s) compilation warning */
-   UNUSED(hdac);
+    /* Prevent unused argument(s) compilation warning */
+    UNUSED(hdac);
 
-   /* NOTE : This function Should not be modified, when the callback is needed,
+    /* NOTE : This function Should not be modified, when the callback is needed,
              the HAL_DAC_ConvHalfCpltCallbackCh1 could be implemented in the user file
     */
 }
@@ -539,10 +536,10 @@ __weak void HAL_DAC_ConvHalfCpltCallbackCh1(DAC_HandleTypeDef* hdac)
  */
 __weak void HAL_DAC_ErrorCallbackCh1(DAC_HandleTypeDef* hdac)
 {
-   /* Prevent unused argument(s) compilation warning */
-   UNUSED(hdac);
+    /* Prevent unused argument(s) compilation warning */
+    UNUSED(hdac);
 
-   /* NOTE : This function Should not be modified, when the callback is needed,
+    /* NOTE : This function Should not be modified, when the callback is needed,
              the HAL_DAC_ErrorCallbackCh1 could be implemented in the user file
     */
 }
@@ -555,10 +552,10 @@ __weak void HAL_DAC_ErrorCallbackCh1(DAC_HandleTypeDef* hdac)
  */
 __weak void HAL_DAC_DMAUnderrunCallbackCh1(DAC_HandleTypeDef* hdac)
 {
-   /* Prevent unused argument(s) compilation warning */
-   UNUSED(hdac);
+    /* Prevent unused argument(s) compilation warning */
+    UNUSED(hdac);
 
-   /* NOTE : This function Should not be modified, when the callback is needed,
+    /* NOTE : This function Should not be modified, when the callback is needed,
              the HAL_DAC_DMAUnderrunCallbackCh1 could be implemented in the user file
     */
 }
@@ -595,41 +592,41 @@ __weak void HAL_DAC_DMAUnderrunCallbackCh1(DAC_HandleTypeDef* hdac)
  */
 HAL_StatusTypeDef HAL_DAC_ConfigChannel(DAC_HandleTypeDef* hdac, DAC_ChannelConfTypeDef* sConfig, uint32_t Channel)
 {
-   uint32_t tmpreg1 = 0U, tmpreg2 = 0U;
+    uint32_t tmpreg1 = 0U, tmpreg2 = 0U;
 
-   /* Check the DAC parameters */
-   assert_param(IS_DAC_TRIGGER(sConfig->DAC_Trigger));
-   assert_param(IS_DAC_OUTPUT_BUFFER_STATE(sConfig->DAC_OutputBuffer));
-   assert_param(IS_DAC_CHANNEL(Channel));
+    /* Check the DAC parameters */
+    assert_param(IS_DAC_TRIGGER(sConfig->DAC_Trigger));
+    assert_param(IS_DAC_OUTPUT_BUFFER_STATE(sConfig->DAC_OutputBuffer));
+    assert_param(IS_DAC_CHANNEL(Channel));
 
-   /* Process locked */
-   __HAL_LOCK(hdac);
+    /* Process locked */
+    __HAL_LOCK(hdac);
 
-   /* Change DAC state */
-   hdac->State = HAL_DAC_STATE_BUSY;
+    /* Change DAC state */
+    hdac->State = HAL_DAC_STATE_BUSY;
 
-   /* Get the DAC CR value */
-   tmpreg1 = hdac->Instance->CR;
-   /* Clear BOFFx, TENx, TSELx, WAVEx and MAMPx bits */
-   tmpreg1 &= ~(((uint32_t)(DAC_CR_MAMP1 | DAC_CR_WAVE1 | DAC_CR_TSEL1 | DAC_CR_TEN1 | DAC_CR_BOFF1)) << Channel);
-   /* Configure for the selected DAC channel: buffer output, trigger */
-   /* Set TSELx and TENx bits according to DAC_Trigger value */
-   /* Set BOFFx bit according to DAC_OutputBuffer value */
-   tmpreg2 = (sConfig->DAC_Trigger | sConfig->DAC_OutputBuffer);
-   /* Calculate CR register value depending on DAC_Channel */
-   tmpreg1 |= tmpreg2 << Channel;
-   /* Write to DAC CR */
-   hdac->Instance->CR = tmpreg1;
-   /* Disable wave generation */
-   CLEAR_BIT(hdac->Instance->CR, (DAC_CR_WAVE1 << Channel));
-   /* Change DAC state */
-   hdac->State = HAL_DAC_STATE_READY;
+    /* Get the DAC CR value */
+    tmpreg1 = hdac->Instance->CR;
+    /* Clear BOFFx, TENx, TSELx, WAVEx and MAMPx bits */
+    tmpreg1 &= ~(((uint32_t)(DAC_CR_MAMP1 | DAC_CR_WAVE1 | DAC_CR_TSEL1 | DAC_CR_TEN1 | DAC_CR_BOFF1)) << Channel);
+    /* Configure for the selected DAC channel: buffer output, trigger */
+    /* Set TSELx and TENx bits according to DAC_Trigger value */
+    /* Set BOFFx bit according to DAC_OutputBuffer value */
+    tmpreg2 = (sConfig->DAC_Trigger | sConfig->DAC_OutputBuffer);
+    /* Calculate CR register value depending on DAC_Channel */
+    tmpreg1 |= tmpreg2 << Channel;
+    /* Write to DAC CR */
+    hdac->Instance->CR = tmpreg1;
+    /* Disable wave generation */
+    CLEAR_BIT(hdac->Instance->CR, (DAC_CR_WAVE1 << Channel));
+    /* Change DAC state */
+    hdac->State = HAL_DAC_STATE_READY;
 
-   /* Process unlocked */
-   __HAL_UNLOCK(hdac);
+    /* Process unlocked */
+    __HAL_UNLOCK(hdac);
 
-   /* Return function status */
-   return HAL_OK;
+    /* Return function status */
+    return HAL_OK;
 }
 
 /**
@@ -660,8 +657,8 @@ HAL_StatusTypeDef HAL_DAC_ConfigChannel(DAC_HandleTypeDef* hdac, DAC_ChannelConf
  */
 HAL_DAC_StateTypeDef HAL_DAC_GetState(DAC_HandleTypeDef* hdac)
 {
-   /* Return DAC state */
-   return hdac->State;
+    /* Return DAC state */
+    return hdac->State;
 }
 
 /**
@@ -672,7 +669,7 @@ HAL_DAC_StateTypeDef HAL_DAC_GetState(DAC_HandleTypeDef* hdac)
  */
 uint32_t HAL_DAC_GetError(DAC_HandleTypeDef* hdac)
 {
-   return hdac->ErrorCode;
+    return hdac->ErrorCode;
 }
 
 /**
@@ -693,16 +690,16 @@ uint32_t HAL_DAC_GetError(DAC_HandleTypeDef* hdac)
  */
 __weak HAL_StatusTypeDef HAL_DAC_SetValue(DAC_HandleTypeDef* hdac, uint32_t Channel, uint32_t Alignment, uint32_t Data)
 {
-   /* Prevent unused argument(s) compilation warning */
-   UNUSED(hdac);
-   UNUSED(Channel);
-   UNUSED(Alignment);
-   UNUSED(Data);
-   /* Note : This function is defined into this file for library reference. */
-   /*        Function content is located into file stm32l0xx_hal_dac_ex.c   */
+    /* Prevent unused argument(s) compilation warning */
+    UNUSED(hdac);
+    UNUSED(Channel);
+    UNUSED(Alignment);
+    UNUSED(Data);
+    /* Note : This function is defined into this file for library reference. */
+    /*        Function content is located into file stm32l0xx_hal_dac_ex.c   */
 
-   /* Return function status */
-   return HAL_OK;
+    /* Return function status */
+    return HAL_OK;
 }
 /**
  * @}
@@ -719,7 +716,7 @@ __weak HAL_StatusTypeDef HAL_DAC_SetValue(DAC_HandleTypeDef* hdac, uint32_t Chan
 /**
  * @}
  */
-#   endif /* HAL_DAC_MODULE_ENABLED */
+#endif /* HAL_DAC_MODULE_ENABLED */
 #endif /* !STM32L011xx && STM32L021xx && !STM32L031xx && !STM32L041xx && !STM32L051xx && !STM32L061xx&& !STM32L071xx&& \
           !STM32L081xx*/
 

@@ -17,9 +17,7 @@
 #include "enc28j60.hpp"
 #include "board.hpp"
 
-
 Enc* Enc::Encs[ENC_MAX_COUNT];
-
 
 /**
  * @brief Ñonstructor
@@ -37,7 +35,7 @@ Enc::Enc(VirtualPort* port, GPIO_TypeDef* cs_port, uint16_t cs_pin, GPIO_TypeDef
     newSettings.CS_Pin.GPIO_Pin = cs_pin;
     newSettings.RESET_Pin.GPIO_Pin = reset_pin;
     VPort = port;
-    
+
     Enc28j60Bank = 0x00;
     NextPacketPtr = RXSTART_INIT;
     TcpPort = 0;
@@ -49,13 +47,13 @@ Enc::Enc(VirtualPort* port, GPIO_TypeDef* cs_port, uint16_t cs_pin, GPIO_TypeDef
     IpIdentifier = 1;
     Buf = nullptr;
     BufSize = 0;
-    
+
     // Def settings Pin
     newSettings.CS_Pin.GPIO_Mode = GPIO_Mode_Out_PP;
     newSettings.CS_Pin.GPIO_Speed = GPIO_Speed_10MHz;
     newSettings.RESET_Pin.GPIO_Mode = GPIO_Mode_Out_PP;
     newSettings.RESET_Pin.GPIO_Speed = GPIO_Speed_10MHz;
-    
+
     InterfaceSettings = nullptr;
     size_t freeClass = ENC_MAX_COUNT;
     for(size_t i = 0; i < ENC_MAX_COUNT; i++) {
@@ -63,37 +61,36 @@ Enc::Enc(VirtualPort* port, GPIO_TypeDef* cs_port, uint16_t cs_pin, GPIO_TypeDef
             InterfaceSettings_t encSettings;
             Encs[i]->GetInterfaceSettings(&encSettings);
             if(((memcmp(&encSettings.CS_Pin, &newSettings.CS_Pin, sizeof(GPIO_InitTypeDef)) == 0) &&
-               (encSettings.CS_Port == newSettings.CS_Port)) ||
-               ((memcmp(&encSettings.RESET_Pin, &newSettings.RESET_Pin, sizeof(GPIO_InitTypeDef)) == 0) &&
-               (encSettings.RESET_Port == newSettings.RESET_Port))) {
-                    /// Error, class was create
-                    return;
+                   (encSettings.CS_Port == newSettings.CS_Port)) ||
+                ((memcmp(&encSettings.RESET_Pin, &newSettings.RESET_Pin, sizeof(GPIO_InitTypeDef)) == 0) &&
+                    (encSettings.RESET_Port == newSettings.RESET_Port))) {
+                /// Error, class was create
+                return;
             }
         }
         else {
             freeClass = i;
         }
     }
-    
+
     if(ENC_MAX_COUNT == freeClass) {
         return;
     }
-    
+
     SetInterfaceSettings(newSettings);
-    
+
     // Config GPIO(CS, RESET)
     InitGpio(newSettings);
 
     Encs[freeClass] = this;
 }
 
-
 void Enc::Init(uint8_t* macAddr, uint8_t* ipAddr, uint16_t tcpPort, size_t sizeBuf)
 {
     HardReset();
     WriteOp(ENC28J60_SOFT_RESET, 0, ENC28J60_SOFT_RESET);
     Board::DelayMS(100);
-    
+
     // Rx start
     WriteReg(ERXSTL, RXSTART_INIT & 0xFF);
     WriteReg(ERXSTH, RXSTART_INIT >> 8);
@@ -140,7 +137,7 @@ void Enc::Init(uint8_t* macAddr, uint8_t* ipAddr, uint16_t tcpPort, size_t sizeB
     WriteReg(MABBIPG, 0x12);
     // Set the maximum packet size which the controller will accept
     // Do not send packets longer than MAX_FRAMELEN:
-    WriteReg(MAMXFLL, MAX_FRAMELEN & 0xFF);	
+    WriteReg(MAMXFLL, MAX_FRAMELEN & 0xFF);
     WriteReg(MAMXFLH, MAX_FRAMELEN >> 8);
     // do bank 3 stuff
     // write MAC address
@@ -159,22 +156,21 @@ void Enc::Init(uint8_t* macAddr, uint8_t* ipAddr, uint16_t tcpPort, size_t sizeB
     WriteOp(ENC28J60_BIT_FIELD_SET, EIE, EIE_INTIE | EIE_PKTIE);
     // enable packet reception
     WriteOp(ENC28J60_BIT_FIELD_SET, ECON1, ECON1_RXEN);
-    
+
     InitPhy();
-    
+
     memcpy(MacAddr, macAddr, MAC_ADDR_SIZE);
     memcpy(IpAddr, ipAddr, IP_ADDR_SIZE);
     TcpPort = tcpPort;
-    
+
     if(sizeBuf > MAX_FRAMELEN) {
-       sizeBuf = MAX_FRAMELEN;
+        sizeBuf = MAX_FRAMELEN;
     }
-    
+
     /* Create memory */
     Buf = new uint8_t[sizeBuf];
     BufSize = sizeBuf;
 }
-
 
 void Enc::InitPhy()
 {
@@ -183,30 +179,29 @@ void Enc::InitPhy()
     //
     // 0x880 is PHLCON LEDB=on, LEDA=on
     // enc28j60PhyWrite(PHLCON,0b0000 1000 1000 00 00);
-    PhyWrite(PHLCON,0x880);
+    PhyWrite(PHLCON, 0x880);
     Board::DelayMS(500);
     //
     // 0x990 is PHLCON LEDB=off, LEDA=off
     // enc28j60PhyWrite(PHLCON,0b0000 1001 1001 00 00);
-    PhyWrite(PHLCON,0x990);
+    PhyWrite(PHLCON, 0x990);
     Board::DelayMS(500);
     //
     // 0x880 is PHLCON LEDB=on, LEDA=on
     // enc28j60PhyWrite(PHLCON,0b0000 1000 1000 00 00);
-    PhyWrite(PHLCON,0x880);
+    PhyWrite(PHLCON, 0x880);
     Board::DelayMS(500);
     //
     // 0x990 is PHLCON LEDB=off, LEDA=off
     // enc28j60PhyWrite(PHLCON,0b0000 1001 1001 00 00);
-    PhyWrite(PHLCON,0x990);
+    PhyWrite(PHLCON, 0x990);
     Board::DelayMS(500);
     //
     // 0x476 is PHLCON LEDA=links status, LEDB=receive/transmit
     // enc28j60PhyWrite(PHLCON,0b0000 0100 0111 01 10);
-    PhyWrite(PHLCON,0x476);
+    PhyWrite(PHLCON, 0x476);
     Board::DelayMS(100);
 }
-
 
 void Enc::PhyWrite(uint8_t address, uint16_t data)
 {
@@ -214,13 +209,12 @@ void Enc::PhyWrite(uint8_t address, uint16_t data)
     WriteReg(MIREGADR, address);
     // write the PHY data
     WriteReg(MIWRL, data);
-    WriteReg(MIWRH, data>>8);
+    WriteReg(MIWRH, data >> 8);
     // wait until the PHY write completes
     while(ReadReg(MISTAT) & MISTAT_BUSY) {
         Board::DelayMS(1);
-    } 
+    }
 }
-
 
 void Enc::WriteReg(uint8_t address, uint8_t data)
 {
@@ -230,7 +224,6 @@ void Enc::WriteReg(uint8_t address, uint8_t data)
     WriteOp(ENC28J60_WRITE_CTRL_REG, address, data);
 }
 
-
 uint8_t Enc::ReadReg(uint8_t address)
 {
     // set the bank
@@ -239,65 +232,66 @@ uint8_t Enc::ReadReg(uint8_t address)
     return ReadOp(ENC28J60_READ_CTRL_REG, address);
 }
 
-
 void Enc::SetBank(uint8_t address)
 {
     // set the bank (if needed)
     if((address & BANK_MASK) != Enc28j60Bank) {
         // set the bank
-        WriteOp(ENC28J60_BIT_FIELD_CLR, ECON1, (ECON1_BSEL1|ECON1_BSEL0));
+        WriteOp(ENC28J60_BIT_FIELD_CLR, ECON1, (ECON1_BSEL1 | ECON1_BSEL0));
         WriteOp(ENC28J60_BIT_FIELD_SET, ECON1, (address & BANK_MASK) >> 5);
         Enc28j60Bank = (address & BANK_MASK);
-    } 
+    }
 }
-    
-        
+
 uint8_t Enc::ReadOp(uint8_t op, uint8_t address) const
 {
     uint8_t byte;
     CsEnable();
-    
+
     byte = op | (address & ADDR_MASK);
     VPort->Transmit((uint8_t*)&byte, sizeof(uint8_t));
-    while(VPort->GetLen() == 0);
+    while(VPort->GetLen() == 0)
+        ;
     VPort->Receive((uint8_t*)&byte, sizeof(uint8_t));
-    
+
     byte = 0x00;
     VPort->Transmit((uint8_t*)&byte, sizeof(uint8_t));
-    while(VPort->GetLen() == 0);
+    while(VPort->GetLen() == 0)
+        ;
     VPort->Receive((uint8_t*)&byte, sizeof(uint8_t));
-    
+
     // do dummy read if needed (for mac and mii, see datasheet page 29)
     if(address & 0x80) {
         byte = 0x00;
         VPort->Transmit((uint8_t*)&byte, sizeof(uint8_t));
-        while(VPort->GetLen() == 0);
+        while(VPort->GetLen() == 0)
+            ;
         VPort->Receive((uint8_t*)&byte, sizeof(uint8_t));
     }
-    
+
     CsDisable();
     return byte;
 }
 
-
 void Enc::WriteOp(uint8_t op, uint8_t address, uint8_t data) const
 {
     CsEnable();
-    
+
     uint8_t byte;
     byte = op | (address & ADDR_MASK);
     VPort->Transmit((uint8_t*)&byte, sizeof(uint8_t));
-    while(VPort->GetLen() == 0);
+    while(VPort->GetLen() == 0)
+        ;
     VPort->Receive((uint8_t*)&byte, sizeof(uint8_t));
-    
+
     byte = data;
     VPort->Transmit((uint8_t*)&byte, sizeof(uint8_t));
-    while(VPort->GetLen() == 0);
+    while(VPort->GetLen() == 0)
+        ;
     VPort->Receive((uint8_t*)&byte, sizeof(uint8_t));
-    
+
     CsDisable();
 }
-
 
 void Enc::WriteBuffer(const uint8_t* data, size_t len)
 {
@@ -305,41 +299,43 @@ void Enc::WriteBuffer(const uint8_t* data, size_t len)
     uint8_t byte;
     byte = ENC28J60_WRITE_BUF_MEM;
     VPort->Transmit((uint8_t*)&byte, sizeof(uint8_t));
-    while(VPort->GetLen() == 0);
+    while(VPort->GetLen() == 0)
+        ;
     VPort->Receive((uint8_t*)&byte, sizeof(uint8_t));
     while(len--) {
         byte = *data++;
         VPort->Transmit((uint8_t*)&byte, sizeof(uint8_t));
-        while(VPort->GetLen() == 0);
+        while(VPort->GetLen() == 0)
+            ;
         VPort->Receive((uint8_t*)&byte, sizeof(uint8_t));
     }
 
     CsDisable();
 }
 
-
 void Enc::ReadBuffer(uint8_t* data, size_t len)
 {
-   CsEnable();
-   
-   uint8_t byte;
-   byte = ENC28J60_READ_BUF_MEM;
-   VPort->Transmit((uint8_t*)&byte, sizeof(uint8_t));
-   while(VPort->GetLen() == 0);
-   VPort->Receive((uint8_t*)&byte, sizeof(uint8_t));
-   
-   while(len--) {
+    CsEnable();
+
+    uint8_t byte;
+    byte = ENC28J60_READ_BUF_MEM;
+    VPort->Transmit((uint8_t*)&byte, sizeof(uint8_t));
+    while(VPort->GetLen() == 0)
+        ;
+    VPort->Receive((uint8_t*)&byte, sizeof(uint8_t));
+
+    while(len--) {
         byte = 0x00;
         VPort->Transmit((uint8_t*)&byte, sizeof(uint8_t));
-        while(VPort->GetLen() == 0);
+        while(VPort->GetLen() == 0)
+            ;
         VPort->Receive((uint8_t*)&byte, sizeof(uint8_t));
         *data++ = byte;
-   }
-   //*data = '\0';
-   
-   CsDisable();
-}
+    }
+    //*data = '\0';
 
+    CsDisable();
+}
 
 // Gets a packet from the network receive buffer, if one is available.
 // The packet will be headed by an ethernet header.
@@ -366,7 +362,7 @@ size_t Enc::PacketReceive(uint8_t* packet, size_t maxlen)
     // read the packet length (see datasheet page 43)
     size_t len = ReadOp(ENC28J60_READ_BUF_MEM, 0);
     len |= ReadOp(ENC28J60_READ_BUF_MEM, 0) << 8;
-    len -= 4; //remove the CRC count
+    len -= 4;    //remove the CRC count
 
     // read the receive status (see datasheet page 43)
     uint16_t rxstat = ReadOp(ENC28J60_READ_BUF_MEM, 0);
@@ -398,9 +394,8 @@ size_t Enc::PacketReceive(uint8_t* packet, size_t maxlen)
     return len;
 }
 
-
 void Enc::PacketSend(const uint8_t* packet, size_t len)
-{ 
+{
     // Set the write pointer to start of transmit buffer area
     WriteReg(EWRPTL, TXSTART_INIT & 0xFF);
     WriteReg(EWRPTH, TXSTART_INIT >> 8);
@@ -419,12 +414,10 @@ void Enc::PacketSend(const uint8_t* packet, size_t len)
     }
 }
 
-
 void Enc::CsEnable() const
 {
     GPIO_ResetBits(InterfaceSettings->CS_Port, InterfaceSettings->CS_Pin.GPIO_Pin);
 }
-
 
 void Enc::CsDisable() const
 {
@@ -436,9 +429,7 @@ void Enc::HardReset() const
     GPIO_ResetBits(InterfaceSettings->RESET_Port, InterfaceSettings->RESET_Pin.GPIO_Pin);
     Board::DelayMS(1000);
     GPIO_SetBits(InterfaceSettings->RESET_Port, InterfaceSettings->RESET_Pin.GPIO_Pin);
-    
 }
-
 
 /**
  * @brief Get alls settings
@@ -448,7 +439,6 @@ void Enc::GetInterfaceSettings(InterfaceSettings_t* const settings) const
 {
     memcpy(settings, InterfaceSettings, sizeof(InterfaceSettings_t));
 }
-
 
 /**
  * @brief Set alls settings
@@ -464,7 +454,6 @@ void Enc::SetInterfaceSettings(InterfaceSettings_t& settings)
     InterfaceSettings->RESET_Port = settings.RESET_Port;
 }
 
-
 /**
  * @brief Initialisation GPIO
  * @param [in] settings - settings GPIO
@@ -474,43 +463,39 @@ void Enc::InitGpio(InterfaceSettings_t& settings) const
     // Enable Clock Port Output
     Board::GpioClock(InterfaceSettings->CS_Port, ENABLE);
     Board::GpioClock(InterfaceSettings->RESET_Port, ENABLE);
-    
+
     /* Config GPIO CE & CNS for nRF24 */
     GPIO_Init(InterfaceSettings->CS_Port, &InterfaceSettings->CS_Pin);
     GPIO_Init(InterfaceSettings->RESET_Port, &InterfaceSettings->RESET_Pin);
 }
-
 
 bool Enc::CreateClass() const
 {
     return ((InterfaceSettings != nullptr) && (Buf != nullptr));
 }
 
-
 void Enc::Task()
 {
-    while(true)
-    {
+    while(true) {
         size_t pacLen = PacketReceive(Buf, BufSize);
         if(0 == pacLen) {
             return;
         }
-        
+
         // arp is broadcast if unknown but a host may also verify the mac address by sending it to a unicast address
         if(Net::EthTypeIsArp(Buf, pacLen, IpAddr)) {
             size_t ansLel = Net::MakeArpAnswerFromRequest(Buf, pacLen, MacAddr, IpAddr);
             PacketSend(Buf, ansLel);
             continue;
         }
-        
+
         // check if the ip packet is for us
         if(!(Net::EthTypeIsIp(Buf, pacLen, IpAddr))) {
             continue;
         }
-        
+
         // ICMP Echo (ping)
-        if(Net::EthTypeIsIcmpEcho(Buf, pacLen)) 
-        {
+        if(Net::EthTypeIsIcmpEcho(Buf, pacLen)) {
             size_t ansLel = Net::MakeIcmpEchoAnswerFromRequest(Buf, pacLen, MacAddr, IpAddr);
             PacketSend(Buf, ansLel);
             continue;

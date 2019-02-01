@@ -37,14 +37,14 @@
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __STM32L0xx_HAL_COMP_EX_H
-#   define __STM32L0xx_HAL_COMP_EX_H
+#define __STM32L0xx_HAL_COMP_EX_H
 
-#   ifdef __cplusplus
+#ifdef __cplusplus
 extern "C" {
-#   endif
+#endif
 
 /* Includes ------------------------------------------------------------------*/
-#   include "stm32l0xx_hal_def.h"
+#include "stm32l0xx_hal_def.h"
 
 /** @addtogroup STM32L0xx_HAL_Driver
  * @{
@@ -81,9 +81,9 @@ void HAL_COMPEx_DisableVREFINT(void);
 /**
  * @}
  */
-#   ifdef __cplusplus
+#ifdef __cplusplus
 }
-#   endif
+#endif
 
 #endif /* __STM32L0xx_HAL_COMP_EX_H */
 

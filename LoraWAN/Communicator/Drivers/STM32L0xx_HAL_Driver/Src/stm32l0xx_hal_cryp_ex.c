@@ -41,14 +41,14 @@
  */
 
 #if defined(STM32L021xx) || defined(STM32L041xx) || defined(STM32L061xx) || defined(STM32L062xx) || \
-   defined(STM32L063xx) || defined(STM32L081xx) || defined(STM32L082xx) || defined(STM32L083xx)
+    defined(STM32L063xx) || defined(STM32L081xx) || defined(STM32L082xx) || defined(STM32L083xx)
 /* Includes ------------------------------------------------------------------*/
-#   include "stm32l0xx_hal.h"
+#include "stm32l0xx_hal.h"
 
 /** @addtogroup STM32L0xx_HAL_Driver
  * @{
  */
-#   ifdef HAL_CRYP_MODULE_ENABLED
+#ifdef HAL_CRYP_MODULE_ENABLED
 
 /** @addtogroup CRYPEx
  * @brief CRYP HAL Extended module driver.
@@ -88,10 +88,10 @@
  */
 __weak void HAL_CRYPEx_ComputationCpltCallback(CRYP_HandleTypeDef* hcryp)
 {
-   /* Prevent unused argument(s) compilation warning */
-   UNUSED(hcryp);
+    /* Prevent unused argument(s) compilation warning */
+    UNUSED(hcryp);
 
-   /* NOTE : This function Should not be modified, when the callback is needed,
+    /* NOTE : This function Should not be modified, when the callback is needed,
              the HAL_CRYP_ComputationCpltCallback could be implemented in the user file
     */
 }
@@ -107,7 +107,7 @@ __weak void HAL_CRYPEx_ComputationCpltCallback(CRYP_HandleTypeDef* hcryp)
  * @}
  */
 
-#   endif /* HAL_CRYP_MODULE_ENABLED */
+#endif /* HAL_CRYP_MODULE_ENABLED */
 
 /**
  * @}

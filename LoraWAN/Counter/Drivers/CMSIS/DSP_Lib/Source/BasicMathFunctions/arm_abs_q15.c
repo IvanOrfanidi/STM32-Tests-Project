@@ -64,95 +64,92 @@
 
 void arm_abs_q15(q15_t* pSrc, q15_t* pDst, uint32_t blockSize)
 {
-   uint32_t blkCnt; /* loop counter */
+    uint32_t blkCnt; /* loop counter */
 
 #ifndef ARM_MATH_CM0_FAMILY
-   __SIMD32_TYPE* simd;
+    __SIMD32_TYPE* simd;
 
-   /* Run the below code for Cortex-M4 and Cortex-M3 */
+    /* Run the below code for Cortex-M4 and Cortex-M3 */
 
-   q15_t in1; /* Input value1 */
-   q15_t in2; /* Input value2 */
+    q15_t in1; /* Input value1 */
+    q15_t in2; /* Input value2 */
 
-   /*loop Unrolling */
-   blkCnt = blockSize >> 2u;
+    /*loop Unrolling */
+    blkCnt = blockSize >> 2u;
 
-   /* First part of the processing with loop unrolling.  Compute 4 outputs at a time.
+    /* First part of the processing with loop unrolling.  Compute 4 outputs at a time.
     ** a second loop below computes the remaining 1 to 3 samples. */
-   simd = __SIMD32_CONST(pDst);
-   while (blkCnt > 0u)
-   {
-      /* C = |A| */
-      /* Read two inputs */
-      in1 = *pSrc++;
-      in2 = *pSrc++;
+    simd = __SIMD32_CONST(pDst);
+    while(blkCnt > 0u) {
+        /* C = |A| */
+        /* Read two inputs */
+        in1 = *pSrc++;
+        in2 = *pSrc++;
 
-      /* Store the Absolute result in the destination buffer by packing the two values, in a single cycle */
-#   ifndef ARM_MATH_BIG_ENDIAN
-      *simd++ = __PKHBT(((in1 > 0) ? in1 : (q15_t)__QSUB16(0, in1)), ((in2 > 0) ? in2 : (q15_t)__QSUB16(0, in2)), 16);
-
-#   else
-
-      *simd++ = __PKHBT(((in2 > 0) ? in2 : (q15_t)__QSUB16(0, in2)), ((in1 > 0) ? in1 : (q15_t)__QSUB16(0, in1)), 16);
-
-#   endif /* #ifndef  ARM_MATH_BIG_ENDIAN    */
-
-      in1 = *pSrc++;
-      in2 = *pSrc++;
-
-#   ifndef ARM_MATH_BIG_ENDIAN
-
-      *simd++ = __PKHBT(((in1 > 0) ? in1 : (q15_t)__QSUB16(0, in1)), ((in2 > 0) ? in2 : (q15_t)__QSUB16(0, in2)), 16);
-
-#   else
-
-      *simd++ = __PKHBT(((in2 > 0) ? in2 : (q15_t)__QSUB16(0, in2)), ((in1 > 0) ? in1 : (q15_t)__QSUB16(0, in1)), 16);
-
-#   endif /* #ifndef  ARM_MATH_BIG_ENDIAN    */
-
-      /* Decrement the loop counter */
-      blkCnt--;
-   }
-   pDst = (q15_t*)simd;
-
-   /* If the blockSize is not a multiple of 4, compute any remaining output samples here.
-    ** No loop unrolling is used. */
-   blkCnt = blockSize % 0x4u;
-
-   while (blkCnt > 0u)
-   {
-      /* C = |A| */
-      /* Read the input */
-      in1 = *pSrc++;
-
-      /* Calculate absolute value of input and then store the result in the destination buffer. */
-      *pDst++ = (in1 > 0) ? in1 : (q15_t)__QSUB16(0, in1);
-
-      /* Decrement the loop counter */
-      blkCnt--;
-   }
+        /* Store the Absolute result in the destination buffer by packing the two values, in a single cycle */
+#ifndef ARM_MATH_BIG_ENDIAN
+        *simd++ = __PKHBT(((in1 > 0) ? in1 : (q15_t)__QSUB16(0, in1)), ((in2 > 0) ? in2 : (q15_t)__QSUB16(0, in2)), 16);
 
 #else
 
-   /* Run the below code for Cortex-M0 */
+        *simd++ = __PKHBT(((in2 > 0) ? in2 : (q15_t)__QSUB16(0, in2)), ((in1 > 0) ? in1 : (q15_t)__QSUB16(0, in1)), 16);
 
-   q15_t in; /* Temporary input variable */
+#endif /* #ifndef  ARM_MATH_BIG_ENDIAN    */
 
-   /* Initialize blkCnt with number of samples */
-   blkCnt = blockSize;
+        in1 = *pSrc++;
+        in2 = *pSrc++;
 
-   while (blkCnt > 0u)
-   {
-      /* C = |A| */
-      /* Read the input */
-      in = *pSrc++;
+#ifndef ARM_MATH_BIG_ENDIAN
 
-      /* Calculate absolute value of input and then store the result in the destination buffer. */
-      *pDst++ = (in > 0) ? in : ((in == (q15_t)0x8000) ? 0x7fff : -in);
+        *simd++ = __PKHBT(((in1 > 0) ? in1 : (q15_t)__QSUB16(0, in1)), ((in2 > 0) ? in2 : (q15_t)__QSUB16(0, in2)), 16);
 
-      /* Decrement the loop counter */
-      blkCnt--;
-   }
+#else
+
+        *simd++ = __PKHBT(((in2 > 0) ? in2 : (q15_t)__QSUB16(0, in2)), ((in1 > 0) ? in1 : (q15_t)__QSUB16(0, in1)), 16);
+
+#endif /* #ifndef  ARM_MATH_BIG_ENDIAN    */
+
+        /* Decrement the loop counter */
+        blkCnt--;
+    }
+    pDst = (q15_t*)simd;
+
+    /* If the blockSize is not a multiple of 4, compute any remaining output samples here.
+    ** No loop unrolling is used. */
+    blkCnt = blockSize % 0x4u;
+
+    while(blkCnt > 0u) {
+        /* C = |A| */
+        /* Read the input */
+        in1 = *pSrc++;
+
+        /* Calculate absolute value of input and then store the result in the destination buffer. */
+        *pDst++ = (in1 > 0) ? in1 : (q15_t)__QSUB16(0, in1);
+
+        /* Decrement the loop counter */
+        blkCnt--;
+    }
+
+#else
+
+    /* Run the below code for Cortex-M0 */
+
+    q15_t in; /* Temporary input variable */
+
+    /* Initialize blkCnt with number of samples */
+    blkCnt = blockSize;
+
+    while(blkCnt > 0u) {
+        /* C = |A| */
+        /* Read the input */
+        in = *pSrc++;
+
+        /* Calculate absolute value of input and then store the result in the destination buffer. */
+        *pDst++ = (in > 0) ? in : ((in == (q15_t)0x8000) ? 0x7fff : -in);
+
+        /* Decrement the loop counter */
+        blkCnt--;
+    }
 
 #endif /* #ifndef ARM_MATH_CM0_FAMILY */
 }

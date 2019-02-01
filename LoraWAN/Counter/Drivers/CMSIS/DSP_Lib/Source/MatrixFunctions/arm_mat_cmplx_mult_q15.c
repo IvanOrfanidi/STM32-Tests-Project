@@ -82,332 +82,323 @@
  */
 
 arm_status arm_mat_cmplx_mult_q15(const arm_matrix_instance_q15* pSrcA,
-                                  const arm_matrix_instance_q15* pSrcB,
-                                  arm_matrix_instance_q15* pDst,
-                                  q15_t* pScratch)
+    const arm_matrix_instance_q15* pSrcB,
+    arm_matrix_instance_q15* pDst,
+    q15_t* pScratch)
 {
-   /* accumulator */
-   q15_t* pSrcBT = pScratch; /* input data matrix pointer for transpose */
-   q15_t* pInA = pSrcA->pData; /* input data matrix pointer A of Q15 type */
-   q15_t* pInB = pSrcB->pData; /* input data matrix pointer B of Q15 type */
-   q15_t* px; /* Temporary output data matrix pointer */
-   uint16_t numRowsA = pSrcA->numRows; /* number of rows of input matrix A    */
-   uint16_t numColsB = pSrcB->numCols; /* number of columns of input matrix B */
-   uint16_t numColsA = pSrcA->numCols; /* number of columns of input matrix A */
-   uint16_t numRowsB = pSrcB->numRows; /* number of rows of input matrix A    */
-   uint16_t col, i = 0u, row = numRowsB, colCnt; /* loop counters */
-   arm_status status; /* status of matrix multiplication */
-   q63_t sumReal, sumImag;
+    /* accumulator */
+    q15_t* pSrcBT = pScratch;                     /* input data matrix pointer for transpose */
+    q15_t* pInA = pSrcA->pData;                   /* input data matrix pointer A of Q15 type */
+    q15_t* pInB = pSrcB->pData;                   /* input data matrix pointer B of Q15 type */
+    q15_t* px;                                    /* Temporary output data matrix pointer */
+    uint16_t numRowsA = pSrcA->numRows;           /* number of rows of input matrix A    */
+    uint16_t numColsB = pSrcB->numCols;           /* number of columns of input matrix B */
+    uint16_t numColsA = pSrcA->numCols;           /* number of columns of input matrix A */
+    uint16_t numRowsB = pSrcB->numRows;           /* number of rows of input matrix A    */
+    uint16_t col, i = 0u, row = numRowsB, colCnt; /* loop counters */
+    arm_status status;                            /* status of matrix multiplication */
+    q63_t sumReal, sumImag;
 
 #ifdef UNALIGNED_SUPPORT_DISABLE
-   q15_t in; /* Temporary variable to hold the input value */
-   q15_t a, b, c, d;
+    q15_t in; /* Temporary variable to hold the input value */
+    q15_t a, b, c, d;
 #else
-   q31_t in; /* Temporary variable to hold the input value */
-   q31_t prod1, prod2;
-   q31_t pSourceA, pSourceB;
+    q31_t in; /* Temporary variable to hold the input value */
+    q31_t prod1, prod2;
+    q31_t pSourceA, pSourceB;
 #endif
 
 #ifdef ARM_MATH_MATRIX_CHECK
-   /* Check for matrix mismatch condition */
-   if ((pSrcA->numCols != pSrcB->numRows) || (pSrcA->numRows != pDst->numRows) || (pSrcB->numCols != pDst->numCols))
-   {
-      /* Set status as ARM_MATH_SIZE_MISMATCH */
-      status = ARM_MATH_SIZE_MISMATCH;
-   }
-   else
+    /* Check for matrix mismatch condition */
+    if((pSrcA->numCols != pSrcB->numRows) || (pSrcA->numRows != pDst->numRows) || (pSrcB->numCols != pDst->numCols)) {
+        /* Set status as ARM_MATH_SIZE_MISMATCH */
+        status = ARM_MATH_SIZE_MISMATCH;
+    }
+    else
 #endif
-   {
-      /* Matrix transpose */
-      do
-      {
-         /* Apply loop unrolling and exchange the columns with row elements */
-         col = numColsB >> 2;
+    {
+        /* Matrix transpose */
+        do {
+            /* Apply loop unrolling and exchange the columns with row elements */
+            col = numColsB >> 2;
 
-         /* The pointer px is set to starting address of the column being processed */
-         px = pSrcBT + i;
+            /* The pointer px is set to starting address of the column being processed */
+            px = pSrcBT + i;
 
-         /* First part of the processing with loop unrolling.  Compute 4 outputs at a time.
+            /* First part of the processing with loop unrolling.  Compute 4 outputs at a time.
           ** a second loop below computes the remaining 1 to 3 samples. */
-         while (col > 0u)
-         {
+            while(col > 0u) {
 #ifdef UNALIGNED_SUPPORT_DISABLE
-            /* Read two elements from the row */
-            in = *pInB++;
-            *px = in;
-            in = *pInB++;
-            px[1] = in;
+                /* Read two elements from the row */
+                in = *pInB++;
+                *px = in;
+                in = *pInB++;
+                px[1] = in;
 
-            /* Update the pointer px to point to the next row of the transposed matrix */
-            px += numRowsB * 2;
+                /* Update the pointer px to point to the next row of the transposed matrix */
+                px += numRowsB * 2;
 
-            /* Read two elements from the row */
-            in = *pInB++;
-            *px = in;
-            in = *pInB++;
-            px[1] = in;
+                /* Read two elements from the row */
+                in = *pInB++;
+                *px = in;
+                in = *pInB++;
+                px[1] = in;
 
-            /* Update the pointer px to point to the next row of the transposed matrix */
-            px += numRowsB * 2;
+                /* Update the pointer px to point to the next row of the transposed matrix */
+                px += numRowsB * 2;
 
-            /* Read two elements from the row */
-            in = *pInB++;
-            *px = in;
-            in = *pInB++;
-            px[1] = in;
+                /* Read two elements from the row */
+                in = *pInB++;
+                *px = in;
+                in = *pInB++;
+                px[1] = in;
 
-            /* Update the pointer px to point to the next row of the transposed matrix */
-            px += numRowsB * 2;
+                /* Update the pointer px to point to the next row of the transposed matrix */
+                px += numRowsB * 2;
 
-            /* Read two elements from the row */
-            in = *pInB++;
-            *px = in;
-            in = *pInB++;
-            px[1] = in;
+                /* Read two elements from the row */
+                in = *pInB++;
+                *px = in;
+                in = *pInB++;
+                px[1] = in;
 
-            /* Update the pointer px to point to the next row of the transposed matrix */
-            px += numRowsB * 2;
+                /* Update the pointer px to point to the next row of the transposed matrix */
+                px += numRowsB * 2;
 
-            /* Decrement the column loop counter */
-            col--;
-         }
+                /* Decrement the column loop counter */
+                col--;
+            }
 
-         /* If the columns of pSrcB is not a multiple of 4, compute any remaining output samples here.
+            /* If the columns of pSrcB is not a multiple of 4, compute any remaining output samples here.
           ** No loop unrolling is used. */
-         col = numColsB % 0x4u;
+            col = numColsB % 0x4u;
 
-         while (col > 0u)
-         {
-            /* Read two elements from the row */
-            in = *pInB++;
-            *px = in;
-            in = *pInB++;
-            px[1] = in;
+            while(col > 0u) {
+                /* Read two elements from the row */
+                in = *pInB++;
+                *px = in;
+                in = *pInB++;
+                px[1] = in;
 #else
 
-            /* Read two elements from the row */
-            in = *__SIMD32(pInB)++;
+                /* Read two elements from the row */
+                in = *__SIMD32(pInB)++;
 
-            *__SIMD32(px) = in;
+                *__SIMD32(px) = in;
 
-            /* Update the pointer px to point to the next row of the transposed matrix */
-            px += numRowsB * 2;
+                /* Update the pointer px to point to the next row of the transposed matrix */
+                px += numRowsB * 2;
 
-            /* Read two elements from the row */
-            in = *__SIMD32(pInB)++;
+                /* Read two elements from the row */
+                in = *__SIMD32(pInB)++;
 
-            *__SIMD32(px) = in;
+                *__SIMD32(px) = in;
 
-            /* Update the pointer px to point to the next row of the transposed matrix */
-            px += numRowsB * 2;
+                /* Update the pointer px to point to the next row of the transposed matrix */
+                px += numRowsB * 2;
 
-            /* Read two elements from the row */
-            in = *__SIMD32(pInB)++;
+                /* Read two elements from the row */
+                in = *__SIMD32(pInB)++;
 
-            *__SIMD32(px) = in;
+                *__SIMD32(px) = in;
 
-            /* Update the pointer px to point to the next row of the transposed matrix */
-            px += numRowsB * 2;
+                /* Update the pointer px to point to the next row of the transposed matrix */
+                px += numRowsB * 2;
 
-            /* Read two elements from the row */
-            in = *__SIMD32(pInB)++;
+                /* Read two elements from the row */
+                in = *__SIMD32(pInB)++;
 
-            *__SIMD32(px) = in;
+                *__SIMD32(px) = in;
 
-            /* Update the pointer px to point to the next row of the transposed matrix */
-            px += numRowsB * 2;
+                /* Update the pointer px to point to the next row of the transposed matrix */
+                px += numRowsB * 2;
 
-            /* Decrement the column loop counter */
-            col--;
-         }
+                /* Decrement the column loop counter */
+                col--;
+            }
 
-         /* If the columns of pSrcB is not a multiple of 4, compute any remaining output samples here.
+            /* If the columns of pSrcB is not a multiple of 4, compute any remaining output samples here.
           ** No loop unrolling is used. */
-         col = numColsB % 0x4u;
+            col = numColsB % 0x4u;
 
-         while (col > 0u)
-         {
-            /* Read two elements from the row */
-            in = *__SIMD32(pInB)++;
+            while(col > 0u) {
+                /* Read two elements from the row */
+                in = *__SIMD32(pInB)++;
 
-            *__SIMD32(px) = in;
+                *__SIMD32(px) = in;
 #endif
 
-            /* Update the pointer px to point to the next row of the transposed matrix */
-            px += numRowsB * 2;
+                /* Update the pointer px to point to the next row of the transposed matrix */
+                px += numRowsB * 2;
 
-            /* Decrement the column loop counter */
-            col--;
-         }
+                /* Decrement the column loop counter */
+                col--;
+            }
 
-         i = i + 2u;
+            i = i + 2u;
 
-         /* Decrement the row loop counter */
-         row--;
+            /* Decrement the row loop counter */
+            row--;
 
-      } while (row > 0u);
+        } while(row > 0u);
 
-      /* Reset the variables for the usage in the following multiplication process */
-      row = numRowsA;
-      i = 0u;
-      px = pDst->pData;
+        /* Reset the variables for the usage in the following multiplication process */
+        row = numRowsA;
+        i = 0u;
+        px = pDst->pData;
 
-      /* The following loop performs the dot-product of each row in pSrcA with each column in pSrcB */
-      /* row loop */
-      do
-      {
-         /* For every row wise process, the column loop counter is to be initiated */
-         col = numColsB;
+        /* The following loop performs the dot-product of each row in pSrcA with each column in pSrcB */
+        /* row loop */
+        do {
+            /* For every row wise process, the column loop counter is to be initiated */
+            col = numColsB;
 
-         /* For every row wise process, the pIn2 pointer is set
+            /* For every row wise process, the pIn2 pointer is set
           ** to the starting address of the transposed pSrcB data */
-         pInB = pSrcBT;
+            pInB = pSrcBT;
 
-         /* column loop */
-         do
-         {
-            /* Set the variable sum, that acts as accumulator, to zero */
-            sumReal = 0;
-            sumImag = 0;
+            /* column loop */
+            do {
+                /* Set the variable sum, that acts as accumulator, to zero */
+                sumReal = 0;
+                sumImag = 0;
 
-            /* Apply loop unrolling and compute 2 MACs simultaneously. */
-            colCnt = numColsA >> 1;
+                /* Apply loop unrolling and compute 2 MACs simultaneously. */
+                colCnt = numColsA >> 1;
 
-            /* Initiate the pointer pIn1 to point to the starting address of the column being processed */
-            pInA = pSrcA->pData + i * 2;
+                /* Initiate the pointer pIn1 to point to the starting address of the column being processed */
+                pInA = pSrcA->pData + i * 2;
 
-            /* matrix multiplication */
-            while (colCnt > 0u)
-            {
-               /* c(m,n) = a(1,1)*b(1,1) + a(1,2) * b(2,1) + .... + a(m,p)*b(p,n) */
+                /* matrix multiplication */
+                while(colCnt > 0u) {
+                    /* c(m,n) = a(1,1)*b(1,1) + a(1,2) * b(2,1) + .... + a(m,p)*b(p,n) */
 
 #ifdef UNALIGNED_SUPPORT_DISABLE
 
-               /* read real and imag values from pSrcA buffer */
-               a = *pInA;
-               b = *(pInA + 1u);
-               /* read real and imag values from pSrcB buffer */
-               c = *pInB;
-               d = *(pInB + 1u);
+                    /* read real and imag values from pSrcA buffer */
+                    a = *pInA;
+                    b = *(pInA + 1u);
+                    /* read real and imag values from pSrcB buffer */
+                    c = *pInB;
+                    d = *(pInB + 1u);
 
-               /* Multiply and Accumlates */
-               sumReal += (q31_t)a * c;
-               sumImag += (q31_t)a * d;
-               sumReal -= (q31_t)b * d;
-               sumImag += (q31_t)b * c;
+                    /* Multiply and Accumlates */
+                    sumReal += (q31_t)a * c;
+                    sumImag += (q31_t)a * d;
+                    sumReal -= (q31_t)b * d;
+                    sumImag += (q31_t)b * c;
 
-               /* read next real and imag values from pSrcA buffer */
-               a = *(pInA + 2u);
-               b = *(pInA + 3u);
-               /* read next real and imag values from pSrcB buffer */
-               c = *(pInB + 2u);
-               d = *(pInB + 3u);
+                    /* read next real and imag values from pSrcA buffer */
+                    a = *(pInA + 2u);
+                    b = *(pInA + 3u);
+                    /* read next real and imag values from pSrcB buffer */
+                    c = *(pInB + 2u);
+                    d = *(pInB + 3u);
 
-               /* update pointer */
-               pInA += 4u;
+                    /* update pointer */
+                    pInA += 4u;
 
-               /* Multiply and Accumlates */
-               sumReal += (q31_t)a * c;
-               sumImag += (q31_t)a * d;
-               sumReal -= (q31_t)b * d;
-               sumImag += (q31_t)b * c;
-               /* update pointer */
-               pInB += 4u;
+                    /* Multiply and Accumlates */
+                    sumReal += (q31_t)a * c;
+                    sumImag += (q31_t)a * d;
+                    sumReal -= (q31_t)b * d;
+                    sumImag += (q31_t)b * c;
+                    /* update pointer */
+                    pInB += 4u;
 #else
-               /* read real and imag values from pSrcA and pSrcB buffer */
-               pSourceA = *__SIMD32(pInA)++;
-               pSourceB = *__SIMD32(pInB)++;
+                    /* read real and imag values from pSrcA and pSrcB buffer */
+                    pSourceA = *__SIMD32(pInA)++;
+                    pSourceB = *__SIMD32(pInB)++;
 
-               /* Multiply and Accumlates */
-#   ifdef ARM_MATH_BIG_ENDIAN
-               prod1 = -__SMUSD(pSourceA, pSourceB);
-#   else
-               prod1 = __SMUSD(pSourceA, pSourceB);
-#   endif
-               prod2 = __SMUADX(pSourceA, pSourceB);
-               sumReal += (q63_t)prod1;
-               sumImag += (q63_t)prod2;
+                    /* Multiply and Accumlates */
+#ifdef ARM_MATH_BIG_ENDIAN
+                    prod1 = -__SMUSD(pSourceA, pSourceB);
+#else
+                    prod1 = __SMUSD(pSourceA, pSourceB);
+#endif
+                    prod2 = __SMUADX(pSourceA, pSourceB);
+                    sumReal += (q63_t)prod1;
+                    sumImag += (q63_t)prod2;
 
-               /* read real and imag values from pSrcA and pSrcB buffer */
-               pSourceA = *__SIMD32(pInA)++;
-               pSourceB = *__SIMD32(pInB)++;
+                    /* read real and imag values from pSrcA and pSrcB buffer */
+                    pSourceA = *__SIMD32(pInA)++;
+                    pSourceB = *__SIMD32(pInB)++;
 
-               /* Multiply and Accumlates */
-#   ifdef ARM_MATH_BIG_ENDIAN
-               prod1 = -__SMUSD(pSourceA, pSourceB);
-#   else
-               prod1 = __SMUSD(pSourceA, pSourceB);
-#   endif
-               prod2 = __SMUADX(pSourceA, pSourceB);
-               sumReal += (q63_t)prod1;
-               sumImag += (q63_t)prod2;
+                    /* Multiply and Accumlates */
+#ifdef ARM_MATH_BIG_ENDIAN
+                    prod1 = -__SMUSD(pSourceA, pSourceB);
+#else
+                    prod1 = __SMUSD(pSourceA, pSourceB);
+#endif
+                    prod2 = __SMUADX(pSourceA, pSourceB);
+                    sumReal += (q63_t)prod1;
+                    sumImag += (q63_t)prod2;
 
 #endif /*      #ifdef UNALIGNED_SUPPORT_DISABLE */
 
-               /* Decrement the loop counter */
-               colCnt--;
-            }
+                    /* Decrement the loop counter */
+                    colCnt--;
+                }
 
-            /* process odd column samples */
-            if ((numColsA & 0x1u) > 0u)
-            {
-               /* c(m,n) = a(1,1)*b(1,1) + a(1,2) * b(2,1) + .... + a(m,p)*b(p,n) */
+                /* process odd column samples */
+                if((numColsA & 0x1u) > 0u) {
+                    /* c(m,n) = a(1,1)*b(1,1) + a(1,2) * b(2,1) + .... + a(m,p)*b(p,n) */
 
 #ifdef UNALIGNED_SUPPORT_DISABLE
 
-               /* read real and imag values from pSrcA and pSrcB buffer */
-               a = *pInA++;
-               b = *pInA++;
-               c = *pInB++;
-               d = *pInB++;
+                    /* read real and imag values from pSrcA and pSrcB buffer */
+                    a = *pInA++;
+                    b = *pInA++;
+                    c = *pInB++;
+                    d = *pInB++;
 
-               /* Multiply and Accumlates */
-               sumReal += (q31_t)a * c;
-               sumImag += (q31_t)a * d;
-               sumReal -= (q31_t)b * d;
-               sumImag += (q31_t)b * c;
+                    /* Multiply and Accumlates */
+                    sumReal += (q31_t)a * c;
+                    sumImag += (q31_t)a * d;
+                    sumReal -= (q31_t)b * d;
+                    sumImag += (q31_t)b * c;
 
 #else
-               /* read real and imag values from pSrcA and pSrcB buffer */
-               pSourceA = *__SIMD32(pInA)++;
-               pSourceB = *__SIMD32(pInB)++;
+                    /* read real and imag values from pSrcA and pSrcB buffer */
+                    pSourceA = *__SIMD32(pInA)++;
+                    pSourceB = *__SIMD32(pInB)++;
 
-               /* Multiply and Accumlates */
-#   ifdef ARM_MATH_BIG_ENDIAN
-               prod1 = -__SMUSD(pSourceA, pSourceB);
-#   else
-               prod1 = __SMUSD(pSourceA, pSourceB);
-#   endif
-               prod2 = __SMUADX(pSourceA, pSourceB);
-               sumReal += (q63_t)prod1;
-               sumImag += (q63_t)prod2;
+                    /* Multiply and Accumlates */
+#ifdef ARM_MATH_BIG_ENDIAN
+                    prod1 = -__SMUSD(pSourceA, pSourceB);
+#else
+                    prod1 = __SMUSD(pSourceA, pSourceB);
+#endif
+                    prod2 = __SMUADX(pSourceA, pSourceB);
+                    sumReal += (q63_t)prod1;
+                    sumImag += (q63_t)prod2;
 
 #endif /*      #ifdef UNALIGNED_SUPPORT_DISABLE */
-            }
+                }
 
-            /* Saturate and store the result in the destination buffer */
+                /* Saturate and store the result in the destination buffer */
 
-            *px++ = (q15_t)(__SSAT(sumReal >> 15, 16));
-            *px++ = (q15_t)(__SSAT(sumImag >> 15, 16));
+                *px++ = (q15_t)(__SSAT(sumReal >> 15, 16));
+                *px++ = (q15_t)(__SSAT(sumImag >> 15, 16));
 
-            /* Decrement the column loop counter */
-            col--;
+                /* Decrement the column loop counter */
+                col--;
 
-         } while (col > 0u);
+            } while(col > 0u);
 
-         i = i + numColsA;
+            i = i + numColsA;
 
-         /* Decrement the row loop counter */
-         row--;
+            /* Decrement the row loop counter */
+            row--;
 
-      } while (row > 0u);
+        } while(row > 0u);
 
-      /* set status as ARM_MATH_SUCCESS */
-      status = ARM_MATH_SUCCESS;
-   }
+        /* set status as ARM_MATH_SUCCESS */
+        status = ARM_MATH_SUCCESS;
+    }
 
-   /* Return to application */
-   return (status);
+    /* Return to application */
+    return (status);
 }
 
 /**

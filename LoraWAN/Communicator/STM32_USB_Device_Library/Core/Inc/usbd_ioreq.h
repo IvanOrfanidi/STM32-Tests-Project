@@ -27,15 +27,15 @@
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __USBD_IOREQ_H
-#   define __USBD_IOREQ_H
+#define __USBD_IOREQ_H
 
-#   ifdef __cplusplus
+#ifdef __cplusplus
 extern "C" {
-#   endif
+#endif
 
 /* Includes ------------------------------------------------------------------*/
-#   include "usbd_def.h"
-#   include "usbd_core.h"
+#include "usbd_def.h"
+#include "usbd_core.h"
 
 /** @addtogroup STM32_USB_DEVICE_LIBRARY
  * @{
@@ -99,9 +99,9 @@ uint16_t USBD_GetRxCount(USBD_HandleTypeDef* pdev, uint8_t epnum);
  * @}
  */
 
-#   ifdef __cplusplus
+#ifdef __cplusplus
 }
-#   endif
+#endif
 
 #endif /* __USBD_IOREQ_H */
 

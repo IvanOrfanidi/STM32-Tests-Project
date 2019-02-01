@@ -54,8 +54,8 @@
  */
 void arm_pid_reset_f32(arm_pid_instance_f32* S)
 {
-   /* Clear the state buffer.  The size will be always 3 samples */
-   memset(S->state, 0, 3u * sizeof(float32_t));
+    /* Clear the state buffer.  The size will be always 3 samples */
+    memset(S->state, 0, 3u * sizeof(float32_t));
 }
 
 /**

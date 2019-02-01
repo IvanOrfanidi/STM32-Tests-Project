@@ -34,13 +34,11 @@ void Rtc::InitRTC()
     RCC_APB1PeriphClockCmd(RCC_APB1Periph_BKP, ENABLE);
 
     /* LSI clock stabilization time */
-    for(uint16_t i = 0; i < 5000; i++)
-    {
+    for(uint16_t i = 0; i < 5000; i++) {
         ;
     }
 
-    if(BKP_ReadBackupRegister(BKP_DR1) != 0xA5A5)
-    {
+    if(BKP_ReadBackupRegister(BKP_DR1) != 0xA5A5) {
         /* Backup data register value is not correct or not yet programmed (when
            the first time the program is executed) */
 
@@ -55,8 +53,7 @@ void Rtc::InitRTC()
 
         /* Wait till LSE is ready */
         uint32_t Timeout = 100000;
-        while(RCC_GetFlagStatus(RCC_FLAG_LSERDY) == RESET)
-        {
+        while(RCC_GetFlagStatus(RCC_FLAG_LSERDY) == RESET) {
             Timeout--;
             if(!(Timeout))
                 break;
@@ -88,8 +85,7 @@ void Rtc::InitRTC()
             RCC_LSICmd(ENABLE);
 
             // Wait till LSI is ready
-            while(RCC_GetFlagStatus(RCC_FLAG_LSIRDY) == RESET && (--count) > 0)
-            {
+            while(RCC_GetFlagStatus(RCC_FLAG_LSIRDY) == RESET && (--count) > 0) {
                 __NOP();
                 __NOP();
                 __NOP();
@@ -128,8 +124,7 @@ void Rtc::InitRTC()
         /* Lock access to BKP Domain */
         PWR_BackupAccessCmd(DISABLE);
     }
-    else
-    {
+    else {
         /* Wait for RTC registers synchronization */
         // RTC_WaitForSynchro();
     }
@@ -143,15 +138,13 @@ bool Rtc::LseEnable()
     RCC_LSEConfig(RCC_LSE_ON);
 
     // Wait till LSE is ready
-    while(RCC_GetFlagStatus(RCC_FLAG_LSERDY) == RESET && (--count) > 0)
-    {
+    while(RCC_GetFlagStatus(RCC_FLAG_LSERDY) == RESET && (--count) > 0) {
         __NOP();
         __NOP();
         __NOP();
         __NOP();
     }
-    if(0 == count)
-    {
+    if(0 == count) {
         return true;
     }
 
@@ -190,15 +183,13 @@ bool Rtc::LsiEnable()
     RCC_LSICmd(ENABLE);
 
     // Wait till LSI is ready
-    while(RCC_GetFlagStatus(RCC_FLAG_LSIRDY) == RESET && (--count) > 0)
-    {
+    while(RCC_GetFlagStatus(RCC_FLAG_LSIRDY) == RESET && (--count) > 0) {
         __NOP();
         __NOP();
         __NOP();
         __NOP();
     }
-    if(0 == count)
-    {
+    if(0 == count) {
         return true;
     }
 
@@ -248,30 +239,27 @@ void Rtc::SetTime(const RTC_t* const rtc)
     PWR_BackupAccessCmd(DISABLE);
 }
 
-void Rtc::GetTime(RTC_t *rtc)
+void Rtc::GetTime(RTC_t* rtc)
 {
     uint32_t t;
-    while((t = RTC_GetCounter()) != RTC_GetCounter())
-    {
+    while((t = RTC_GetCounter()) != RTC_GetCounter()) {
         ;
     }
     Sec2Date(rtc, t);
 }
 
-void Rtc::Sec2Date(RTC_t *pDest, uint32_t Sec)
+void Rtc::Sec2Date(RTC_t* pDest, uint32_t Sec)
 {
     uint32_t dl = 0;
 
     pDest->h12 = RTC_H12_AM;
     pDest->wday = 0;
 
-    if(Sec >= 946684800L)
-    {
+    if(Sec >= 946684800L) {
         Sec -= 946684800L;    //Дата позже 1 января 2000 года
         pDest->year = 0;
     }
-    else
-    {
+    else {
         pDest->year = 70;    //Дата от 1970 года до 1999 года
     }
 
@@ -293,7 +281,7 @@ void Rtc::Sec2Date(RTC_t *pDest, uint32_t Sec)
     pDest->sec = Sec;
 }
 
-uint32_t Rtc::Date2Sec(const RTC_t *pSrc)
+uint32_t Rtc::Date2Sec(const RTC_t* pSrc)
 {
     uint32_t TimeInSec = 0;
     uint32_t tmp = 0;
@@ -301,14 +289,12 @@ uint32_t Rtc::Date2Sec(const RTC_t *pSrc)
 
     year = pSrc->year - 2000;
 
-    if(year < 70)
-    {
+    if(year < 70) {
         TimeInSec += 946684800L;    //Дата позже 1 января 2000 года
         for(tmp = 0; tmp < year; TimeInSec += 86400L * (365L + visocosn(tmp)), tmp++)
             ;
     }
-    else
-    {
+    else {
         for(tmp = 70; tmp < year; TimeInSec += 86400L * (365L + visocosn(tmp)), tmp++)
             ;
     }

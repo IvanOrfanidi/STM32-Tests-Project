@@ -16,7 +16,6 @@
 /* Includes ------------------------------------------------------------------*/
 #include "net.hpp"
 
-
 void Net::MakeEth(uint8_t* buf, const uint8_t* macaddr)
 {
     //copy the destination mac from the source and fill my mac into src
@@ -25,7 +24,6 @@ void Net::MakeEth(uint8_t* buf, const uint8_t* macaddr)
         buf[ETH_SRC_MAC + i] = macaddr[i];
     }
 }
-
 
 void Net::MakeIp(uint8_t* buf, const uint8_t* ipaddr)
 {
@@ -36,43 +34,40 @@ void Net::MakeIp(uint8_t* buf, const uint8_t* ipaddr)
     FillIpHdrChecksum(buf);
 }
 
-
 void Net::FillIpHdrChecksum(uint8_t* buf)
 {
     // clear the 2 byte checksum
     buf[IP_CHECKSUM_P] = 0;
-    buf[IP_CHECKSUM_P+1] = 0;
-    buf[IP_FLAGS_P] = 0x40; // don't fragment
-    buf[IP_FLAGS_P+1] = 0;  // fragement offset
-    buf[IP_TTL_P] = 64; // ttl
-    
+    buf[IP_CHECKSUM_P + 1] = 0;
+    buf[IP_FLAGS_P] = 0x40;     // don't fragment
+    buf[IP_FLAGS_P + 1] = 0;    // fragement offset
+    buf[IP_TTL_P] = 64;         // ttl
+
     // calculate the checksum:
     uint16_t crc = CalcCrc(&buf[IP_P], IP_HEADER_LEN, PacketType_t::IP);
     buf[IP_CHECKSUM_P] = crc >> 8;
-    buf[IP_CHECKSUM_P+1] = crc & 0xff;
+    buf[IP_CHECKSUM_P + 1] = crc & 0xff;
 }
-
 
 uint16_t Net::CalcCrc(uint8_t* buf, size_t len, PacketType_t type)
 {
     uint32_t sum = 0;
     if(type == PacketType_t::UDP) {
-        sum += IP_PROTO_UDP_V; // protocol udp
+        sum += IP_PROTO_UDP_V;    // protocol udp
         // the length here is the length of udp (data+header len)
         // =length given to this function - (IP.scr+IP.dst length)
-        sum += (len - 8); // = real tcp len
+        sum += (len - 8);    // = real tcp len
     }
     else if(type == PacketType_t::TCP) {
-        sum += IP_PROTO_TCP_V; 
+        sum += IP_PROTO_TCP_V;
         // the length here is the length of tcp (data+header len)
         // =length given to this function - (IP.scr+IP.dst length)
-        sum += (len - 8); // = real tcp len
+        sum += (len - 8);    // = real tcp len
     }
-    
+
     // build the sum of 16bit words
-    while(len > 1)
-    {
-        sum += 0xFFFF & ((*buf << 8) | *(buf+1));
+    while(len > 1) {
+        sum += 0xFFFF & ((*buf << 8) | *(buf + 1));
         buf += 2;
         len -= 2;
     }
@@ -82,23 +77,21 @@ uint16_t Net::CalcCrc(uint8_t* buf, size_t len, PacketType_t type)
     }
     // now calculate the sum over the bytes in the sum
     // until the result is only 16bit long
-    while (sum >> 16) {
+    while(sum >> 16) {
         sum = (sum & 0xFFFF) + (sum >> 16);
     }
     // build 1's complement:
     return ((uint16_t)sum ^ 0xFFFF);
 }
 
-
 bool Net::EthTypeIsIcmpEcho(uint8_t* buf, size_t len)
 {
     if(0 == len) {
         return false;
     }
-    
+
     return ((buf[IP_PROTO_P] == IP_PROTO_ICMP_V) && (buf[ICMP_TYPE_P] == ICMP_TYPE_ECHOREQUEST_V));
 }
-
 
 bool Net::EthTypeIsIp(uint8_t* buf, size_t len, const uint8_t* ipaddr)
 {
@@ -106,17 +99,17 @@ bool Net::EthTypeIsIp(uint8_t* buf, size_t len, const uint8_t* ipaddr)
     if(len < ETH_HEADER_SIZE) {
         return false;
     }
-    
-    if((buf[ETH_TYPE_H_P] != ETHTYPE_IP_H_V) || 
-       (buf[ETH_TYPE_L_P]!=ETHTYPE_IP_L_V)) {
+
+    if((buf[ETH_TYPE_H_P] != ETHTYPE_IP_H_V) ||
+        (buf[ETH_TYPE_L_P] != ETHTYPE_IP_L_V)) {
         return false;
     }
-    
+
     if(buf[IP_HEADER_LEN_VER_P] != 0x45) {
         // must be IP V4 and 20 byte header
         return false;
     }
-    
+
     // Проверяем наш IP адрес
     if(memcmp(&buf[IP_DST_P], ipaddr, Enc::IP_ADDR_SIZE) == 0) {
         return true;
@@ -124,15 +117,14 @@ bool Net::EthTypeIsIp(uint8_t* buf, size_t len, const uint8_t* ipaddr)
     return false;
 }
 
-
 bool Net::EthTypeIsArp(uint8_t* buf, size_t len, const uint8_t* ipaddr)
 {
     if(len < (ETH_HEADER_SIZE - 1)) {
         return false;
     }
 
-    if((buf[ETH_TYPE_H_P] != ETHTYPE_ARP_H_V) || 
-       (buf[ETH_TYPE_L_P] != ETHTYPE_ARP_L_V)) {
+    if((buf[ETH_TYPE_H_P] != ETHTYPE_ARP_H_V) ||
+        (buf[ETH_TYPE_L_P] != ETHTYPE_ARP_L_V)) {
         return false;
     }
 
@@ -143,7 +135,6 @@ bool Net::EthTypeIsArp(uint8_t* buf, size_t len, const uint8_t* ipaddr)
     return false;
 }
 
-        
 size_t Net::MakeArpAnswerFromRequest(uint8_t* buf, size_t len, const uint8_t* macaddr, const uint8_t* ipaddr)
 {
     MakeEth(buf, macaddr);
@@ -165,12 +156,11 @@ size_t Net::MakeArpAnswerFromRequest(uint8_t* buf, size_t len, const uint8_t* ma
     return ETH_HEADER_SIZE;
 }
 
-
 size_t Net::MakeIcmpEchoAnswerFromRequest(uint8_t* buf, size_t len, const uint8_t* macaddr, const uint8_t* ipaddr)
 {
     MakeEth(buf, macaddr);
     MakeIp(buf, ipaddr);
-    
+
     buf[ICMP_TYPE_P] = ICMP_TYPE_ECHOREPLY_V;
     // we changed only the icmp.type field from request(=8) to reply(=0).
     // we can therefore easily correct the checksum:
@@ -178,6 +168,6 @@ size_t Net::MakeIcmpEchoAnswerFromRequest(uint8_t* buf, size_t len, const uint8_
         buf[ICMP_CHECKSUM_P + 1]++;
     }
     buf[ICMP_CHECKSUM_P] += 0x08;
-    
+
     return len;
 }

@@ -8,9 +8,9 @@ extern "C" {
 #endif
 
 #ifdef _MY_PRINTF_
-#   include "printf-stdarg.h"
+#include "printf-stdarg.h"
 #else
-#   include <stdio.h>
+#include <stdio.h>
 #endif
 #include <string.h>
 #include <ctype.h>

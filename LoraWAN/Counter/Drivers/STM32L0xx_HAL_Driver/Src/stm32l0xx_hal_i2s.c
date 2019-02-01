@@ -137,13 +137,13 @@
 
 #if !defined(STM32L011xx) && !defined(STM32L021xx) && !defined(STM32L031xx) && !defined(STM32L041xx)
 /* Includes ------------------------------------------------------------------*/
-#   include "stm32l0xx_hal.h"
+#include "stm32l0xx_hal.h"
 
 /** @addtogroup STM32L0xx_HAL_Driver
  * @{
  */
 
-#   ifdef HAL_I2S_MODULE_ENABLED
+#ifdef HAL_I2S_MODULE_ENABLED
 
 /** @addtogroup I2S I2S
  * @brief I2S HAL module driver
@@ -166,9 +166,9 @@ static void I2S_DMAError(DMA_HandleTypeDef* hdma);
 static void I2S_Transmit_IT(I2S_HandleTypeDef* hi2s);
 static void I2S_Receive_IT(I2S_HandleTypeDef* hi2s);
 static HAL_StatusTypeDef I2S_WaitFlagStateUntilTimeout(I2S_HandleTypeDef* hi2s,
-                                                       uint32_t Flag,
-                                                       uint32_t Status,
-                                                       uint32_t Timeout);
+    uint32_t Flag,
+    uint32_t Status,
+    uint32_t Timeout);
 /**
  * @}
  */
@@ -215,127 +215,116 @@ static HAL_StatusTypeDef I2S_WaitFlagStateUntilTimeout(I2S_HandleTypeDef* hi2s,
  */
 HAL_StatusTypeDef HAL_I2S_Init(I2S_HandleTypeDef* hi2s)
 {
-   uint32_t i2sdiv = 2U, i2sodd = 0U, packetlength = 1U;
-   uint32_t tmp = 0U, i2sclk = 0U, tmpreg = 0U;
+    uint32_t i2sdiv = 2U, i2sodd = 0U, packetlength = 1U;
+    uint32_t tmp = 0U, i2sclk = 0U, tmpreg = 0U;
 
-   /* Check the I2S handle allocation */
-   if (hi2s == NULL)
-   {
-      return HAL_ERROR;
-   }
+    /* Check the I2S handle allocation */
+    if(hi2s == NULL) {
+        return HAL_ERROR;
+    }
 
-   /* Check the I2S parameters */
-   assert_param(IS_I2S_ALL_INSTANCE(hi2s->Instance));
-   assert_param(IS_I2S_MODE(hi2s->Init.Mode));
-   assert_param(IS_I2S_STANDARD(hi2s->Init.Standard));
-   assert_param(IS_I2S_DATA_FORMAT(hi2s->Init.DataFormat));
-   assert_param(IS_I2S_MCLK_OUTPUT(hi2s->Init.MCLKOutput));
-   assert_param(IS_I2S_AUDIO_FREQ(hi2s->Init.AudioFreq));
-   assert_param(IS_I2S_CPOL(hi2s->Init.CPOL));
+    /* Check the I2S parameters */
+    assert_param(IS_I2S_ALL_INSTANCE(hi2s->Instance));
+    assert_param(IS_I2S_MODE(hi2s->Init.Mode));
+    assert_param(IS_I2S_STANDARD(hi2s->Init.Standard));
+    assert_param(IS_I2S_DATA_FORMAT(hi2s->Init.DataFormat));
+    assert_param(IS_I2S_MCLK_OUTPUT(hi2s->Init.MCLKOutput));
+    assert_param(IS_I2S_AUDIO_FREQ(hi2s->Init.AudioFreq));
+    assert_param(IS_I2S_CPOL(hi2s->Init.CPOL));
 
-   if (hi2s->State == HAL_I2S_STATE_RESET)
-   {
-      /* Allocate lock resource and initialize it */
-      hi2s->Lock = HAL_UNLOCKED;
+    if(hi2s->State == HAL_I2S_STATE_RESET) {
+        /* Allocate lock resource and initialize it */
+        hi2s->Lock = HAL_UNLOCKED;
 
-      /* Init the low level hardware : GPIO, CLOCK, CORTEX...etc */
-      HAL_I2S_MspInit(hi2s);
-   }
+        /* Init the low level hardware : GPIO, CLOCK, CORTEX...etc */
+        HAL_I2S_MspInit(hi2s);
+    }
 
-   hi2s->State = HAL_I2S_STATE_BUSY;
+    hi2s->State = HAL_I2S_STATE_BUSY;
 
-   /* If the default value has to be written, reinitialize i2sdiv and i2sodd*/
-   if (hi2s->Init.AudioFreq == I2S_AUDIOFREQ_DEFAULT)
-   {
-      i2sodd = (uint32_t)0U;
-      i2sdiv = (uint32_t)2U;
-   }
-   /* If the requested audio frequency is not the default, compute the prescaler */
-   else
-   {
-      /* Check the frame length (For the Prescaler computing) *******************/
-      if (hi2s->Init.DataFormat == I2S_DATAFORMAT_16B)
-      {
-         /* Packet length is 16 bits */
-         packetlength = 1U;
-      }
-      else
-      {
-         /* Packet length is 32 bits */
-         packetlength = 2U;
-      }
+    /* If the default value has to be written, reinitialize i2sdiv and i2sodd*/
+    if(hi2s->Init.AudioFreq == I2S_AUDIOFREQ_DEFAULT) {
+        i2sodd = (uint32_t)0U;
+        i2sdiv = (uint32_t)2U;
+    }
+    /* If the requested audio frequency is not the default, compute the prescaler */
+    else {
+        /* Check the frame length (For the Prescaler computing) *******************/
+        if(hi2s->Init.DataFormat == I2S_DATAFORMAT_16B) {
+            /* Packet length is 16 bits */
+            packetlength = 1U;
+        }
+        else {
+            /* Packet length is 32 bits */
+            packetlength = 2U;
+        }
 
-      /* Get the source clock value: based on System Clock value */
-      i2sclk = HAL_RCC_GetSysClockFreq();
+        /* Get the source clock value: based on System Clock value */
+        i2sclk = HAL_RCC_GetSysClockFreq();
 
-      /* Compute the Real divider depending on the MCLK output state, with a floating point */
-      if (hi2s->Init.MCLKOutput == I2S_MCLKOUTPUT_ENABLE)
-      {
-         /* MCLK output is enabled */
-         tmp = (uint32_t)(((((i2sclk / 256U) * 10U) / hi2s->Init.AudioFreq)) + 5U);
-      }
-      else
-      {
-         /* MCLK output is disabled */
-         tmp = (uint32_t)(((((i2sclk / (32U * packetlength)) * 10U) / hi2s->Init.AudioFreq)) + 5U);
-      }
+        /* Compute the Real divider depending on the MCLK output state, with a floating point */
+        if(hi2s->Init.MCLKOutput == I2S_MCLKOUTPUT_ENABLE) {
+            /* MCLK output is enabled */
+            tmp = (uint32_t)(((((i2sclk / 256U) * 10U) / hi2s->Init.AudioFreq)) + 5U);
+        }
+        else {
+            /* MCLK output is disabled */
+            tmp = (uint32_t)(((((i2sclk / (32U * packetlength)) * 10U) / hi2s->Init.AudioFreq)) + 5U);
+        }
 
-      /* Remove the flatting point */
-      tmp = tmp / 10U;
+        /* Remove the flatting point */
+        tmp = tmp / 10U;
 
-      /* Check the parity of the divider */
-      i2sodd = (uint32_t)(tmp & (uint32_t)1U);
+        /* Check the parity of the divider */
+        i2sodd = (uint32_t)(tmp & (uint32_t)1U);
 
-      /* Compute the i2sdiv prescaler */
-      i2sdiv = (uint32_t)((tmp - i2sodd) / 2U);
+        /* Compute the i2sdiv prescaler */
+        i2sdiv = (uint32_t)((tmp - i2sodd) / 2U);
 
-      /* Get the Mask for the Odd bit (SPI_I2SPR[8]) register */
-      i2sodd = (uint32_t)(i2sodd << 8U);
-   }
+        /* Get the Mask for the Odd bit (SPI_I2SPR[8]) register */
+        i2sodd = (uint32_t)(i2sodd << 8U);
+    }
 
-   /* Test if the divider is 1 or 0 or greater than 0xFF */
-   if ((i2sdiv < 2U) || (i2sdiv > 0xFFU))
-   {
-      /* Set the default values */
-      i2sdiv = 2U;
-      i2sodd = 0U;
-   }
+    /* Test if the divider is 1 or 0 or greater than 0xFF */
+    if((i2sdiv < 2U) || (i2sdiv > 0xFFU)) {
+        /* Set the default values */
+        i2sdiv = 2U;
+        i2sodd = 0U;
+    }
 
-   /*----------------------- SPIx I2SCFGR & I2SPR Configuration ----------------*/
+    /*----------------------- SPIx I2SCFGR & I2SPR Configuration ----------------*/
 
-   /* Write to SPIx I2SPR register the computed value */
-   hi2s->Instance->I2SPR = (uint32_t)((uint32_t)i2sdiv | (uint32_t)(i2sodd | (uint32_t)hi2s->Init.MCLKOutput));
+    /* Write to SPIx I2SPR register the computed value */
+    hi2s->Instance->I2SPR = (uint32_t)((uint32_t)i2sdiv | (uint32_t)(i2sodd | (uint32_t)hi2s->Init.MCLKOutput));
 
-   /* Clear I2SMOD, I2SE, I2SCFG, PCMSYNC, I2SSTD, CKPOL, DATLEN and CHLEN bits */
-   /* And configure the I2S with the I2S_InitStruct values                      */
-   MODIFY_REG(hi2s->Instance->I2SCFGR,
-              (SPI_I2SCFGR_CHLEN | SPI_I2SCFGR_DATLEN | SPI_I2SCFGR_CKPOL | SPI_I2SCFGR_I2SSTD | SPI_I2SCFGR_PCMSYNC |
-               SPI_I2SCFGR_I2SCFG | SPI_I2SCFGR_I2SE | SPI_I2SCFGR_I2SMOD),
-              (SPI_I2SCFGR_I2SMOD | hi2s->Init.Mode | hi2s->Init.Standard | hi2s->Init.DataFormat | hi2s->Init.CPOL));
+    /* Clear I2SMOD, I2SE, I2SCFG, PCMSYNC, I2SSTD, CKPOL, DATLEN and CHLEN bits */
+    /* And configure the I2S with the I2S_InitStruct values                      */
+    MODIFY_REG(hi2s->Instance->I2SCFGR,
+        (SPI_I2SCFGR_CHLEN | SPI_I2SCFGR_DATLEN | SPI_I2SCFGR_CKPOL | SPI_I2SCFGR_I2SSTD | SPI_I2SCFGR_PCMSYNC |
+            SPI_I2SCFGR_I2SCFG | SPI_I2SCFGR_I2SE | SPI_I2SCFGR_I2SMOD),
+        (SPI_I2SCFGR_I2SMOD | hi2s->Init.Mode | hi2s->Init.Standard | hi2s->Init.DataFormat | hi2s->Init.CPOL));
 
-   /* Get the I2SCFGR register value */
-   tmpreg = hi2s->Instance->I2SCFGR;
+    /* Get the I2SCFGR register value */
+    tmpreg = hi2s->Instance->I2SCFGR;
 
-#      if defined(SPI_I2SCFGR_ASTRTEN)
-   if (hi2s->Init.Standard == I2S_STANDARD_PCM_SHORT)
-   {
-      /* Write to SPIx I2SCFGR */
-      hi2s->Instance->I2SCFGR = tmpreg | SPI_I2SCFGR_ASTRTEN;
-   }
-   else
-   {
-      /* Write to SPIx I2SCFGR */
-      hi2s->Instance->I2SCFGR = tmpreg;
-   }
-#      else
-   /* Write to SPIx I2SCFGR */
-   hi2s->Instance->I2SCFGR = tmpreg;
-#      endif
+#if defined(SPI_I2SCFGR_ASTRTEN)
+    if(hi2s->Init.Standard == I2S_STANDARD_PCM_SHORT) {
+        /* Write to SPIx I2SCFGR */
+        hi2s->Instance->I2SCFGR = tmpreg | SPI_I2SCFGR_ASTRTEN;
+    }
+    else {
+        /* Write to SPIx I2SCFGR */
+        hi2s->Instance->I2SCFGR = tmpreg;
+    }
+#else
+    /* Write to SPIx I2SCFGR */
+    hi2s->Instance->I2SCFGR = tmpreg;
+#endif
 
-   hi2s->ErrorCode = HAL_I2S_ERROR_NONE;
-   hi2s->State = HAL_I2S_STATE_READY;
+    hi2s->ErrorCode = HAL_I2S_ERROR_NONE;
+    hi2s->State = HAL_I2S_STATE_READY;
 
-   return HAL_OK;
+    return HAL_OK;
 }
 
 /**
@@ -346,27 +335,26 @@ HAL_StatusTypeDef HAL_I2S_Init(I2S_HandleTypeDef* hi2s)
  */
 HAL_StatusTypeDef HAL_I2S_DeInit(I2S_HandleTypeDef* hi2s)
 {
-   /* Check the I2S handle allocation */
-   if (hi2s == NULL)
-   {
-      return HAL_ERROR;
-   }
+    /* Check the I2S handle allocation */
+    if(hi2s == NULL) {
+        return HAL_ERROR;
+    }
 
-   hi2s->State = HAL_I2S_STATE_BUSY;
+    hi2s->State = HAL_I2S_STATE_BUSY;
 
-   /* Disable the I2S Peripheral Clock */
-   __HAL_I2S_DISABLE(hi2s);
+    /* Disable the I2S Peripheral Clock */
+    __HAL_I2S_DISABLE(hi2s);
 
-   /* DeInit the low level hardware: GPIO, CLOCK, NVIC... */
-   HAL_I2S_MspDeInit(hi2s);
+    /* DeInit the low level hardware: GPIO, CLOCK, NVIC... */
+    HAL_I2S_MspDeInit(hi2s);
 
-   hi2s->ErrorCode = HAL_I2S_ERROR_NONE;
-   hi2s->State = HAL_I2S_STATE_RESET;
+    hi2s->ErrorCode = HAL_I2S_ERROR_NONE;
+    hi2s->State = HAL_I2S_STATE_RESET;
 
-   /* Release Lock */
-   __HAL_UNLOCK(hi2s);
+    /* Release Lock */
+    __HAL_UNLOCK(hi2s);
 
-   return HAL_OK;
+    return HAL_OK;
 }
 
 /**
@@ -377,10 +365,10 @@ HAL_StatusTypeDef HAL_I2S_DeInit(I2S_HandleTypeDef* hi2s)
  */
 __weak void HAL_I2S_MspInit(I2S_HandleTypeDef* hi2s)
 {
-   /* Prevent unused argument(s) compilation warning */
-   UNUSED(hi2s);
+    /* Prevent unused argument(s) compilation warning */
+    UNUSED(hi2s);
 
-   /* NOTE : This function Should not be modified, when the callback is needed,
+    /* NOTE : This function Should not be modified, when the callback is needed,
              the HAL_I2S_MspInit could be implemented in the user file
     */
 }
@@ -393,10 +381,10 @@ __weak void HAL_I2S_MspInit(I2S_HandleTypeDef* hi2s)
  */
 __weak void HAL_I2S_MspDeInit(I2S_HandleTypeDef* hi2s)
 {
-   /* Prevent unused argument(s) compilation warning */
-   UNUSED(hi2s);
+    /* Prevent unused argument(s) compilation warning */
+    UNUSED(hi2s);
 
-   /* NOTE : This function Should not be modified, when the callback is needed,
+    /* NOTE : This function Should not be modified, when the callback is needed,
              the HAL_I2S_MspDeInit could be implemented in the user file
     */
 }
@@ -465,80 +453,69 @@ __weak void HAL_I2S_MspDeInit(I2S_HandleTypeDef* hi2s)
  */
 HAL_StatusTypeDef HAL_I2S_Transmit(I2S_HandleTypeDef* hi2s, uint16_t* pData, uint16_t Size, uint32_t Timeout)
 {
-   if ((pData == NULL) || (Size == 0U))
-   {
-      return HAL_ERROR;
-   }
+    if((pData == NULL) || (Size == 0U)) {
+        return HAL_ERROR;
+    }
 
-   /* Process Locked */
-   __HAL_LOCK(hi2s);
+    /* Process Locked */
+    __HAL_LOCK(hi2s);
 
-   if (hi2s->State == HAL_I2S_STATE_READY)
-   {
-      if (((hi2s->Instance->I2SCFGR & (SPI_I2SCFGR_DATLEN | SPI_I2SCFGR_CHLEN)) == I2S_DATAFORMAT_24B) ||
-          ((hi2s->Instance->I2SCFGR & (SPI_I2SCFGR_DATLEN | SPI_I2SCFGR_CHLEN)) == I2S_DATAFORMAT_32B))
-      {
-         hi2s->TxXferSize = (Size << 1U);
-         hi2s->TxXferCount = (Size << 1U);
-      }
-      else
-      {
-         hi2s->TxXferSize = Size;
-         hi2s->TxXferCount = Size;
-      }
+    if(hi2s->State == HAL_I2S_STATE_READY) {
+        if(((hi2s->Instance->I2SCFGR & (SPI_I2SCFGR_DATLEN | SPI_I2SCFGR_CHLEN)) == I2S_DATAFORMAT_24B) ||
+            ((hi2s->Instance->I2SCFGR & (SPI_I2SCFGR_DATLEN | SPI_I2SCFGR_CHLEN)) == I2S_DATAFORMAT_32B)) {
+            hi2s->TxXferSize = (Size << 1U);
+            hi2s->TxXferCount = (Size << 1U);
+        }
+        else {
+            hi2s->TxXferSize = Size;
+            hi2s->TxXferCount = Size;
+        }
 
-      /* Set state and reset error code */
-      hi2s->ErrorCode = HAL_I2S_ERROR_NONE;
-      hi2s->State = HAL_I2S_STATE_BUSY_TX;
-      hi2s->pTxBuffPtr = pData;
+        /* Set state and reset error code */
+        hi2s->ErrorCode = HAL_I2S_ERROR_NONE;
+        hi2s->State = HAL_I2S_STATE_BUSY_TX;
+        hi2s->pTxBuffPtr = pData;
 
-      /* Check if the I2S is already enabled */
-      if ((hi2s->Instance->I2SCFGR & SPI_I2SCFGR_I2SE) != SPI_I2SCFGR_I2SE)
-      {
-         /* Enable I2S peripheral */
-         __HAL_I2S_ENABLE(hi2s);
-      }
+        /* Check if the I2S is already enabled */
+        if((hi2s->Instance->I2SCFGR & SPI_I2SCFGR_I2SE) != SPI_I2SCFGR_I2SE) {
+            /* Enable I2S peripheral */
+            __HAL_I2S_ENABLE(hi2s);
+        }
 
-      while (hi2s->TxXferCount > 0U)
-      {
-         /* Wait until TXE flag is set */
-         if (I2S_WaitFlagStateUntilTimeout(hi2s, I2S_FLAG_TXE, RESET, Timeout) != HAL_OK)
-         {
+        while(hi2s->TxXferCount > 0U) {
+            /* Wait until TXE flag is set */
+            if(I2S_WaitFlagStateUntilTimeout(hi2s, I2S_FLAG_TXE, RESET, Timeout) != HAL_OK) {
+                return HAL_TIMEOUT;
+            }
+            hi2s->Instance->DR = (*hi2s->pTxBuffPtr++);
+            hi2s->TxXferCount--;
+        }
+
+        /* Wait until TXE flag is set, to confirm the end of the transaction */
+        if(I2S_WaitFlagStateUntilTimeout(hi2s, I2S_FLAG_TXE, RESET, Timeout) != HAL_OK) {
             return HAL_TIMEOUT;
-         }
-         hi2s->Instance->DR = (*hi2s->pTxBuffPtr++);
-         hi2s->TxXferCount--;
-      }
+        }
 
-      /* Wait until TXE flag is set, to confirm the end of the transaction */
-      if (I2S_WaitFlagStateUntilTimeout(hi2s, I2S_FLAG_TXE, RESET, Timeout) != HAL_OK)
-      {
-         return HAL_TIMEOUT;
-      }
+        /* Check if Slave mode is selected */
+        if(((hi2s->Instance->I2SCFGR & SPI_I2SCFGR_I2SCFG) == I2S_MODE_SLAVE_TX) ||
+            ((hi2s->Instance->I2SCFGR & SPI_I2SCFGR_I2SCFG) == I2S_MODE_SLAVE_RX)) {
+            /* Wait until Busy flag is reset */
+            if(I2S_WaitFlagStateUntilTimeout(hi2s, I2S_FLAG_BSY, SET, Timeout) != HAL_OK) {
+                return HAL_TIMEOUT;
+            }
+        }
+        hi2s->State = HAL_I2S_STATE_READY;
 
-      /* Check if Slave mode is selected */
-      if (((hi2s->Instance->I2SCFGR & SPI_I2SCFGR_I2SCFG) == I2S_MODE_SLAVE_TX) ||
-          ((hi2s->Instance->I2SCFGR & SPI_I2SCFGR_I2SCFG) == I2S_MODE_SLAVE_RX))
-      {
-         /* Wait until Busy flag is reset */
-         if (I2S_WaitFlagStateUntilTimeout(hi2s, I2S_FLAG_BSY, SET, Timeout) != HAL_OK)
-         {
-            return HAL_TIMEOUT;
-         }
-      }
-      hi2s->State = HAL_I2S_STATE_READY;
+        /* Process Unlocked */
+        __HAL_UNLOCK(hi2s);
 
-      /* Process Unlocked */
-      __HAL_UNLOCK(hi2s);
-
-      return HAL_OK;
-   }
-   else
-   {
-      /* Process Unlocked */
-      __HAL_UNLOCK(hi2s);
-      return HAL_BUSY;
-   }
+        return HAL_OK;
+    }
+    else {
+        /* Process Unlocked */
+        __HAL_UNLOCK(hi2s);
+        return HAL_BUSY;
+    }
 }
 
 /**
@@ -561,74 +538,65 @@ HAL_StatusTypeDef HAL_I2S_Transmit(I2S_HandleTypeDef* hi2s, uint16_t* pData, uin
  */
 HAL_StatusTypeDef HAL_I2S_Receive(I2S_HandleTypeDef* hi2s, uint16_t* pData, uint16_t Size, uint32_t Timeout)
 {
-   if ((pData == NULL) || (Size == 0U))
-   {
-      return HAL_ERROR;
-   }
+    if((pData == NULL) || (Size == 0U)) {
+        return HAL_ERROR;
+    }
 
-   /* Process Locked */
-   __HAL_LOCK(hi2s);
+    /* Process Locked */
+    __HAL_LOCK(hi2s);
 
-   if (hi2s->State == HAL_I2S_STATE_READY)
-   {
-      if (((hi2s->Instance->I2SCFGR & (SPI_I2SCFGR_DATLEN | SPI_I2SCFGR_CHLEN)) == I2S_DATAFORMAT_24B) ||
-          ((hi2s->Instance->I2SCFGR & (SPI_I2SCFGR_DATLEN | SPI_I2SCFGR_CHLEN)) == I2S_DATAFORMAT_32B))
-      {
-         hi2s->RxXferSize = (Size << 1U);
-         hi2s->RxXferCount = (Size << 1U);
-      }
-      else
-      {
-         hi2s->RxXferSize = Size;
-         hi2s->RxXferCount = Size;
-      }
+    if(hi2s->State == HAL_I2S_STATE_READY) {
+        if(((hi2s->Instance->I2SCFGR & (SPI_I2SCFGR_DATLEN | SPI_I2SCFGR_CHLEN)) == I2S_DATAFORMAT_24B) ||
+            ((hi2s->Instance->I2SCFGR & (SPI_I2SCFGR_DATLEN | SPI_I2SCFGR_CHLEN)) == I2S_DATAFORMAT_32B)) {
+            hi2s->RxXferSize = (Size << 1U);
+            hi2s->RxXferCount = (Size << 1U);
+        }
+        else {
+            hi2s->RxXferSize = Size;
+            hi2s->RxXferCount = Size;
+        }
 
-      /* Set state and reset error code */
-      hi2s->ErrorCode = HAL_I2S_ERROR_NONE;
-      hi2s->State = HAL_I2S_STATE_BUSY_RX;
-      hi2s->pRxBuffPtr = pData;
+        /* Set state and reset error code */
+        hi2s->ErrorCode = HAL_I2S_ERROR_NONE;
+        hi2s->State = HAL_I2S_STATE_BUSY_RX;
+        hi2s->pRxBuffPtr = pData;
 
-      /* Check if the I2S is already enabled */
-      if ((hi2s->Instance->I2SCFGR & SPI_I2SCFGR_I2SE) != SPI_I2SCFGR_I2SE)
-      {
-         /* Enable I2S peripheral */
-         __HAL_I2S_ENABLE(hi2s);
-      }
+        /* Check if the I2S is already enabled */
+        if((hi2s->Instance->I2SCFGR & SPI_I2SCFGR_I2SE) != SPI_I2SCFGR_I2SE) {
+            /* Enable I2S peripheral */
+            __HAL_I2S_ENABLE(hi2s);
+        }
 
-      /* Check if Master Receiver mode is selected */
-      if ((hi2s->Instance->I2SCFGR & SPI_I2SCFGR_I2SCFG) == I2S_MODE_MASTER_RX)
-      {
-         /* Clear the Overrun Flag by a read operation on the SPI_DR register followed by a read
+        /* Check if Master Receiver mode is selected */
+        if((hi2s->Instance->I2SCFGR & SPI_I2SCFGR_I2SCFG) == I2S_MODE_MASTER_RX) {
+            /* Clear the Overrun Flag by a read operation on the SPI_DR register followed by a read
          access to the SPI_SR register. */
-         __HAL_I2S_CLEAR_OVRFLAG(hi2s);
-      }
+            __HAL_I2S_CLEAR_OVRFLAG(hi2s);
+        }
 
-      /* Receive data */
-      while (hi2s->RxXferCount > 0U)
-      {
-         /* Wait until RXNE flag is set */
-         if (I2S_WaitFlagStateUntilTimeout(hi2s, I2S_FLAG_RXNE, RESET, Timeout) != HAL_OK)
-         {
-            return HAL_TIMEOUT;
-         }
+        /* Receive data */
+        while(hi2s->RxXferCount > 0U) {
+            /* Wait until RXNE flag is set */
+            if(I2S_WaitFlagStateUntilTimeout(hi2s, I2S_FLAG_RXNE, RESET, Timeout) != HAL_OK) {
+                return HAL_TIMEOUT;
+            }
 
-         (*hi2s->pRxBuffPtr++) = hi2s->Instance->DR;
-         hi2s->RxXferCount--;
-      }
+            (*hi2s->pRxBuffPtr++) = hi2s->Instance->DR;
+            hi2s->RxXferCount--;
+        }
 
-      hi2s->State = HAL_I2S_STATE_READY;
+        hi2s->State = HAL_I2S_STATE_READY;
 
-      /* Process Unlocked */
-      __HAL_UNLOCK(hi2s);
+        /* Process Unlocked */
+        __HAL_UNLOCK(hi2s);
 
-      return HAL_OK;
-   }
-   else
-   {
-      /* Process Unlocked */
-      __HAL_UNLOCK(hi2s);
-      return HAL_BUSY;
-   }
+        return HAL_OK;
+    }
+    else {
+        /* Process Unlocked */
+        __HAL_UNLOCK(hi2s);
+        return HAL_BUSY;
+    }
 }
 
 /**
@@ -648,53 +616,47 @@ HAL_StatusTypeDef HAL_I2S_Receive(I2S_HandleTypeDef* hi2s, uint16_t* pData, uint
  */
 HAL_StatusTypeDef HAL_I2S_Transmit_IT(I2S_HandleTypeDef* hi2s, uint16_t* pData, uint16_t Size)
 {
-   if ((pData == NULL) || (Size == 0U))
-   {
-      return HAL_ERROR;
-   }
+    if((pData == NULL) || (Size == 0U)) {
+        return HAL_ERROR;
+    }
 
-   /* Process Locked */
-   __HAL_LOCK(hi2s);
+    /* Process Locked */
+    __HAL_LOCK(hi2s);
 
-   if (hi2s->State == HAL_I2S_STATE_READY)
-   {
-      hi2s->pTxBuffPtr = pData;
-      hi2s->State = HAL_I2S_STATE_BUSY_TX;
-      hi2s->ErrorCode = HAL_I2S_ERROR_NONE;
+    if(hi2s->State == HAL_I2S_STATE_READY) {
+        hi2s->pTxBuffPtr = pData;
+        hi2s->State = HAL_I2S_STATE_BUSY_TX;
+        hi2s->ErrorCode = HAL_I2S_ERROR_NONE;
 
-      if (((hi2s->Instance->I2SCFGR & (SPI_I2SCFGR_DATLEN | SPI_I2SCFGR_CHLEN)) == I2S_DATAFORMAT_24B) ||
-          ((hi2s->Instance->I2SCFGR & (SPI_I2SCFGR_DATLEN | SPI_I2SCFGR_CHLEN)) == I2S_DATAFORMAT_32B))
-      {
-         hi2s->TxXferSize = (Size << 1U);
-         hi2s->TxXferCount = (Size << 1U);
-      }
-      else
-      {
-         hi2s->TxXferSize = Size;
-         hi2s->TxXferCount = Size;
-      }
+        if(((hi2s->Instance->I2SCFGR & (SPI_I2SCFGR_DATLEN | SPI_I2SCFGR_CHLEN)) == I2S_DATAFORMAT_24B) ||
+            ((hi2s->Instance->I2SCFGR & (SPI_I2SCFGR_DATLEN | SPI_I2SCFGR_CHLEN)) == I2S_DATAFORMAT_32B)) {
+            hi2s->TxXferSize = (Size << 1U);
+            hi2s->TxXferCount = (Size << 1U);
+        }
+        else {
+            hi2s->TxXferSize = Size;
+            hi2s->TxXferCount = Size;
+        }
 
-      /* Enable TXE and ERR interrupt */
-      __HAL_I2S_ENABLE_IT(hi2s, (I2S_IT_TXE | I2S_IT_ERR));
+        /* Enable TXE and ERR interrupt */
+        __HAL_I2S_ENABLE_IT(hi2s, (I2S_IT_TXE | I2S_IT_ERR));
 
-      /* Check if the I2S is already enabled */
-      if ((hi2s->Instance->I2SCFGR & SPI_I2SCFGR_I2SE) != SPI_I2SCFGR_I2SE)
-      {
-         /* Enable I2S peripheral */
-         __HAL_I2S_ENABLE(hi2s);
-      }
+        /* Check if the I2S is already enabled */
+        if((hi2s->Instance->I2SCFGR & SPI_I2SCFGR_I2SE) != SPI_I2SCFGR_I2SE) {
+            /* Enable I2S peripheral */
+            __HAL_I2S_ENABLE(hi2s);
+        }
 
-      /* Process Unlocked */
-      __HAL_UNLOCK(hi2s);
+        /* Process Unlocked */
+        __HAL_UNLOCK(hi2s);
 
-      return HAL_OK;
-   }
-   else
-   {
-      /* Process Unlocked */
-      __HAL_UNLOCK(hi2s);
-      return HAL_BUSY;
-   }
+        return HAL_OK;
+    }
+    else {
+        /* Process Unlocked */
+        __HAL_UNLOCK(hi2s);
+        return HAL_BUSY;
+    }
 }
 
 /**
@@ -716,53 +678,47 @@ HAL_StatusTypeDef HAL_I2S_Transmit_IT(I2S_HandleTypeDef* hi2s, uint16_t* pData, 
  */
 HAL_StatusTypeDef HAL_I2S_Receive_IT(I2S_HandleTypeDef* hi2s, uint16_t* pData, uint16_t Size)
 {
-   if ((pData == NULL) || (Size == 0U))
-   {
-      return HAL_ERROR;
-   }
+    if((pData == NULL) || (Size == 0U)) {
+        return HAL_ERROR;
+    }
 
-   /* Process Locked */
-   __HAL_LOCK(hi2s);
+    /* Process Locked */
+    __HAL_LOCK(hi2s);
 
-   if (hi2s->State == HAL_I2S_STATE_READY)
-   {
-      hi2s->pRxBuffPtr = pData;
-      hi2s->State = HAL_I2S_STATE_BUSY_RX;
-      hi2s->ErrorCode = HAL_I2S_ERROR_NONE;
+    if(hi2s->State == HAL_I2S_STATE_READY) {
+        hi2s->pRxBuffPtr = pData;
+        hi2s->State = HAL_I2S_STATE_BUSY_RX;
+        hi2s->ErrorCode = HAL_I2S_ERROR_NONE;
 
-      if (((hi2s->Instance->I2SCFGR & (SPI_I2SCFGR_DATLEN | SPI_I2SCFGR_CHLEN)) == I2S_DATAFORMAT_24B) ||
-          ((hi2s->Instance->I2SCFGR & (SPI_I2SCFGR_DATLEN | SPI_I2SCFGR_CHLEN)) == I2S_DATAFORMAT_32B))
-      {
-         hi2s->RxXferSize = (Size << 1U);
-         hi2s->RxXferCount = (Size << 1U);
-      }
-      else
-      {
-         hi2s->RxXferSize = Size;
-         hi2s->RxXferCount = Size;
-      }
+        if(((hi2s->Instance->I2SCFGR & (SPI_I2SCFGR_DATLEN | SPI_I2SCFGR_CHLEN)) == I2S_DATAFORMAT_24B) ||
+            ((hi2s->Instance->I2SCFGR & (SPI_I2SCFGR_DATLEN | SPI_I2SCFGR_CHLEN)) == I2S_DATAFORMAT_32B)) {
+            hi2s->RxXferSize = (Size << 1U);
+            hi2s->RxXferCount = (Size << 1U);
+        }
+        else {
+            hi2s->RxXferSize = Size;
+            hi2s->RxXferCount = Size;
+        }
 
-      /* Enable RXNE and ERR interrupt */
-      __HAL_I2S_ENABLE_IT(hi2s, (I2S_IT_RXNE | I2S_IT_ERR));
+        /* Enable RXNE and ERR interrupt */
+        __HAL_I2S_ENABLE_IT(hi2s, (I2S_IT_RXNE | I2S_IT_ERR));
 
-      /* Check if the I2S is already enabled */
-      if ((hi2s->Instance->I2SCFGR & SPI_I2SCFGR_I2SE) != SPI_I2SCFGR_I2SE)
-      {
-         /* Enable I2S peripheral */
-         __HAL_I2S_ENABLE(hi2s);
-      }
+        /* Check if the I2S is already enabled */
+        if((hi2s->Instance->I2SCFGR & SPI_I2SCFGR_I2SE) != SPI_I2SCFGR_I2SE) {
+            /* Enable I2S peripheral */
+            __HAL_I2S_ENABLE(hi2s);
+        }
 
-      /* Process Unlocked */
-      __HAL_UNLOCK(hi2s);
+        /* Process Unlocked */
+        __HAL_UNLOCK(hi2s);
 
-      return HAL_OK;
-   }
-   else
-   {
-      /* Process Unlocked */
-      __HAL_UNLOCK(hi2s);
-      return HAL_BUSY;
-   }
+        return HAL_OK;
+    }
+    else {
+        /* Process Unlocked */
+        __HAL_UNLOCK(hi2s);
+        return HAL_BUSY;
+    }
 }
 
 /**
@@ -781,69 +737,62 @@ HAL_StatusTypeDef HAL_I2S_Receive_IT(I2S_HandleTypeDef* hi2s, uint16_t* pData, u
  */
 HAL_StatusTypeDef HAL_I2S_Transmit_DMA(I2S_HandleTypeDef* hi2s, uint16_t* pData, uint16_t Size)
 {
-   if ((pData == NULL) || (Size == 0U))
-   {
-      return HAL_ERROR;
-   }
+    if((pData == NULL) || (Size == 0U)) {
+        return HAL_ERROR;
+    }
 
-   /* Process Locked */
-   __HAL_LOCK(hi2s);
+    /* Process Locked */
+    __HAL_LOCK(hi2s);
 
-   if (hi2s->State == HAL_I2S_STATE_READY)
-   {
-      hi2s->pTxBuffPtr = pData;
-      hi2s->State = HAL_I2S_STATE_BUSY_TX;
-      hi2s->ErrorCode = HAL_I2S_ERROR_NONE;
+    if(hi2s->State == HAL_I2S_STATE_READY) {
+        hi2s->pTxBuffPtr = pData;
+        hi2s->State = HAL_I2S_STATE_BUSY_TX;
+        hi2s->ErrorCode = HAL_I2S_ERROR_NONE;
 
-      if (((hi2s->Instance->I2SCFGR & (SPI_I2SCFGR_DATLEN | SPI_I2SCFGR_CHLEN)) == I2S_DATAFORMAT_24B) ||
-          ((hi2s->Instance->I2SCFGR & (SPI_I2SCFGR_DATLEN | SPI_I2SCFGR_CHLEN)) == I2S_DATAFORMAT_32B))
-      {
-         hi2s->TxXferSize = (Size << 1U);
-         hi2s->TxXferCount = (Size << 1U);
-      }
-      else
-      {
-         hi2s->TxXferSize = Size;
-         hi2s->TxXferCount = Size;
-      }
+        if(((hi2s->Instance->I2SCFGR & (SPI_I2SCFGR_DATLEN | SPI_I2SCFGR_CHLEN)) == I2S_DATAFORMAT_24B) ||
+            ((hi2s->Instance->I2SCFGR & (SPI_I2SCFGR_DATLEN | SPI_I2SCFGR_CHLEN)) == I2S_DATAFORMAT_32B)) {
+            hi2s->TxXferSize = (Size << 1U);
+            hi2s->TxXferCount = (Size << 1U);
+        }
+        else {
+            hi2s->TxXferSize = Size;
+            hi2s->TxXferCount = Size;
+        }
 
-      /* Set the I2S Tx DMA Half transfert complete callback */
-      hi2s->hdmatx->XferHalfCpltCallback = I2S_DMATxHalfCplt;
+        /* Set the I2S Tx DMA Half transfert complete callback */
+        hi2s->hdmatx->XferHalfCpltCallback = I2S_DMATxHalfCplt;
 
-      /* Set the I2S Tx DMA transfert complete callback */
-      hi2s->hdmatx->XferCpltCallback = I2S_DMATxCplt;
+        /* Set the I2S Tx DMA transfert complete callback */
+        hi2s->hdmatx->XferCpltCallback = I2S_DMATxCplt;
 
-      /* Set the DMA error callback */
-      hi2s->hdmatx->XferErrorCallback = I2S_DMAError;
+        /* Set the DMA error callback */
+        hi2s->hdmatx->XferErrorCallback = I2S_DMAError;
 
-      /* Enable the Tx DMA Channel */
-      HAL_DMA_Start_IT(hi2s->hdmatx, (uint32_t)hi2s->pTxBuffPtr, (uint32_t)&hi2s->Instance->DR, hi2s->TxXferSize);
+        /* Enable the Tx DMA Channel */
+        HAL_DMA_Start_IT(hi2s->hdmatx, (uint32_t)hi2s->pTxBuffPtr, (uint32_t)&hi2s->Instance->DR, hi2s->TxXferSize);
 
-      /* Check if the I2S is already enabled */
-      if (HAL_IS_BIT_CLR(hi2s->Instance->I2SCFGR, SPI_I2SCFGR_I2SE))
-      {
-         /* Enable I2S peripheral */
-         __HAL_I2S_ENABLE(hi2s);
-      }
+        /* Check if the I2S is already enabled */
+        if(HAL_IS_BIT_CLR(hi2s->Instance->I2SCFGR, SPI_I2SCFGR_I2SE)) {
+            /* Enable I2S peripheral */
+            __HAL_I2S_ENABLE(hi2s);
+        }
 
-      /* Check if the I2S Tx request is already enabled */
-      if (HAL_IS_BIT_CLR(hi2s->Instance->CR2, SPI_CR2_TXDMAEN))
-      {
-         /* Enable Tx DMA Request */
-         SET_BIT(hi2s->Instance->CR2, SPI_CR2_TXDMAEN);
-      }
+        /* Check if the I2S Tx request is already enabled */
+        if(HAL_IS_BIT_CLR(hi2s->Instance->CR2, SPI_CR2_TXDMAEN)) {
+            /* Enable Tx DMA Request */
+            SET_BIT(hi2s->Instance->CR2, SPI_CR2_TXDMAEN);
+        }
 
-      /* Process Unlocked */
-      __HAL_UNLOCK(hi2s);
+        /* Process Unlocked */
+        __HAL_UNLOCK(hi2s);
 
-      return HAL_OK;
-   }
-   else
-   {
-      /* Process Unlocked */
-      __HAL_UNLOCK(hi2s);
-      return HAL_BUSY;
-   }
+        return HAL_OK;
+    }
+    else {
+        /* Process Unlocked */
+        __HAL_UNLOCK(hi2s);
+        return HAL_BUSY;
+    }
 }
 
 /**
@@ -862,77 +811,69 @@ HAL_StatusTypeDef HAL_I2S_Transmit_DMA(I2S_HandleTypeDef* hi2s, uint16_t* pData,
  */
 HAL_StatusTypeDef HAL_I2S_Receive_DMA(I2S_HandleTypeDef* hi2s, uint16_t* pData, uint16_t Size)
 {
-   if ((pData == NULL) || (Size == 0U))
-   {
-      return HAL_ERROR;
-   }
+    if((pData == NULL) || (Size == 0U)) {
+        return HAL_ERROR;
+    }
 
-   /* Process Locked */
-   __HAL_LOCK(hi2s);
+    /* Process Locked */
+    __HAL_LOCK(hi2s);
 
-   if (hi2s->State == HAL_I2S_STATE_READY)
-   {
-      hi2s->pRxBuffPtr = pData;
-      hi2s->State = HAL_I2S_STATE_BUSY_RX;
-      hi2s->ErrorCode = HAL_I2S_ERROR_NONE;
+    if(hi2s->State == HAL_I2S_STATE_READY) {
+        hi2s->pRxBuffPtr = pData;
+        hi2s->State = HAL_I2S_STATE_BUSY_RX;
+        hi2s->ErrorCode = HAL_I2S_ERROR_NONE;
 
-      if (((hi2s->Instance->I2SCFGR & (SPI_I2SCFGR_DATLEN | SPI_I2SCFGR_CHLEN)) == I2S_DATAFORMAT_24B) ||
-          ((hi2s->Instance->I2SCFGR & (SPI_I2SCFGR_DATLEN | SPI_I2SCFGR_CHLEN)) == I2S_DATAFORMAT_32B))
-      {
-         hi2s->RxXferSize = (Size << 1U);
-         hi2s->RxXferCount = (Size << 1U);
-      }
-      else
-      {
-         hi2s->RxXferSize = Size;
-         hi2s->RxXferCount = Size;
-      }
+        if(((hi2s->Instance->I2SCFGR & (SPI_I2SCFGR_DATLEN | SPI_I2SCFGR_CHLEN)) == I2S_DATAFORMAT_24B) ||
+            ((hi2s->Instance->I2SCFGR & (SPI_I2SCFGR_DATLEN | SPI_I2SCFGR_CHLEN)) == I2S_DATAFORMAT_32B)) {
+            hi2s->RxXferSize = (Size << 1U);
+            hi2s->RxXferCount = (Size << 1U);
+        }
+        else {
+            hi2s->RxXferSize = Size;
+            hi2s->RxXferCount = Size;
+        }
 
-      /* Set the I2S Rx DMA Half transfert complete callback */
-      hi2s->hdmarx->XferHalfCpltCallback = I2S_DMARxHalfCplt;
+        /* Set the I2S Rx DMA Half transfert complete callback */
+        hi2s->hdmarx->XferHalfCpltCallback = I2S_DMARxHalfCplt;
 
-      /* Set the I2S Rx DMA transfert complete callback */
-      hi2s->hdmarx->XferCpltCallback = I2S_DMARxCplt;
+        /* Set the I2S Rx DMA transfert complete callback */
+        hi2s->hdmarx->XferCpltCallback = I2S_DMARxCplt;
 
-      /* Set the DMA error callback */
-      hi2s->hdmarx->XferErrorCallback = I2S_DMAError;
+        /* Set the DMA error callback */
+        hi2s->hdmarx->XferErrorCallback = I2S_DMAError;
 
-      /* Check if Master Receiver mode is selected */
-      if ((hi2s->Instance->I2SCFGR & SPI_I2SCFGR_I2SCFG) == I2S_MODE_MASTER_RX)
-      {
-         /* Clear the Overrun Flag by a read operation to the SPI_DR register followed by a read
+        /* Check if Master Receiver mode is selected */
+        if((hi2s->Instance->I2SCFGR & SPI_I2SCFGR_I2SCFG) == I2S_MODE_MASTER_RX) {
+            /* Clear the Overrun Flag by a read operation to the SPI_DR register followed by a read
          access to the SPI_SR register. */
-         __HAL_I2S_CLEAR_OVRFLAG(hi2s);
-      }
+            __HAL_I2S_CLEAR_OVRFLAG(hi2s);
+        }
 
-      /* Enable the Rx DMA Channel */
-      HAL_DMA_Start_IT(hi2s->hdmarx, (uint32_t)&hi2s->Instance->DR, (uint32_t)hi2s->pRxBuffPtr, hi2s->RxXferSize);
+        /* Enable the Rx DMA Channel */
+        HAL_DMA_Start_IT(hi2s->hdmarx, (uint32_t)&hi2s->Instance->DR, (uint32_t)hi2s->pRxBuffPtr, hi2s->RxXferSize);
 
-      /* Check if the I2S is already enabled */
-      if (HAL_IS_BIT_CLR(hi2s->Instance->I2SCFGR, SPI_I2SCFGR_I2SE))
-      {
-         /* Enable I2S peripheral */
-         __HAL_I2S_ENABLE(hi2s);
-      }
+        /* Check if the I2S is already enabled */
+        if(HAL_IS_BIT_CLR(hi2s->Instance->I2SCFGR, SPI_I2SCFGR_I2SE)) {
+            /* Enable I2S peripheral */
+            __HAL_I2S_ENABLE(hi2s);
+        }
 
-      /* Check if the I2S Rx request is already enabled */
-      if (HAL_IS_BIT_CLR(hi2s->Instance->CR2, SPI_CR2_RXDMAEN))
-      {
-         /* Enable Rx DMA Request */
-         SET_BIT(hi2s->Instance->CR2, SPI_CR2_RXDMAEN);
-      }
+        /* Check if the I2S Rx request is already enabled */
+        if(HAL_IS_BIT_CLR(hi2s->Instance->CR2, SPI_CR2_RXDMAEN)) {
+            /* Enable Rx DMA Request */
+            SET_BIT(hi2s->Instance->CR2, SPI_CR2_RXDMAEN);
+        }
 
-      /* Process Unlocked */
-      __HAL_UNLOCK(hi2s);
+        /* Process Unlocked */
+        __HAL_UNLOCK(hi2s);
 
-      return HAL_OK;
-   }
-   else
-   {
-      /* Process Unlocked */
-      __HAL_UNLOCK(hi2s);
-      return HAL_BUSY;
-   }
+        return HAL_OK;
+    }
+    else {
+        /* Process Unlocked */
+        __HAL_UNLOCK(hi2s);
+        return HAL_BUSY;
+    }
 }
 
 /**
@@ -943,24 +884,22 @@ HAL_StatusTypeDef HAL_I2S_Receive_DMA(I2S_HandleTypeDef* hi2s, uint16_t* pData, 
  */
 HAL_StatusTypeDef HAL_I2S_DMAPause(I2S_HandleTypeDef* hi2s)
 {
-   /* Process Locked */
-   __HAL_LOCK(hi2s);
+    /* Process Locked */
+    __HAL_LOCK(hi2s);
 
-   if (hi2s->State == HAL_I2S_STATE_BUSY_TX)
-   {
-      /* Disable the I2S DMA Tx request */
-      CLEAR_BIT(hi2s->Instance->CR2, SPI_CR2_TXDMAEN);
-   }
-   else if (hi2s->State == HAL_I2S_STATE_BUSY_RX)
-   {
-      /* Disable the I2S DMA Rx request */
-      CLEAR_BIT(hi2s->Instance->CR2, SPI_CR2_RXDMAEN);
-   }
+    if(hi2s->State == HAL_I2S_STATE_BUSY_TX) {
+        /* Disable the I2S DMA Tx request */
+        CLEAR_BIT(hi2s->Instance->CR2, SPI_CR2_TXDMAEN);
+    }
+    else if(hi2s->State == HAL_I2S_STATE_BUSY_RX) {
+        /* Disable the I2S DMA Rx request */
+        CLEAR_BIT(hi2s->Instance->CR2, SPI_CR2_RXDMAEN);
+    }
 
-   /* Process Unlocked */
-   __HAL_UNLOCK(hi2s);
+    /* Process Unlocked */
+    __HAL_UNLOCK(hi2s);
 
-   return HAL_OK;
+    return HAL_OK;
 }
 
 /**
@@ -971,31 +910,28 @@ HAL_StatusTypeDef HAL_I2S_DMAPause(I2S_HandleTypeDef* hi2s)
  */
 HAL_StatusTypeDef HAL_I2S_DMAResume(I2S_HandleTypeDef* hi2s)
 {
-   /* Process Locked */
-   __HAL_LOCK(hi2s);
+    /* Process Locked */
+    __HAL_LOCK(hi2s);
 
-   if (hi2s->State == HAL_I2S_STATE_BUSY_TX)
-   {
-      /* Enable the I2S DMA Tx request */
-      SET_BIT(hi2s->Instance->CR2, SPI_CR2_TXDMAEN);
-   }
-   else if (hi2s->State == HAL_I2S_STATE_BUSY_RX)
-   {
-      /* Enable the I2S DMA Rx request */
-      SET_BIT(hi2s->Instance->CR2, SPI_CR2_RXDMAEN);
-   }
+    if(hi2s->State == HAL_I2S_STATE_BUSY_TX) {
+        /* Enable the I2S DMA Tx request */
+        SET_BIT(hi2s->Instance->CR2, SPI_CR2_TXDMAEN);
+    }
+    else if(hi2s->State == HAL_I2S_STATE_BUSY_RX) {
+        /* Enable the I2S DMA Rx request */
+        SET_BIT(hi2s->Instance->CR2, SPI_CR2_RXDMAEN);
+    }
 
-   /* If the I2S peripheral is still not enabled, enable it */
-   if (HAL_IS_BIT_CLR(hi2s->Instance->I2SCFGR, SPI_I2SCFGR_I2SE))
-   {
-      /* Enable I2S peripheral */
-      __HAL_I2S_ENABLE(hi2s);
-   }
+    /* If the I2S peripheral is still not enabled, enable it */
+    if(HAL_IS_BIT_CLR(hi2s->Instance->I2SCFGR, SPI_I2SCFGR_I2SE)) {
+        /* Enable I2S peripheral */
+        __HAL_I2S_ENABLE(hi2s);
+    }
 
-   /* Process Unlocked */
-   __HAL_UNLOCK(hi2s);
+    /* Process Unlocked */
+    __HAL_UNLOCK(hi2s);
 
-   return HAL_OK;
+    return HAL_OK;
 }
 
 /**
@@ -1006,37 +942,35 @@ HAL_StatusTypeDef HAL_I2S_DMAResume(I2S_HandleTypeDef* hi2s)
  */
 HAL_StatusTypeDef HAL_I2S_DMAStop(I2S_HandleTypeDef* hi2s)
 {
-   /* Process Locked */
-   __HAL_LOCK(hi2s);
+    /* Process Locked */
+    __HAL_LOCK(hi2s);
 
-   /* Disable the I2S Tx/Rx DMA requests */
-   CLEAR_BIT(hi2s->Instance->CR2, SPI_CR2_TXDMAEN);
-   CLEAR_BIT(hi2s->Instance->CR2, SPI_CR2_RXDMAEN);
+    /* Disable the I2S Tx/Rx DMA requests */
+    CLEAR_BIT(hi2s->Instance->CR2, SPI_CR2_TXDMAEN);
+    CLEAR_BIT(hi2s->Instance->CR2, SPI_CR2_RXDMAEN);
 
-   /* Abort the I2S DMA Channel tx */
-   if (hi2s->hdmatx != NULL)
-   {
-      /* Disable the I2S DMA channel */
-      __HAL_DMA_DISABLE(hi2s->hdmatx);
-      HAL_DMA_Abort(hi2s->hdmatx);
-   }
-   /* Abort the I2S DMA Channel rx */
-   if (hi2s->hdmarx != NULL)
-   {
-      /* Disable the I2S DMA channel */
-      __HAL_DMA_DISABLE(hi2s->hdmarx);
-      HAL_DMA_Abort(hi2s->hdmarx);
-   }
+    /* Abort the I2S DMA Channel tx */
+    if(hi2s->hdmatx != NULL) {
+        /* Disable the I2S DMA channel */
+        __HAL_DMA_DISABLE(hi2s->hdmatx);
+        HAL_DMA_Abort(hi2s->hdmatx);
+    }
+    /* Abort the I2S DMA Channel rx */
+    if(hi2s->hdmarx != NULL) {
+        /* Disable the I2S DMA channel */
+        __HAL_DMA_DISABLE(hi2s->hdmarx);
+        HAL_DMA_Abort(hi2s->hdmarx);
+    }
 
-   /* Disable I2S peripheral */
-   __HAL_I2S_DISABLE(hi2s);
+    /* Disable I2S peripheral */
+    __HAL_I2S_DISABLE(hi2s);
 
-   hi2s->State = HAL_I2S_STATE_READY;
+    hi2s->State = HAL_I2S_STATE_READY;
 
-   /* Process Unlocked */
-   __HAL_UNLOCK(hi2s);
+    /* Process Unlocked */
+    __HAL_UNLOCK(hi2s);
 
-   return HAL_OK;
+    return HAL_OK;
 }
 
 /**
@@ -1047,51 +981,46 @@ HAL_StatusTypeDef HAL_I2S_DMAStop(I2S_HandleTypeDef* hi2s)
  */
 void HAL_I2S_IRQHandler(I2S_HandleTypeDef* hi2s)
 {
-   uint32_t i2ssr = hi2s->Instance->SR;
+    uint32_t i2ssr = hi2s->Instance->SR;
 
-   /* I2S in mode Receiver ------------------------------------------------*/
-   if (((i2ssr & I2S_FLAG_OVR) != I2S_FLAG_OVR) && ((i2ssr & I2S_FLAG_RXNE) == I2S_FLAG_RXNE) &&
-       (__HAL_I2S_GET_IT_SOURCE(hi2s, I2S_IT_RXNE) != RESET))
-   {
-      I2S_Receive_IT(hi2s);
-      return;
-   }
+    /* I2S in mode Receiver ------------------------------------------------*/
+    if(((i2ssr & I2S_FLAG_OVR) != I2S_FLAG_OVR) && ((i2ssr & I2S_FLAG_RXNE) == I2S_FLAG_RXNE) &&
+        (__HAL_I2S_GET_IT_SOURCE(hi2s, I2S_IT_RXNE) != RESET)) {
+        I2S_Receive_IT(hi2s);
+        return;
+    }
 
-   /* I2S in mode Tramitter -----------------------------------------------*/
-   if (((i2ssr & I2S_FLAG_TXE) == I2S_FLAG_TXE) && (__HAL_I2S_GET_IT_SOURCE(hi2s, I2S_IT_TXE) != RESET))
-   {
-      I2S_Transmit_IT(hi2s);
-      return;
-   }
+    /* I2S in mode Tramitter -----------------------------------------------*/
+    if(((i2ssr & I2S_FLAG_TXE) == I2S_FLAG_TXE) && (__HAL_I2S_GET_IT_SOURCE(hi2s, I2S_IT_TXE) != RESET)) {
+        I2S_Transmit_IT(hi2s);
+        return;
+    }
 
-   /* I2S interrupt error -------------------------------------------------*/
-   if (__HAL_I2S_GET_IT_SOURCE(hi2s, I2S_IT_ERR) != RESET)
-   {
-      /* I2S Overrun error interrupt occured ---------------------------------*/
-      if ((i2ssr & I2S_FLAG_OVR) == I2S_FLAG_OVR)
-      {
-         /* Disable RXNE and ERR interrupt */
-         __HAL_I2S_DISABLE_IT(hi2s, (I2S_IT_RXNE | I2S_IT_ERR));
+    /* I2S interrupt error -------------------------------------------------*/
+    if(__HAL_I2S_GET_IT_SOURCE(hi2s, I2S_IT_ERR) != RESET) {
+        /* I2S Overrun error interrupt occured ---------------------------------*/
+        if((i2ssr & I2S_FLAG_OVR) == I2S_FLAG_OVR) {
+            /* Disable RXNE and ERR interrupt */
+            __HAL_I2S_DISABLE_IT(hi2s, (I2S_IT_RXNE | I2S_IT_ERR));
 
-         /* Set the error code and execute error callback*/
-         SET_BIT(hi2s->ErrorCode, HAL_I2S_ERROR_OVR);
-      }
+            /* Set the error code and execute error callback*/
+            SET_BIT(hi2s->ErrorCode, HAL_I2S_ERROR_OVR);
+        }
 
-      /* I2S Underrun error interrupt occured --------------------------------*/
-      if ((i2ssr & I2S_FLAG_UDR) == I2S_FLAG_UDR)
-      {
-         /* Disable TXE and ERR interrupt */
-         __HAL_I2S_DISABLE_IT(hi2s, (I2S_IT_TXE | I2S_IT_ERR));
+        /* I2S Underrun error interrupt occured --------------------------------*/
+        if((i2ssr & I2S_FLAG_UDR) == I2S_FLAG_UDR) {
+            /* Disable TXE and ERR interrupt */
+            __HAL_I2S_DISABLE_IT(hi2s, (I2S_IT_TXE | I2S_IT_ERR));
 
-         /* Set the error code and execute error callback*/
-         SET_BIT(hi2s->ErrorCode, HAL_I2S_ERROR_UDR);
-      }
+            /* Set the error code and execute error callback*/
+            SET_BIT(hi2s->ErrorCode, HAL_I2S_ERROR_UDR);
+        }
 
-      /* Set the I2S State ready */
-      hi2s->State = HAL_I2S_STATE_READY;
-      /* Call the Error Callback */
-      HAL_I2S_ErrorCallback(hi2s);
-   }
+        /* Set the I2S State ready */
+        hi2s->State = HAL_I2S_STATE_READY;
+        /* Call the Error Callback */
+        HAL_I2S_ErrorCallback(hi2s);
+    }
 }
 
 /**
@@ -1102,10 +1031,10 @@ void HAL_I2S_IRQHandler(I2S_HandleTypeDef* hi2s)
  */
 __weak void HAL_I2S_TxHalfCpltCallback(I2S_HandleTypeDef* hi2s)
 {
-   /* Prevent unused argument(s) compilation warning */
-   UNUSED(hi2s);
+    /* Prevent unused argument(s) compilation warning */
+    UNUSED(hi2s);
 
-   /* NOTE : This function Should not be modified, when the callback is needed,
+    /* NOTE : This function Should not be modified, when the callback is needed,
              the HAL_I2S_TxHalfCpltCallback could be implemented in the user file
     */
 }
@@ -1118,10 +1047,10 @@ __weak void HAL_I2S_TxHalfCpltCallback(I2S_HandleTypeDef* hi2s)
  */
 __weak void HAL_I2S_TxCpltCallback(I2S_HandleTypeDef* hi2s)
 {
-   /* Prevent unused argument(s) compilation warning */
-   UNUSED(hi2s);
+    /* Prevent unused argument(s) compilation warning */
+    UNUSED(hi2s);
 
-   /* NOTE : This function Should not be modified, when the callback is needed,
+    /* NOTE : This function Should not be modified, when the callback is needed,
              the HAL_I2S_TxCpltCallback could be implemented in the user file
     */
 }
@@ -1134,10 +1063,10 @@ __weak void HAL_I2S_TxCpltCallback(I2S_HandleTypeDef* hi2s)
  */
 __weak void HAL_I2S_RxHalfCpltCallback(I2S_HandleTypeDef* hi2s)
 {
-   /* Prevent unused argument(s) compilation warning */
-   UNUSED(hi2s);
+    /* Prevent unused argument(s) compilation warning */
+    UNUSED(hi2s);
 
-   /* NOTE : This function Should not be modified, when the callback is needed,
+    /* NOTE : This function Should not be modified, when the callback is needed,
              the HAL_I2S_RxHalfCpltCallback could be implemented in the user file
     */
 }
@@ -1150,10 +1079,10 @@ __weak void HAL_I2S_RxHalfCpltCallback(I2S_HandleTypeDef* hi2s)
  */
 __weak void HAL_I2S_RxCpltCallback(I2S_HandleTypeDef* hi2s)
 {
-   /* Prevent unused argument(s) compilation warning */
-   UNUSED(hi2s);
+    /* Prevent unused argument(s) compilation warning */
+    UNUSED(hi2s);
 
-   /* NOTE : This function Should not be modified, when the callback is needed,
+    /* NOTE : This function Should not be modified, when the callback is needed,
              the HAL_I2S_RxCpltCallback could be implemented in the user file
     */
 }
@@ -1166,10 +1095,10 @@ __weak void HAL_I2S_RxCpltCallback(I2S_HandleTypeDef* hi2s)
  */
 __weak void HAL_I2S_ErrorCallback(I2S_HandleTypeDef* hi2s)
 {
-   /* Prevent unused argument(s) compilation warning */
-   UNUSED(hi2s);
+    /* Prevent unused argument(s) compilation warning */
+    UNUSED(hi2s);
 
-   /* NOTE : This function Should not be modified, when the callback is needed,
+    /* NOTE : This function Should not be modified, when the callback is needed,
              the HAL_I2S_ErrorCallback could be implemented in the user file
     */
 }
@@ -1201,7 +1130,7 @@ __weak void HAL_I2S_ErrorCallback(I2S_HandleTypeDef* hi2s)
  */
 HAL_I2S_StateTypeDef HAL_I2S_GetState(I2S_HandleTypeDef* hi2s)
 {
-   return hi2s->State;
+    return hi2s->State;
 }
 
 /**
@@ -1212,7 +1141,7 @@ HAL_I2S_StateTypeDef HAL_I2S_GetState(I2S_HandleTypeDef* hi2s)
  */
 uint32_t HAL_I2S_GetError(I2S_HandleTypeDef* hi2s)
 {
-   return hi2s->ErrorCode;
+    return hi2s->ErrorCode;
 }
 /**
  * @}
@@ -1234,17 +1163,16 @@ uint32_t HAL_I2S_GetError(I2S_HandleTypeDef* hi2s)
  */
 static void I2S_DMATxCplt(DMA_HandleTypeDef* hdma)
 {
-   I2S_HandleTypeDef* hi2s = (I2S_HandleTypeDef*)((DMA_HandleTypeDef*)hdma)->Parent;
+    I2S_HandleTypeDef* hi2s = (I2S_HandleTypeDef*)((DMA_HandleTypeDef*)hdma)->Parent;
 
-   if (HAL_IS_BIT_CLR(hdma->Instance->CCR, DMA_CCR_CIRC))
-   {
-      /* Disable Tx DMA Request */
-      CLEAR_BIT(hi2s->Instance->CR2, SPI_CR2_TXDMAEN);
+    if(HAL_IS_BIT_CLR(hdma->Instance->CCR, DMA_CCR_CIRC)) {
+        /* Disable Tx DMA Request */
+        CLEAR_BIT(hi2s->Instance->CR2, SPI_CR2_TXDMAEN);
 
-      hi2s->TxXferCount = 0U;
-      hi2s->State = HAL_I2S_STATE_READY;
-   }
-   HAL_I2S_TxCpltCallback(hi2s);
+        hi2s->TxXferCount = 0U;
+        hi2s->State = HAL_I2S_STATE_READY;
+    }
+    HAL_I2S_TxCpltCallback(hi2s);
 }
 
 /**
@@ -1255,9 +1183,9 @@ static void I2S_DMATxCplt(DMA_HandleTypeDef* hdma)
  */
 static void I2S_DMATxHalfCplt(DMA_HandleTypeDef* hdma)
 {
-   I2S_HandleTypeDef* hi2s = (I2S_HandleTypeDef*)((DMA_HandleTypeDef*)hdma)->Parent;
+    I2S_HandleTypeDef* hi2s = (I2S_HandleTypeDef*)((DMA_HandleTypeDef*)hdma)->Parent;
 
-   HAL_I2S_TxHalfCpltCallback(hi2s);
+    HAL_I2S_TxHalfCpltCallback(hi2s);
 }
 
 /**
@@ -1268,16 +1196,15 @@ static void I2S_DMATxHalfCplt(DMA_HandleTypeDef* hdma)
  */
 static void I2S_DMARxCplt(DMA_HandleTypeDef* hdma)
 {
-   I2S_HandleTypeDef* hi2s = (I2S_HandleTypeDef*)((DMA_HandleTypeDef*)hdma)->Parent;
+    I2S_HandleTypeDef* hi2s = (I2S_HandleTypeDef*)((DMA_HandleTypeDef*)hdma)->Parent;
 
-   if (HAL_IS_BIT_CLR(hdma->Instance->CCR, DMA_CCR_CIRC))
-   {
-      /* Disable Rx DMA Request */
-      CLEAR_BIT(hi2s->Instance->CR2, SPI_CR2_RXDMAEN);
-      hi2s->RxXferCount = 0U;
-      hi2s->State = HAL_I2S_STATE_READY;
-   }
-   HAL_I2S_RxCpltCallback(hi2s);
+    if(HAL_IS_BIT_CLR(hdma->Instance->CCR, DMA_CCR_CIRC)) {
+        /* Disable Rx DMA Request */
+        CLEAR_BIT(hi2s->Instance->CR2, SPI_CR2_RXDMAEN);
+        hi2s->RxXferCount = 0U;
+        hi2s->State = HAL_I2S_STATE_READY;
+    }
+    HAL_I2S_RxCpltCallback(hi2s);
 }
 
 /**
@@ -1288,9 +1215,9 @@ static void I2S_DMARxCplt(DMA_HandleTypeDef* hdma)
  */
 static void I2S_DMARxHalfCplt(DMA_HandleTypeDef* hdma)
 {
-   I2S_HandleTypeDef* hi2s = (I2S_HandleTypeDef*)((DMA_HandleTypeDef*)hdma)->Parent;
+    I2S_HandleTypeDef* hi2s = (I2S_HandleTypeDef*)((DMA_HandleTypeDef*)hdma)->Parent;
 
-   HAL_I2S_RxHalfCpltCallback(hi2s);
+    HAL_I2S_RxHalfCpltCallback(hi2s);
 }
 
 /**
@@ -1301,18 +1228,18 @@ static void I2S_DMARxHalfCplt(DMA_HandleTypeDef* hdma)
  */
 static void I2S_DMAError(DMA_HandleTypeDef* hdma)
 {
-   I2S_HandleTypeDef* hi2s = (I2S_HandleTypeDef*)((DMA_HandleTypeDef*)hdma)->Parent;
+    I2S_HandleTypeDef* hi2s = (I2S_HandleTypeDef*)((DMA_HandleTypeDef*)hdma)->Parent;
 
-   /* Disable Rx and Tx DMA Request */
-   CLEAR_BIT(hi2s->Instance->CR2, (SPI_CR2_RXDMAEN | SPI_CR2_TXDMAEN));
-   hi2s->TxXferCount = 0U;
-   hi2s->RxXferCount = 0U;
+    /* Disable Rx and Tx DMA Request */
+    CLEAR_BIT(hi2s->Instance->CR2, (SPI_CR2_RXDMAEN | SPI_CR2_TXDMAEN));
+    hi2s->TxXferCount = 0U;
+    hi2s->RxXferCount = 0U;
 
-   hi2s->State = HAL_I2S_STATE_READY;
+    hi2s->State = HAL_I2S_STATE_READY;
 
-   /* Set the error code and execute error callback*/
-   SET_BIT(hi2s->ErrorCode, HAL_I2S_ERROR_DMA);
-   HAL_I2S_ErrorCallback(hi2s);
+    /* Set the error code and execute error callback*/
+    SET_BIT(hi2s->ErrorCode, HAL_I2S_ERROR_DMA);
+    HAL_I2S_ErrorCallback(hi2s);
 }
 
 /**
@@ -1323,18 +1250,17 @@ static void I2S_DMAError(DMA_HandleTypeDef* hdma)
  */
 static void I2S_Transmit_IT(I2S_HandleTypeDef* hi2s)
 {
-   /* Transmit data */
-   hi2s->Instance->DR = (*hi2s->pTxBuffPtr++);
-   hi2s->TxXferCount--;
+    /* Transmit data */
+    hi2s->Instance->DR = (*hi2s->pTxBuffPtr++);
+    hi2s->TxXferCount--;
 
-   if (hi2s->TxXferCount == 0U)
-   {
-      /* Disable TXE and ERR interrupt */
-      __HAL_I2S_DISABLE_IT(hi2s, (I2S_IT_TXE | I2S_IT_ERR));
+    if(hi2s->TxXferCount == 0U) {
+        /* Disable TXE and ERR interrupt */
+        __HAL_I2S_DISABLE_IT(hi2s, (I2S_IT_TXE | I2S_IT_ERR));
 
-      hi2s->State = HAL_I2S_STATE_READY;
-      HAL_I2S_TxCpltCallback(hi2s);
-   }
+        hi2s->State = HAL_I2S_STATE_READY;
+        HAL_I2S_TxCpltCallback(hi2s);
+    }
 }
 
 /**
@@ -1344,18 +1270,17 @@ static void I2S_Transmit_IT(I2S_HandleTypeDef* hi2s)
  */
 static void I2S_Receive_IT(I2S_HandleTypeDef* hi2s)
 {
-   /* Receive data */
-   (*hi2s->pRxBuffPtr++) = hi2s->Instance->DR;
-   hi2s->RxXferCount--;
+    /* Receive data */
+    (*hi2s->pRxBuffPtr++) = hi2s->Instance->DR;
+    hi2s->RxXferCount--;
 
-   if (hi2s->RxXferCount == 0U)
-   {
-      /* Disable RXNE and ERR interrupt */
-      __HAL_I2S_DISABLE_IT(hi2s, (I2S_IT_RXNE | I2S_IT_ERR));
+    if(hi2s->RxXferCount == 0U) {
+        /* Disable RXNE and ERR interrupt */
+        __HAL_I2S_DISABLE_IT(hi2s, (I2S_IT_RXNE | I2S_IT_ERR));
 
-      hi2s->State = HAL_I2S_STATE_READY;
-      HAL_I2S_RxCpltCallback(hi2s);
-   }
+        hi2s->State = HAL_I2S_STATE_READY;
+        HAL_I2S_RxCpltCallback(hi2s);
+    }
 }
 
 /**
@@ -1368,55 +1293,47 @@ static void I2S_Receive_IT(I2S_HandleTypeDef* hi2s)
  * @retval HAL status
  */
 static HAL_StatusTypeDef I2S_WaitFlagStateUntilTimeout(I2S_HandleTypeDef* hi2s,
-                                                       uint32_t Flag,
-                                                       uint32_t Status,
-                                                       uint32_t Timeout)
+    uint32_t Flag,
+    uint32_t Status,
+    uint32_t Timeout)
 {
-   uint32_t tickstart = 0U;
+    uint32_t tickstart = 0U;
 
-   /* Get tick */
-   tickstart = HAL_GetTick();
+    /* Get tick */
+    tickstart = HAL_GetTick();
 
-   /* Wait until flag is set */
-   if (Status == RESET)
-   {
-      while (__HAL_I2S_GET_FLAG(hi2s, Flag) == RESET)
-      {
-         if (Timeout != HAL_MAX_DELAY)
-         {
-            if ((Timeout == 0U) || ((HAL_GetTick() - tickstart) > Timeout))
-            {
-               /* Set the I2S State ready */
-               hi2s->State = HAL_I2S_STATE_READY;
+    /* Wait until flag is set */
+    if(Status == RESET) {
+        while(__HAL_I2S_GET_FLAG(hi2s, Flag) == RESET) {
+            if(Timeout != HAL_MAX_DELAY) {
+                if((Timeout == 0U) || ((HAL_GetTick() - tickstart) > Timeout)) {
+                    /* Set the I2S State ready */
+                    hi2s->State = HAL_I2S_STATE_READY;
 
-               /* Process Unlocked */
-               __HAL_UNLOCK(hi2s);
+                    /* Process Unlocked */
+                    __HAL_UNLOCK(hi2s);
 
-               return HAL_TIMEOUT;
+                    return HAL_TIMEOUT;
+                }
             }
-         }
-      }
-   }
-   else
-   {
-      while (__HAL_I2S_GET_FLAG(hi2s, Flag) != RESET)
-      {
-         if (Timeout != HAL_MAX_DELAY)
-         {
-            if ((Timeout == 0U) || ((HAL_GetTick() - tickstart) > Timeout))
-            {
-               /* Set the I2S State ready */
-               hi2s->State = HAL_I2S_STATE_READY;
+        }
+    }
+    else {
+        while(__HAL_I2S_GET_FLAG(hi2s, Flag) != RESET) {
+            if(Timeout != HAL_MAX_DELAY) {
+                if((Timeout == 0U) || ((HAL_GetTick() - tickstart) > Timeout)) {
+                    /* Set the I2S State ready */
+                    hi2s->State = HAL_I2S_STATE_READY;
 
-               /* Process Unlocked */
-               __HAL_UNLOCK(hi2s);
+                    /* Process Unlocked */
+                    __HAL_UNLOCK(hi2s);
 
-               return HAL_TIMEOUT;
+                    return HAL_TIMEOUT;
+                }
             }
-         }
-      }
-   }
-   return HAL_OK;
+        }
+    }
+    return HAL_OK;
 }
 
 /**
@@ -1426,7 +1343,7 @@ static HAL_StatusTypeDef I2S_WaitFlagStateUntilTimeout(I2S_HandleTypeDef* hi2s,
 /**
  * @}
  */
-#   endif /* HAL_I2S_MODULE_ENABLED */
+#endif /* HAL_I2S_MODULE_ENABLED */
 
 /**
  * @}

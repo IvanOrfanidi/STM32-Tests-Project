@@ -37,20 +37,20 @@
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __STM32L0xx_LL_RNG_H
-#   define __STM32L0xx_LL_RNG_H
+#define __STM32L0xx_LL_RNG_H
 
-#   ifdef __cplusplus
+#ifdef __cplusplus
 extern "C" {
-#   endif
+#endif
 
 /* Includes ------------------------------------------------------------------*/
-#   include "stm32l0xx.h"
+#include "stm32l0xx.h"
 
 /** @addtogroup STM32L0xx_LL_Driver
  * @{
  */
 
-#   if defined(RNG)
+#if defined(RNG)
 
 /** @defgroup RNG_LL RNG
  * @{
@@ -71,11 +71,11 @@ extern "C" {
  * @brief    Flags defines which can be used with LL_RNG_ReadReg function
  * @{
  */
-#      define LL_RNG_SR_DRDY RNG_SR_DRDY /*!< Register contains valid random data */
-#      define LL_RNG_SR_CECS RNG_SR_CECS /*!< Clock error current status */
-#      define LL_RNG_SR_SECS RNG_SR_SECS /*!< Seed error current status */
-#      define LL_RNG_SR_CEIS RNG_SR_CEIS /*!< Clock error interrupt status */
-#      define LL_RNG_SR_SEIS RNG_SR_SEIS /*!< Seed error interrupt status */
+#define LL_RNG_SR_DRDY RNG_SR_DRDY /*!< Register contains valid random data */
+#define LL_RNG_SR_CECS RNG_SR_CECS /*!< Clock error current status */
+#define LL_RNG_SR_SECS RNG_SR_SECS /*!< Seed error current status */
+#define LL_RNG_SR_CEIS RNG_SR_CEIS /*!< Clock error interrupt status */
+#define LL_RNG_SR_SEIS RNG_SR_SEIS /*!< Seed error interrupt status */
 /**
  * @}
  */
@@ -84,7 +84,7 @@ extern "C" {
  * @brief    IT defines which can be used with LL_RNG_ReadReg and  LL_RNG_WriteReg macros
  * @{
  */
-#      define LL_RNG_CR_IE RNG_CR_IE /*!< RNG Interrupt enable */
+#define LL_RNG_CR_IE RNG_CR_IE /*!< RNG Interrupt enable */
 /**
  * @}
  */
@@ -109,7 +109,7 @@ extern "C" {
  * @param  __VALUE__ Value to be written in the register
  * @retval None
  */
-#      define LL_RNG_WriteReg(__INSTANCE__, __REG__, __VALUE__) WRITE_REG(__INSTANCE__->__REG__, (__VALUE__))
+#define LL_RNG_WriteReg(__INSTANCE__, __REG__, __VALUE__) WRITE_REG(__INSTANCE__->__REG__, (__VALUE__))
 
 /**
  * @brief  Read a value in RNG register
@@ -117,7 +117,7 @@ extern "C" {
  * @param  __REG__ Register to be read
  * @retval Register value
  */
-#      define LL_RNG_ReadReg(__INSTANCE__, __REG__) READ_REG(__INSTANCE__->__REG__)
+#define LL_RNG_ReadReg(__INSTANCE__, __REG__) READ_REG(__INSTANCE__->__REG__)
 /**
  * @}
  */
@@ -142,7 +142,7 @@ extern "C" {
  */
 __STATIC_INLINE void LL_RNG_Enable(RNG_TypeDef* RNGx)
 {
-   SET_BIT(RNGx->CR, RNG_CR_RNGEN);
+    SET_BIT(RNGx->CR, RNG_CR_RNGEN);
 }
 
 /**
@@ -153,7 +153,7 @@ __STATIC_INLINE void LL_RNG_Enable(RNG_TypeDef* RNGx)
  */
 __STATIC_INLINE void LL_RNG_Disable(RNG_TypeDef* RNGx)
 {
-   CLEAR_BIT(RNGx->CR, RNG_CR_RNGEN);
+    CLEAR_BIT(RNGx->CR, RNG_CR_RNGEN);
 }
 
 /**
@@ -164,7 +164,7 @@ __STATIC_INLINE void LL_RNG_Disable(RNG_TypeDef* RNGx)
  */
 __STATIC_INLINE uint32_t LL_RNG_IsEnabled(RNG_TypeDef* RNGx)
 {
-   return (READ_BIT(RNGx->CR, RNG_CR_RNGEN) == (RNG_CR_RNGEN));
+    return (READ_BIT(RNGx->CR, RNG_CR_RNGEN) == (RNG_CR_RNGEN));
 }
 
 /**
@@ -183,7 +183,7 @@ __STATIC_INLINE uint32_t LL_RNG_IsEnabled(RNG_TypeDef* RNGx)
  */
 __STATIC_INLINE uint32_t LL_RNG_IsActiveFlag_DRDY(RNG_TypeDef* RNGx)
 {
-   return (READ_BIT(RNGx->SR, RNG_SR_DRDY) == (RNG_SR_DRDY));
+    return (READ_BIT(RNGx->SR, RNG_SR_DRDY) == (RNG_SR_DRDY));
 }
 
 /**
@@ -194,7 +194,7 @@ __STATIC_INLINE uint32_t LL_RNG_IsActiveFlag_DRDY(RNG_TypeDef* RNGx)
  */
 __STATIC_INLINE uint32_t LL_RNG_IsActiveFlag_CECS(RNG_TypeDef* RNGx)
 {
-   return (READ_BIT(RNGx->SR, RNG_SR_CECS) == (RNG_SR_CECS));
+    return (READ_BIT(RNGx->SR, RNG_SR_CECS) == (RNG_SR_CECS));
 }
 
 /**
@@ -205,7 +205,7 @@ __STATIC_INLINE uint32_t LL_RNG_IsActiveFlag_CECS(RNG_TypeDef* RNGx)
  */
 __STATIC_INLINE uint32_t LL_RNG_IsActiveFlag_SECS(RNG_TypeDef* RNGx)
 {
-   return (READ_BIT(RNGx->SR, RNG_SR_SECS) == (RNG_SR_SECS));
+    return (READ_BIT(RNGx->SR, RNG_SR_SECS) == (RNG_SR_SECS));
 }
 
 /**
@@ -216,7 +216,7 @@ __STATIC_INLINE uint32_t LL_RNG_IsActiveFlag_SECS(RNG_TypeDef* RNGx)
  */
 __STATIC_INLINE uint32_t LL_RNG_IsActiveFlag_CEIS(RNG_TypeDef* RNGx)
 {
-   return (READ_BIT(RNGx->SR, RNG_SR_CEIS) == (RNG_SR_CEIS));
+    return (READ_BIT(RNGx->SR, RNG_SR_CEIS) == (RNG_SR_CEIS));
 }
 
 /**
@@ -227,7 +227,7 @@ __STATIC_INLINE uint32_t LL_RNG_IsActiveFlag_CEIS(RNG_TypeDef* RNGx)
  */
 __STATIC_INLINE uint32_t LL_RNG_IsActiveFlag_SEIS(RNG_TypeDef* RNGx)
 {
-   return (READ_BIT(RNGx->SR, RNG_SR_SEIS) == (RNG_SR_SEIS));
+    return (READ_BIT(RNGx->SR, RNG_SR_SEIS) == (RNG_SR_SEIS));
 }
 
 /**
@@ -238,7 +238,7 @@ __STATIC_INLINE uint32_t LL_RNG_IsActiveFlag_SEIS(RNG_TypeDef* RNGx)
  */
 __STATIC_INLINE void LL_RNG_ClearFlag_CEIS(RNG_TypeDef* RNGx)
 {
-   WRITE_REG(RNGx->SR, ~RNG_SR_CEIS);
+    WRITE_REG(RNGx->SR, ~RNG_SR_CEIS);
 }
 
 /**
@@ -249,7 +249,7 @@ __STATIC_INLINE void LL_RNG_ClearFlag_CEIS(RNG_TypeDef* RNGx)
  */
 __STATIC_INLINE void LL_RNG_ClearFlag_SEIS(RNG_TypeDef* RNGx)
 {
-   WRITE_REG(RNGx->SR, ~RNG_SR_SEIS);
+    WRITE_REG(RNGx->SR, ~RNG_SR_SEIS);
 }
 
 /**
@@ -269,7 +269,7 @@ __STATIC_INLINE void LL_RNG_ClearFlag_SEIS(RNG_TypeDef* RNGx)
  */
 __STATIC_INLINE void LL_RNG_EnableIT(RNG_TypeDef* RNGx)
 {
-   SET_BIT(RNGx->CR, RNG_CR_IE);
+    SET_BIT(RNGx->CR, RNG_CR_IE);
 }
 
 /**
@@ -281,7 +281,7 @@ __STATIC_INLINE void LL_RNG_EnableIT(RNG_TypeDef* RNGx)
  */
 __STATIC_INLINE void LL_RNG_DisableIT(RNG_TypeDef* RNGx)
 {
-   CLEAR_BIT(RNGx->CR, RNG_CR_IE);
+    CLEAR_BIT(RNGx->CR, RNG_CR_IE);
 }
 
 /**
@@ -293,7 +293,7 @@ __STATIC_INLINE void LL_RNG_DisableIT(RNG_TypeDef* RNGx)
  */
 __STATIC_INLINE uint32_t LL_RNG_IsEnabledIT(RNG_TypeDef* RNGx)
 {
-   return (READ_BIT(RNGx->CR, RNG_CR_IE) == (RNG_CR_IE));
+    return (READ_BIT(RNGx->CR, RNG_CR_IE) == (RNG_CR_IE));
 }
 
 /**
@@ -312,14 +312,14 @@ __STATIC_INLINE uint32_t LL_RNG_IsEnabledIT(RNG_TypeDef* RNGx)
  */
 __STATIC_INLINE uint32_t LL_RNG_ReadRandData32(RNG_TypeDef* RNGx)
 {
-   return (uint32_t)(READ_REG(RNGx->DR));
+    return (uint32_t)(READ_REG(RNGx->DR));
 }
 
 /**
  * @}
  */
 
-#      if defined(USE_FULL_LL_DRIVER)
+#if defined(USE_FULL_LL_DRIVER)
 /** @defgroup RNG_LL_EF_Init Initialization and de-initialization functions
  * @{
  */
@@ -329,7 +329,7 @@ ErrorStatus LL_RNG_DeInit(RNG_TypeDef* RNGx);
 /**
  * @}
  */
-#      endif /* USE_FULL_LL_DRIVER */
+#endif /* USE_FULL_LL_DRIVER */
 
 /**
  * @}
@@ -339,15 +339,15 @@ ErrorStatus LL_RNG_DeInit(RNG_TypeDef* RNGx);
  * @}
  */
 
-#   endif /* defined(RNG) */
+#endif /* defined(RNG) */
 
 /**
  * @}
  */
 
-#   ifdef __cplusplus
+#ifdef __cplusplus
 }
-#   endif
+#endif
 
 #endif /* __STM32L0xx_LL_RNG_H */
 

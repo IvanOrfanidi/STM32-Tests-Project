@@ -37,20 +37,20 @@
 #if defined(USE_FULL_LL_DRIVER)
 
 /* Includes ------------------------------------------------------------------*/
-#   include "stm32l0xx_ll_lptim.h"
-#   include "stm32l0xx_ll_bus.h"
+#include "stm32l0xx_ll_lptim.h"
+#include "stm32l0xx_ll_bus.h"
 
-#   ifdef USE_FULL_ASSERT
-#      include "stm32_assert.h"
-#   else
-#      define assert_param(expr) ((void)0U)
-#   endif
+#ifdef USE_FULL_ASSERT
+#include "stm32_assert.h"
+#else
+#define assert_param(expr) ((void)0U)
+#endif
 
 /** @addtogroup STM32L0xx_LL_Driver
  * @{
  */
 
-#   if defined(LPTIM1) || defined(LPTIM2)
+#if defined(LPTIM1) || defined(LPTIM2)
 
 /** @addtogroup LPTIM_LL
  * @{
@@ -63,20 +63,20 @@
 /** @addtogroup LPTIM_LL_Private_Macros
  * @{
  */
-#      define IS_LPTIM_CLOCK_SOURCE(__VALUE__) \
-         (((__VALUE__) == LL_LPTIM_CLK_SOURCE_INTERNAL) || ((__VALUE__) == LL_LPTIM_CLK_SOURCE_EXTERNAL))
+#define IS_LPTIM_CLOCK_SOURCE(__VALUE__) \
+    (((__VALUE__) == LL_LPTIM_CLK_SOURCE_INTERNAL) || ((__VALUE__) == LL_LPTIM_CLK_SOURCE_EXTERNAL))
 
-#      define IS_LPTIM_CLOCK_PRESCALER(__VALUE__) \
-         (((__VALUE__) == LL_LPTIM_PRESCALER_DIV1) || ((__VALUE__) == LL_LPTIM_PRESCALER_DIV2) || \
-          ((__VALUE__) == LL_LPTIM_PRESCALER_DIV4) || ((__VALUE__) == LL_LPTIM_PRESCALER_DIV8) || \
-          ((__VALUE__) == LL_LPTIM_PRESCALER_DIV16) || ((__VALUE__) == LL_LPTIM_PRESCALER_DIV32) || \
-          ((__VALUE__) == LL_LPTIM_PRESCALER_DIV64) || ((__VALUE__) == LL_LPTIM_PRESCALER_DIV128))
+#define IS_LPTIM_CLOCK_PRESCALER(__VALUE__) \
+    (((__VALUE__) == LL_LPTIM_PRESCALER_DIV1) || ((__VALUE__) == LL_LPTIM_PRESCALER_DIV2) || \
+        ((__VALUE__) == LL_LPTIM_PRESCALER_DIV4) || ((__VALUE__) == LL_LPTIM_PRESCALER_DIV8) || \
+        ((__VALUE__) == LL_LPTIM_PRESCALER_DIV16) || ((__VALUE__) == LL_LPTIM_PRESCALER_DIV32) || \
+        ((__VALUE__) == LL_LPTIM_PRESCALER_DIV64) || ((__VALUE__) == LL_LPTIM_PRESCALER_DIV128))
 
-#      define IS_LPTIM_WAVEFORM(__VALUE__) \
-         (((__VALUE__) == LL_LPTIM_OUTPUT_WAVEFORM_PWM) || ((__VALUE__) == LL_LPTIM_OUTPUT_WAVEFORM_SETONCE))
+#define IS_LPTIM_WAVEFORM(__VALUE__) \
+    (((__VALUE__) == LL_LPTIM_OUTPUT_WAVEFORM_PWM) || ((__VALUE__) == LL_LPTIM_OUTPUT_WAVEFORM_SETONCE))
 
-#      define IS_LPTIM_OUTPUT_POLARITY(__VALUE__) \
-         (((__VALUE__) == LL_LPTIM_OUTPUT_POLARITY_REGULAR) || ((__VALUE__) == LL_LPTIM_OUTPUT_POLARITY_INVERSE))
+#define IS_LPTIM_OUTPUT_POLARITY(__VALUE__) \
+    (((__VALUE__) == LL_LPTIM_OUTPUT_POLARITY_REGULAR) || ((__VALUE__) == LL_LPTIM_OUTPUT_POLARITY_INVERSE))
 /**
  * @}
  */
@@ -100,29 +100,26 @@
  */
 ErrorStatus LL_LPTIM_DeInit(LPTIM_TypeDef* LPTIMx)
 {
-   ErrorStatus result = SUCCESS;
+    ErrorStatus result = SUCCESS;
 
-   /* Check the parameters */
-   assert_param(IS_LPTIM_INSTANCE(LPTIMx));
+    /* Check the parameters */
+    assert_param(IS_LPTIM_INSTANCE(LPTIMx));
 
-   if (LPTIMx == LPTIM1)
-   {
-      LL_APB1_GRP1_ForceReset(LL_APB1_GRP1_PERIPH_LPTIM1);
-      LL_APB1_GRP1_ReleaseReset(LL_APB1_GRP1_PERIPH_LPTIM1);
-   }
-#      if defined(LPTIM2)
-   else if (LPTIMx == LPTIM2)
-   {
-      LL_APB1_GRP2_ForceReset(LL_APB1_GRP2_PERIPH_LPTIM2);
-      LL_APB1_GRP2_ReleaseReset(LL_APB1_GRP2_PERIPH_LPTIM2);
-   }
-#      endif
-   else
-   {
-      result = ERROR;
-   }
+    if(LPTIMx == LPTIM1) {
+        LL_APB1_GRP1_ForceReset(LL_APB1_GRP1_PERIPH_LPTIM1);
+        LL_APB1_GRP1_ReleaseReset(LL_APB1_GRP1_PERIPH_LPTIM1);
+    }
+#if defined(LPTIM2)
+    else if(LPTIMx == LPTIM2) {
+        LL_APB1_GRP2_ForceReset(LL_APB1_GRP2_PERIPH_LPTIM2);
+        LL_APB1_GRP2_ReleaseReset(LL_APB1_GRP2_PERIPH_LPTIM2);
+    }
+#endif
+    else {
+        result = ERROR;
+    }
 
-   return result;
+    return result;
 }
 
 /**
@@ -133,11 +130,11 @@ ErrorStatus LL_LPTIM_DeInit(LPTIM_TypeDef* LPTIMx)
  */
 void LL_LPTIM_StructInit(LL_LPTIM_InitTypeDef* LPTIM_InitStruct)
 {
-   /* Set the default configuration */
-   LPTIM_InitStruct->ClockSource = LL_LPTIM_CLK_SOURCE_INTERNAL;
-   LPTIM_InitStruct->Prescaler = LL_LPTIM_PRESCALER_DIV1;
-   LPTIM_InitStruct->Waveform = LL_LPTIM_OUTPUT_WAVEFORM_PWM;
-   LPTIM_InitStruct->Polarity = LL_LPTIM_OUTPUT_POLARITY_REGULAR;
+    /* Set the default configuration */
+    LPTIM_InitStruct->ClockSource = LL_LPTIM_CLK_SOURCE_INTERNAL;
+    LPTIM_InitStruct->Prescaler = LL_LPTIM_PRESCALER_DIV1;
+    LPTIM_InitStruct->Waveform = LL_LPTIM_OUTPUT_WAVEFORM_PWM;
+    LPTIM_InitStruct->Polarity = LL_LPTIM_OUTPUT_POLARITY_REGULAR;
 }
 
 /**
@@ -152,35 +149,33 @@ void LL_LPTIM_StructInit(LL_LPTIM_InitTypeDef* LPTIM_InitStruct)
  */
 ErrorStatus LL_LPTIM_Init(LPTIM_TypeDef* LPTIMx, LL_LPTIM_InitTypeDef* LPTIM_InitStruct)
 {
-   ErrorStatus result = SUCCESS;
+    ErrorStatus result = SUCCESS;
 
-   /* The LPTIMx_CFGR register must only be modified when the LPTIM is disabled
+    /* The LPTIMx_CFGR register must only be modified when the LPTIM is disabled
       (ENABLE bit is reset to 0).
    */
-   if (LL_LPTIM_IsEnabled(LPTIMx))
-   {
-      result = ERROR;
-   }
-   else
-   {
-      /* Check the parameters */
-      assert_param(IS_LPTIM_INSTANCE(LPTIMx));
-      assert_param(IS_LPTIM_CLOCK_SOURCE(LPTIM_InitStruct->ClockSource));
-      assert_param(IS_LPTIM_CLOCK_PRESCALER(LPTIM_InitStruct->Prescaler));
-      assert_param(IS_LPTIM_WAVEFORM(LPTIM_InitStruct->Waveform));
-      assert_param(IS_LPTIM_OUTPUT_POLARITY(LPTIM_InitStruct->Polarity));
+    if(LL_LPTIM_IsEnabled(LPTIMx)) {
+        result = ERROR;
+    }
+    else {
+        /* Check the parameters */
+        assert_param(IS_LPTIM_INSTANCE(LPTIMx));
+        assert_param(IS_LPTIM_CLOCK_SOURCE(LPTIM_InitStruct->ClockSource));
+        assert_param(IS_LPTIM_CLOCK_PRESCALER(LPTIM_InitStruct->Prescaler));
+        assert_param(IS_LPTIM_WAVEFORM(LPTIM_InitStruct->Waveform));
+        assert_param(IS_LPTIM_OUTPUT_POLARITY(LPTIM_InitStruct->Polarity));
 
-      /* Set CKSEL bitfield according to ClockSource value */
-      /* Set PRESC bitfield according to Prescaler value */
-      /* Set WAVE bitfield according to Waveform value */
-      /* Set WAVEPOL bitfield according to Polarity value */
-      MODIFY_REG(LPTIMx->CFGR,
-                 (LPTIM_CFGR_CKSEL | LPTIM_CFGR_PRESC | LPTIM_CFGR_WAVE | LPTIM_CFGR_WAVPOL),
-                 LPTIM_InitStruct->ClockSource | LPTIM_InitStruct->Prescaler | LPTIM_InitStruct->Waveform |
-                    LPTIM_InitStruct->Polarity);
-   }
+        /* Set CKSEL bitfield according to ClockSource value */
+        /* Set PRESC bitfield according to Prescaler value */
+        /* Set WAVE bitfield according to Waveform value */
+        /* Set WAVEPOL bitfield according to Polarity value */
+        MODIFY_REG(LPTIMx->CFGR,
+            (LPTIM_CFGR_CKSEL | LPTIM_CFGR_PRESC | LPTIM_CFGR_WAVE | LPTIM_CFGR_WAVPOL),
+            LPTIM_InitStruct->ClockSource | LPTIM_InitStruct->Prescaler | LPTIM_InitStruct->Waveform |
+                LPTIM_InitStruct->Polarity);
+    }
 
-   return result;
+    return result;
 }
 
 /**
@@ -195,7 +190,7 @@ ErrorStatus LL_LPTIM_Init(LPTIM_TypeDef* LPTIMx, LL_LPTIM_InitTypeDef* LPTIM_Ini
  * @}
  */
 
-#   endif /* defined (LPTIM1) || defined (LPTIM2) */
+#endif /* defined (LPTIM1) || defined (LPTIM2) */
 
 /**
  * @}

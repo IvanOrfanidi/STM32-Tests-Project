@@ -49,55 +49,54 @@ SDA        |PB11          |Serial data line
 #include "fonts.h"
 
 #ifndef _I2C_PORT
-#   define _I2C_PORT 2
+#define _I2C_PORT 2
 #endif
 
 #if _I2C_PORT == 1
-#   define I2C_PORT I2C1
-#   define I2C_SCL_PIN GPIO_Pin_6   // PB6
-#   define I2C_SDA_PIN GPIO_Pin_7   // PB7
-#   define I2C_GPIO_PORT GPIOB
-#   define I2C_CLOCK_PORT RCC_APB2Periph_GPIOB
-#   define I2C_CLOCK RCC_APB1Periph_I2C1
+#define I2C_PORT I2C1
+#define I2C_SCL_PIN GPIO_Pin_6    // PB6
+#define I2C_SDA_PIN GPIO_Pin_7    // PB7
+#define I2C_GPIO_PORT GPIOB
+#define I2C_CLOCK_PORT RCC_APB2Periph_GPIOB
+#define I2C_CLOCK RCC_APB1Periph_I2C1
 #elif _I2C_PORT == 2
-#   define I2C_PORT I2C2
-#   define I2C_SCL_PIN GPIO_Pin_10   // PB10
-#   define I2C_SDA_PIN GPIO_Pin_11   // PB11
-#   define I2C_GPIO_PORT GPIOB
-#   define I2C_CLOCK_PORT RCC_APB2Periph_GPIOB
-#   define I2C_CLOCK RCC_APB1Periph_I2C2
+#define I2C_PORT I2C2
+#define I2C_SCL_PIN GPIO_Pin_10    // PB10
+#define I2C_SDA_PIN GPIO_Pin_11    // PB11
+#define I2C_GPIO_PORT GPIOB
+#define I2C_CLOCK_PORT RCC_APB2Periph_GPIOB
+#define I2C_CLOCK RCC_APB1Periph_I2C2
 #endif
 
 #define I2C_SPEED 400000
 
 /* I2C settings */
 #ifndef SSD1306_I2C
-#   define SSD1306_I2C I2C_PORT
+#define SSD1306_I2C I2C_PORT
 #endif
 
 /* I2C address */
 #ifndef SSD1306_I2C_ADDR
-#   define SSD1306_I2C_ADDR 0x78
+#define SSD1306_I2C_ADDR 0x78
 //#define SSD1306_I2C_ADDR       0x7A
 #endif
 
 /* SSD1306 settings */
 /* SSD1306 width in pixels */
 #ifndef SSD1306_WIDTH
-#   define SSD1306_WIDTH 128
+#define SSD1306_WIDTH 128
 #endif
 /* SSD1306 LCD height in pixels */
 #ifndef SSD1306_HEIGHT
-#   define SSD1306_HEIGHT 64
+#define SSD1306_HEIGHT 64
 #endif
 
 /**
  * @brief  SSD1306 color enumeration
  */
-typedef enum
-{
-   SSD1306_COLOR_BLACK = 0x00, /*!< Black color, no pixel */
-   SSD1306_COLOR_WHITE = 0x01 /*!< Pixel is set. Color depends on LCD */
+typedef enum {
+    SSD1306_COLOR_BLACK = 0x00, /*!< Black color, no pixel */
+    SSD1306_COLOR_WHITE = 0x01  /*!< Pixel is set. Color depends on LCD */
 } SSD1306_COLOR_t;
 
 /**
@@ -220,12 +219,12 @@ void SSD1306_DrawFilledRectangle(uint16_t x, uint16_t y, uint16_t w, uint16_t h,
  * @retval None
  */
 void SSD1306_DrawTriangle(uint16_t x1,
-                          uint16_t y1,
-                          uint16_t x2,
-                          uint16_t y2,
-                          uint16_t x3,
-                          uint16_t y3,
-                          SSD1306_COLOR_t color);
+    uint16_t y1,
+    uint16_t x2,
+    uint16_t y2,
+    uint16_t x3,
+    uint16_t y3,
+    SSD1306_COLOR_t color);
 
 /**
  * @brief  Draws circle to STM buffer
@@ -250,7 +249,7 @@ void SSD1306_DrawCircle(int16_t x0, int16_t y0, int16_t r, SSD1306_COLOR_t c);
 void SSD1306_DrawFilledCircle(int16_t x0, int16_t y0, int16_t r, SSD1306_COLOR_t c);
 
 #ifndef ssd1306_I2C_TIMEOUT
-#   define ssd1306_I2C_TIMEOUT 20000
+#define ssd1306_I2C_TIMEOUT 20000
 #endif
 
 void ssd1306_I2C_Init();

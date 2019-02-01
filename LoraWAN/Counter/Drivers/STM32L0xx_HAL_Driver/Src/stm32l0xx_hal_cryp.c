@@ -98,11 +98,11 @@
   */
 
 #if defined(STM32L021xx) || defined(STM32L041xx) || defined(STM32L061xx) || defined(STM32L062xx) || \
-   defined(STM32L063xx) || defined(STM32L081xx) || defined(STM32L082xx) || defined(STM32L083xx)
+    defined(STM32L063xx) || defined(STM32L081xx) || defined(STM32L082xx) || defined(STM32L083xx)
 /* Includes ------------------------------------------------------------------*/
-#   include "stm32l0xx_hal.h"
+#include "stm32l0xx_hal.h"
 
-#   ifdef HAL_CRYP_MODULE_ENABLED
+#ifdef HAL_CRYP_MODULE_ENABLED
 /** @addtogroup STM32L0xx_HAL_Driver
  * @{
  */
@@ -119,7 +119,7 @@
  * @{
  */
 
-#      define CRYP_ALGO_CHAIN_MASK (AES_CR_MODE | AES_CR_CHMOD)
+#define CRYP_ALGO_CHAIN_MASK (AES_CR_MODE | AES_CR_CHMOD)
 
 /**
  * @}
@@ -137,10 +137,10 @@ static HAL_StatusTypeDef CRYP_EncryptDecrypt_IT(CRYP_HandleTypeDef* hcryp);
 static void CRYP_SetInitVector(CRYP_HandleTypeDef* hcryp, uint8_t* InitVector);
 static void CRYP_SetKey(CRYP_HandleTypeDef* hcryp, uint8_t* Key);
 static HAL_StatusTypeDef CRYP_ProcessData(CRYP_HandleTypeDef* hcryp,
-                                          uint8_t* Input,
-                                          uint16_t Ilength,
-                                          uint8_t* Output,
-                                          uint32_t Timeout);
+    uint8_t* Input,
+    uint16_t Ilength,
+    uint8_t* Output,
+    uint32_t Timeout);
 static void CRYP_DMAInCplt(DMA_HandleTypeDef* hdma);
 static void CRYP_DMAOutCplt(DMA_HandleTypeDef* hdma);
 static void CRYP_DMAError(DMA_HandleTypeDef* hdma);
@@ -183,55 +183,51 @@ static void CRYP_SetDMAConfig(CRYP_HandleTypeDef* hcryp, uint32_t inputaddr, uin
  */
 HAL_StatusTypeDef HAL_CRYP_Init(CRYP_HandleTypeDef* hcryp)
 {
-   /* Check the CRYP handle allocation */
-   if (hcryp == NULL)
-   {
-      return HAL_ERROR;
-   }
+    /* Check the CRYP handle allocation */
+    if(hcryp == NULL) {
+        return HAL_ERROR;
+    }
 
-   /* Check the parameters */
-   assert_param(IS_AES_ALL_INSTANCE(hcryp->Instance));
-   assert_param(IS_CRYP_DATATYPE(hcryp->Init.DataType));
+    /* Check the parameters */
+    assert_param(IS_AES_ALL_INSTANCE(hcryp->Instance));
+    assert_param(IS_CRYP_DATATYPE(hcryp->Init.DataType));
 
-   if (hcryp->State == HAL_CRYP_STATE_RESET)
-   {
-      /* Allocate lock resource and initialize it */
-      hcryp->Lock = HAL_UNLOCKED;
+    if(hcryp->State == HAL_CRYP_STATE_RESET) {
+        /* Allocate lock resource and initialize it */
+        hcryp->Lock = HAL_UNLOCKED;
 
-      /* Init the low level hardware */
-      HAL_CRYP_MspInit(hcryp);
-   }
+        /* Init the low level hardware */
+        HAL_CRYP_MspInit(hcryp);
+    }
 
-   /* Check if AES already enabled */
-   if (HAL_IS_BIT_CLR(hcryp->Instance->CR, AES_CR_EN))
-   {
-      /* Change the CRYP state */
-      hcryp->State = HAL_CRYP_STATE_BUSY;
+    /* Check if AES already enabled */
+    if(HAL_IS_BIT_CLR(hcryp->Instance->CR, AES_CR_EN)) {
+        /* Change the CRYP state */
+        hcryp->State = HAL_CRYP_STATE_BUSY;
 
-      /* Set the data type*/
-      MODIFY_REG(hcryp->Instance->CR, AES_CR_DATATYPE, hcryp->Init.DataType);
+        /* Set the data type*/
+        MODIFY_REG(hcryp->Instance->CR, AES_CR_DATATYPE, hcryp->Init.DataType);
 
-      /* Reset CrypInCount and CrypOutCount */
-      hcryp->CrypInCount = 0U;
-      hcryp->CrypOutCount = 0U;
+        /* Reset CrypInCount and CrypOutCount */
+        hcryp->CrypInCount = 0U;
+        hcryp->CrypOutCount = 0U;
 
-      /* Change the CRYP state */
-      hcryp->State = HAL_CRYP_STATE_READY;
+        /* Change the CRYP state */
+        hcryp->State = HAL_CRYP_STATE_READY;
 
-      /* Set the default CRYP phase */
-      hcryp->Phase = HAL_CRYP_PHASE_READY;
+        /* Set the default CRYP phase */
+        hcryp->Phase = HAL_CRYP_PHASE_READY;
 
-      /* Return function status */
-      return HAL_OK;
-   }
-   else
-   {
-      /* The Datatype selection must be changed if the AES is disabled. Writing these bits while the AES is */
-      /* enabled is forbidden to avoid unpredictable AES behavior.*/
+        /* Return function status */
+        return HAL_OK;
+    }
+    else {
+        /* The Datatype selection must be changed if the AES is disabled. Writing these bits while the AES is */
+        /* enabled is forbidden to avoid unpredictable AES behavior.*/
 
-      /* Return function status */
-      return HAL_ERROR;
-   }
+        /* Return function status */
+        return HAL_ERROR;
+    }
 }
 
 /**
@@ -242,36 +238,35 @@ HAL_StatusTypeDef HAL_CRYP_Init(CRYP_HandleTypeDef* hcryp)
  */
 HAL_StatusTypeDef HAL_CRYP_DeInit(CRYP_HandleTypeDef* hcryp)
 {
-   /* Check the CRYP handle allocation */
-   if (hcryp == NULL)
-   {
-      return HAL_ERROR;
-   }
+    /* Check the CRYP handle allocation */
+    if(hcryp == NULL) {
+        return HAL_ERROR;
+    }
 
-   /* Change the CRYP state */
-   hcryp->State = HAL_CRYP_STATE_BUSY;
+    /* Change the CRYP state */
+    hcryp->State = HAL_CRYP_STATE_BUSY;
 
-   /* Set the default CRYP phase */
-   hcryp->Phase = HAL_CRYP_PHASE_READY;
+    /* Set the default CRYP phase */
+    hcryp->Phase = HAL_CRYP_PHASE_READY;
 
-   /* Reset CrypInCount and CrypOutCount */
-   hcryp->CrypInCount = 0U;
-   hcryp->CrypOutCount = 0U;
+    /* Reset CrypInCount and CrypOutCount */
+    hcryp->CrypInCount = 0U;
+    hcryp->CrypOutCount = 0U;
 
-   /* Disable the CRYP Peripheral Clock */
-   __HAL_CRYP_DISABLE(hcryp);
+    /* Disable the CRYP Peripheral Clock */
+    __HAL_CRYP_DISABLE(hcryp);
 
-   /* DeInit the low level hardware: CLOCK, NVIC.*/
-   HAL_CRYP_MspDeInit(hcryp);
+    /* DeInit the low level hardware: CLOCK, NVIC.*/
+    HAL_CRYP_MspDeInit(hcryp);
 
-   /* Change the CRYP state */
-   hcryp->State = HAL_CRYP_STATE_RESET;
+    /* Change the CRYP state */
+    hcryp->State = HAL_CRYP_STATE_RESET;
 
-   /* Release Lock */
-   __HAL_UNLOCK(hcryp);
+    /* Release Lock */
+    __HAL_UNLOCK(hcryp);
 
-   /* Return function status */
-   return HAL_OK;
+    /* Return function status */
+    return HAL_OK;
 }
 
 /**
@@ -282,10 +277,10 @@ HAL_StatusTypeDef HAL_CRYP_DeInit(CRYP_HandleTypeDef* hcryp)
  */
 __weak void HAL_CRYP_MspInit(CRYP_HandleTypeDef* hcryp)
 {
-   /* Prevent unused argument(s) compilation warning */
-   UNUSED(hcryp);
+    /* Prevent unused argument(s) compilation warning */
+    UNUSED(hcryp);
 
-   /* NOTE : This function should not be modified; when the callback is needed,
+    /* NOTE : This function should not be modified; when the callback is needed,
              the HAL_CRYP_MspInit can be implemented in the user file */
 }
 
@@ -297,10 +292,10 @@ __weak void HAL_CRYP_MspInit(CRYP_HandleTypeDef* hcryp)
  */
 __weak void HAL_CRYP_MspDeInit(CRYP_HandleTypeDef* hcryp)
 {
-   /* Prevent unused argument(s) compilation warning */
-   UNUSED(hcryp);
+    /* Prevent unused argument(s) compilation warning */
+    UNUSED(hcryp);
 
-   /* NOTE : This function should not be modified; when the callback is needed,
+    /* NOTE : This function should not be modified; when the callback is needed,
              the HAL_CRYP_MspDeInit can be implemented in the user file */
 }
 
@@ -339,73 +334,68 @@ __weak void HAL_CRYP_MspDeInit(CRYP_HandleTypeDef* hcryp)
  * @retval HAL status
  */
 HAL_StatusTypeDef HAL_CRYP_AESECB_Encrypt(CRYP_HandleTypeDef* hcryp,
-                                          uint8_t* pPlainData,
-                                          uint16_t Size,
-                                          uint8_t* pCypherData,
-                                          uint32_t Timeout)
+    uint8_t* pPlainData,
+    uint16_t Size,
+    uint8_t* pCypherData,
+    uint32_t Timeout)
 {
-   /* Process Locked */
-   __HAL_LOCK(hcryp);
+    /* Process Locked */
+    __HAL_LOCK(hcryp);
 
-   /* Check that data aligned on u32 and Size multiple of 16*/
-   if ((((uint32_t)pPlainData & (uint32_t)0x00000003U) != 0U) ||
-       (((uint32_t)pCypherData & (uint32_t)0x00000003U) != 0U) || ((Size & (uint16_t)0x000FU) != 0U))
-   {
-      /* Process Locked */
-      __HAL_UNLOCK(hcryp);
+    /* Check that data aligned on u32 and Size multiple of 16*/
+    if((((uint32_t)pPlainData & (uint32_t)0x00000003U) != 0U) ||
+        (((uint32_t)pCypherData & (uint32_t)0x00000003U) != 0U) || ((Size & (uint16_t)0x000FU) != 0U)) {
+        /* Process Locked */
+        __HAL_UNLOCK(hcryp);
 
-      /* Return function status */
-      return HAL_ERROR;
-   }
+        /* Return function status */
+        return HAL_ERROR;
+    }
 
-   /* Check if HAL_CRYP_Init has been called */
-   if (hcryp->State != HAL_CRYP_STATE_RESET)
-   {
-      /* Change the CRYP state */
-      hcryp->State = HAL_CRYP_STATE_BUSY;
+    /* Check if HAL_CRYP_Init has been called */
+    if(hcryp->State != HAL_CRYP_STATE_RESET) {
+        /* Change the CRYP state */
+        hcryp->State = HAL_CRYP_STATE_BUSY;
 
-      /* Check if initialization phase has already been performed */
-      if (hcryp->Phase == HAL_CRYP_PHASE_READY)
-      {
-         /* Set the key */
-         CRYP_SetKey(hcryp, hcryp->Init.pKey);
+        /* Check if initialization phase has already been performed */
+        if(hcryp->Phase == HAL_CRYP_PHASE_READY) {
+            /* Set the key */
+            CRYP_SetKey(hcryp, hcryp->Init.pKey);
 
-         /* Reset the CHMOD & MODE bits */
-         CLEAR_BIT(hcryp->Instance->CR, CRYP_ALGO_CHAIN_MASK);
+            /* Reset the CHMOD & MODE bits */
+            CLEAR_BIT(hcryp->Instance->CR, CRYP_ALGO_CHAIN_MASK);
 
-         /* Set the CRYP peripheral in AES ECB mode */
-         __HAL_CRYP_SET_MODE(hcryp, CRYP_CR_ALGOMODE_AES_ECB_ENCRYPT);
+            /* Set the CRYP peripheral in AES ECB mode */
+            __HAL_CRYP_SET_MODE(hcryp, CRYP_CR_ALGOMODE_AES_ECB_ENCRYPT);
 
-         /* Enable CRYP */
-         __HAL_CRYP_ENABLE(hcryp);
+            /* Enable CRYP */
+            __HAL_CRYP_ENABLE(hcryp);
 
-         /* Set the phase */
-         hcryp->Phase = HAL_CRYP_PHASE_PROCESS;
-      }
+            /* Set the phase */
+            hcryp->Phase = HAL_CRYP_PHASE_PROCESS;
+        }
 
-      /* Write Plain Data and Get Cypher Data */
-      if (CRYP_ProcessData(hcryp, pPlainData, Size, pCypherData, Timeout) != HAL_OK)
-      {
-         return HAL_TIMEOUT;
-      }
+        /* Write Plain Data and Get Cypher Data */
+        if(CRYP_ProcessData(hcryp, pPlainData, Size, pCypherData, Timeout) != HAL_OK) {
+            return HAL_TIMEOUT;
+        }
 
-      /* Change the CRYP state */
-      hcryp->State = HAL_CRYP_STATE_READY;
+        /* Change the CRYP state */
+        hcryp->State = HAL_CRYP_STATE_READY;
 
-      /* Process Unlocked */
-      __HAL_UNLOCK(hcryp);
+        /* Process Unlocked */
+        __HAL_UNLOCK(hcryp);
 
-      /* Return function status */
-      return HAL_OK;
-   }
-   else
-   {
-      /* Process Locked */
-      __HAL_UNLOCK(hcryp);
+        /* Return function status */
+        return HAL_OK;
+    }
+    else {
+        /* Process Locked */
+        __HAL_UNLOCK(hcryp);
 
-      /* Return function status */
-      return HAL_ERROR;
-   }
+        /* Return function status */
+        return HAL_ERROR;
+    }
 }
 
 /**
@@ -420,76 +410,71 @@ HAL_StatusTypeDef HAL_CRYP_AESECB_Encrypt(CRYP_HandleTypeDef* hcryp,
  * @retval HAL status
  */
 HAL_StatusTypeDef HAL_CRYP_AESCBC_Encrypt(CRYP_HandleTypeDef* hcryp,
-                                          uint8_t* pPlainData,
-                                          uint16_t Size,
-                                          uint8_t* pCypherData,
-                                          uint32_t Timeout)
+    uint8_t* pPlainData,
+    uint16_t Size,
+    uint8_t* pCypherData,
+    uint32_t Timeout)
 {
-   /* Process Locked */
-   __HAL_LOCK(hcryp);
+    /* Process Locked */
+    __HAL_LOCK(hcryp);
 
-   /* Check that data aligned on u32 */
-   if ((((uint32_t)pPlainData & (uint32_t)0x00000003U) != 0U) ||
-       (((uint32_t)pCypherData & (uint32_t)0x00000003U) != 0U) || ((Size & (uint16_t)0x000FU) != 0U))
-   {
-      /* Process Locked */
-      __HAL_UNLOCK(hcryp);
+    /* Check that data aligned on u32 */
+    if((((uint32_t)pPlainData & (uint32_t)0x00000003U) != 0U) ||
+        (((uint32_t)pCypherData & (uint32_t)0x00000003U) != 0U) || ((Size & (uint16_t)0x000FU) != 0U)) {
+        /* Process Locked */
+        __HAL_UNLOCK(hcryp);
 
-      /* Return function status */
-      return HAL_ERROR;
-   }
+        /* Return function status */
+        return HAL_ERROR;
+    }
 
-   /* Check if HAL_CRYP_Init has been called */
-   if (hcryp->State != HAL_CRYP_STATE_RESET)
-   {
-      /* Change the CRYP state */
-      hcryp->State = HAL_CRYP_STATE_BUSY;
+    /* Check if HAL_CRYP_Init has been called */
+    if(hcryp->State != HAL_CRYP_STATE_RESET) {
+        /* Change the CRYP state */
+        hcryp->State = HAL_CRYP_STATE_BUSY;
 
-      /* Check if initialization phase has already been performed */
-      if (hcryp->Phase == HAL_CRYP_PHASE_READY)
-      {
-         /* Set the key */
-         CRYP_SetKey(hcryp, hcryp->Init.pKey);
+        /* Check if initialization phase has already been performed */
+        if(hcryp->Phase == HAL_CRYP_PHASE_READY) {
+            /* Set the key */
+            CRYP_SetKey(hcryp, hcryp->Init.pKey);
 
-         /* Reset the CHMOD & MODE bits */
-         CLEAR_BIT(hcryp->Instance->CR, CRYP_ALGO_CHAIN_MASK);
+            /* Reset the CHMOD & MODE bits */
+            CLEAR_BIT(hcryp->Instance->CR, CRYP_ALGO_CHAIN_MASK);
 
-         /* Set the CRYP peripheral in AES CBC mode */
-         __HAL_CRYP_SET_MODE(hcryp, CRYP_CR_ALGOMODE_AES_CBC_ENCRYPT);
+            /* Set the CRYP peripheral in AES CBC mode */
+            __HAL_CRYP_SET_MODE(hcryp, CRYP_CR_ALGOMODE_AES_CBC_ENCRYPT);
 
-         /* Set the Initialization Vector */
-         CRYP_SetInitVector(hcryp, hcryp->Init.pInitVect);
+            /* Set the Initialization Vector */
+            CRYP_SetInitVector(hcryp, hcryp->Init.pInitVect);
 
-         /* Enable CRYP */
-         __HAL_CRYP_ENABLE(hcryp);
+            /* Enable CRYP */
+            __HAL_CRYP_ENABLE(hcryp);
 
-         /* Set the phase */
-         hcryp->Phase = HAL_CRYP_PHASE_PROCESS;
-      }
+            /* Set the phase */
+            hcryp->Phase = HAL_CRYP_PHASE_PROCESS;
+        }
 
-      /* Write Plain Data and Get Cypher Data */
-      if (CRYP_ProcessData(hcryp, pPlainData, Size, pCypherData, Timeout) != HAL_OK)
-      {
-         return HAL_TIMEOUT;
-      }
+        /* Write Plain Data and Get Cypher Data */
+        if(CRYP_ProcessData(hcryp, pPlainData, Size, pCypherData, Timeout) != HAL_OK) {
+            return HAL_TIMEOUT;
+        }
 
-      /* Change the CRYP state */
-      hcryp->State = HAL_CRYP_STATE_READY;
+        /* Change the CRYP state */
+        hcryp->State = HAL_CRYP_STATE_READY;
 
-      /* Process Unlocked */
-      __HAL_UNLOCK(hcryp);
+        /* Process Unlocked */
+        __HAL_UNLOCK(hcryp);
 
-      /* Return function status */
-      return HAL_OK;
-   }
-   else
-   {
-      /* Process Locked */
-      __HAL_UNLOCK(hcryp);
+        /* Return function status */
+        return HAL_OK;
+    }
+    else {
+        /* Process Locked */
+        __HAL_UNLOCK(hcryp);
 
-      /* Return function status */
-      return HAL_ERROR;
-   }
+        /* Return function status */
+        return HAL_ERROR;
+    }
 }
 
 /**
@@ -504,76 +489,71 @@ HAL_StatusTypeDef HAL_CRYP_AESCBC_Encrypt(CRYP_HandleTypeDef* hcryp,
  * @retval HAL status
  */
 HAL_StatusTypeDef HAL_CRYP_AESCTR_Encrypt(CRYP_HandleTypeDef* hcryp,
-                                          uint8_t* pPlainData,
-                                          uint16_t Size,
-                                          uint8_t* pCypherData,
-                                          uint32_t Timeout)
+    uint8_t* pPlainData,
+    uint16_t Size,
+    uint8_t* pCypherData,
+    uint32_t Timeout)
 {
-   /* Process Locked */
-   __HAL_LOCK(hcryp);
+    /* Process Locked */
+    __HAL_LOCK(hcryp);
 
-   /* Check that data aligned on u32 */
-   if ((((uint32_t)pPlainData & (uint32_t)0x00000003U) != 0U) ||
-       (((uint32_t)pCypherData & (uint32_t)0x00000003U) != 0U) || ((Size & (uint16_t)0x000FU) != 0U))
-   {
-      /* Process Locked */
-      __HAL_UNLOCK(hcryp);
+    /* Check that data aligned on u32 */
+    if((((uint32_t)pPlainData & (uint32_t)0x00000003U) != 0U) ||
+        (((uint32_t)pCypherData & (uint32_t)0x00000003U) != 0U) || ((Size & (uint16_t)0x000FU) != 0U)) {
+        /* Process Locked */
+        __HAL_UNLOCK(hcryp);
 
-      /* Return function status */
-      return HAL_ERROR;
-   }
+        /* Return function status */
+        return HAL_ERROR;
+    }
 
-   /* Check if HAL_CRYP_Init has been called */
-   if (hcryp->State != HAL_CRYP_STATE_RESET)
-   {
-      /* Change the CRYP state */
-      hcryp->State = HAL_CRYP_STATE_BUSY;
+    /* Check if HAL_CRYP_Init has been called */
+    if(hcryp->State != HAL_CRYP_STATE_RESET) {
+        /* Change the CRYP state */
+        hcryp->State = HAL_CRYP_STATE_BUSY;
 
-      /* Check if initialization phase has already been performed */
-      if (hcryp->Phase == HAL_CRYP_PHASE_READY)
-      {
-         /* Set the key */
-         CRYP_SetKey(hcryp, hcryp->Init.pKey);
+        /* Check if initialization phase has already been performed */
+        if(hcryp->Phase == HAL_CRYP_PHASE_READY) {
+            /* Set the key */
+            CRYP_SetKey(hcryp, hcryp->Init.pKey);
 
-         /* Reset the CHMOD & MODE bits */
-         CLEAR_BIT(hcryp->Instance->CR, CRYP_ALGO_CHAIN_MASK);
+            /* Reset the CHMOD & MODE bits */
+            CLEAR_BIT(hcryp->Instance->CR, CRYP_ALGO_CHAIN_MASK);
 
-         /* Set the CRYP peripheral in AES CTR mode */
-         __HAL_CRYP_SET_MODE(hcryp, CRYP_CR_ALGOMODE_AES_CTR_ENCRYPT);
+            /* Set the CRYP peripheral in AES CTR mode */
+            __HAL_CRYP_SET_MODE(hcryp, CRYP_CR_ALGOMODE_AES_CTR_ENCRYPT);
 
-         /* Set the Initialization Vector */
-         CRYP_SetInitVector(hcryp, hcryp->Init.pInitVect);
+            /* Set the Initialization Vector */
+            CRYP_SetInitVector(hcryp, hcryp->Init.pInitVect);
 
-         /* Enable CRYP */
-         __HAL_CRYP_ENABLE(hcryp);
+            /* Enable CRYP */
+            __HAL_CRYP_ENABLE(hcryp);
 
-         /* Set the phase */
-         hcryp->Phase = HAL_CRYP_PHASE_PROCESS;
-      }
+            /* Set the phase */
+            hcryp->Phase = HAL_CRYP_PHASE_PROCESS;
+        }
 
-      /* Write Plain Data and Get Cypher Data */
-      if (CRYP_ProcessData(hcryp, pPlainData, Size, pCypherData, Timeout) != HAL_OK)
-      {
-         return HAL_TIMEOUT;
-      }
+        /* Write Plain Data and Get Cypher Data */
+        if(CRYP_ProcessData(hcryp, pPlainData, Size, pCypherData, Timeout) != HAL_OK) {
+            return HAL_TIMEOUT;
+        }
 
-      /* Change the CRYP state */
-      hcryp->State = HAL_CRYP_STATE_READY;
+        /* Change the CRYP state */
+        hcryp->State = HAL_CRYP_STATE_READY;
 
-      /* Process Unlocked */
-      __HAL_UNLOCK(hcryp);
+        /* Process Unlocked */
+        __HAL_UNLOCK(hcryp);
 
-      /* Return function status */
-      return HAL_OK;
-   }
-   else
-   {
-      /* Release Lock */
-      __HAL_UNLOCK(hcryp);
+        /* Return function status */
+        return HAL_OK;
+    }
+    else {
+        /* Release Lock */
+        __HAL_UNLOCK(hcryp);
 
-      /* Return function status */
-      return HAL_ERROR;
-   }
+        /* Return function status */
+        return HAL_ERROR;
+    }
 }
 
 /**
@@ -588,73 +568,68 @@ HAL_StatusTypeDef HAL_CRYP_AESCTR_Encrypt(CRYP_HandleTypeDef* hcryp,
  * @retval HAL status
  */
 HAL_StatusTypeDef HAL_CRYP_AESECB_Decrypt(CRYP_HandleTypeDef* hcryp,
-                                          uint8_t* pCypherData,
-                                          uint16_t Size,
-                                          uint8_t* pPlainData,
-                                          uint32_t Timeout)
+    uint8_t* pCypherData,
+    uint16_t Size,
+    uint8_t* pPlainData,
+    uint32_t Timeout)
 {
-   /* Process Locked */
-   __HAL_LOCK(hcryp);
+    /* Process Locked */
+    __HAL_LOCK(hcryp);
 
-   /* Check that data aligned on u32 */
-   if ((((uint32_t)pPlainData & (uint32_t)0x00000003U) != 0U) ||
-       (((uint32_t)pCypherData & (uint32_t)0x00000003U) != 0U) || ((Size & (uint16_t)0x000FU) != 0U))
-   {
-      /* Process Locked */
-      __HAL_UNLOCK(hcryp);
+    /* Check that data aligned on u32 */
+    if((((uint32_t)pPlainData & (uint32_t)0x00000003U) != 0U) ||
+        (((uint32_t)pCypherData & (uint32_t)0x00000003U) != 0U) || ((Size & (uint16_t)0x000FU) != 0U)) {
+        /* Process Locked */
+        __HAL_UNLOCK(hcryp);
 
-      /* Return function status */
-      return HAL_ERROR;
-   }
+        /* Return function status */
+        return HAL_ERROR;
+    }
 
-   /* Check if HAL_CRYP_Init has been called */
-   if (hcryp->State != HAL_CRYP_STATE_RESET)
-   {
-      /* Change the CRYP state */
-      hcryp->State = HAL_CRYP_STATE_BUSY;
+    /* Check if HAL_CRYP_Init has been called */
+    if(hcryp->State != HAL_CRYP_STATE_RESET) {
+        /* Change the CRYP state */
+        hcryp->State = HAL_CRYP_STATE_BUSY;
 
-      /* Check if initialization phase has already been performed */
-      if (hcryp->Phase == HAL_CRYP_PHASE_READY)
-      {
-         /* Set the key */
-         CRYP_SetKey(hcryp, hcryp->Init.pKey);
+        /* Check if initialization phase has already been performed */
+        if(hcryp->Phase == HAL_CRYP_PHASE_READY) {
+            /* Set the key */
+            CRYP_SetKey(hcryp, hcryp->Init.pKey);
 
-         /* Reset the CHMOD & MODE bits */
-         CLEAR_BIT(hcryp->Instance->CR, CRYP_ALGO_CHAIN_MASK);
+            /* Reset the CHMOD & MODE bits */
+            CLEAR_BIT(hcryp->Instance->CR, CRYP_ALGO_CHAIN_MASK);
 
-         /* Set the CRYP peripheral in AES ECB decryption mode (with key derivation) */
-         __HAL_CRYP_SET_MODE(hcryp, CRYP_CR_ALGOMODE_AES_ECB_KEYDERDECRYPT);
+            /* Set the CRYP peripheral in AES ECB decryption mode (with key derivation) */
+            __HAL_CRYP_SET_MODE(hcryp, CRYP_CR_ALGOMODE_AES_ECB_KEYDERDECRYPT);
 
-         /* Enable CRYP */
-         __HAL_CRYP_ENABLE(hcryp);
+            /* Enable CRYP */
+            __HAL_CRYP_ENABLE(hcryp);
 
-         /* Set the phase */
-         hcryp->Phase = HAL_CRYP_PHASE_PROCESS;
-      }
+            /* Set the phase */
+            hcryp->Phase = HAL_CRYP_PHASE_PROCESS;
+        }
 
-      /* Write Cypher Data and Get Plain Data */
-      if (CRYP_ProcessData(hcryp, pCypherData, Size, pPlainData, Timeout) != HAL_OK)
-      {
-         return HAL_TIMEOUT;
-      }
+        /* Write Cypher Data and Get Plain Data */
+        if(CRYP_ProcessData(hcryp, pCypherData, Size, pPlainData, Timeout) != HAL_OK) {
+            return HAL_TIMEOUT;
+        }
 
-      /* Change the CRYP state */
-      hcryp->State = HAL_CRYP_STATE_READY;
+        /* Change the CRYP state */
+        hcryp->State = HAL_CRYP_STATE_READY;
 
-      /* Process Unlocked */
-      __HAL_UNLOCK(hcryp);
+        /* Process Unlocked */
+        __HAL_UNLOCK(hcryp);
 
-      /* Return function status */
-      return HAL_OK;
-   }
-   else
-   {
-      /* Release Lock */
-      __HAL_UNLOCK(hcryp);
+        /* Return function status */
+        return HAL_OK;
+    }
+    else {
+        /* Release Lock */
+        __HAL_UNLOCK(hcryp);
 
-      /* Return function status */
-      return HAL_ERROR;
-   }
+        /* Return function status */
+        return HAL_ERROR;
+    }
 }
 
 /**
@@ -669,76 +644,71 @@ HAL_StatusTypeDef HAL_CRYP_AESECB_Decrypt(CRYP_HandleTypeDef* hcryp,
  * @retval HAL status
  */
 HAL_StatusTypeDef HAL_CRYP_AESCBC_Decrypt(CRYP_HandleTypeDef* hcryp,
-                                          uint8_t* pCypherData,
-                                          uint16_t Size,
-                                          uint8_t* pPlainData,
-                                          uint32_t Timeout)
+    uint8_t* pCypherData,
+    uint16_t Size,
+    uint8_t* pPlainData,
+    uint32_t Timeout)
 {
-   /* Process Locked */
-   __HAL_LOCK(hcryp);
+    /* Process Locked */
+    __HAL_LOCK(hcryp);
 
-   /* Check that data aligned on u32 */
-   if ((((uint32_t)pPlainData & (uint32_t)0x00000003U) != 0U) ||
-       (((uint32_t)pCypherData & (uint32_t)0x00000003U) != 0U) || ((Size & (uint16_t)0x000FU) != 0U))
-   {
-      /* Process Locked */
-      __HAL_UNLOCK(hcryp);
+    /* Check that data aligned on u32 */
+    if((((uint32_t)pPlainData & (uint32_t)0x00000003U) != 0U) ||
+        (((uint32_t)pCypherData & (uint32_t)0x00000003U) != 0U) || ((Size & (uint16_t)0x000FU) != 0U)) {
+        /* Process Locked */
+        __HAL_UNLOCK(hcryp);
 
-      /* Return function status */
-      return HAL_ERROR;
-   }
+        /* Return function status */
+        return HAL_ERROR;
+    }
 
-   /* Check if HAL_CRYP_Init has been called */
-   if (hcryp->State != HAL_CRYP_STATE_RESET)
-   {
-      /* Change the CRYP state */
-      hcryp->State = HAL_CRYP_STATE_BUSY;
+    /* Check if HAL_CRYP_Init has been called */
+    if(hcryp->State != HAL_CRYP_STATE_RESET) {
+        /* Change the CRYP state */
+        hcryp->State = HAL_CRYP_STATE_BUSY;
 
-      /* Check if initialization phase has already been performed */
-      if (hcryp->Phase == HAL_CRYP_PHASE_READY)
-      {
-         /* Set the key */
-         CRYP_SetKey(hcryp, hcryp->Init.pKey);
+        /* Check if initialization phase has already been performed */
+        if(hcryp->Phase == HAL_CRYP_PHASE_READY) {
+            /* Set the key */
+            CRYP_SetKey(hcryp, hcryp->Init.pKey);
 
-         /* Reset the CHMOD & MODE bits */
-         CLEAR_BIT(hcryp->Instance->CR, CRYP_ALGO_CHAIN_MASK);
+            /* Reset the CHMOD & MODE bits */
+            CLEAR_BIT(hcryp->Instance->CR, CRYP_ALGO_CHAIN_MASK);
 
-         /* Set the CRYP peripheral in AES CBC decryption mode (with key derivation) */
-         __HAL_CRYP_SET_MODE(hcryp, CRYP_CR_ALGOMODE_AES_CBC_KEYDERDECRYPT);
+            /* Set the CRYP peripheral in AES CBC decryption mode (with key derivation) */
+            __HAL_CRYP_SET_MODE(hcryp, CRYP_CR_ALGOMODE_AES_CBC_KEYDERDECRYPT);
 
-         /* Set the Initialization Vector */
-         CRYP_SetInitVector(hcryp, hcryp->Init.pInitVect);
+            /* Set the Initialization Vector */
+            CRYP_SetInitVector(hcryp, hcryp->Init.pInitVect);
 
-         /* Enable CRYP */
-         __HAL_CRYP_ENABLE(hcryp);
+            /* Enable CRYP */
+            __HAL_CRYP_ENABLE(hcryp);
 
-         /* Set the phase */
-         hcryp->Phase = HAL_CRYP_PHASE_PROCESS;
-      }
+            /* Set the phase */
+            hcryp->Phase = HAL_CRYP_PHASE_PROCESS;
+        }
 
-      /* Write Cypher Data and Get Plain Data */
-      if (CRYP_ProcessData(hcryp, pCypherData, Size, pPlainData, Timeout) != HAL_OK)
-      {
-         return HAL_TIMEOUT;
-      }
+        /* Write Cypher Data and Get Plain Data */
+        if(CRYP_ProcessData(hcryp, pCypherData, Size, pPlainData, Timeout) != HAL_OK) {
+            return HAL_TIMEOUT;
+        }
 
-      /* Change the CRYP state */
-      hcryp->State = HAL_CRYP_STATE_READY;
+        /* Change the CRYP state */
+        hcryp->State = HAL_CRYP_STATE_READY;
 
-      /* Process Unlocked */
-      __HAL_UNLOCK(hcryp);
+        /* Process Unlocked */
+        __HAL_UNLOCK(hcryp);
 
-      /* Return function status */
-      return HAL_OK;
-   }
-   else
-   {
-      /* Release Lock */
-      __HAL_UNLOCK(hcryp);
+        /* Return function status */
+        return HAL_OK;
+    }
+    else {
+        /* Release Lock */
+        __HAL_UNLOCK(hcryp);
 
-      /* Return function status */
-      return HAL_ERROR;
-   }
+        /* Return function status */
+        return HAL_ERROR;
+    }
 }
 
 /**
@@ -753,64 +723,61 @@ HAL_StatusTypeDef HAL_CRYP_AESCBC_Decrypt(CRYP_HandleTypeDef* hcryp,
  * @retval HAL status
  */
 HAL_StatusTypeDef HAL_CRYP_AESCTR_Decrypt(CRYP_HandleTypeDef* hcryp,
-                                          uint8_t* pCypherData,
-                                          uint16_t Size,
-                                          uint8_t* pPlainData,
-                                          uint32_t Timeout)
+    uint8_t* pCypherData,
+    uint16_t Size,
+    uint8_t* pPlainData,
+    uint32_t Timeout)
 {
-   /* Process Locked */
-   __HAL_LOCK(hcryp);
+    /* Process Locked */
+    __HAL_LOCK(hcryp);
 
-   /* Check that data aligned on u32 */
-   if ((((uint32_t)pPlainData & (uint32_t)0x00000003U) != 0U) ||
-       (((uint32_t)pCypherData & (uint32_t)0x00000003U) != 0U) || ((Size & (uint16_t)0x000FU) != 0U))
-   {
-      /* Process Locked */
-      __HAL_UNLOCK(hcryp);
+    /* Check that data aligned on u32 */
+    if((((uint32_t)pPlainData & (uint32_t)0x00000003U) != 0U) ||
+        (((uint32_t)pCypherData & (uint32_t)0x00000003U) != 0U) || ((Size & (uint16_t)0x000FU) != 0U)) {
+        /* Process Locked */
+        __HAL_UNLOCK(hcryp);
 
-      /* Return function status */
-      return HAL_ERROR;
-   }
+        /* Return function status */
+        return HAL_ERROR;
+    }
 
-   /* Check if initialization phase has already been performed */
-   if ((hcryp->State != HAL_CRYP_STATE_RESET) && (hcryp->Phase == HAL_CRYP_PHASE_READY))
-   {
-      /* Change the CRYP state */
-      hcryp->State = HAL_CRYP_STATE_BUSY;
+    /* Check if initialization phase has already been performed */
+    if((hcryp->State != HAL_CRYP_STATE_RESET) && (hcryp->Phase == HAL_CRYP_PHASE_READY)) {
+        /* Change the CRYP state */
+        hcryp->State = HAL_CRYP_STATE_BUSY;
 
-      /* Set the key */
-      CRYP_SetKey(hcryp, hcryp->Init.pKey);
+        /* Set the key */
+        CRYP_SetKey(hcryp, hcryp->Init.pKey);
 
-      /* Reset the CHMOD & MODE bits */
-      CLEAR_BIT(hcryp->Instance->CR, CRYP_ALGO_CHAIN_MASK);
+        /* Reset the CHMOD & MODE bits */
+        CLEAR_BIT(hcryp->Instance->CR, CRYP_ALGO_CHAIN_MASK);
 
-      /* Set the CRYP peripheral in AES CTR decryption mode */
-      __HAL_CRYP_SET_MODE(hcryp, CRYP_CR_ALGOMODE_AES_CTR_DECRYPT);
+        /* Set the CRYP peripheral in AES CTR decryption mode */
+        __HAL_CRYP_SET_MODE(hcryp, CRYP_CR_ALGOMODE_AES_CTR_DECRYPT);
 
-      /* Set the Initialization Vector */
-      CRYP_SetInitVector(hcryp, hcryp->Init.pInitVect);
+        /* Set the Initialization Vector */
+        CRYP_SetInitVector(hcryp, hcryp->Init.pInitVect);
 
-      /* Enable CRYP */
-      __HAL_CRYP_ENABLE(hcryp);
+        /* Enable CRYP */
+        __HAL_CRYP_ENABLE(hcryp);
 
-      /* Set the phase */
-      hcryp->Phase = HAL_CRYP_PHASE_PROCESS;
-   }
+        /* Set the phase */
+        hcryp->Phase = HAL_CRYP_PHASE_PROCESS;
+    }
 
-   /* Write Cypher Data and Get Plain Data */
-   if (CRYP_ProcessData(hcryp, pCypherData, Size, pPlainData, Timeout) != HAL_OK)
-   {
-      return HAL_TIMEOUT;
-   }
+    /* Write Cypher Data and Get Plain Data */
+    if(CRYP_ProcessData(hcryp, pCypherData, Size, pPlainData, Timeout) != HAL_OK) {
+        return HAL_TIMEOUT;
+    }
 
-   /* Change the CRYP state */
-   hcryp->State = HAL_CRYP_STATE_READY;
+    /* Change the CRYP state */
+    hcryp->State = HAL_CRYP_STATE_READY;
 
-   /* Process Unlocked */
-   __HAL_UNLOCK(hcryp);
+    /* Process Unlocked */
+    __HAL_UNLOCK(hcryp);
 
-   /* Return function status */
-   return HAL_OK;
+    /* Return function status */
+    return HAL_OK;
 }
 
 /**
@@ -823,84 +790,80 @@ HAL_StatusTypeDef HAL_CRYP_AESCTR_Decrypt(CRYP_HandleTypeDef* hcryp,
  * @retval HAL status
  */
 HAL_StatusTypeDef HAL_CRYP_AESECB_Encrypt_IT(CRYP_HandleTypeDef* hcryp,
-                                             uint8_t* pPlainData,
-                                             uint16_t Size,
-                                             uint8_t* pCypherData)
+    uint8_t* pPlainData,
+    uint16_t Size,
+    uint8_t* pCypherData)
 {
-   uint32_t inputaddr = 0U;
+    uint32_t inputaddr = 0U;
 
-   /* Check that data aligned on u32 */
-   if ((((uint32_t)pPlainData & (uint32_t)0x00000003U) != 0U) ||
-       (((uint32_t)pCypherData & (uint32_t)0x00000003U) != 0U) || ((Size & (uint16_t)0x000FU) != 0U))
-   {
-      /* Process Locked */
-      __HAL_UNLOCK(hcryp);
+    /* Check that data aligned on u32 */
+    if((((uint32_t)pPlainData & (uint32_t)0x00000003U) != 0U) ||
+        (((uint32_t)pCypherData & (uint32_t)0x00000003U) != 0U) || ((Size & (uint16_t)0x000FU) != 0U)) {
+        /* Process Locked */
+        __HAL_UNLOCK(hcryp);
 
-      /* Return function status */
-      return HAL_ERROR;
-   }
+        /* Return function status */
+        return HAL_ERROR;
+    }
 
-   if ((hcryp->State != HAL_CRYP_STATE_RESET) && (hcryp->State == HAL_CRYP_STATE_READY))
-   {
-      /* Process Locked */
-      __HAL_LOCK(hcryp);
+    if((hcryp->State != HAL_CRYP_STATE_RESET) && (hcryp->State == HAL_CRYP_STATE_READY)) {
+        /* Process Locked */
+        __HAL_LOCK(hcryp);
 
-      /* Get the buffer addresses and sizes */
-      hcryp->CrypInCount = Size;
-      hcryp->pCrypInBuffPtr = pPlainData;
-      hcryp->pCrypOutBuffPtr = pCypherData;
-      hcryp->CrypOutCount = Size;
+        /* Get the buffer addresses and sizes */
+        hcryp->CrypInCount = Size;
+        hcryp->pCrypInBuffPtr = pPlainData;
+        hcryp->pCrypOutBuffPtr = pCypherData;
+        hcryp->CrypOutCount = Size;
 
-      /* Change the CRYP state */
-      hcryp->State = HAL_CRYP_STATE_BUSY;
+        /* Change the CRYP state */
+        hcryp->State = HAL_CRYP_STATE_BUSY;
 
-      /* Check if initialization phase has already been performed */
-      if (hcryp->Phase == HAL_CRYP_PHASE_READY)
-      {
-         /* Set the key */
-         CRYP_SetKey(hcryp, hcryp->Init.pKey);
+        /* Check if initialization phase has already been performed */
+        if(hcryp->Phase == HAL_CRYP_PHASE_READY) {
+            /* Set the key */
+            CRYP_SetKey(hcryp, hcryp->Init.pKey);
 
-         /* Reset the CHMOD & MODE bits */
-         CLEAR_BIT(hcryp->Instance->CR, CRYP_ALGO_CHAIN_MASK);
+            /* Reset the CHMOD & MODE bits */
+            CLEAR_BIT(hcryp->Instance->CR, CRYP_ALGO_CHAIN_MASK);
 
-         /* Set the CRYP peripheral in AES ECB mode */
-         __HAL_CRYP_SET_MODE(hcryp, CRYP_CR_ALGOMODE_AES_ECB_ENCRYPT);
+            /* Set the CRYP peripheral in AES ECB mode */
+            __HAL_CRYP_SET_MODE(hcryp, CRYP_CR_ALGOMODE_AES_ECB_ENCRYPT);
 
-         /* Set the phase */
-         hcryp->Phase = HAL_CRYP_PHASE_PROCESS;
-      }
+            /* Set the phase */
+            hcryp->Phase = HAL_CRYP_PHASE_PROCESS;
+        }
 
-      /* Enable Interrupts */
-      __HAL_CRYP_ENABLE_IT(hcryp, CRYP_IT_CC);
+        /* Enable Interrupts */
+        __HAL_CRYP_ENABLE_IT(hcryp, CRYP_IT_CC);
 
-      /* Enable CRYP */
-      __HAL_CRYP_ENABLE(hcryp);
+        /* Enable CRYP */
+        __HAL_CRYP_ENABLE(hcryp);
 
-      /* Get the last input data adress */
-      inputaddr = (uint32_t)hcryp->pCrypInBuffPtr;
+        /* Get the last input data adress */
+        inputaddr = (uint32_t)hcryp->pCrypInBuffPtr;
 
-      /* Write the Input block in the Data Input register */
-      hcryp->Instance->DINR = *(uint32_t*)(inputaddr);
-      inputaddr += 4U;
-      hcryp->Instance->DINR = *(uint32_t*)(inputaddr);
-      inputaddr += 4U;
-      hcryp->Instance->DINR = *(uint32_t*)(inputaddr);
-      inputaddr += 4U;
-      hcryp->Instance->DINR = *(uint32_t*)(inputaddr);
-      hcryp->pCrypInBuffPtr += 16U;
-      hcryp->CrypInCount -= 16U;
+        /* Write the Input block in the Data Input register */
+        hcryp->Instance->DINR = *(uint32_t*)(inputaddr);
+        inputaddr += 4U;
+        hcryp->Instance->DINR = *(uint32_t*)(inputaddr);
+        inputaddr += 4U;
+        hcryp->Instance->DINR = *(uint32_t*)(inputaddr);
+        inputaddr += 4U;
+        hcryp->Instance->DINR = *(uint32_t*)(inputaddr);
+        hcryp->pCrypInBuffPtr += 16U;
+        hcryp->CrypInCount -= 16U;
 
-      /* Return function status */
-      return HAL_OK;
-   }
-   else
-   {
-      /* Release Lock */
-      __HAL_UNLOCK(hcryp);
+        /* Return function status */
+        return HAL_OK;
+    }
+    else {
+        /* Release Lock */
+        __HAL_UNLOCK(hcryp);
 
-      /* Return function status */
-      return HAL_ERROR;
-   }
+        /* Return function status */
+        return HAL_ERROR;
+    }
 }
 
 /**
@@ -913,87 +876,83 @@ HAL_StatusTypeDef HAL_CRYP_AESECB_Encrypt_IT(CRYP_HandleTypeDef* hcryp,
  * @retval HAL status
  */
 HAL_StatusTypeDef HAL_CRYP_AESCBC_Encrypt_IT(CRYP_HandleTypeDef* hcryp,
-                                             uint8_t* pPlainData,
-                                             uint16_t Size,
-                                             uint8_t* pCypherData)
+    uint8_t* pPlainData,
+    uint16_t Size,
+    uint8_t* pCypherData)
 {
-   uint32_t inputaddr = 0U;
+    uint32_t inputaddr = 0U;
 
-   /* Check that data aligned on u32 */
-   if ((((uint32_t)pPlainData & (uint32_t)0x00000003U) != 0U) ||
-       (((uint32_t)pCypherData & (uint32_t)0x00000003U) != 0U) || ((Size & (uint16_t)0x000FU) != 0U))
-   {
-      /* Process Locked */
-      __HAL_UNLOCK(hcryp);
+    /* Check that data aligned on u32 */
+    if((((uint32_t)pPlainData & (uint32_t)0x00000003U) != 0U) ||
+        (((uint32_t)pCypherData & (uint32_t)0x00000003U) != 0U) || ((Size & (uint16_t)0x000FU) != 0U)) {
+        /* Process Locked */
+        __HAL_UNLOCK(hcryp);
 
-      /* Return function status */
-      return HAL_ERROR;
-   }
+        /* Return function status */
+        return HAL_ERROR;
+    }
 
-   if ((hcryp->State != HAL_CRYP_STATE_RESET) && (hcryp->State == HAL_CRYP_STATE_READY))
-   {
-      /* Process Locked */
-      __HAL_LOCK(hcryp);
+    if((hcryp->State != HAL_CRYP_STATE_RESET) && (hcryp->State == HAL_CRYP_STATE_READY)) {
+        /* Process Locked */
+        __HAL_LOCK(hcryp);
 
-      /* Get the buffer addresses and sizes */
-      hcryp->CrypInCount = Size;
-      hcryp->pCrypInBuffPtr = pPlainData;
-      hcryp->pCrypOutBuffPtr = pCypherData;
-      hcryp->CrypOutCount = Size;
+        /* Get the buffer addresses and sizes */
+        hcryp->CrypInCount = Size;
+        hcryp->pCrypInBuffPtr = pPlainData;
+        hcryp->pCrypOutBuffPtr = pCypherData;
+        hcryp->CrypOutCount = Size;
 
-      /* Change the CRYP state */
-      hcryp->State = HAL_CRYP_STATE_BUSY;
+        /* Change the CRYP state */
+        hcryp->State = HAL_CRYP_STATE_BUSY;
 
-      /* Check if initialization phase has already been performed */
-      if (hcryp->Phase == HAL_CRYP_PHASE_READY)
-      {
-         /* Set the key */
-         CRYP_SetKey(hcryp, hcryp->Init.pKey);
+        /* Check if initialization phase has already been performed */
+        if(hcryp->Phase == HAL_CRYP_PHASE_READY) {
+            /* Set the key */
+            CRYP_SetKey(hcryp, hcryp->Init.pKey);
 
-         /* Reset the CHMOD & MODE bits */
-         CLEAR_BIT(hcryp->Instance->CR, CRYP_ALGO_CHAIN_MASK);
+            /* Reset the CHMOD & MODE bits */
+            CLEAR_BIT(hcryp->Instance->CR, CRYP_ALGO_CHAIN_MASK);
 
-         /* Set the CRYP peripheral in AES CBC mode */
-         __HAL_CRYP_SET_MODE(hcryp, CRYP_CR_ALGOMODE_AES_CBC_ENCRYPT);
+            /* Set the CRYP peripheral in AES CBC mode */
+            __HAL_CRYP_SET_MODE(hcryp, CRYP_CR_ALGOMODE_AES_CBC_ENCRYPT);
 
-         /* Set the Initialization Vector */
-         CRYP_SetInitVector(hcryp, hcryp->Init.pInitVect);
+            /* Set the Initialization Vector */
+            CRYP_SetInitVector(hcryp, hcryp->Init.pInitVect);
 
-         /* Set the phase */
-         hcryp->Phase = HAL_CRYP_PHASE_PROCESS;
-      }
+            /* Set the phase */
+            hcryp->Phase = HAL_CRYP_PHASE_PROCESS;
+        }
 
-      /* Enable Interrupts */
-      __HAL_CRYP_ENABLE_IT(hcryp, CRYP_IT_CC);
+        /* Enable Interrupts */
+        __HAL_CRYP_ENABLE_IT(hcryp, CRYP_IT_CC);
 
-      /* Enable CRYP */
-      __HAL_CRYP_ENABLE(hcryp);
+        /* Enable CRYP */
+        __HAL_CRYP_ENABLE(hcryp);
 
-      /* Get the last input data adress */
-      inputaddr = (uint32_t)hcryp->pCrypInBuffPtr;
+        /* Get the last input data adress */
+        inputaddr = (uint32_t)hcryp->pCrypInBuffPtr;
 
-      /* Write the Input block in the Data Input register */
-      hcryp->Instance->DINR = *(uint32_t*)(inputaddr);
-      inputaddr += 4U;
-      hcryp->Instance->DINR = *(uint32_t*)(inputaddr);
-      inputaddr += 4U;
-      hcryp->Instance->DINR = *(uint32_t*)(inputaddr);
-      inputaddr += 4U;
-      hcryp->Instance->DINR = *(uint32_t*)(inputaddr);
-      hcryp->pCrypInBuffPtr += 16U;
-      hcryp->CrypInCount -= 16U;
+        /* Write the Input block in the Data Input register */
+        hcryp->Instance->DINR = *(uint32_t*)(inputaddr);
+        inputaddr += 4U;
+        hcryp->Instance->DINR = *(uint32_t*)(inputaddr);
+        inputaddr += 4U;
+        hcryp->Instance->DINR = *(uint32_t*)(inputaddr);
+        inputaddr += 4U;
+        hcryp->Instance->DINR = *(uint32_t*)(inputaddr);
+        hcryp->pCrypInBuffPtr += 16U;
+        hcryp->CrypInCount -= 16U;
 
-      /* Return function status */
-      return HAL_OK;
-   }
-   else
-   {
-      /* Release Lock */
-      __HAL_UNLOCK(hcryp);
+        /* Return function status */
+        return HAL_OK;
+    }
+    else {
+        /* Release Lock */
+        __HAL_UNLOCK(hcryp);
 
-      /* Return function status */
-      return HAL_ERROR;
-   }
+        /* Return function status */
+        return HAL_ERROR;
+    }
 }
 
 /**
@@ -1006,87 +965,83 @@ HAL_StatusTypeDef HAL_CRYP_AESCBC_Encrypt_IT(CRYP_HandleTypeDef* hcryp,
  * @retval HAL status
  */
 HAL_StatusTypeDef HAL_CRYP_AESCTR_Encrypt_IT(CRYP_HandleTypeDef* hcryp,
-                                             uint8_t* pPlainData,
-                                             uint16_t Size,
-                                             uint8_t* pCypherData)
+    uint8_t* pPlainData,
+    uint16_t Size,
+    uint8_t* pCypherData)
 {
-   uint32_t inputaddr = 0U;
+    uint32_t inputaddr = 0U;
 
-   /* Check that data aligned on u32 */
-   if ((((uint32_t)pPlainData & (uint32_t)0x00000003U) != 0U) ||
-       (((uint32_t)pCypherData & (uint32_t)0x00000003U) != 0U) || ((Size & (uint16_t)0x000FU) != 0U))
-   {
-      /* Process Locked */
-      __HAL_UNLOCK(hcryp);
+    /* Check that data aligned on u32 */
+    if((((uint32_t)pPlainData & (uint32_t)0x00000003U) != 0U) ||
+        (((uint32_t)pCypherData & (uint32_t)0x00000003U) != 0U) || ((Size & (uint16_t)0x000FU) != 0U)) {
+        /* Process Locked */
+        __HAL_UNLOCK(hcryp);
 
-      /* Return function status */
-      return HAL_ERROR;
-   }
+        /* Return function status */
+        return HAL_ERROR;
+    }
 
-   if ((hcryp->State != HAL_CRYP_STATE_RESET) && (hcryp->State == HAL_CRYP_STATE_READY))
-   {
-      /* Process Locked */
-      __HAL_LOCK(hcryp);
+    if((hcryp->State != HAL_CRYP_STATE_RESET) && (hcryp->State == HAL_CRYP_STATE_READY)) {
+        /* Process Locked */
+        __HAL_LOCK(hcryp);
 
-      /* Get the buffer addresses and sizes */
-      hcryp->CrypInCount = Size;
-      hcryp->pCrypInBuffPtr = pPlainData;
-      hcryp->pCrypOutBuffPtr = pCypherData;
-      hcryp->CrypOutCount = Size;
+        /* Get the buffer addresses and sizes */
+        hcryp->CrypInCount = Size;
+        hcryp->pCrypInBuffPtr = pPlainData;
+        hcryp->pCrypOutBuffPtr = pCypherData;
+        hcryp->CrypOutCount = Size;
 
-      /* Change the CRYP state */
-      hcryp->State = HAL_CRYP_STATE_BUSY;
+        /* Change the CRYP state */
+        hcryp->State = HAL_CRYP_STATE_BUSY;
 
-      /* Check if initialization phase has already been performed */
-      if (hcryp->Phase == HAL_CRYP_PHASE_READY)
-      {
-         /* Set the key */
-         CRYP_SetKey(hcryp, hcryp->Init.pKey);
+        /* Check if initialization phase has already been performed */
+        if(hcryp->Phase == HAL_CRYP_PHASE_READY) {
+            /* Set the key */
+            CRYP_SetKey(hcryp, hcryp->Init.pKey);
 
-         /* Reset the CHMOD & MODE bits */
-         CLEAR_BIT(hcryp->Instance->CR, CRYP_ALGO_CHAIN_MASK);
+            /* Reset the CHMOD & MODE bits */
+            CLEAR_BIT(hcryp->Instance->CR, CRYP_ALGO_CHAIN_MASK);
 
-         /* Set the CRYP peripheral in AES CTR mode */
-         __HAL_CRYP_SET_MODE(hcryp, CRYP_CR_ALGOMODE_AES_CTR_ENCRYPT);
+            /* Set the CRYP peripheral in AES CTR mode */
+            __HAL_CRYP_SET_MODE(hcryp, CRYP_CR_ALGOMODE_AES_CTR_ENCRYPT);
 
-         /* Set the Initialization Vector */
-         CRYP_SetInitVector(hcryp, hcryp->Init.pInitVect);
+            /* Set the Initialization Vector */
+            CRYP_SetInitVector(hcryp, hcryp->Init.pInitVect);
 
-         /* Set the phase */
-         hcryp->Phase = HAL_CRYP_PHASE_PROCESS;
-      }
+            /* Set the phase */
+            hcryp->Phase = HAL_CRYP_PHASE_PROCESS;
+        }
 
-      /* Enable Interrupts */
-      __HAL_CRYP_ENABLE_IT(hcryp, CRYP_IT_CC);
+        /* Enable Interrupts */
+        __HAL_CRYP_ENABLE_IT(hcryp, CRYP_IT_CC);
 
-      /* Enable CRYP */
-      __HAL_CRYP_ENABLE(hcryp);
+        /* Enable CRYP */
+        __HAL_CRYP_ENABLE(hcryp);
 
-      /* Get the last input data adress */
-      inputaddr = (uint32_t)hcryp->pCrypInBuffPtr;
+        /* Get the last input data adress */
+        inputaddr = (uint32_t)hcryp->pCrypInBuffPtr;
 
-      /* Write the Input block in the Data Input register */
-      hcryp->Instance->DINR = *(uint32_t*)(inputaddr);
-      inputaddr += 4U;
-      hcryp->Instance->DINR = *(uint32_t*)(inputaddr);
-      inputaddr += 4U;
-      hcryp->Instance->DINR = *(uint32_t*)(inputaddr);
-      inputaddr += 4U;
-      hcryp->Instance->DINR = *(uint32_t*)(inputaddr);
-      hcryp->pCrypInBuffPtr += 16U;
-      hcryp->CrypInCount -= 16U;
+        /* Write the Input block in the Data Input register */
+        hcryp->Instance->DINR = *(uint32_t*)(inputaddr);
+        inputaddr += 4U;
+        hcryp->Instance->DINR = *(uint32_t*)(inputaddr);
+        inputaddr += 4U;
+        hcryp->Instance->DINR = *(uint32_t*)(inputaddr);
+        inputaddr += 4U;
+        hcryp->Instance->DINR = *(uint32_t*)(inputaddr);
+        hcryp->pCrypInBuffPtr += 16U;
+        hcryp->CrypInCount -= 16U;
 
-      /* Return function status */
-      return HAL_OK;
-   }
-   else
-   {
-      /* Release Lock */
-      __HAL_UNLOCK(hcryp);
+        /* Return function status */
+        return HAL_OK;
+    }
+    else {
+        /* Release Lock */
+        __HAL_UNLOCK(hcryp);
 
-      /* Return function status */
-      return HAL_ERROR;
-   }
+        /* Return function status */
+        return HAL_ERROR;
+    }
 }
 
 /**
@@ -1099,84 +1054,80 @@ HAL_StatusTypeDef HAL_CRYP_AESCTR_Encrypt_IT(CRYP_HandleTypeDef* hcryp,
  * @retval HAL status
  */
 HAL_StatusTypeDef HAL_CRYP_AESECB_Decrypt_IT(CRYP_HandleTypeDef* hcryp,
-                                             uint8_t* pCypherData,
-                                             uint16_t Size,
-                                             uint8_t* pPlainData)
+    uint8_t* pCypherData,
+    uint16_t Size,
+    uint8_t* pPlainData)
 {
-   uint32_t inputaddr = 0U;
+    uint32_t inputaddr = 0U;
 
-   /* Check that data aligned on u32 */
-   if ((((uint32_t)pPlainData & (uint32_t)0x00000003U) != 0U) ||
-       (((uint32_t)pCypherData & (uint32_t)0x00000003U) != 0U) || ((Size & (uint16_t)0x000FU) != 0U))
-   {
-      /* Process Locked */
-      __HAL_UNLOCK(hcryp);
+    /* Check that data aligned on u32 */
+    if((((uint32_t)pPlainData & (uint32_t)0x00000003U) != 0U) ||
+        (((uint32_t)pCypherData & (uint32_t)0x00000003U) != 0U) || ((Size & (uint16_t)0x000FU) != 0U)) {
+        /* Process Locked */
+        __HAL_UNLOCK(hcryp);
 
-      /* Return function status */
-      return HAL_ERROR;
-   }
+        /* Return function status */
+        return HAL_ERROR;
+    }
 
-   if ((hcryp->State != HAL_CRYP_STATE_RESET) && (hcryp->State == HAL_CRYP_STATE_READY))
-   {
-      /* Process Locked */
-      __HAL_LOCK(hcryp);
+    if((hcryp->State != HAL_CRYP_STATE_RESET) && (hcryp->State == HAL_CRYP_STATE_READY)) {
+        /* Process Locked */
+        __HAL_LOCK(hcryp);
 
-      /* Get the buffer addresses and sizes */
-      hcryp->CrypInCount = Size;
-      hcryp->pCrypInBuffPtr = pCypherData;
-      hcryp->pCrypOutBuffPtr = pPlainData;
-      hcryp->CrypOutCount = Size;
+        /* Get the buffer addresses and sizes */
+        hcryp->CrypInCount = Size;
+        hcryp->pCrypInBuffPtr = pCypherData;
+        hcryp->pCrypOutBuffPtr = pPlainData;
+        hcryp->CrypOutCount = Size;
 
-      /* Change the CRYP state */
-      hcryp->State = HAL_CRYP_STATE_BUSY;
+        /* Change the CRYP state */
+        hcryp->State = HAL_CRYP_STATE_BUSY;
 
-      /* Check if initialization phase has already been performed */
-      if (hcryp->Phase == HAL_CRYP_PHASE_READY)
-      {
-         /* Set the key */
-         CRYP_SetKey(hcryp, hcryp->Init.pKey);
+        /* Check if initialization phase has already been performed */
+        if(hcryp->Phase == HAL_CRYP_PHASE_READY) {
+            /* Set the key */
+            CRYP_SetKey(hcryp, hcryp->Init.pKey);
 
-         /* Reset the CHMOD & MODE bits */
-         CLEAR_BIT(hcryp->Instance->CR, CRYP_ALGO_CHAIN_MASK);
+            /* Reset the CHMOD & MODE bits */
+            CLEAR_BIT(hcryp->Instance->CR, CRYP_ALGO_CHAIN_MASK);
 
-         /* Set the CRYP peripheral in AES ECB decryption mode (with key derivation) */
-         __HAL_CRYP_SET_MODE(hcryp, CRYP_CR_ALGOMODE_AES_ECB_KEYDERDECRYPT);
+            /* Set the CRYP peripheral in AES ECB decryption mode (with key derivation) */
+            __HAL_CRYP_SET_MODE(hcryp, CRYP_CR_ALGOMODE_AES_ECB_KEYDERDECRYPT);
 
-         /* Set the phase */
-         hcryp->Phase = HAL_CRYP_PHASE_PROCESS;
-      }
+            /* Set the phase */
+            hcryp->Phase = HAL_CRYP_PHASE_PROCESS;
+        }
 
-      /* Enable Interrupts */
-      __HAL_CRYP_ENABLE_IT(hcryp, CRYP_IT_CC);
+        /* Enable Interrupts */
+        __HAL_CRYP_ENABLE_IT(hcryp, CRYP_IT_CC);
 
-      /* Enable CRYP */
-      __HAL_CRYP_ENABLE(hcryp);
+        /* Enable CRYP */
+        __HAL_CRYP_ENABLE(hcryp);
 
-      /* Get the last input data adress */
-      inputaddr = (uint32_t)hcryp->pCrypInBuffPtr;
+        /* Get the last input data adress */
+        inputaddr = (uint32_t)hcryp->pCrypInBuffPtr;
 
-      /* Write the Input block in the Data Input register */
-      hcryp->Instance->DINR = *(uint32_t*)(inputaddr);
-      inputaddr += 4U;
-      hcryp->Instance->DINR = *(uint32_t*)(inputaddr);
-      inputaddr += 4U;
-      hcryp->Instance->DINR = *(uint32_t*)(inputaddr);
-      inputaddr += 4U;
-      hcryp->Instance->DINR = *(uint32_t*)(inputaddr);
-      hcryp->pCrypInBuffPtr += 16U;
-      hcryp->CrypInCount -= 16U;
+        /* Write the Input block in the Data Input register */
+        hcryp->Instance->DINR = *(uint32_t*)(inputaddr);
+        inputaddr += 4U;
+        hcryp->Instance->DINR = *(uint32_t*)(inputaddr);
+        inputaddr += 4U;
+        hcryp->Instance->DINR = *(uint32_t*)(inputaddr);
+        inputaddr += 4U;
+        hcryp->Instance->DINR = *(uint32_t*)(inputaddr);
+        hcryp->pCrypInBuffPtr += 16U;
+        hcryp->CrypInCount -= 16U;
 
-      /* Return function status */
-      return HAL_OK;
-   }
-   else
-   {
-      /* Release Lock */
-      __HAL_UNLOCK(hcryp);
+        /* Return function status */
+        return HAL_OK;
+    }
+    else {
+        /* Release Lock */
+        __HAL_UNLOCK(hcryp);
 
-      /* Return function status */
-      return HAL_ERROR;
-   }
+        /* Return function status */
+        return HAL_ERROR;
+    }
 }
 
 /**
@@ -1189,87 +1140,83 @@ HAL_StatusTypeDef HAL_CRYP_AESECB_Decrypt_IT(CRYP_HandleTypeDef* hcryp,
  * @retval HAL status
  */
 HAL_StatusTypeDef HAL_CRYP_AESCBC_Decrypt_IT(CRYP_HandleTypeDef* hcryp,
-                                             uint8_t* pCypherData,
-                                             uint16_t Size,
-                                             uint8_t* pPlainData)
+    uint8_t* pCypherData,
+    uint16_t Size,
+    uint8_t* pPlainData)
 {
-   uint32_t inputaddr = 0U;
+    uint32_t inputaddr = 0U;
 
-   /* Check that data aligned on u32 */
-   if ((((uint32_t)pPlainData & (uint32_t)0x00000003U) != 0U) ||
-       (((uint32_t)pCypherData & (uint32_t)0x00000003U) != 0U) || ((Size & (uint16_t)0x000FU) != 0U))
-   {
-      /* Process Locked */
-      __HAL_UNLOCK(hcryp);
+    /* Check that data aligned on u32 */
+    if((((uint32_t)pPlainData & (uint32_t)0x00000003U) != 0U) ||
+        (((uint32_t)pCypherData & (uint32_t)0x00000003U) != 0U) || ((Size & (uint16_t)0x000FU) != 0U)) {
+        /* Process Locked */
+        __HAL_UNLOCK(hcryp);
 
-      /* Return function status */
-      return HAL_ERROR;
-   }
+        /* Return function status */
+        return HAL_ERROR;
+    }
 
-   if ((hcryp->State != HAL_CRYP_STATE_RESET) && (hcryp->State == HAL_CRYP_STATE_READY))
-   {
-      /* Process Locked */
-      __HAL_LOCK(hcryp);
+    if((hcryp->State != HAL_CRYP_STATE_RESET) && (hcryp->State == HAL_CRYP_STATE_READY)) {
+        /* Process Locked */
+        __HAL_LOCK(hcryp);
 
-      /* Get the buffer addresses and sizes */
-      hcryp->CrypInCount = Size;
-      hcryp->pCrypInBuffPtr = pCypherData;
-      hcryp->pCrypOutBuffPtr = pPlainData;
-      hcryp->CrypOutCount = Size;
+        /* Get the buffer addresses and sizes */
+        hcryp->CrypInCount = Size;
+        hcryp->pCrypInBuffPtr = pCypherData;
+        hcryp->pCrypOutBuffPtr = pPlainData;
+        hcryp->CrypOutCount = Size;
 
-      /* Change the CRYP state */
-      hcryp->State = HAL_CRYP_STATE_BUSY;
+        /* Change the CRYP state */
+        hcryp->State = HAL_CRYP_STATE_BUSY;
 
-      /* Check if initialization phase has already been performed */
-      if (hcryp->Phase == HAL_CRYP_PHASE_READY)
-      {
-         /* Set the key */
-         CRYP_SetKey(hcryp, hcryp->Init.pKey);
+        /* Check if initialization phase has already been performed */
+        if(hcryp->Phase == HAL_CRYP_PHASE_READY) {
+            /* Set the key */
+            CRYP_SetKey(hcryp, hcryp->Init.pKey);
 
-         /* Reset the CHMOD & MODE bits */
-         CLEAR_BIT(hcryp->Instance->CR, CRYP_ALGO_CHAIN_MASK);
+            /* Reset the CHMOD & MODE bits */
+            CLEAR_BIT(hcryp->Instance->CR, CRYP_ALGO_CHAIN_MASK);
 
-         /* Set the CRYP peripheral in AES CBC decryption mode (with key derivation) */
-         __HAL_CRYP_SET_MODE(hcryp, CRYP_CR_ALGOMODE_AES_CBC_KEYDERDECRYPT);
+            /* Set the CRYP peripheral in AES CBC decryption mode (with key derivation) */
+            __HAL_CRYP_SET_MODE(hcryp, CRYP_CR_ALGOMODE_AES_CBC_KEYDERDECRYPT);
 
-         /* Set the Initialization Vector */
-         CRYP_SetInitVector(hcryp, hcryp->Init.pInitVect);
+            /* Set the Initialization Vector */
+            CRYP_SetInitVector(hcryp, hcryp->Init.pInitVect);
 
-         /* Set the phase */
-         hcryp->Phase = HAL_CRYP_PHASE_PROCESS;
-      }
+            /* Set the phase */
+            hcryp->Phase = HAL_CRYP_PHASE_PROCESS;
+        }
 
-      /* Enable Interrupts */
-      __HAL_CRYP_ENABLE_IT(hcryp, CRYP_IT_CC);
+        /* Enable Interrupts */
+        __HAL_CRYP_ENABLE_IT(hcryp, CRYP_IT_CC);
 
-      /* Enable CRYP */
-      __HAL_CRYP_ENABLE(hcryp);
+        /* Enable CRYP */
+        __HAL_CRYP_ENABLE(hcryp);
 
-      /* Get the last input data adress */
-      inputaddr = (uint32_t)hcryp->pCrypInBuffPtr;
+        /* Get the last input data adress */
+        inputaddr = (uint32_t)hcryp->pCrypInBuffPtr;
 
-      /* Write the Input block in the Data Input register */
-      hcryp->Instance->DINR = *(uint32_t*)(inputaddr);
-      inputaddr += 4U;
-      hcryp->Instance->DINR = *(uint32_t*)(inputaddr);
-      inputaddr += 4U;
-      hcryp->Instance->DINR = *(uint32_t*)(inputaddr);
-      inputaddr += 4U;
-      hcryp->Instance->DINR = *(uint32_t*)(inputaddr);
-      hcryp->pCrypInBuffPtr += 16U;
-      hcryp->CrypInCount -= 16U;
+        /* Write the Input block in the Data Input register */
+        hcryp->Instance->DINR = *(uint32_t*)(inputaddr);
+        inputaddr += 4U;
+        hcryp->Instance->DINR = *(uint32_t*)(inputaddr);
+        inputaddr += 4U;
+        hcryp->Instance->DINR = *(uint32_t*)(inputaddr);
+        inputaddr += 4U;
+        hcryp->Instance->DINR = *(uint32_t*)(inputaddr);
+        hcryp->pCrypInBuffPtr += 16U;
+        hcryp->CrypInCount -= 16U;
 
-      /* Return function status */
-      return HAL_OK;
-   }
-   else
-   {
-      /* Release Lock */
-      __HAL_UNLOCK(hcryp);
+        /* Return function status */
+        return HAL_OK;
+    }
+    else {
+        /* Release Lock */
+        __HAL_UNLOCK(hcryp);
 
-      /* Return function status */
-      return HAL_ERROR;
-   }
+        /* Return function status */
+        return HAL_ERROR;
+    }
 }
 
 /**
@@ -1282,87 +1229,83 @@ HAL_StatusTypeDef HAL_CRYP_AESCBC_Decrypt_IT(CRYP_HandleTypeDef* hcryp,
  * @retval HAL status
  */
 HAL_StatusTypeDef HAL_CRYP_AESCTR_Decrypt_IT(CRYP_HandleTypeDef* hcryp,
-                                             uint8_t* pCypherData,
-                                             uint16_t Size,
-                                             uint8_t* pPlainData)
+    uint8_t* pCypherData,
+    uint16_t Size,
+    uint8_t* pPlainData)
 {
-   uint32_t inputaddr = 0U;
+    uint32_t inputaddr = 0U;
 
-   /* Check that data aligned on u32 */
-   if ((((uint32_t)pPlainData & (uint32_t)0x00000003U) != 0U) ||
-       (((uint32_t)pCypherData & (uint32_t)0x00000003U) != 0U) || ((Size & (uint16_t)0x000FU) != 0U))
-   {
-      /* Process Locked */
-      __HAL_UNLOCK(hcryp);
+    /* Check that data aligned on u32 */
+    if((((uint32_t)pPlainData & (uint32_t)0x00000003U) != 0U) ||
+        (((uint32_t)pCypherData & (uint32_t)0x00000003U) != 0U) || ((Size & (uint16_t)0x000FU) != 0U)) {
+        /* Process Locked */
+        __HAL_UNLOCK(hcryp);
 
-      /* Return function status */
-      return HAL_ERROR;
-   }
+        /* Return function status */
+        return HAL_ERROR;
+    }
 
-   if ((hcryp->State != HAL_CRYP_STATE_RESET) && (hcryp->State == HAL_CRYP_STATE_READY))
-   {
-      /* Process Locked */
-      __HAL_LOCK(hcryp);
+    if((hcryp->State != HAL_CRYP_STATE_RESET) && (hcryp->State == HAL_CRYP_STATE_READY)) {
+        /* Process Locked */
+        __HAL_LOCK(hcryp);
 
-      /* Get the buffer addresses and sizes */
-      hcryp->CrypInCount = Size;
-      hcryp->pCrypInBuffPtr = pCypherData;
-      hcryp->pCrypOutBuffPtr = pPlainData;
-      hcryp->CrypOutCount = Size;
+        /* Get the buffer addresses and sizes */
+        hcryp->CrypInCount = Size;
+        hcryp->pCrypInBuffPtr = pCypherData;
+        hcryp->pCrypOutBuffPtr = pPlainData;
+        hcryp->CrypOutCount = Size;
 
-      /* Change the CRYP state */
-      hcryp->State = HAL_CRYP_STATE_BUSY;
+        /* Change the CRYP state */
+        hcryp->State = HAL_CRYP_STATE_BUSY;
 
-      /* Check if initialization phase has already been performed */
-      if (hcryp->Phase == HAL_CRYP_PHASE_READY)
-      {
-         /* Set the key */
-         CRYP_SetKey(hcryp, hcryp->Init.pKey);
+        /* Check if initialization phase has already been performed */
+        if(hcryp->Phase == HAL_CRYP_PHASE_READY) {
+            /* Set the key */
+            CRYP_SetKey(hcryp, hcryp->Init.pKey);
 
-         /* Reset the CHMOD & MODE bits */
-         CLEAR_BIT(hcryp->Instance->CR, CRYP_ALGO_CHAIN_MASK);
+            /* Reset the CHMOD & MODE bits */
+            CLEAR_BIT(hcryp->Instance->CR, CRYP_ALGO_CHAIN_MASK);
 
-         /* Set the CRYP peripheral in AES CTR decryption mode */
-         __HAL_CRYP_SET_MODE(hcryp, CRYP_CR_ALGOMODE_AES_CTR_DECRYPT);
+            /* Set the CRYP peripheral in AES CTR decryption mode */
+            __HAL_CRYP_SET_MODE(hcryp, CRYP_CR_ALGOMODE_AES_CTR_DECRYPT);
 
-         /* Set the Initialization Vector */
-         CRYP_SetInitVector(hcryp, hcryp->Init.pInitVect);
+            /* Set the Initialization Vector */
+            CRYP_SetInitVector(hcryp, hcryp->Init.pInitVect);
 
-         /* Set the phase */
-         hcryp->Phase = HAL_CRYP_PHASE_PROCESS;
-      }
+            /* Set the phase */
+            hcryp->Phase = HAL_CRYP_PHASE_PROCESS;
+        }
 
-      /* Enable Interrupts */
-      __HAL_CRYP_ENABLE_IT(hcryp, CRYP_IT_CC);
+        /* Enable Interrupts */
+        __HAL_CRYP_ENABLE_IT(hcryp, CRYP_IT_CC);
 
-      /* Enable CRYP */
-      __HAL_CRYP_ENABLE(hcryp);
+        /* Enable CRYP */
+        __HAL_CRYP_ENABLE(hcryp);
 
-      /* Get the last input data adress */
-      inputaddr = (uint32_t)hcryp->pCrypInBuffPtr;
+        /* Get the last input data adress */
+        inputaddr = (uint32_t)hcryp->pCrypInBuffPtr;
 
-      /* Write the Input block in the Data Input register */
-      hcryp->Instance->DINR = *(uint32_t*)(inputaddr);
-      inputaddr += 4U;
-      hcryp->Instance->DINR = *(uint32_t*)(inputaddr);
-      inputaddr += 4U;
-      hcryp->Instance->DINR = *(uint32_t*)(inputaddr);
-      inputaddr += 4U;
-      hcryp->Instance->DINR = *(uint32_t*)(inputaddr);
-      hcryp->pCrypInBuffPtr += 16U;
-      hcryp->CrypInCount -= 16U;
+        /* Write the Input block in the Data Input register */
+        hcryp->Instance->DINR = *(uint32_t*)(inputaddr);
+        inputaddr += 4U;
+        hcryp->Instance->DINR = *(uint32_t*)(inputaddr);
+        inputaddr += 4U;
+        hcryp->Instance->DINR = *(uint32_t*)(inputaddr);
+        inputaddr += 4U;
+        hcryp->Instance->DINR = *(uint32_t*)(inputaddr);
+        hcryp->pCrypInBuffPtr += 16U;
+        hcryp->CrypInCount -= 16U;
 
-      /* Return function status */
-      return HAL_OK;
-   }
-   else
-   {
-      /* Release Lock */
-      __HAL_UNLOCK(hcryp);
+        /* Return function status */
+        return HAL_OK;
+    }
+    else {
+        /* Release Lock */
+        __HAL_UNLOCK(hcryp);
 
-      /* Return function status */
-      return HAL_ERROR;
-   }
+        /* Return function status */
+        return HAL_ERROR;
+    }
 }
 
 /**
@@ -1375,63 +1318,59 @@ HAL_StatusTypeDef HAL_CRYP_AESCTR_Decrypt_IT(CRYP_HandleTypeDef* hcryp,
  * @retval HAL status
  */
 HAL_StatusTypeDef HAL_CRYP_AESECB_Encrypt_DMA(CRYP_HandleTypeDef* hcryp,
-                                              uint8_t* pPlainData,
-                                              uint16_t Size,
-                                              uint8_t* pCypherData)
+    uint8_t* pPlainData,
+    uint16_t Size,
+    uint8_t* pCypherData)
 {
-   uint32_t inputaddr = 0U, outputaddr = 0U;
+    uint32_t inputaddr = 0U, outputaddr = 0U;
 
-   /* Check that data aligned on u32 */
-   if ((((uint32_t)pPlainData & (uint32_t)0x00000003U) != 0U) ||
-       (((uint32_t)pCypherData & (uint32_t)0x00000003U) != 0U) || ((Size & (uint16_t)0x000FU) != 0U))
-   {
-      /* Process Locked */
-      __HAL_UNLOCK(hcryp);
+    /* Check that data aligned on u32 */
+    if((((uint32_t)pPlainData & (uint32_t)0x00000003U) != 0U) ||
+        (((uint32_t)pCypherData & (uint32_t)0x00000003U) != 0U) || ((Size & (uint16_t)0x000FU) != 0U)) {
+        /* Process Locked */
+        __HAL_UNLOCK(hcryp);
 
-      /* Return function status */
-      return HAL_ERROR;
-   }
+        /* Return function status */
+        return HAL_ERROR;
+    }
 
-   /* Check if HAL_CRYP_Init has been called */
-   if ((hcryp->State != HAL_CRYP_STATE_RESET) && (hcryp->State == HAL_CRYP_STATE_READY))
-   {
-      /* Process Locked */
-      __HAL_LOCK(hcryp);
+    /* Check if HAL_CRYP_Init has been called */
+    if((hcryp->State != HAL_CRYP_STATE_RESET) && (hcryp->State == HAL_CRYP_STATE_READY)) {
+        /* Process Locked */
+        __HAL_LOCK(hcryp);
 
-      inputaddr = (uint32_t)pPlainData;
-      outputaddr = (uint32_t)pCypherData;
+        inputaddr = (uint32_t)pPlainData;
+        outputaddr = (uint32_t)pCypherData;
 
-      /* Change the CRYP state */
-      hcryp->State = HAL_CRYP_STATE_BUSY;
+        /* Change the CRYP state */
+        hcryp->State = HAL_CRYP_STATE_BUSY;
 
-      /* Check if initialization phase has already been performed */
-      if (hcryp->Phase == HAL_CRYP_PHASE_READY)
-      {
-         /* Set the key */
-         CRYP_SetKey(hcryp, hcryp->Init.pKey);
+        /* Check if initialization phase has already been performed */
+        if(hcryp->Phase == HAL_CRYP_PHASE_READY) {
+            /* Set the key */
+            CRYP_SetKey(hcryp, hcryp->Init.pKey);
 
-         /* Set the CRYP peripheral in AES ECB mode */
-         __HAL_CRYP_SET_MODE(hcryp, CRYP_CR_ALGOMODE_AES_ECB_ENCRYPT);
+            /* Set the CRYP peripheral in AES ECB mode */
+            __HAL_CRYP_SET_MODE(hcryp, CRYP_CR_ALGOMODE_AES_ECB_ENCRYPT);
 
-         /* Set the phase */
-         hcryp->Phase = HAL_CRYP_PHASE_PROCESS;
-      }
-      /* Set the input and output addresses and start DMA transfer */
-      CRYP_SetDMAConfig(hcryp, inputaddr, Size, outputaddr);
+            /* Set the phase */
+            hcryp->Phase = HAL_CRYP_PHASE_PROCESS;
+        }
+        /* Set the input and output addresses and start DMA transfer */
+        CRYP_SetDMAConfig(hcryp, inputaddr, Size, outputaddr);
 
-      /* Process Unlocked */
-      __HAL_UNLOCK(hcryp);
+        /* Process Unlocked */
+        __HAL_UNLOCK(hcryp);
 
-      /* Return function status */
-      return HAL_OK;
-   }
-   else
-   {
-      /* Release Lock */
-      __HAL_UNLOCK(hcryp);
+        /* Return function status */
+        return HAL_OK;
+    }
+    else {
+        /* Release Lock */
+        __HAL_UNLOCK(hcryp);
 
-      return HAL_ERROR;
-   }
+        return HAL_ERROR;
+    }
 }
 
 /**
@@ -1444,66 +1383,62 @@ HAL_StatusTypeDef HAL_CRYP_AESECB_Encrypt_DMA(CRYP_HandleTypeDef* hcryp,
  * @retval HAL status
  */
 HAL_StatusTypeDef HAL_CRYP_AESCBC_Encrypt_DMA(CRYP_HandleTypeDef* hcryp,
-                                              uint8_t* pPlainData,
-                                              uint16_t Size,
-                                              uint8_t* pCypherData)
+    uint8_t* pPlainData,
+    uint16_t Size,
+    uint8_t* pCypherData)
 {
-   uint32_t inputaddr = 0U, outputaddr = 0U;
+    uint32_t inputaddr = 0U, outputaddr = 0U;
 
-   /* Check that data aligned on u32 */
-   if ((((uint32_t)pPlainData & (uint32_t)0x00000003U) != 0U) ||
-       (((uint32_t)pCypherData & (uint32_t)0x00000003U) != 0U) || ((Size & (uint16_t)0x000FU) != 0U))
-   {
-      /* Process Locked */
-      __HAL_UNLOCK(hcryp);
+    /* Check that data aligned on u32 */
+    if((((uint32_t)pPlainData & (uint32_t)0x00000003U) != 0U) ||
+        (((uint32_t)pCypherData & (uint32_t)0x00000003U) != 0U) || ((Size & (uint16_t)0x000FU) != 0U)) {
+        /* Process Locked */
+        __HAL_UNLOCK(hcryp);
 
-      /* Return function status */
-      return HAL_ERROR;
-   }
+        /* Return function status */
+        return HAL_ERROR;
+    }
 
-   /* Check if HAL_CRYP_Init has been called */
-   if ((hcryp->State != HAL_CRYP_STATE_RESET) && (hcryp->State == HAL_CRYP_STATE_READY))
-   {
-      /* Process Locked */
-      __HAL_LOCK(hcryp);
+    /* Check if HAL_CRYP_Init has been called */
+    if((hcryp->State != HAL_CRYP_STATE_RESET) && (hcryp->State == HAL_CRYP_STATE_READY)) {
+        /* Process Locked */
+        __HAL_LOCK(hcryp);
 
-      inputaddr = (uint32_t)pPlainData;
-      outputaddr = (uint32_t)pCypherData;
+        inputaddr = (uint32_t)pPlainData;
+        outputaddr = (uint32_t)pCypherData;
 
-      /* Change the CRYP state */
-      hcryp->State = HAL_CRYP_STATE_BUSY;
+        /* Change the CRYP state */
+        hcryp->State = HAL_CRYP_STATE_BUSY;
 
-      /* Check if initialization phase has already been performed */
-      if (hcryp->Phase == HAL_CRYP_PHASE_READY)
-      {
-         /* Set the key */
-         CRYP_SetKey(hcryp, hcryp->Init.pKey);
+        /* Check if initialization phase has already been performed */
+        if(hcryp->Phase == HAL_CRYP_PHASE_READY) {
+            /* Set the key */
+            CRYP_SetKey(hcryp, hcryp->Init.pKey);
 
-         /* Set the CRYP peripheral in AES CBC mode */
-         __HAL_CRYP_SET_MODE(hcryp, CRYP_CR_ALGOMODE_AES_CBC_ENCRYPT);
+            /* Set the CRYP peripheral in AES CBC mode */
+            __HAL_CRYP_SET_MODE(hcryp, CRYP_CR_ALGOMODE_AES_CBC_ENCRYPT);
 
-         /* Set the Initialization Vector */
-         CRYP_SetInitVector(hcryp, hcryp->Init.pInitVect);
+            /* Set the Initialization Vector */
+            CRYP_SetInitVector(hcryp, hcryp->Init.pInitVect);
 
-         /* Set the phase */
-         hcryp->Phase = HAL_CRYP_PHASE_PROCESS;
-      }
-      /* Set the input and output addresses and start DMA transfer */
-      CRYP_SetDMAConfig(hcryp, inputaddr, Size, outputaddr);
+            /* Set the phase */
+            hcryp->Phase = HAL_CRYP_PHASE_PROCESS;
+        }
+        /* Set the input and output addresses and start DMA transfer */
+        CRYP_SetDMAConfig(hcryp, inputaddr, Size, outputaddr);
 
-      /* Process Unlocked */
-      __HAL_UNLOCK(hcryp);
+        /* Process Unlocked */
+        __HAL_UNLOCK(hcryp);
 
-      /* Return function status */
-      return HAL_OK;
-   }
-   else
-   {
-      /* Release Lock */
-      __HAL_UNLOCK(hcryp);
+        /* Return function status */
+        return HAL_OK;
+    }
+    else {
+        /* Release Lock */
+        __HAL_UNLOCK(hcryp);
 
-      return HAL_ERROR;
-   }
+        return HAL_ERROR;
+    }
 }
 
 /**
@@ -1516,67 +1451,63 @@ HAL_StatusTypeDef HAL_CRYP_AESCBC_Encrypt_DMA(CRYP_HandleTypeDef* hcryp,
  * @retval HAL status
  */
 HAL_StatusTypeDef HAL_CRYP_AESCTR_Encrypt_DMA(CRYP_HandleTypeDef* hcryp,
-                                              uint8_t* pPlainData,
-                                              uint16_t Size,
-                                              uint8_t* pCypherData)
+    uint8_t* pPlainData,
+    uint16_t Size,
+    uint8_t* pCypherData)
 {
-   uint32_t inputaddr = 0U, outputaddr = 0U;
+    uint32_t inputaddr = 0U, outputaddr = 0U;
 
-   /* Check that data aligned on u32 */
-   if ((((uint32_t)pPlainData & (uint32_t)0x00000003U) != 0U) ||
-       (((uint32_t)pCypherData & (uint32_t)0x00000003U) != 0U) || ((Size & (uint16_t)0x000FU) != 0U))
-   {
-      /* Process Locked */
-      __HAL_UNLOCK(hcryp);
+    /* Check that data aligned on u32 */
+    if((((uint32_t)pPlainData & (uint32_t)0x00000003U) != 0U) ||
+        (((uint32_t)pCypherData & (uint32_t)0x00000003U) != 0U) || ((Size & (uint16_t)0x000FU) != 0U)) {
+        /* Process Locked */
+        __HAL_UNLOCK(hcryp);
 
-      /* Return function status */
-      return HAL_ERROR;
-   }
+        /* Return function status */
+        return HAL_ERROR;
+    }
 
-   /* Check if HAL_CRYP_Init has been called */
-   if ((hcryp->State != HAL_CRYP_STATE_RESET) && (hcryp->State == HAL_CRYP_STATE_READY))
-   {
-      /* Process Locked */
-      __HAL_LOCK(hcryp);
+    /* Check if HAL_CRYP_Init has been called */
+    if((hcryp->State != HAL_CRYP_STATE_RESET) && (hcryp->State == HAL_CRYP_STATE_READY)) {
+        /* Process Locked */
+        __HAL_LOCK(hcryp);
 
-      inputaddr = (uint32_t)pPlainData;
-      outputaddr = (uint32_t)pCypherData;
+        inputaddr = (uint32_t)pPlainData;
+        outputaddr = (uint32_t)pCypherData;
 
-      /* Change the CRYP state */
-      hcryp->State = HAL_CRYP_STATE_BUSY;
+        /* Change the CRYP state */
+        hcryp->State = HAL_CRYP_STATE_BUSY;
 
-      /* Check if initialization phase has already been performed */
-      if (hcryp->Phase == HAL_CRYP_PHASE_READY)
-      {
-         /* Set the key */
-         CRYP_SetKey(hcryp, hcryp->Init.pKey);
+        /* Check if initialization phase has already been performed */
+        if(hcryp->Phase == HAL_CRYP_PHASE_READY) {
+            /* Set the key */
+            CRYP_SetKey(hcryp, hcryp->Init.pKey);
 
-         /* Set the CRYP peripheral in AES CTR mode */
-         __HAL_CRYP_SET_MODE(hcryp, CRYP_CR_ALGOMODE_AES_CTR_ENCRYPT);
+            /* Set the CRYP peripheral in AES CTR mode */
+            __HAL_CRYP_SET_MODE(hcryp, CRYP_CR_ALGOMODE_AES_CTR_ENCRYPT);
 
-         /* Set the Initialization Vector */
-         CRYP_SetInitVector(hcryp, hcryp->Init.pInitVect);
+            /* Set the Initialization Vector */
+            CRYP_SetInitVector(hcryp, hcryp->Init.pInitVect);
 
-         /* Set the phase */
-         hcryp->Phase = HAL_CRYP_PHASE_PROCESS;
-      }
+            /* Set the phase */
+            hcryp->Phase = HAL_CRYP_PHASE_PROCESS;
+        }
 
-      /* Set the input and output addresses and start DMA transfer */
-      CRYP_SetDMAConfig(hcryp, inputaddr, Size, outputaddr);
+        /* Set the input and output addresses and start DMA transfer */
+        CRYP_SetDMAConfig(hcryp, inputaddr, Size, outputaddr);
 
-      /* Process Unlocked */
-      __HAL_UNLOCK(hcryp);
+        /* Process Unlocked */
+        __HAL_UNLOCK(hcryp);
 
-      /* Return function status */
-      return HAL_OK;
-   }
-   else
-   {
-      /* Release Lock */
-      __HAL_UNLOCK(hcryp);
+        /* Return function status */
+        return HAL_OK;
+    }
+    else {
+        /* Release Lock */
+        __HAL_UNLOCK(hcryp);
 
-      return HAL_ERROR;
-   }
+        return HAL_ERROR;
+    }
 }
 
 /**
@@ -1589,67 +1520,63 @@ HAL_StatusTypeDef HAL_CRYP_AESCTR_Encrypt_DMA(CRYP_HandleTypeDef* hcryp,
  * @retval HAL status
  */
 HAL_StatusTypeDef HAL_CRYP_AESECB_Decrypt_DMA(CRYP_HandleTypeDef* hcryp,
-                                              uint8_t* pCypherData,
-                                              uint16_t Size,
-                                              uint8_t* pPlainData)
+    uint8_t* pCypherData,
+    uint16_t Size,
+    uint8_t* pPlainData)
 {
-   uint32_t inputaddr = 0U, outputaddr = 0U;
+    uint32_t inputaddr = 0U, outputaddr = 0U;
 
-   /* Check that data aligned on u32 */
-   if ((((uint32_t)pPlainData & (uint32_t)0x00000003U) != 0U) ||
-       (((uint32_t)pCypherData & (uint32_t)0x00000003U) != 0U) || ((Size & (uint16_t)0x000FU) != 0U))
-   {
-      /* Process Locked */
-      __HAL_UNLOCK(hcryp);
+    /* Check that data aligned on u32 */
+    if((((uint32_t)pPlainData & (uint32_t)0x00000003U) != 0U) ||
+        (((uint32_t)pCypherData & (uint32_t)0x00000003U) != 0U) || ((Size & (uint16_t)0x000FU) != 0U)) {
+        /* Process Locked */
+        __HAL_UNLOCK(hcryp);
 
-      /* Return function status */
-      return HAL_ERROR;
-   }
+        /* Return function status */
+        return HAL_ERROR;
+    }
 
-   /* Check if HAL_CRYP_Init has been called */
-   if ((hcryp->State != HAL_CRYP_STATE_RESET) && (hcryp->State == HAL_CRYP_STATE_READY))
-   {
-      /* Process Locked */
-      __HAL_LOCK(hcryp);
+    /* Check if HAL_CRYP_Init has been called */
+    if((hcryp->State != HAL_CRYP_STATE_RESET) && (hcryp->State == HAL_CRYP_STATE_READY)) {
+        /* Process Locked */
+        __HAL_LOCK(hcryp);
 
-      inputaddr = (uint32_t)pCypherData;
-      outputaddr = (uint32_t)pPlainData;
+        inputaddr = (uint32_t)pCypherData;
+        outputaddr = (uint32_t)pPlainData;
 
-      /* Change the CRYP state */
-      hcryp->State = HAL_CRYP_STATE_BUSY;
+        /* Change the CRYP state */
+        hcryp->State = HAL_CRYP_STATE_BUSY;
 
-      /* Check if initialization phase has already been performed */
-      if (hcryp->Phase == HAL_CRYP_PHASE_READY)
-      {
-         /* Set the key */
-         CRYP_SetKey(hcryp, hcryp->Init.pKey);
+        /* Check if initialization phase has already been performed */
+        if(hcryp->Phase == HAL_CRYP_PHASE_READY) {
+            /* Set the key */
+            CRYP_SetKey(hcryp, hcryp->Init.pKey);
 
-         /* Reset the CHMOD & MODE bits */
-         CLEAR_BIT(hcryp->Instance->CR, CRYP_ALGO_CHAIN_MASK);
+            /* Reset the CHMOD & MODE bits */
+            CLEAR_BIT(hcryp->Instance->CR, CRYP_ALGO_CHAIN_MASK);
 
-         /* Set the CRYP peripheral in AES ECB decryption mode (with key derivation) */
-         __HAL_CRYP_SET_MODE(hcryp, CRYP_CR_ALGOMODE_AES_ECB_KEYDERDECRYPT);
+            /* Set the CRYP peripheral in AES ECB decryption mode (with key derivation) */
+            __HAL_CRYP_SET_MODE(hcryp, CRYP_CR_ALGOMODE_AES_ECB_KEYDERDECRYPT);
 
-         /* Set the phase */
-         hcryp->Phase = HAL_CRYP_PHASE_PROCESS;
-      }
+            /* Set the phase */
+            hcryp->Phase = HAL_CRYP_PHASE_PROCESS;
+        }
 
-      /* Set the input and output addresses and start DMA transfer */
-      CRYP_SetDMAConfig(hcryp, inputaddr, Size, outputaddr);
+        /* Set the input and output addresses and start DMA transfer */
+        CRYP_SetDMAConfig(hcryp, inputaddr, Size, outputaddr);
 
-      /* Process Unlocked */
-      __HAL_UNLOCK(hcryp);
+        /* Process Unlocked */
+        __HAL_UNLOCK(hcryp);
 
-      /* Return function status */
-      return HAL_OK;
-   }
-   else
-   {
-      /* Release Lock */
-      __HAL_UNLOCK(hcryp);
+        /* Return function status */
+        return HAL_OK;
+    }
+    else {
+        /* Release Lock */
+        __HAL_UNLOCK(hcryp);
 
-      return HAL_ERROR;
-   }
+        return HAL_ERROR;
+    }
 }
 
 /**
@@ -1662,70 +1589,66 @@ HAL_StatusTypeDef HAL_CRYP_AESECB_Decrypt_DMA(CRYP_HandleTypeDef* hcryp,
  * @retval HAL status
  */
 HAL_StatusTypeDef HAL_CRYP_AESCBC_Decrypt_DMA(CRYP_HandleTypeDef* hcryp,
-                                              uint8_t* pCypherData,
-                                              uint16_t Size,
-                                              uint8_t* pPlainData)
+    uint8_t* pCypherData,
+    uint16_t Size,
+    uint8_t* pPlainData)
 {
-   uint32_t inputaddr = 0U, outputaddr = 0U;
+    uint32_t inputaddr = 0U, outputaddr = 0U;
 
-   /* Check that data aligned on u32 */
-   if ((((uint32_t)pPlainData & (uint32_t)0x00000003U) != 0U) ||
-       (((uint32_t)pCypherData & (uint32_t)0x00000003U) != 0U) || ((Size & (uint16_t)0x000FU) != 0U))
-   {
-      /* Process Locked */
-      __HAL_UNLOCK(hcryp);
+    /* Check that data aligned on u32 */
+    if((((uint32_t)pPlainData & (uint32_t)0x00000003U) != 0U) ||
+        (((uint32_t)pCypherData & (uint32_t)0x00000003U) != 0U) || ((Size & (uint16_t)0x000FU) != 0U)) {
+        /* Process Locked */
+        __HAL_UNLOCK(hcryp);
 
-      /* Return function status */
-      return HAL_ERROR;
-   }
+        /* Return function status */
+        return HAL_ERROR;
+    }
 
-   /* Check if HAL_CRYP_Init has been called */
-   if ((hcryp->State != HAL_CRYP_STATE_RESET) && (hcryp->State == HAL_CRYP_STATE_READY))
-   {
-      /* Process Locked */
-      __HAL_LOCK(hcryp);
+    /* Check if HAL_CRYP_Init has been called */
+    if((hcryp->State != HAL_CRYP_STATE_RESET) && (hcryp->State == HAL_CRYP_STATE_READY)) {
+        /* Process Locked */
+        __HAL_LOCK(hcryp);
 
-      inputaddr = (uint32_t)pCypherData;
-      outputaddr = (uint32_t)pPlainData;
+        inputaddr = (uint32_t)pCypherData;
+        outputaddr = (uint32_t)pPlainData;
 
-      /* Change the CRYP state */
-      hcryp->State = HAL_CRYP_STATE_BUSY;
+        /* Change the CRYP state */
+        hcryp->State = HAL_CRYP_STATE_BUSY;
 
-      /* Check if initialization phase has already been performed */
-      if (hcryp->Phase == HAL_CRYP_PHASE_READY)
-      {
-         /* Set the key */
-         CRYP_SetKey(hcryp, hcryp->Init.pKey);
+        /* Check if initialization phase has already been performed */
+        if(hcryp->Phase == HAL_CRYP_PHASE_READY) {
+            /* Set the key */
+            CRYP_SetKey(hcryp, hcryp->Init.pKey);
 
-         /* Reset the CHMOD & MODE bits */
-         CLEAR_BIT(hcryp->Instance->CR, CRYP_ALGO_CHAIN_MASK);
+            /* Reset the CHMOD & MODE bits */
+            CLEAR_BIT(hcryp->Instance->CR, CRYP_ALGO_CHAIN_MASK);
 
-         /* Set the CRYP peripheral in AES CBC decryption mode (with key derivation) */
-         __HAL_CRYP_SET_MODE(hcryp, CRYP_CR_ALGOMODE_AES_CBC_KEYDERDECRYPT);
+            /* Set the CRYP peripheral in AES CBC decryption mode (with key derivation) */
+            __HAL_CRYP_SET_MODE(hcryp, CRYP_CR_ALGOMODE_AES_CBC_KEYDERDECRYPT);
 
-         /* Set the Initialization Vector */
-         CRYP_SetInitVector(hcryp, hcryp->Init.pInitVect);
+            /* Set the Initialization Vector */
+            CRYP_SetInitVector(hcryp, hcryp->Init.pInitVect);
 
-         /* Set the phase */
-         hcryp->Phase = HAL_CRYP_PHASE_PROCESS;
-      }
+            /* Set the phase */
+            hcryp->Phase = HAL_CRYP_PHASE_PROCESS;
+        }
 
-      /* Set the input and output addresses and start DMA transfer */
-      CRYP_SetDMAConfig(hcryp, inputaddr, Size, outputaddr);
+        /* Set the input and output addresses and start DMA transfer */
+        CRYP_SetDMAConfig(hcryp, inputaddr, Size, outputaddr);
 
-      /* Process Unlocked */
-      __HAL_UNLOCK(hcryp);
+        /* Process Unlocked */
+        __HAL_UNLOCK(hcryp);
 
-      /* Return function status */
-      return HAL_OK;
-   }
-   else
-   {
-      /* Release Lock */
-      __HAL_UNLOCK(hcryp);
+        /* Return function status */
+        return HAL_OK;
+    }
+    else {
+        /* Release Lock */
+        __HAL_UNLOCK(hcryp);
 
-      return HAL_ERROR;
-   }
+        return HAL_ERROR;
+    }
 }
 
 /**
@@ -1738,67 +1661,63 @@ HAL_StatusTypeDef HAL_CRYP_AESCBC_Decrypt_DMA(CRYP_HandleTypeDef* hcryp,
  * @retval HAL status
  */
 HAL_StatusTypeDef HAL_CRYP_AESCTR_Decrypt_DMA(CRYP_HandleTypeDef* hcryp,
-                                              uint8_t* pCypherData,
-                                              uint16_t Size,
-                                              uint8_t* pPlainData)
+    uint8_t* pCypherData,
+    uint16_t Size,
+    uint8_t* pPlainData)
 {
-   uint32_t inputaddr = 0U, outputaddr = 0U;
+    uint32_t inputaddr = 0U, outputaddr = 0U;
 
-   /* Check that data aligned on u32 */
-   if ((((uint32_t)pPlainData & (uint32_t)0x00000003U) != 0U) ||
-       (((uint32_t)pCypherData & (uint32_t)0x00000003U) != 0U) || ((Size & (uint16_t)0x000FU) != 0U))
-   {
-      /* Process Locked */
-      __HAL_UNLOCK(hcryp);
+    /* Check that data aligned on u32 */
+    if((((uint32_t)pPlainData & (uint32_t)0x00000003U) != 0U) ||
+        (((uint32_t)pCypherData & (uint32_t)0x00000003U) != 0U) || ((Size & (uint16_t)0x000FU) != 0U)) {
+        /* Process Locked */
+        __HAL_UNLOCK(hcryp);
 
-      /* Return function status */
-      return HAL_ERROR;
-   }
+        /* Return function status */
+        return HAL_ERROR;
+    }
 
-   /* Check if HAL_CRYP_Init has been called */
-   if ((hcryp->State != HAL_CRYP_STATE_RESET) && (hcryp->State == HAL_CRYP_STATE_READY))
-   {
-      /* Process Locked */
-      __HAL_LOCK(hcryp);
+    /* Check if HAL_CRYP_Init has been called */
+    if((hcryp->State != HAL_CRYP_STATE_RESET) && (hcryp->State == HAL_CRYP_STATE_READY)) {
+        /* Process Locked */
+        __HAL_LOCK(hcryp);
 
-      inputaddr = (uint32_t)pCypherData;
-      outputaddr = (uint32_t)pPlainData;
+        inputaddr = (uint32_t)pCypherData;
+        outputaddr = (uint32_t)pPlainData;
 
-      /* Change the CRYP state */
-      hcryp->State = HAL_CRYP_STATE_BUSY;
+        /* Change the CRYP state */
+        hcryp->State = HAL_CRYP_STATE_BUSY;
 
-      /* Check if initialization phase has already been performed */
-      if (hcryp->Phase == HAL_CRYP_PHASE_READY)
-      {
-         /* Set the key */
-         CRYP_SetKey(hcryp, hcryp->Init.pKey);
+        /* Check if initialization phase has already been performed */
+        if(hcryp->Phase == HAL_CRYP_PHASE_READY) {
+            /* Set the key */
+            CRYP_SetKey(hcryp, hcryp->Init.pKey);
 
-         /* Set the CRYP peripheral in AES CTR mode */
-         __HAL_CRYP_SET_MODE(hcryp, CRYP_CR_ALGOMODE_AES_CTR_DECRYPT);
+            /* Set the CRYP peripheral in AES CTR mode */
+            __HAL_CRYP_SET_MODE(hcryp, CRYP_CR_ALGOMODE_AES_CTR_DECRYPT);
 
-         /* Set the Initialization Vector */
-         CRYP_SetInitVector(hcryp, hcryp->Init.pInitVect);
+            /* Set the Initialization Vector */
+            CRYP_SetInitVector(hcryp, hcryp->Init.pInitVect);
 
-         /* Set the phase */
-         hcryp->Phase = HAL_CRYP_PHASE_PROCESS;
-      }
+            /* Set the phase */
+            hcryp->Phase = HAL_CRYP_PHASE_PROCESS;
+        }
 
-      /* Set the input and output addresses and start DMA transfer */
-      CRYP_SetDMAConfig(hcryp, inputaddr, Size, outputaddr);
+        /* Set the input and output addresses and start DMA transfer */
+        CRYP_SetDMAConfig(hcryp, inputaddr, Size, outputaddr);
 
-      /* Process Unlocked */
-      __HAL_UNLOCK(hcryp);
+        /* Process Unlocked */
+        __HAL_UNLOCK(hcryp);
 
-      /* Return function status */
-      return HAL_OK;
-   }
-   else
-   {
-      /* Release Lock */
-      __HAL_UNLOCK(hcryp);
+        /* Return function status */
+        return HAL_OK;
+    }
+    else {
+        /* Release Lock */
+        __HAL_UNLOCK(hcryp);
 
-      return HAL_ERROR;
-   }
+        return HAL_ERROR;
+    }
 }
 
 /**
@@ -1829,10 +1748,10 @@ HAL_StatusTypeDef HAL_CRYP_AESCTR_Decrypt_DMA(CRYP_HandleTypeDef* hcryp,
  */
 __weak void HAL_CRYP_ErrorCallback(CRYP_HandleTypeDef* hcryp)
 {
-   /* Prevent unused argument(s) compilation warning */
-   UNUSED(hcryp);
+    /* Prevent unused argument(s) compilation warning */
+    UNUSED(hcryp);
 
-   /* NOTE : This function should not be modified; when the callback is needed,
+    /* NOTE : This function should not be modified; when the callback is needed,
              the HAL_CRYP_ErrorCallback can be implemented in the user file
     */
 }
@@ -1845,10 +1764,10 @@ __weak void HAL_CRYP_ErrorCallback(CRYP_HandleTypeDef* hcryp)
  */
 __weak void HAL_CRYP_InCpltCallback(CRYP_HandleTypeDef* hcryp)
 {
-   /* Prevent unused argument(s) compilation warning */
-   UNUSED(hcryp);
+    /* Prevent unused argument(s) compilation warning */
+    UNUSED(hcryp);
 
-   /* NOTE : This function should not be modified; when the callback is needed,
+    /* NOTE : This function should not be modified; when the callback is needed,
              the HAL_CRYP_InCpltCallback can be implemented in the user file
     */
 }
@@ -1861,10 +1780,10 @@ __weak void HAL_CRYP_InCpltCallback(CRYP_HandleTypeDef* hcryp)
  */
 __weak void HAL_CRYP_OutCpltCallback(CRYP_HandleTypeDef* hcryp)
 {
-   /* Prevent unused argument(s) compilation warning */
-   UNUSED(hcryp);
+    /* Prevent unused argument(s) compilation warning */
+    UNUSED(hcryp);
 
-   /* NOTE : This function should not be modified; when the callback is needed,
+    /* NOTE : This function should not be modified; when the callback is needed,
              the HAL_CRYP_OutCpltCallback can be implemented in the user file
     */
 }
@@ -1894,45 +1813,40 @@ __weak void HAL_CRYP_OutCpltCallback(CRYP_HandleTypeDef* hcryp)
  */
 void HAL_CRYP_IRQHandler(CRYP_HandleTypeDef* hcryp)
 {
-   /* Check if error occurred*/
-   if (__HAL_CRYP_GET_IT_SOURCE(hcryp, CRYP_IT_ERR) != RESET)
-   {
-      if (__HAL_CRYP_GET_FLAG(hcryp, CRYP_FLAG_RDERR) != RESET)
-      {
-         __HAL_CRYP_CLEAR_FLAG(hcryp, CRYP_CLEARFLAG_RDERR);
-      }
+    /* Check if error occurred*/
+    if(__HAL_CRYP_GET_IT_SOURCE(hcryp, CRYP_IT_ERR) != RESET) {
+        if(__HAL_CRYP_GET_FLAG(hcryp, CRYP_FLAG_RDERR) != RESET) {
+            __HAL_CRYP_CLEAR_FLAG(hcryp, CRYP_CLEARFLAG_RDERR);
+        }
 
-      if (__HAL_CRYP_GET_FLAG(hcryp, CRYP_FLAG_WRERR) != RESET)
-      {
-         __HAL_CRYP_CLEAR_FLAG(hcryp, CRYP_CLEARFLAG_WRERR);
-      }
+        if(__HAL_CRYP_GET_FLAG(hcryp, CRYP_FLAG_WRERR) != RESET) {
+            __HAL_CRYP_CLEAR_FLAG(hcryp, CRYP_CLEARFLAG_WRERR);
+        }
 
-      if (__HAL_CRYP_GET_FLAG(hcryp, CRYP_FLAG_CCF) != RESET)
-      {
-         __HAL_CRYP_CLEAR_FLAG(hcryp, CRYP_CLEARFLAG_CCF);
-      }
+        if(__HAL_CRYP_GET_FLAG(hcryp, CRYP_FLAG_CCF) != RESET) {
+            __HAL_CRYP_CLEAR_FLAG(hcryp, CRYP_CLEARFLAG_CCF);
+        }
 
-      hcryp->State = HAL_CRYP_STATE_ERROR;
-      /* Disable Computation Complete Interrupt */
-      __HAL_CRYP_DISABLE_IT(hcryp, CRYP_IT_CC);
-      __HAL_CRYP_DISABLE_IT(hcryp, CRYP_IT_ERR);
+        hcryp->State = HAL_CRYP_STATE_ERROR;
+        /* Disable Computation Complete Interrupt */
+        __HAL_CRYP_DISABLE_IT(hcryp, CRYP_IT_CC);
+        __HAL_CRYP_DISABLE_IT(hcryp, CRYP_IT_ERR);
 
-      HAL_CRYP_ErrorCallback(hcryp);
+        HAL_CRYP_ErrorCallback(hcryp);
 
-      /* Process Unlocked */
-      __HAL_UNLOCK(hcryp);
+        /* Process Unlocked */
+        __HAL_UNLOCK(hcryp);
 
-      return;
-   }
+        return;
+    }
 
-   /* Check if computation complete interrupt was enabled*/
-   if (__HAL_CRYP_GET_IT_SOURCE(hcryp, CRYP_IT_CC) != RESET)
-   {
-      /* Clear CCF Flag */
-      __HAL_CRYP_CLEAR_FLAG(hcryp, CRYP_CLEARFLAG_CCF);
+    /* Check if computation complete interrupt was enabled*/
+    if(__HAL_CRYP_GET_IT_SOURCE(hcryp, CRYP_IT_CC) != RESET) {
+        /* Clear CCF Flag */
+        __HAL_CRYP_CLEAR_FLAG(hcryp, CRYP_CLEARFLAG_CCF);
 
-      CRYP_EncryptDecrypt_IT(hcryp);
-   }
+        CRYP_EncryptDecrypt_IT(hcryp);
+    }
 }
 
 /**
@@ -1961,7 +1875,7 @@ void HAL_CRYP_IRQHandler(CRYP_HandleTypeDef* hcryp)
  */
 HAL_CRYP_STATETypeDef HAL_CRYP_GetState(CRYP_HandleTypeDef* hcryp)
 {
-   return hcryp->State;
+    return hcryp->State;
 }
 
 /**
@@ -1984,56 +1898,55 @@ HAL_CRYP_STATETypeDef HAL_CRYP_GetState(CRYP_HandleTypeDef* hcryp)
  */
 static HAL_StatusTypeDef CRYP_EncryptDecrypt_IT(CRYP_HandleTypeDef* hcryp)
 {
-   uint32_t inputaddr = 0U, outputaddr = 0U;
+    uint32_t inputaddr = 0U, outputaddr = 0U;
 
-   /* Get the last Output data adress */
-   outputaddr = (uint32_t)hcryp->pCrypOutBuffPtr;
+    /* Get the last Output data adress */
+    outputaddr = (uint32_t)hcryp->pCrypOutBuffPtr;
 
-   /* Read the Output block from the Output Register */
-   *(uint32_t*)(outputaddr) = hcryp->Instance->DOUTR;
-   outputaddr += 4U;
-   *(uint32_t*)(outputaddr) = hcryp->Instance->DOUTR;
-   outputaddr += 4U;
-   *(uint32_t*)(outputaddr) = hcryp->Instance->DOUTR;
-   outputaddr += 4U;
-   *(uint32_t*)(outputaddr) = hcryp->Instance->DOUTR;
+    /* Read the Output block from the Output Register */
+    *(uint32_t*)(outputaddr) = hcryp->Instance->DOUTR;
+    outputaddr += 4U;
+    *(uint32_t*)(outputaddr) = hcryp->Instance->DOUTR;
+    outputaddr += 4U;
+    *(uint32_t*)(outputaddr) = hcryp->Instance->DOUTR;
+    outputaddr += 4U;
+    *(uint32_t*)(outputaddr) = hcryp->Instance->DOUTR;
 
-   hcryp->pCrypOutBuffPtr += 16U;
-   hcryp->CrypOutCount -= 16U;
+    hcryp->pCrypOutBuffPtr += 16U;
+    hcryp->CrypOutCount -= 16U;
 
-   /* Check if all input text is encrypted or decrypted */
-   if (hcryp->CrypOutCount == 0U)
-   {
-      /* Disable Computation Complete Interrupt */
-      __HAL_CRYP_DISABLE_IT(hcryp, CRYP_IT_CC);
-      __HAL_CRYP_DISABLE_IT(hcryp, CRYP_IT_ERR);
+    /* Check if all input text is encrypted or decrypted */
+    if(hcryp->CrypOutCount == 0U) {
+        /* Disable Computation Complete Interrupt */
+        __HAL_CRYP_DISABLE_IT(hcryp, CRYP_IT_CC);
+        __HAL_CRYP_DISABLE_IT(hcryp, CRYP_IT_ERR);
 
-      /* Process Unlocked */
-      __HAL_UNLOCK(hcryp);
+        /* Process Unlocked */
+        __HAL_UNLOCK(hcryp);
 
-      /* Change the CRYP state */
-      hcryp->State = HAL_CRYP_STATE_READY;
+        /* Change the CRYP state */
+        hcryp->State = HAL_CRYP_STATE_READY;
 
-      /* Call computation complete callback */
-      HAL_CRYPEx_ComputationCpltCallback(hcryp);
-   }
-   else /* Process the rest of input text */
-   {
-      /* Get the last Intput data adress */
-      inputaddr = (uint32_t)hcryp->pCrypInBuffPtr;
+        /* Call computation complete callback */
+        HAL_CRYPEx_ComputationCpltCallback(hcryp);
+    }
+    else /* Process the rest of input text */
+    {
+        /* Get the last Intput data adress */
+        inputaddr = (uint32_t)hcryp->pCrypInBuffPtr;
 
-      /* Write the Input block in the Data Input register */
-      hcryp->Instance->DINR = *(uint32_t*)(inputaddr);
-      inputaddr += 4U;
-      hcryp->Instance->DINR = *(uint32_t*)(inputaddr);
-      inputaddr += 4U;
-      hcryp->Instance->DINR = *(uint32_t*)(inputaddr);
-      inputaddr += 4U;
-      hcryp->Instance->DINR = *(uint32_t*)(inputaddr);
-      hcryp->pCrypInBuffPtr += 16U;
-      hcryp->CrypInCount -= 16U;
-   }
-   return HAL_OK;
+        /* Write the Input block in the Data Input register */
+        hcryp->Instance->DINR = *(uint32_t*)(inputaddr);
+        inputaddr += 4U;
+        hcryp->Instance->DINR = *(uint32_t*)(inputaddr);
+        inputaddr += 4U;
+        hcryp->Instance->DINR = *(uint32_t*)(inputaddr);
+        inputaddr += 4U;
+        hcryp->Instance->DINR = *(uint32_t*)(inputaddr);
+        hcryp->pCrypInBuffPtr += 16U;
+        hcryp->CrypInCount -= 16U;
+    }
+    return HAL_OK;
 }
 /**
  * @brief  DMA CRYP Input Data process complete callback.
@@ -2042,13 +1955,13 @@ static HAL_StatusTypeDef CRYP_EncryptDecrypt_IT(CRYP_HandleTypeDef* hcryp)
  */
 static void CRYP_DMAInCplt(DMA_HandleTypeDef* hdma)
 {
-   CRYP_HandleTypeDef* hcryp = (CRYP_HandleTypeDef*)((DMA_HandleTypeDef*)hdma)->Parent;
+    CRYP_HandleTypeDef* hcryp = (CRYP_HandleTypeDef*)((DMA_HandleTypeDef*)hdma)->Parent;
 
-   /* Disable the DMA transfer for input request  */
-   CLEAR_BIT(hcryp->Instance->CR, AES_CR_DMAINEN);
+    /* Disable the DMA transfer for input request  */
+    CLEAR_BIT(hcryp->Instance->CR, AES_CR_DMAINEN);
 
-   /* Call input data transfer complete callback */
-   HAL_CRYP_InCpltCallback(hcryp);
+    /* Call input data transfer complete callback */
+    HAL_CRYP_InCpltCallback(hcryp);
 }
 
 /**
@@ -2058,23 +1971,23 @@ static void CRYP_DMAInCplt(DMA_HandleTypeDef* hdma)
  */
 static void CRYP_DMAOutCplt(DMA_HandleTypeDef* hdma)
 {
-   CRYP_HandleTypeDef* hcryp = (CRYP_HandleTypeDef*)((DMA_HandleTypeDef*)hdma)->Parent;
+    CRYP_HandleTypeDef* hcryp = (CRYP_HandleTypeDef*)((DMA_HandleTypeDef*)hdma)->Parent;
 
-   /* Disable the DMA transfer for output request by resetting the DMAOUTEN bit
+    /* Disable the DMA transfer for output request by resetting the DMAOUTEN bit
       in the DMACR register */
-   CLEAR_BIT(hcryp->Instance->CR, AES_CR_DMAOUTEN);
+    CLEAR_BIT(hcryp->Instance->CR, AES_CR_DMAOUTEN);
 
-   /* Clear CCF Flag */
-   __HAL_CRYP_CLEAR_FLAG(hcryp, CRYP_CLEARFLAG_CCF);
+    /* Clear CCF Flag */
+    __HAL_CRYP_CLEAR_FLAG(hcryp, CRYP_CLEARFLAG_CCF);
 
-   /* Disable CRYP */
-   __HAL_CRYP_DISABLE(hcryp);
+    /* Disable CRYP */
+    __HAL_CRYP_DISABLE(hcryp);
 
-   /* Change the CRYP state to ready */
-   hcryp->State = HAL_CRYP_STATE_READY;
+    /* Change the CRYP state to ready */
+    hcryp->State = HAL_CRYP_STATE_READY;
 
-   /* Call output data transfer complete callback */
-   HAL_CRYP_OutCpltCallback(hcryp);
+    /* Call output data transfer complete callback */
+    HAL_CRYP_OutCpltCallback(hcryp);
 }
 
 /**
@@ -2084,9 +1997,9 @@ static void CRYP_DMAOutCplt(DMA_HandleTypeDef* hdma)
  */
 static void CRYP_DMAError(DMA_HandleTypeDef* hdma)
 {
-   CRYP_HandleTypeDef* hcryp = (CRYP_HandleTypeDef*)((DMA_HandleTypeDef*)hdma)->Parent;
-   hcryp->State = HAL_CRYP_STATE_ERROR;
-   HAL_CRYP_ErrorCallback(hcryp);
+    CRYP_HandleTypeDef* hcryp = (CRYP_HandleTypeDef*)((DMA_HandleTypeDef*)hdma)->Parent;
+    hcryp->State = HAL_CRYP_STATE_ERROR;
+    HAL_CRYP_ErrorCallback(hcryp);
 }
 
 /**
@@ -2104,15 +2017,15 @@ static void CRYP_DMAError(DMA_HandleTypeDef* hdma)
  */
 static void CRYP_SetKey(CRYP_HandleTypeDef* hcryp, uint8_t* Key)
 {
-   uint32_t keyaddr = (uint32_t)Key;
+    uint32_t keyaddr = (uint32_t)Key;
 
-   hcryp->Instance->KEYR3 = __REV(*(uint32_t*)(keyaddr));
-   keyaddr += 4U;
-   hcryp->Instance->KEYR2 = __REV(*(uint32_t*)(keyaddr));
-   keyaddr += 4U;
-   hcryp->Instance->KEYR1 = __REV(*(uint32_t*)(keyaddr));
-   keyaddr += 4U;
-   hcryp->Instance->KEYR0 = __REV(*(uint32_t*)(keyaddr));
+    hcryp->Instance->KEYR3 = __REV(*(uint32_t*)(keyaddr));
+    keyaddr += 4U;
+    hcryp->Instance->KEYR2 = __REV(*(uint32_t*)(keyaddr));
+    keyaddr += 4U;
+    hcryp->Instance->KEYR1 = __REV(*(uint32_t*)(keyaddr));
+    keyaddr += 4U;
+    hcryp->Instance->KEYR0 = __REV(*(uint32_t*)(keyaddr));
 }
 
 /**
@@ -2130,15 +2043,15 @@ static void CRYP_SetKey(CRYP_HandleTypeDef* hcryp, uint8_t* Key)
  */
 static void CRYP_SetInitVector(CRYP_HandleTypeDef* hcryp, uint8_t* InitVector)
 {
-   uint32_t ivaddr = (uint32_t)InitVector;
+    uint32_t ivaddr = (uint32_t)InitVector;
 
-   hcryp->Instance->IVR3 = __REV(*(uint32_t*)(ivaddr));
-   ivaddr += 4U;
-   hcryp->Instance->IVR2 = __REV(*(uint32_t*)(ivaddr));
-   ivaddr += 4U;
-   hcryp->Instance->IVR1 = __REV(*(uint32_t*)(ivaddr));
-   ivaddr += 4U;
-   hcryp->Instance->IVR0 = __REV(*(uint32_t*)(ivaddr));
+    hcryp->Instance->IVR3 = __REV(*(uint32_t*)(ivaddr));
+    ivaddr += 4U;
+    hcryp->Instance->IVR2 = __REV(*(uint32_t*)(ivaddr));
+    ivaddr += 4U;
+    hcryp->Instance->IVR1 = __REV(*(uint32_t*)(ivaddr));
+    ivaddr += 4U;
+    hcryp->Instance->IVR0 = __REV(*(uint32_t*)(ivaddr));
 }
 
 /**
@@ -2152,64 +2065,60 @@ static void CRYP_SetInitVector(CRYP_HandleTypeDef* hcryp, uint8_t* InitVector)
  * @retval None
  */
 static HAL_StatusTypeDef CRYP_ProcessData(CRYP_HandleTypeDef* hcryp,
-                                          uint8_t* Input,
-                                          uint16_t Ilength,
-                                          uint8_t* Output,
-                                          uint32_t Timeout)
+    uint8_t* Input,
+    uint16_t Ilength,
+    uint8_t* Output,
+    uint32_t Timeout)
 {
-   uint32_t tickstart = 0U;
+    uint32_t tickstart = 0U;
 
-   uint32_t index = 0U;
-   uint32_t inputaddr = (uint32_t)Input;
-   uint32_t outputaddr = (uint32_t)Output;
+    uint32_t index = 0U;
+    uint32_t inputaddr = (uint32_t)Input;
+    uint32_t outputaddr = (uint32_t)Output;
 
-   for (index = 0U; (index < Ilength); index += 16U)
-   {
-      /* Write the Input block in the Data Input register */
-      hcryp->Instance->DINR = *(uint32_t*)(inputaddr);
-      inputaddr += 4U;
-      hcryp->Instance->DINR = *(uint32_t*)(inputaddr);
-      inputaddr += 4U;
-      hcryp->Instance->DINR = *(uint32_t*)(inputaddr);
-      inputaddr += 4U;
-      hcryp->Instance->DINR = *(uint32_t*)(inputaddr);
-      inputaddr += 4U;
+    for(index = 0U; (index < Ilength); index += 16U) {
+        /* Write the Input block in the Data Input register */
+        hcryp->Instance->DINR = *(uint32_t*)(inputaddr);
+        inputaddr += 4U;
+        hcryp->Instance->DINR = *(uint32_t*)(inputaddr);
+        inputaddr += 4U;
+        hcryp->Instance->DINR = *(uint32_t*)(inputaddr);
+        inputaddr += 4U;
+        hcryp->Instance->DINR = *(uint32_t*)(inputaddr);
+        inputaddr += 4U;
 
-      /* Get timeout */
-      tickstart = HAL_GetTick();
+        /* Get timeout */
+        tickstart = HAL_GetTick();
 
-      while (HAL_IS_BIT_CLR(hcryp->Instance->SR, AES_SR_CCF))
-      {
-         /* Check for the Timeout */
-         if (Timeout != HAL_MAX_DELAY)
-         {
-            if ((Timeout == 0U) || ((HAL_GetTick() - tickstart) > Timeout))
-            {
-               /* Change state */
-               hcryp->State = HAL_CRYP_STATE_TIMEOUT;
+        while(HAL_IS_BIT_CLR(hcryp->Instance->SR, AES_SR_CCF)) {
+            /* Check for the Timeout */
+            if(Timeout != HAL_MAX_DELAY) {
+                if((Timeout == 0U) || ((HAL_GetTick() - tickstart) > Timeout)) {
+                    /* Change state */
+                    hcryp->State = HAL_CRYP_STATE_TIMEOUT;
 
-               /* Process Unlocked */
-               __HAL_UNLOCK(hcryp);
+                    /* Process Unlocked */
+                    __HAL_UNLOCK(hcryp);
 
-               return HAL_TIMEOUT;
+                    return HAL_TIMEOUT;
+                }
             }
-         }
-      }
-      /* Clear CCF Flag */
-      __HAL_CRYP_CLEAR_FLAG(hcryp, CRYP_CLEARFLAG_CCF);
+        }
+        /* Clear CCF Flag */
+        __HAL_CRYP_CLEAR_FLAG(hcryp, CRYP_CLEARFLAG_CCF);
 
-      /* Read the Output block from the Data Output Register */
-      *(uint32_t*)(outputaddr) = hcryp->Instance->DOUTR;
-      outputaddr += 4U;
-      *(uint32_t*)(outputaddr) = hcryp->Instance->DOUTR;
-      outputaddr += 4U;
-      *(uint32_t*)(outputaddr) = hcryp->Instance->DOUTR;
-      outputaddr += 4U;
-      *(uint32_t*)(outputaddr) = hcryp->Instance->DOUTR;
-      outputaddr += 4U;
-   }
-   /* Return function status */
-   return HAL_OK;
+        /* Read the Output block from the Data Output Register */
+        *(uint32_t*)(outputaddr) = hcryp->Instance->DOUTR;
+        outputaddr += 4U;
+        *(uint32_t*)(outputaddr) = hcryp->Instance->DOUTR;
+        outputaddr += 4U;
+        *(uint32_t*)(outputaddr) = hcryp->Instance->DOUTR;
+        outputaddr += 4U;
+        *(uint32_t*)(outputaddr) = hcryp->Instance->DOUTR;
+        outputaddr += 4U;
+    }
+    /* Return function status */
+    return HAL_OK;
 }
 
 /**
@@ -2223,27 +2132,27 @@ static HAL_StatusTypeDef CRYP_ProcessData(CRYP_HandleTypeDef* hcryp,
  */
 static void CRYP_SetDMAConfig(CRYP_HandleTypeDef* hcryp, uint32_t inputaddr, uint16_t Size, uint32_t outputaddr)
 {
-   /* Set the CRYP DMA transfer complete callback */
-   hcryp->hdmain->XferCpltCallback = CRYP_DMAInCplt;
-   /* Set the DMA error callback */
-   hcryp->hdmain->XferErrorCallback = CRYP_DMAError;
+    /* Set the CRYP DMA transfer complete callback */
+    hcryp->hdmain->XferCpltCallback = CRYP_DMAInCplt;
+    /* Set the DMA error callback */
+    hcryp->hdmain->XferErrorCallback = CRYP_DMAError;
 
-   /* Set the CRYP DMA transfer complete callback */
-   hcryp->hdmaout->XferCpltCallback = CRYP_DMAOutCplt;
-   /* Set the DMA error callback */
-   hcryp->hdmaout->XferErrorCallback = CRYP_DMAError;
+    /* Set the CRYP DMA transfer complete callback */
+    hcryp->hdmaout->XferCpltCallback = CRYP_DMAOutCplt;
+    /* Set the DMA error callback */
+    hcryp->hdmaout->XferErrorCallback = CRYP_DMAError;
 
-   /* Enable the DMA In DMA Stream */
-   HAL_DMA_Start_IT(hcryp->hdmain, inputaddr, (uint32_t)&hcryp->Instance->DINR, Size / 4);
+    /* Enable the DMA In DMA Stream */
+    HAL_DMA_Start_IT(hcryp->hdmain, inputaddr, (uint32_t)&hcryp->Instance->DINR, Size / 4);
 
-   /* Enable the DMA Out DMA Stream */
-   HAL_DMA_Start_IT(hcryp->hdmaout, (uint32_t)&hcryp->Instance->DOUTR, outputaddr, Size / 4);
+    /* Enable the DMA Out DMA Stream */
+    HAL_DMA_Start_IT(hcryp->hdmaout, (uint32_t)&hcryp->Instance->DOUTR, outputaddr, Size / 4);
 
-   /* Enable In and Out DMA requests */
-   SET_BIT(hcryp->Instance->CR, (AES_CR_DMAINEN | AES_CR_DMAOUTEN));
+    /* Enable In and Out DMA requests */
+    SET_BIT(hcryp->Instance->CR, (AES_CR_DMAINEN | AES_CR_DMAOUTEN));
 
-   /* Enable CRYP */
-   __HAL_CRYP_ENABLE(hcryp);
+    /* Enable CRYP */
+    __HAL_CRYP_ENABLE(hcryp);
 }
 
 /**
@@ -2258,7 +2167,7 @@ static void CRYP_SetDMAConfig(CRYP_HandleTypeDef* hcryp, uint32_t inputaddr, uin
  * @}
  */
 
-#   endif /* HAL_CRYP_MODULE_ENABLED */
+#endif /* HAL_CRYP_MODULE_ENABLED */
 #endif /* STM32L021xx || STM32L041xx || STM32L061xx || STM32L062xx || STM32L063xx || STM32L081xx || STM32L082xx || \
           STM32L083xx */
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

@@ -37,14 +37,14 @@
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __STM32L0xx_HAL_IWDG_H
-#   define __STM32L0xx_HAL_IWDG_H
+#define __STM32L0xx_HAL_IWDG_H
 
-#   ifdef __cplusplus
+#ifdef __cplusplus
 extern "C" {
-#   endif
+#endif
 
 /* Includes ------------------------------------------------------------------*/
-#   include "stm32l0xx_hal_def.h"
+#include "stm32l0xx_hal_def.h"
 
 /** @addtogroup STM32L0xx_HAL_Driver
  * @{
@@ -64,13 +64,13 @@ extern "C" {
  */
 typedef struct
 {
-   uint32_t Prescaler; /*!< Select the prescaler of the IWDG.
+    uint32_t Prescaler; /*!< Select the prescaler of the IWDG.
                             This parameter can be a value of @ref IWDG_Prescaler */
 
-   uint32_t Reload; /*!< Specifies the IWDG down-counter reload value.
+    uint32_t Reload; /*!< Specifies the IWDG down-counter reload value.
                          This parameter must be a number between Min_Data = 0 and Max_Data = 0x0FFF */
 
-   uint32_t Window; /*!< Specifies the window value to be compared to the down-counter.
+    uint32_t Window; /*!< Specifies the window value to be compared to the down-counter.
                          This parameter must be a number between Min_Data = 0 and Max_Data = 0x0FFF */
 
 } IWDG_InitTypeDef;
@@ -80,9 +80,9 @@ typedef struct
  */
 typedef struct
 {
-   IWDG_TypeDef* Instance; /*!< Register base address    */
+    IWDG_TypeDef* Instance; /*!< Register base address    */
 
-   IWDG_InitTypeDef Init; /*!< IWDG required parameters */
+    IWDG_InitTypeDef Init; /*!< IWDG required parameters */
 
 } IWDG_HandleTypeDef;
 
@@ -98,13 +98,13 @@ typedef struct
 /** @defgroup IWDG_Prescaler IWDG Prescaler
  * @{
  */
-#   define IWDG_PRESCALER_4 0x00000000U /*!< IWDG prescaler set to 4   */
-#   define IWDG_PRESCALER_8 IWDG_PR_PR_0 /*!< IWDG prescaler set to 8   */
-#   define IWDG_PRESCALER_16 IWDG_PR_PR_1 /*!< IWDG prescaler set to 16  */
-#   define IWDG_PRESCALER_32 (IWDG_PR_PR_1 | IWDG_PR_PR_0) /*!< IWDG prescaler set to 32  */
-#   define IWDG_PRESCALER_64 IWDG_PR_PR_2 /*!< IWDG prescaler set to 64  */
-#   define IWDG_PRESCALER_128 (IWDG_PR_PR_2 | IWDG_PR_PR_0) /*!< IWDG prescaler set to 128 */
-#   define IWDG_PRESCALER_256 (IWDG_PR_PR_2 | IWDG_PR_PR_1) /*!< IWDG prescaler set to 256 */
+#define IWDG_PRESCALER_4 0x00000000U                     /*!< IWDG prescaler set to 4   */
+#define IWDG_PRESCALER_8 IWDG_PR_PR_0                    /*!< IWDG prescaler set to 8   */
+#define IWDG_PRESCALER_16 IWDG_PR_PR_1                   /*!< IWDG prescaler set to 16  */
+#define IWDG_PRESCALER_32 (IWDG_PR_PR_1 | IWDG_PR_PR_0)  /*!< IWDG prescaler set to 32  */
+#define IWDG_PRESCALER_64 IWDG_PR_PR_2                   /*!< IWDG prescaler set to 64  */
+#define IWDG_PRESCALER_128 (IWDG_PR_PR_2 | IWDG_PR_PR_0) /*!< IWDG prescaler set to 128 */
+#define IWDG_PRESCALER_256 (IWDG_PR_PR_2 | IWDG_PR_PR_1) /*!< IWDG prescaler set to 256 */
 /**
  * @}
  */
@@ -112,7 +112,7 @@ typedef struct
 /** @defgroup IWDG_Window_option IWDG Window option
  * @{
  */
-#   define IWDG_WINDOW_DISABLE IWDG_WINR_WIN
+#define IWDG_WINDOW_DISABLE IWDG_WINR_WIN
 /**
  * @}
  */
@@ -131,7 +131,7 @@ typedef struct
  * @param  __HANDLE__  IWDG handle
  * @retval None
  */
-#   define __HAL_IWDG_START(__HANDLE__) WRITE_REG((__HANDLE__)->Instance->KR, IWDG_KEY_ENABLE)
+#define __HAL_IWDG_START(__HANDLE__) WRITE_REG((__HANDLE__)->Instance->KR, IWDG_KEY_ENABLE)
 
 /**
  * @brief  Reload IWDG counter with value defined in the reload register
@@ -139,7 +139,7 @@ typedef struct
  * @param  __HANDLE__  IWDG handle
  * @retval None
  */
-#   define __HAL_IWDG_RELOAD_COUNTER(__HANDLE__) WRITE_REG((__HANDLE__)->Instance->KR, IWDG_KEY_RELOAD)
+#define __HAL_IWDG_RELOAD_COUNTER(__HANDLE__) WRITE_REG((__HANDLE__)->Instance->KR, IWDG_KEY_RELOAD)
 
 /**
  * @}
@@ -180,10 +180,10 @@ HAL_StatusTypeDef HAL_IWDG_Refresh(IWDG_HandleTypeDef* hiwdg);
 /**
  * @brief  IWDG Key Register BitMask
  */
-#   define IWDG_KEY_RELOAD 0x0000AAAAU /*!< IWDG Reload Counter Enable   */
-#   define IWDG_KEY_ENABLE 0x0000CCCCU /*!< IWDG Peripheral Enable       */
-#   define IWDG_KEY_WRITE_ACCESS_ENABLE 0x00005555U /*!< IWDG KR Write Access Enable  */
-#   define IWDG_KEY_WRITE_ACCESS_DISABLE 0x00000000U /*!< IWDG KR Write Access Disable */
+#define IWDG_KEY_RELOAD 0x0000AAAAU               /*!< IWDG Reload Counter Enable   */
+#define IWDG_KEY_ENABLE 0x0000CCCCU               /*!< IWDG Peripheral Enable       */
+#define IWDG_KEY_WRITE_ACCESS_ENABLE 0x00005555U  /*!< IWDG KR Write Access Enable  */
+#define IWDG_KEY_WRITE_ACCESS_DISABLE 0x00000000U /*!< IWDG KR Write Access Disable */
 
 /**
  * @}
@@ -199,39 +199,39 @@ HAL_StatusTypeDef HAL_IWDG_Refresh(IWDG_HandleTypeDef* hiwdg);
  * @param  __HANDLE__  IWDG handle
  * @retval None
  */
-#   define IWDG_ENABLE_WRITE_ACCESS(__HANDLE__) WRITE_REG((__HANDLE__)->Instance->KR, IWDG_KEY_WRITE_ACCESS_ENABLE)
+#define IWDG_ENABLE_WRITE_ACCESS(__HANDLE__) WRITE_REG((__HANDLE__)->Instance->KR, IWDG_KEY_WRITE_ACCESS_ENABLE)
 
 /**
  * @brief  Disable write access to IWDG_PR, IWDG_RLR and IWDG_WINR registers.
  * @param  __HANDLE__  IWDG handle
  * @retval None
  */
-#   define IWDG_DISABLE_WRITE_ACCESS(__HANDLE__) WRITE_REG((__HANDLE__)->Instance->KR, IWDG_KEY_WRITE_ACCESS_DISABLE)
+#define IWDG_DISABLE_WRITE_ACCESS(__HANDLE__) WRITE_REG((__HANDLE__)->Instance->KR, IWDG_KEY_WRITE_ACCESS_DISABLE)
 
 /**
  * @brief  Check IWDG prescaler value.
  * @param  __PRESCALER__  IWDG prescaler value
  * @retval None
  */
-#   define IS_IWDG_PRESCALER(__PRESCALER__) \
-      (((__PRESCALER__) == IWDG_PRESCALER_4) || ((__PRESCALER__) == IWDG_PRESCALER_8) || \
-       ((__PRESCALER__) == IWDG_PRESCALER_16) || ((__PRESCALER__) == IWDG_PRESCALER_32) || \
-       ((__PRESCALER__) == IWDG_PRESCALER_64) || ((__PRESCALER__) == IWDG_PRESCALER_128) || \
-       ((__PRESCALER__) == IWDG_PRESCALER_256))
+#define IS_IWDG_PRESCALER(__PRESCALER__) \
+    (((__PRESCALER__) == IWDG_PRESCALER_4) || ((__PRESCALER__) == IWDG_PRESCALER_8) || \
+        ((__PRESCALER__) == IWDG_PRESCALER_16) || ((__PRESCALER__) == IWDG_PRESCALER_32) || \
+        ((__PRESCALER__) == IWDG_PRESCALER_64) || ((__PRESCALER__) == IWDG_PRESCALER_128) || \
+        ((__PRESCALER__) == IWDG_PRESCALER_256))
 
 /**
  * @brief  Check IWDG reload value.
  * @param  __RELOAD__  IWDG reload value
  * @retval None
  */
-#   define IS_IWDG_RELOAD(__RELOAD__) ((__RELOAD__) <= IWDG_RLR_RL)
+#define IS_IWDG_RELOAD(__RELOAD__) ((__RELOAD__) <= IWDG_RLR_RL)
 
 /**
  * @brief  Check IWDG window value.
  * @param  __WINDOW__  IWDG window value
  * @retval None
  */
-#   define IS_IWDG_WINDOW(__WINDOW__) ((__WINDOW__) <= IWDG_WINR_WIN)
+#define IS_IWDG_WINDOW(__WINDOW__) ((__WINDOW__) <= IWDG_WINR_WIN)
 
 /**
  * @}
@@ -245,9 +245,9 @@ HAL_StatusTypeDef HAL_IWDG_Refresh(IWDG_HandleTypeDef* hiwdg);
  * @}
  */
 
-#   ifdef __cplusplus
+#ifdef __cplusplus
 }
-#   endif
+#endif
 
 #endif /* __STM32L0xx_HAL_IWDG_H */
 

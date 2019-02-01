@@ -38,54 +38,51 @@
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __STM32L0xx_HAL_DEF
-#   define __STM32L0xx_HAL_DEF
+#define __STM32L0xx_HAL_DEF
 
-#   ifdef __cplusplus
+#ifdef __cplusplus
 extern "C" {
-#   endif
+#endif
 
 /* Includes ------------------------------------------------------------------*/
-#   include "stm32l0xx.h"
-#   include "Legacy/stm32_hal_legacy.h"
-#   include <stdio.h>
+#include "stm32l0xx.h"
+#include "Legacy/stm32_hal_legacy.h"
+#include <stdio.h>
 
 /* Exported types ------------------------------------------------------------*/
 
 /**
  * @brief  HAL Status structures definition
  */
-typedef enum
-{
-   HAL_OK = 0x00U,
-   HAL_ERROR = 0x01U,
-   HAL_BUSY = 0x02U,
-   HAL_TIMEOUT = 0x03U
+typedef enum {
+    HAL_OK = 0x00U,
+    HAL_ERROR = 0x01U,
+    HAL_BUSY = 0x02U,
+    HAL_TIMEOUT = 0x03U
 } HAL_StatusTypeDef;
 
 /**
  * @brief  HAL Lock structures definition
  */
-typedef enum
-{
-   HAL_UNLOCKED = 0x00U,
-   HAL_LOCKED = 0x01U
+typedef enum {
+    HAL_UNLOCKED = 0x00U,
+    HAL_LOCKED = 0x01U
 } HAL_LockTypeDef;
 
 /* Exported macro ------------------------------------------------------------*/
 
-#   define UNUSED(x) ((void)(x))
+#define UNUSED(x) ((void)(x))
 
-#   define HAL_MAX_DELAY 0xFFFFFFFFU
+#define HAL_MAX_DELAY 0xFFFFFFFFU
 
-#   define HAL_IS_BIT_SET(REG, BIT) (((REG) & (BIT)) != RESET)
-#   define HAL_IS_BIT_CLR(REG, BIT) (((REG) & (BIT)) == RESET)
+#define HAL_IS_BIT_SET(REG, BIT) (((REG) & (BIT)) != RESET)
+#define HAL_IS_BIT_CLR(REG, BIT) (((REG) & (BIT)) == RESET)
 
-#   define __HAL_LINKDMA(__HANDLE__, __PPP_DMA_FIELD__, __DMA_HANDLE__) \
-      do \
-      { \
-         (__HANDLE__)->__PPP_DMA_FIELD__ = &(__DMA_HANDLE__); \
-         (__DMA_HANDLE__).Parent = (__HANDLE__); \
-      } while (0)
+#define __HAL_LINKDMA(__HANDLE__, __PPP_DMA_FIELD__, __DMA_HANDLE__) \
+    do { \
+        (__HANDLE__)->__PPP_DMA_FIELD__ = &(__DMA_HANDLE__); \
+        (__DMA_HANDLE__).Parent = (__HANDLE__); \
+    } while(0)
 
 /** @brief Reset the Handle's State field.
  * @param __HANDLE__: specifies the Peripheral Handle.
@@ -102,72 +99,68 @@ typedef enum
  *            HAL_PPP_MspInit() which will reconfigure the low level hardware.
  * @retval None
  */
-#   define __HAL_RESET_HANDLE_STATE(__HANDLE__) ((__HANDLE__)->State = 0U)
+#define __HAL_RESET_HANDLE_STATE(__HANDLE__) ((__HANDLE__)->State = 0U)
 
-#   if (USE_RTOS == 1)
+#if(USE_RTOS == 1)
 
 /* Reserved for future use */
-#      error "USE_RTOS should be 0 in the current HAL release"
+#error "USE_RTOS should be 0 in the current HAL release"
 
-#   else
-#      define __HAL_LOCK(__HANDLE__) \
-         do \
-         { \
-            if ((__HANDLE__)->Lock == HAL_LOCKED) \
-            { \
-               return HAL_BUSY; \
-            } \
-            else \
-            { \
-               (__HANDLE__)->Lock = HAL_LOCKED; \
-            } \
-         } while (0)
+#else
+#define __HAL_LOCK(__HANDLE__) \
+    do { \
+        if((__HANDLE__)->Lock == HAL_LOCKED) { \
+            return HAL_BUSY; \
+        } \
+        else { \
+            (__HANDLE__)->Lock = HAL_LOCKED; \
+        } \
+    } while(0)
 
-#      define __HAL_UNLOCK(__HANDLE__) \
-         do \
-         { \
-            (__HANDLE__)->Lock = HAL_UNLOCKED; \
-         } while (0)
-#   endif /* USE_RTOS */
+#define __HAL_UNLOCK(__HANDLE__) \
+    do { \
+        (__HANDLE__)->Lock = HAL_UNLOCKED; \
+    } while(0)
+#endif /* USE_RTOS */
 
-#   if defined(__GNUC__)
-#      ifndef __weak
-#         define __weak __attribute__((weak))
-#      endif /* __weak */
-#      ifndef __packed
-#         define __packed __attribute__((__packed__))
-#      endif /* __packed */
+#if defined(__GNUC__)
+#ifndef __weak
+#define __weak __attribute__((weak))
+#endif /* __weak */
+#ifndef __packed
+#define __packed __attribute__((__packed__))
+#endif /* __packed */
 
-#      define __NOINLINE __attribute__((noinline))
+#define __NOINLINE __attribute__((noinline))
 
-#   endif /* __GNUC__ */
+#endif /* __GNUC__ */
 
 /* Macro to get variable aligned on 4-bytes, for __ICCARM__ the directive "#pragma data_alignment=4" must be used
  * instead */
-#   if defined(__GNUC__) /* GNU Compiler */
-#      ifndef __ALIGN_END
-#         define __ALIGN_END __attribute__((aligned(4)))
-#      endif /* __ALIGN_END */
-#      ifndef __ALIGN_BEGIN
-#         define __ALIGN_BEGIN
-#      endif /* __ALIGN_BEGIN */
-#   else
-#      ifndef __ALIGN_END
-#         define __ALIGN_END
-#      endif /* __ALIGN_END */
-#      ifndef __ALIGN_BEGIN
-#         if defined(__CC_ARM) /* ARM Compiler */
-#            define __ALIGN_BEGIN __align(4)
-#         elif defined(__ICCARM__) /* IAR Compiler */
-#            define __ALIGN_BEGIN
-#         endif /* __CC_ARM */
-#      endif /* __ALIGN_BEGIN */
-#   endif /* __GNUC__ */
+#if defined(__GNUC__) /* GNU Compiler */
+#ifndef __ALIGN_END
+#define __ALIGN_END __attribute__((aligned(4)))
+#endif /* __ALIGN_END */
+#ifndef __ALIGN_BEGIN
+#define __ALIGN_BEGIN
+#endif /* __ALIGN_BEGIN */
+#else
+#ifndef __ALIGN_END
+#define __ALIGN_END
+#endif /* __ALIGN_END */
+#ifndef __ALIGN_BEGIN
+#if defined(__CC_ARM) /* ARM Compiler */
+#define __ALIGN_BEGIN __align(4)
+#elif defined(__ICCARM__) /* IAR Compiler */
+#define __ALIGN_BEGIN
+#endif /* __CC_ARM */
+#endif /* __ALIGN_BEGIN */
+#endif /* __GNUC__ */
 
 /**
  * @brief  __RAM_FUNC definition
  */
-#   if defined(__CC_ARM)
+#if defined(__CC_ARM)
 /* ARM Compiler
    ------------
    RAM functions are defined using the toolchain options.
@@ -177,32 +170,32 @@ typedef enum
    Available memory areas are declared in the 'Target' tab of the 'Options for Target'
    dialog.
 */
-#      define __RAM_FUNC HAL_StatusTypeDef
+#define __RAM_FUNC HAL_StatusTypeDef
 
-#      define __NOINLINE __attribute__((noinline))
+#define __NOINLINE __attribute__((noinline))
 
-#   elif defined(__ICCARM__)
+#elif defined(__ICCARM__)
 /* ICCARM Compiler
    ---------------
    RAM functions are defined using a specific toolchain keyword "__ramfunc".
 */
-#      define __RAM_FUNC __ramfunc HAL_StatusTypeDef
+#define __RAM_FUNC __ramfunc HAL_StatusTypeDef
 
-#      define __NOINLINE _Pragma("optimize = no_inline")
+#define __NOINLINE _Pragma("optimize = no_inline")
 
-#   elif defined(__GNUC__)
+#elif defined(__GNUC__)
 /* GNU Compiler
    ------------
   RAM functions are defined using a specific toolchain attribute
    "__attribute__((section(".RamFunc")))".
 */
-#      define __RAM_FUNC HAL_StatusTypeDef __attribute__((section(".RamFunc")))
+#define __RAM_FUNC HAL_StatusTypeDef __attribute__((section(".RamFunc")))
 
-#   endif
+#endif
 
-#   ifdef __cplusplus
+#ifdef __cplusplus
 }
-#   endif
+#endif
 
 #endif /* ___STM32L0xx_HAL_DEF */
 

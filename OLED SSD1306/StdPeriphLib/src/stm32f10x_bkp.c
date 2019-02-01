@@ -118,8 +118,8 @@
  */
 void BKP_DeInit(void)
 {
-   RCC_BackupResetCmd(ENABLE);
-   RCC_BackupResetCmd(DISABLE);
+    RCC_BackupResetCmd(ENABLE);
+    RCC_BackupResetCmd(DISABLE);
 }
 
 /**
@@ -132,9 +132,9 @@ void BKP_DeInit(void)
  */
 void BKP_TamperPinLevelConfig(uint16_t BKP_TamperPinLevel)
 {
-   /* Check the parameters */
-   assert_param(IS_BKP_TAMPER_PIN_LEVEL(BKP_TamperPinLevel));
-   *(__IO uint32_t*)CR_TPAL_BB = BKP_TamperPinLevel;
+    /* Check the parameters */
+    assert_param(IS_BKP_TAMPER_PIN_LEVEL(BKP_TamperPinLevel));
+    *(__IO uint32_t*)CR_TPAL_BB = BKP_TamperPinLevel;
 }
 
 /**
@@ -145,9 +145,9 @@ void BKP_TamperPinLevelConfig(uint16_t BKP_TamperPinLevel)
  */
 void BKP_TamperPinCmd(FunctionalState NewState)
 {
-   /* Check the parameters */
-   assert_param(IS_FUNCTIONAL_STATE(NewState));
-   *(__IO uint32_t*)CR_TPE_BB = (uint32_t)NewState;
+    /* Check the parameters */
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
+    *(__IO uint32_t*)CR_TPE_BB = (uint32_t)NewState;
 }
 
 /**
@@ -158,9 +158,9 @@ void BKP_TamperPinCmd(FunctionalState NewState)
  */
 void BKP_ITConfig(FunctionalState NewState)
 {
-   /* Check the parameters */
-   assert_param(IS_FUNCTIONAL_STATE(NewState));
-   *(__IO uint32_t*)CSR_TPIE_BB = (uint32_t)NewState;
+    /* Check the parameters */
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
+    *(__IO uint32_t*)CSR_TPIE_BB = (uint32_t)NewState;
 }
 
 /**
@@ -178,17 +178,17 @@ void BKP_ITConfig(FunctionalState NewState)
  */
 void BKP_RTCOutputConfig(uint16_t BKP_RTCOutputSource)
 {
-   uint16_t tmpreg = 0;
-   /* Check the parameters */
-   assert_param(IS_BKP_RTC_OUTPUT_SOURCE(BKP_RTCOutputSource));
-   tmpreg = BKP->RTCCR;
-   /* Clear CCO, ASOE and ASOS bits */
-   tmpreg &= RTCCR_MASK;
+    uint16_t tmpreg = 0;
+    /* Check the parameters */
+    assert_param(IS_BKP_RTC_OUTPUT_SOURCE(BKP_RTCOutputSource));
+    tmpreg = BKP->RTCCR;
+    /* Clear CCO, ASOE and ASOS bits */
+    tmpreg &= RTCCR_MASK;
 
-   /* Set CCO, ASOE and ASOS bits according to BKP_RTCOutputSource value */
-   tmpreg |= BKP_RTCOutputSource;
-   /* Store the new value */
-   BKP->RTCCR = tmpreg;
+    /* Set CCO, ASOE and ASOS bits according to BKP_RTCOutputSource value */
+    tmpreg |= BKP_RTCOutputSource;
+    /* Store the new value */
+    BKP->RTCCR = tmpreg;
 }
 
 /**
@@ -199,16 +199,16 @@ void BKP_RTCOutputConfig(uint16_t BKP_RTCOutputSource)
  */
 void BKP_SetRTCCalibrationValue(uint8_t CalibrationValue)
 {
-   uint16_t tmpreg = 0;
-   /* Check the parameters */
-   assert_param(IS_BKP_CALIBRATION_VALUE(CalibrationValue));
-   tmpreg = BKP->RTCCR;
-   /* Clear CAL[6:0] bits */
-   tmpreg &= RTCCR_CAL_MASK;
-   /* Set CAL[6:0] bits according to CalibrationValue value */
-   tmpreg |= CalibrationValue;
-   /* Store the new value */
-   BKP->RTCCR = tmpreg;
+    uint16_t tmpreg = 0;
+    /* Check the parameters */
+    assert_param(IS_BKP_CALIBRATION_VALUE(CalibrationValue));
+    tmpreg = BKP->RTCCR;
+    /* Clear CAL[6:0] bits */
+    tmpreg &= RTCCR_CAL_MASK;
+    /* Set CAL[6:0] bits according to CalibrationValue value */
+    tmpreg |= CalibrationValue;
+    /* Store the new value */
+    BKP->RTCCR = tmpreg;
 }
 
 /**
@@ -220,15 +220,15 @@ void BKP_SetRTCCalibrationValue(uint8_t CalibrationValue)
  */
 void BKP_WriteBackupRegister(uint16_t BKP_DR, uint16_t Data)
 {
-   __IO uint32_t tmp = 0;
+    __IO uint32_t tmp = 0;
 
-   /* Check the parameters */
-   assert_param(IS_BKP_DR(BKP_DR));
+    /* Check the parameters */
+    assert_param(IS_BKP_DR(BKP_DR));
 
-   tmp = (uint32_t)BKP_BASE;
-   tmp += BKP_DR;
+    tmp = (uint32_t)BKP_BASE;
+    tmp += BKP_DR;
 
-   *(__IO uint32_t*)tmp = Data;
+    *(__IO uint32_t*)tmp = Data;
 }
 
 /**
@@ -239,15 +239,15 @@ void BKP_WriteBackupRegister(uint16_t BKP_DR, uint16_t Data)
  */
 uint16_t BKP_ReadBackupRegister(uint16_t BKP_DR)
 {
-   __IO uint32_t tmp = 0;
+    __IO uint32_t tmp = 0;
 
-   /* Check the parameters */
-   assert_param(IS_BKP_DR(BKP_DR));
+    /* Check the parameters */
+    assert_param(IS_BKP_DR(BKP_DR));
 
-   tmp = (uint32_t)BKP_BASE;
-   tmp += BKP_DR;
+    tmp = (uint32_t)BKP_BASE;
+    tmp += BKP_DR;
 
-   return (*(__IO uint16_t*)tmp);
+    return (*(__IO uint16_t*)tmp);
 }
 
 /**
@@ -257,7 +257,7 @@ uint16_t BKP_ReadBackupRegister(uint16_t BKP_DR)
  */
 FlagStatus BKP_GetFlagStatus(void)
 {
-   return (FlagStatus)(*(__IO uint32_t*)CSR_TEF_BB);
+    return (FlagStatus)(*(__IO uint32_t*)CSR_TEF_BB);
 }
 
 /**
@@ -267,8 +267,8 @@ FlagStatus BKP_GetFlagStatus(void)
  */
 void BKP_ClearFlag(void)
 {
-   /* Set CTE bit to clear Tamper Pin Event flag */
-   BKP->CSR |= BKP_CSR_CTE;
+    /* Set CTE bit to clear Tamper Pin Event flag */
+    BKP->CSR |= BKP_CSR_CTE;
 }
 
 /**
@@ -278,7 +278,7 @@ void BKP_ClearFlag(void)
  */
 ITStatus BKP_GetITStatus(void)
 {
-   return (ITStatus)(*(__IO uint32_t*)CSR_TIF_BB);
+    return (ITStatus)(*(__IO uint32_t*)CSR_TIF_BB);
 }
 
 /**
@@ -288,8 +288,8 @@ ITStatus BKP_GetITStatus(void)
  */
 void BKP_ClearITPendingBit(void)
 {
-   /* Set CTI bit to clear Tamper Pin Interrupt pending bit */
-   BKP->CSR |= BKP_CSR_CTI;
+    /* Set CTI bit to clear Tamper Pin Interrupt pending bit */
+    BKP->CSR |= BKP_CSR_CTI;
 }
 
 /**

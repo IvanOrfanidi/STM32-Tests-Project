@@ -38,17 +38,17 @@
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __STM32L0xx_HAL_RNG_H
-#   define __STM32L0xx_HAL_RNG_H
+#define __STM32L0xx_HAL_RNG_H
 
-#   ifdef __cplusplus
+#ifdef __cplusplus
 extern "C" {
-#   endif
+#endif
 
-#   if defined(STM32L052xx) || defined(STM32L053xx) || defined(STM32L062xx) || defined(STM32L063xx) || \
-      defined(STM32L072xx) || defined(STM32L073xx) || defined(STM32L082xx) || defined(STM32L083xx)
+#if defined(STM32L052xx) || defined(STM32L053xx) || defined(STM32L062xx) || defined(STM32L063xx) || \
+    defined(STM32L072xx) || defined(STM32L073xx) || defined(STM32L082xx) || defined(STM32L083xx)
 
 /* Includes ------------------------------------------------------------------*/
-#      include "stm32l0xx_hal_def.h"
+#include "stm32l0xx_hal_def.h"
 
 /** @addtogroup STM32L0xx_HAL_Driver
  * @{
@@ -68,13 +68,12 @@ extern "C" {
 /** @defgroup RNG_Exported_Types_Group1 RNG State Structure definition
  * @{
  */
-typedef enum
-{
-   HAL_RNG_STATE_RESET = 0x00U, /*!< RNG not yet initialized or disabled */
-   HAL_RNG_STATE_READY = 0x01U, /*!< RNG initialized and ready for use   */
-   HAL_RNG_STATE_BUSY = 0x02U, /*!< RNG internal process is ongoing     */
-   HAL_RNG_STATE_TIMEOUT = 0x03U, /*!< RNG timeout state                   */
-   HAL_RNG_STATE_ERROR = 0x04U /*!< RNG error state                     */
+typedef enum {
+    HAL_RNG_STATE_RESET = 0x00U,   /*!< RNG not yet initialized or disabled */
+    HAL_RNG_STATE_READY = 0x01U,   /*!< RNG initialized and ready for use   */
+    HAL_RNG_STATE_BUSY = 0x02U,    /*!< RNG internal process is ongoing     */
+    HAL_RNG_STATE_TIMEOUT = 0x03U, /*!< RNG timeout state                   */
+    HAL_RNG_STATE_ERROR = 0x04U    /*!< RNG error state                     */
 
 } HAL_RNG_StateTypeDef;
 
@@ -87,13 +86,13 @@ typedef enum
  */
 typedef struct
 {
-   RNG_TypeDef* Instance; /*!< Register base address   */
+    RNG_TypeDef* Instance; /*!< Register base address   */
 
-   HAL_LockTypeDef Lock; /*!< RNG locking object      */
+    HAL_LockTypeDef Lock; /*!< RNG locking object      */
 
-   __IO HAL_RNG_StateTypeDef State; /*!< RNG communication state */
+    __IO HAL_RNG_StateTypeDef State; /*!< RNG communication state */
 
-   uint32_t RandomNumber; /*!< Last Generated RNG Data */
+    uint32_t RandomNumber; /*!< Last Generated RNG Data */
 
 } RNG_HandleTypeDef;
 
@@ -114,9 +113,9 @@ typedef struct
 /** @defgroup RNG_Exported_Constants_Group1 RNG Interrupt definition
  * @{
  */
-#      define RNG_IT_DRDY ((uint32_t)RNG_SR_DRDY) /*!< Data ready interrupt */
-#      define RNG_IT_CEI ((uint32_t)RNG_SR_CEIS) /*!< Clock error interrupt */
-#      define RNG_IT_SEI ((uint32_t)RNG_SR_SEIS) /*!< Seed error interrupt  */
+#define RNG_IT_DRDY ((uint32_t)RNG_SR_DRDY) /*!< Data ready interrupt */
+#define RNG_IT_CEI ((uint32_t)RNG_SR_CEIS)  /*!< Clock error interrupt */
+#define RNG_IT_SEI ((uint32_t)RNG_SR_SEIS)  /*!< Seed error interrupt  */
 
 /**
  * @}
@@ -125,9 +124,9 @@ typedef struct
 /** @defgroup RNG_Exported_Constants_Group2 RNG Flag definition
  * @{
  */
-#      define RNG_FLAG_DRDY ((uint32_t)RNG_SR_DRDY) /*!< Data ready                 */
-#      define RNG_FLAG_CECS ((uint32_t)RNG_SR_CECS) /*!< Clock error current status */
-#      define RNG_FLAG_SECS ((uint32_t)RNG_SR_SECS) /*!< Seed error current status  */
+#define RNG_FLAG_DRDY ((uint32_t)RNG_SR_DRDY) /*!< Data ready                 */
+#define RNG_FLAG_CECS ((uint32_t)RNG_SR_CECS) /*!< Clock error current status */
+#define RNG_FLAG_SECS ((uint32_t)RNG_SR_SECS) /*!< Seed error current status  */
 
 /**
  * @}
@@ -146,21 +145,21 @@ typedef struct
  * @param  __HANDLE__: RNG Handle
  * @retval None
  */
-#      define __HAL_RNG_RESET_HANDLE_STATE(__HANDLE__) ((__HANDLE__)->State = HAL_RNG_STATE_RESET)
+#define __HAL_RNG_RESET_HANDLE_STATE(__HANDLE__) ((__HANDLE__)->State = HAL_RNG_STATE_RESET)
 
 /**
  * @brief  Enables the RNG peripheral.
  * @param  __HANDLE__: RNG Handle
  * @retval None
  */
-#      define __HAL_RNG_ENABLE(__HANDLE__) ((__HANDLE__)->Instance->CR |= RNG_CR_RNGEN)
+#define __HAL_RNG_ENABLE(__HANDLE__) ((__HANDLE__)->Instance->CR |= RNG_CR_RNGEN)
 
 /**
  * @brief  Disables the RNG peripheral.
  * @param  __HANDLE__: RNG Handle
  * @retval None
  */
-#      define __HAL_RNG_DISABLE(__HANDLE__) ((__HANDLE__)->Instance->CR &= ~RNG_CR_RNGEN)
+#define __HAL_RNG_DISABLE(__HANDLE__) ((__HANDLE__)->Instance->CR &= ~RNG_CR_RNGEN)
 
 /**
  * @brief  Check the selected RNG flag status.
@@ -172,7 +171,7 @@ typedef struct
  *            @arg RNG_FLAG_SECS:  Seed error current status
  * @retval The new state of __FLAG__ (SET or RESET).
  */
-#      define __HAL_RNG_GET_FLAG(__HANDLE__, __FLAG__) (((__HANDLE__)->Instance->SR & (__FLAG__)) == (__FLAG__))
+#define __HAL_RNG_GET_FLAG(__HANDLE__, __FLAG__) (((__HANDLE__)->Instance->SR & (__FLAG__)) == (__FLAG__))
 
 /**
  * @brief  Clears the selected RNG flag status.
@@ -182,21 +181,21 @@ typedef struct
  *         flags RNG_FLAG_DRDY, RNG_FLAG_CECS and RNG_FLAG_SECS are read-only.
  * @retval None
  */
-#      define __HAL_RNG_CLEAR_FLAG(__HANDLE__, __FLAG__) /* dummy  macro */
+#define __HAL_RNG_CLEAR_FLAG(__HANDLE__, __FLAG__) /* dummy  macro */
 
 /**
  * @brief  Enables the RNG interrupts.
  * @param  __HANDLE__: RNG Handle
  * @retval None
  */
-#      define __HAL_RNG_ENABLE_IT(__HANDLE__) ((__HANDLE__)->Instance->CR |= RNG_CR_IE)
+#define __HAL_RNG_ENABLE_IT(__HANDLE__) ((__HANDLE__)->Instance->CR |= RNG_CR_IE)
 
 /**
  * @brief  Disables the RNG interrupts.
  * @param  __HANDLE__: RNG Handle
  * @retval None
  */
-#      define __HAL_RNG_DISABLE_IT(__HANDLE__) ((__HANDLE__)->Instance->CR &= ~RNG_CR_IE)
+#define __HAL_RNG_DISABLE_IT(__HANDLE__) ((__HANDLE__)->Instance->CR &= ~RNG_CR_IE)
 
 /**
  * @brief  Checks whether the specified RNG interrupt has occurred or not.
@@ -208,8 +207,8 @@ typedef struct
  *            @arg RNG_IT_SEI: Seed error interrupt
  * @retval The new state of __INTERRUPT__ (SET or RESET).
  */
-#      define __HAL_RNG_GET_IT(__HANDLE__, __INTERRUPT__) \
-         (((__HANDLE__)->Instance->SR & (__INTERRUPT__)) == (__INTERRUPT__))
+#define __HAL_RNG_GET_IT(__HANDLE__, __INTERRUPT__) \
+    (((__HANDLE__)->Instance->SR & (__INTERRUPT__)) == (__INTERRUPT__))
 
 /**
  * @brief  Clears the RNG interrupt status flags.
@@ -221,7 +220,7 @@ typedef struct
  * @note   RNG_IT_DRDY flag is read-only, reading RNG_DR register automatically clears RNG_IT_DRDY.
  * @retval None
  */
-#      define __HAL_RNG_CLEAR_IT(__HANDLE__, __INTERRUPT__) (((__HANDLE__)->Instance->SR) = ~(__INTERRUPT__))
+#define __HAL_RNG_CLEAR_IT(__HANDLE__, __INTERRUPT__) (((__HANDLE__)->Instance->SR) = ~(__INTERRUPT__))
 
 /**
  * @}
@@ -251,7 +250,7 @@ void HAL_RNG_MspDeInit(RNG_HandleTypeDef* hrng);
  */
 uint32_t HAL_RNG_GetRandomNumber(RNG_HandleTypeDef* hrng); /* Obsolete, use HAL_RNG_GenerateRandomNumber() instead    */
 uint32_t HAL_RNG_GetRandomNumber_IT(
-   RNG_HandleTypeDef* hrng); /* Obsolete, use HAL_RNG_GenerateRandomNumber_IT() instead */
+    RNG_HandleTypeDef* hrng); /* Obsolete, use HAL_RNG_GenerateRandomNumber_IT() instead */
 
 HAL_StatusTypeDef HAL_RNG_GenerateRandomNumber(RNG_HandleTypeDef* hrng, uint32_t* random32bit);
 HAL_StatusTypeDef HAL_RNG_GenerateRandomNumber_IT(RNG_HandleTypeDef* hrng);
@@ -295,11 +294,11 @@ HAL_RNG_StateTypeDef HAL_RNG_GetState(RNG_HandleTypeDef* hrng);
 /**
  * @}
  */
-#   endif /*  if defined (STM32L052xx) || defined (STM32L053xx) || defined (STM32L062xx) ||  defined (STM32L063xx) || \
+#endif /*  if defined (STM32L052xx) || defined (STM32L053xx) || defined (STM32L062xx) ||  defined (STM32L063xx) || \
              \ \ defined (STM32L072xx) || defined (STM32L073xx) || defined (STM32L082xx) ||  defined (STM32L083xx) */
-#   ifdef __cplusplus
+#ifdef __cplusplus
 }
-#   endif
+#endif
 
 #endif /* __STM32L0xx_HAL_RNG_H */
 

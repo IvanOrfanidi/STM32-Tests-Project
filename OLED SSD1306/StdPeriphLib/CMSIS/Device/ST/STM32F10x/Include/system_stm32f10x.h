@@ -37,11 +37,11 @@
  * @brief Define to prevent recursive inclusion
  */
 #ifndef __SYSTEM_STM32F10X_H
-#   define __SYSTEM_STM32F10X_H
+#define __SYSTEM_STM32F10X_H
 
-#   ifdef __cplusplus
+#ifdef __cplusplus
 extern "C" {
-#   endif
+#endif
 
 /** @addtogroup STM32F10x_System_Includes
  * @{
@@ -87,9 +87,9 @@ extern void SystemCoreClockUpdate(void);
  * @}
  */
 
-#   ifdef __cplusplus
+#ifdef __cplusplus
 }
-#   endif
+#endif
 
 #endif /*__SYSTEM_STM32F10X_H */
 

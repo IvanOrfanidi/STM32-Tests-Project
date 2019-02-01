@@ -47,11 +47,11 @@
  * @brief Define to prevent recursive inclusion
  */
 #ifndef __SYSTEM_STM32L0XX_H
-#   define __SYSTEM_STM32L0XX_H
+#define __SYSTEM_STM32L0XX_H
 
-#   ifdef __cplusplus
+#ifdef __cplusplus
 extern "C" {
-#   endif
+#endif
 
 /** @addtogroup STM32L0xx_System_Includes
  * @{
@@ -76,8 +76,8 @@ extern uint32_t SystemCoreClock; /*!< System Clock Frequency (Core Clock) */
 /*
  */
 extern const uint8_t AHBPrescTable[16]; /*!< AHB prescalers table values */
-extern const uint8_t APBPrescTable[8]; /*!< APB prescalers table values */
-extern const uint8_t PLLMulTable[9]; /*!< PLL multipiers table values */
+extern const uint8_t APBPrescTable[8];  /*!< APB prescalers table values */
+extern const uint8_t PLLMulTable[9];    /*!< PLL multipiers table values */
 
 /**
  * @}
@@ -109,9 +109,9 @@ extern void SystemCoreClockUpdate(void);
  * @}
  */
 
-#   ifdef __cplusplus
+#ifdef __cplusplus
 }
-#   endif
+#endif
 
 #endif /*__SYSTEM_STM32L0XX_H */
 

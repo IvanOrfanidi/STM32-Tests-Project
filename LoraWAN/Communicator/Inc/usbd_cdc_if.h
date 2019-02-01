@@ -48,13 +48,13 @@
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __USBD_CDC_IF_H
-#   define __USBD_CDC_IF_H
+#define __USBD_CDC_IF_H
 
-#   ifdef __cplusplus
+#ifdef __cplusplus
 extern "C" {
-#   endif
+#endif
 /* Includes ------------------------------------------------------------------*/
-#   include "usbd_cdc.h"
+#include "usbd_cdc.h"
 /* USER CODE BEGIN INCLUDE */
 /* USER CODE END INCLUDE */
 
@@ -128,9 +128,9 @@ uint8_t CDC_Transmit_FS(uint8_t* Buf, uint16_t Len);
  * @}
  */
 
-#   ifdef __cplusplus
+#ifdef __cplusplus
 }
-#   endif
+#endif
 
 #endif /* __USBD_CDC_IF_H */
 

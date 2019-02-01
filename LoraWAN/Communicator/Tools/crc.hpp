@@ -5,15 +5,14 @@
 #ifdef __cplusplus
 
 /* Standart functions */
-#   include <stdint.h>
+#include <stdint.h>
 
-#   undef CRC
-class CRC
-{
- public:
-   static uint16_t Modbus(const void* data, uint32_t cnt, uint16_t init = 0xFFFFU);
+#undef CRC
+class CRC {
+  public:
+    static uint16_t Modbus(const void* data, uint32_t cnt, uint16_t init = 0xFFFFU);
 
- private:
+  private:
 };
 
 #endif /*__cplusplus */

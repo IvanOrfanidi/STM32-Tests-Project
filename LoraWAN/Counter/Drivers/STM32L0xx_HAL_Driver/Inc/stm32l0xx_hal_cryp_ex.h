@@ -37,17 +37,17 @@
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __STM32L0xx_HAL_CRYP_EX_H
-#   define __STM32L0xx_HAL_CRYP_EX_H
+#define __STM32L0xx_HAL_CRYP_EX_H
 
-#   ifdef __cplusplus
+#ifdef __cplusplus
 extern "C" {
-#   endif
+#endif
 
-#   if defined(STM32L021xx) || defined(STM32L041xx) || defined(STM32L061xx) || defined(STM32L062xx) || \
-      defined(STM32L063xx) || (STM32L081xx) || defined(STM32L082xx) || defined(STM32L083xx)
+#if defined(STM32L021xx) || defined(STM32L041xx) || defined(STM32L061xx) || defined(STM32L062xx) || \
+    defined(STM32L063xx) || (STM32L081xx) || defined(STM32L082xx) || defined(STM32L083xx)
 
 /* Includes ------------------------------------------------------------------*/
-#      include "stm32l0xx_hal_def.h"
+#include "stm32l0xx_hal_def.h"
 
 /** @addtogroup STM32L0xx_HAL_Driver
  * @{
@@ -88,12 +88,12 @@ void HAL_CRYPEx_ComputationCpltCallback(CRYP_HandleTypeDef* hcryp);
  * @}
  */
 
-#   endif /* STM32L021xx || STM32L041xx || STM32L061xx || STM32L062xx || STM32L063xx || STM32L081xx || STM32L082xx || \
+#endif /* STM32L021xx || STM32L041xx || STM32L061xx || STM32L062xx || STM32L063xx || STM32L081xx || STM32L082xx || \
              \ STM32L083xx */
 
-#   ifdef __cplusplus
+#ifdef __cplusplus
 }
-#   endif
+#endif
 
 #endif /* __STM32L0xx_HAL_CRYP_EX_H */
 

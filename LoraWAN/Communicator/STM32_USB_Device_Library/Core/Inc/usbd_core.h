@@ -27,17 +27,17 @@
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __USBD_CORE_H
-#   define __USBD_CORE_H
+#define __USBD_CORE_H
 
-#   ifdef __cplusplus
+#ifdef __cplusplus
 extern "C" {
-#   endif
+#endif
 
 /* Includes ------------------------------------------------------------------*/
-#   include "usbd_conf.h"
-#   include "usbd_def.h"
-#   include "usbd_ioreq.h"
-#   include "usbd_ctlreq.h"
+#include "usbd_conf.h"
+#include "usbd_def.h"
+#include "usbd_ioreq.h"
+#include "usbd_ctlreq.h"
 
 /** @addtogroup STM32_USB_DEVICE_LIBRARY
  * @{
@@ -75,7 +75,7 @@ extern "C" {
 /** @defgroup USBD_CORE_Exported_Variables
  * @{
  */
-#   define USBD_SOF USBD_LL_SOF
+#define USBD_SOF USBD_LL_SOF
 /**
  * @}
  */
@@ -133,9 +133,9 @@ void USBD_LL_Delay(uint32_t Delay);
  * @}
  */
 
-#   ifdef __cplusplus
+#ifdef __cplusplus
 }
-#   endif
+#endif
 
 #endif /* __USBD_CORE_H */
 

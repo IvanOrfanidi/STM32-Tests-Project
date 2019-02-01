@@ -63,106 +63,99 @@ void arm_min_q7(q7_t* pSrc, uint32_t blockSize, q7_t* pResult, uint32_t* pIndex)
 {
 #ifndef ARM_MATH_CM0_FAMILY
 
-   /* Run the below code for Cortex-M4 and Cortex-M3 */
+    /* Run the below code for Cortex-M4 and Cortex-M3 */
 
-   q7_t minVal1, minVal2, out; /* Temporary variables to store the output value. */
-   uint32_t blkCnt, outIndex, count; /* loop counter */
+    q7_t minVal1, minVal2, out;       /* Temporary variables to store the output value. */
+    uint32_t blkCnt, outIndex, count; /* loop counter */
 
-   /* Initialise the count value. */
-   count = 0u;
-   /* Initialise the index value to zero. */
-   outIndex = 0u;
-   /* Load first input value that act as reference value for comparision */
-   out = *pSrc++;
+    /* Initialise the count value. */
+    count = 0u;
+    /* Initialise the index value to zero. */
+    outIndex = 0u;
+    /* Load first input value that act as reference value for comparision */
+    out = *pSrc++;
 
-   /* Loop unrolling */
-   blkCnt = (blockSize - 1u) >> 2u;
+    /* Loop unrolling */
+    blkCnt = (blockSize - 1u) >> 2u;
 
-   while (blkCnt > 0)
-   {
-      /* Initialize minVal to the next consecutive values one by one */
-      minVal1 = *pSrc++;
-      minVal2 = *pSrc++;
+    while(blkCnt > 0) {
+        /* Initialize minVal to the next consecutive values one by one */
+        minVal1 = *pSrc++;
+        minVal2 = *pSrc++;
 
-      /* compare for the minimum value */
-      if (out > minVal1)
-      {
-         /* Update the minimum value and its index */
-         out = minVal1;
-         outIndex = count + 1u;
-      }
+        /* compare for the minimum value */
+        if(out > minVal1) {
+            /* Update the minimum value and its index */
+            out = minVal1;
+            outIndex = count + 1u;
+        }
 
-      minVal1 = *pSrc++;
+        minVal1 = *pSrc++;
 
-      /* compare for the minimum value */
-      if (out > minVal2)
-      {
-         /* Update the minimum value and its index */
-         out = minVal2;
-         outIndex = count + 2u;
-      }
+        /* compare for the minimum value */
+        if(out > minVal2) {
+            /* Update the minimum value and its index */
+            out = minVal2;
+            outIndex = count + 2u;
+        }
 
-      minVal2 = *pSrc++;
+        minVal2 = *pSrc++;
 
-      /* compare for the minimum value */
-      if (out > minVal1)
-      {
-         /* Update the minimum value and its index */
-         out = minVal1;
-         outIndex = count + 3u;
-      }
+        /* compare for the minimum value */
+        if(out > minVal1) {
+            /* Update the minimum value and its index */
+            out = minVal1;
+            outIndex = count + 3u;
+        }
 
-      /* compare for the minimum value */
-      if (out > minVal2)
-      {
-         /* Update the minimum value and its index */
-         out = minVal2;
-         outIndex = count + 4u;
-      }
+        /* compare for the minimum value */
+        if(out > minVal2) {
+            /* Update the minimum value and its index */
+            out = minVal2;
+            outIndex = count + 4u;
+        }
 
-      count += 4u;
+        count += 4u;
 
-      blkCnt--;
-   }
+        blkCnt--;
+    }
 
-   /* if (blockSize - 1u ) is not multiple of 4 */
-   blkCnt = (blockSize - 1u) % 4u;
+    /* if (blockSize - 1u ) is not multiple of 4 */
+    blkCnt = (blockSize - 1u) % 4u;
 
 #else
 
-   /* Run the below code for Cortex-M0 */
+    /* Run the below code for Cortex-M0 */
 
-   q7_t minVal1, out; /* Temporary variables to store the output value. */
-   uint32_t blkCnt, outIndex; /* loop counter */
+    q7_t minVal1, out;         /* Temporary variables to store the output value. */
+    uint32_t blkCnt, outIndex; /* loop counter */
 
-   /* Initialise the index value to zero. */
-   outIndex = 0u;
-   /* Load first input value that act as reference value for comparision */
-   out = *pSrc++;
+    /* Initialise the index value to zero. */
+    outIndex = 0u;
+    /* Load first input value that act as reference value for comparision */
+    out = *pSrc++;
 
-   blkCnt = (blockSize - 1u);
+    blkCnt = (blockSize - 1u);
 
-#endif   //      #ifndef ARM_MATH_CM0_FAMILY
+#endif    //      #ifndef ARM_MATH_CM0_FAMILY
 
-   while (blkCnt > 0)
-   {
-      /* Initialize minVal to the next consecutive values one by one */
-      minVal1 = *pSrc++;
+    while(blkCnt > 0) {
+        /* Initialize minVal to the next consecutive values one by one */
+        minVal1 = *pSrc++;
 
-      /* compare for the minimum value */
-      if (out > minVal1)
-      {
-         /* Update the minimum value and it's index */
-         out = minVal1;
-         outIndex = blockSize - blkCnt;
-      }
+        /* compare for the minimum value */
+        if(out > minVal1) {
+            /* Update the minimum value and it's index */
+            out = minVal1;
+            outIndex = blockSize - blkCnt;
+        }
 
-      blkCnt--;
-   }
+        blkCnt--;
+    }
 
-   /* Store the minimum value and its index into destination pointers */
-   *pResult = out;
-   *pIndex = outIndex;
+    /* Store the minimum value and its index into destination pointers */
+    *pResult = out;
+    *pIndex = outIndex;
 }
 
 /**

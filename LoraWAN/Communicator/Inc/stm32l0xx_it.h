@@ -33,11 +33,11 @@
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __STM32L0xx_IT_H
-#   define __STM32L0xx_IT_H
+#define __STM32L0xx_IT_H
 
-#   ifdef __cplusplus
+#ifdef __cplusplus
 extern "C" {
-#   endif
+#endif
 
 /* Includes ------------------------------------------------------------------*/
 /* Exported types ------------------------------------------------------------*/
@@ -49,9 +49,9 @@ void SysTick_Handler(void);
 void EXTI4_15_IRQHandler(void);
 void USART2_IRQHandler(void);
 
-#   ifdef __cplusplus
+#ifdef __cplusplus
 }
-#   endif
+#endif
 
 #endif /* __STM32L0xx_IT_H */
 

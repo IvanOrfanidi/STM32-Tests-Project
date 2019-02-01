@@ -37,14 +37,14 @@
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __STM32L0xx_FLASH_RAMFUNC_H
-#   define __STM32L0xx_FLASH_RAMFUNC_H
+#define __STM32L0xx_FLASH_RAMFUNC_H
 
-#   ifdef __cplusplus
+#ifdef __cplusplus
 extern "C" {
-#   endif
+#endif
 
 /* Includes ------------------------------------------------------------------*/
-#   include "stm32l0xx_hal_def.h"
+#include "stm32l0xx_hal_def.h"
 
 /** @addtogroup STM32L0xx_HAL_Driver
  * @{
@@ -83,15 +83,15 @@ __RAM_FUNC HAL_FLASHEx_DisableRunPowerDown(void);
  * @{
  */
 
-#   if defined(FLASH_PECR_PARALLBANK)
+#if defined(FLASH_PECR_PARALLBANK)
 
 __RAM_FUNC HAL_FLASHEx_EraseParallelPage(uint32_t Page_Address1, uint32_t Page_Address2);
 __RAM_FUNC HAL_FLASHEx_ProgramParallelHalfPage(uint32_t Address1,
-                                               uint32_t* pBuffer1,
-                                               uint32_t Address2,
-                                               uint32_t* pBuffer2);
+    uint32_t* pBuffer1,
+    uint32_t Address2,
+    uint32_t* pBuffer2);
 
-#   endif /* FLASH_PECR_PARALLBANK */
+#endif /* FLASH_PECR_PARALLBANK */
 
 __RAM_FUNC HAL_FLASHEx_HalfPageProgram(uint32_t Address, uint32_t* pBuffer);
 
@@ -119,9 +119,9 @@ __RAM_FUNC HAL_FLASHEx_GetError(uint32_t* Error);
  * @}
  */
 
-#   ifdef __cplusplus
+#ifdef __cplusplus
 }
-#   endif
+#endif
 
 #endif /* __STM32L0xx_FLASH_RAMFUNC_H */
 

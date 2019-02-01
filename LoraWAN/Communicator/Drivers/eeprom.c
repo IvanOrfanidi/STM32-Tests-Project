@@ -18,7 +18,7 @@ Return: значение считанного байта.
 */
 uint8_t EE_RD_Byte(uint32_t address)
 {
-   return (*(__IO uint8_t*)(address));
+    return (*(__IO uint8_t*)(address));
 }
 
 /*
@@ -32,20 +32,17 @@ Return: результат записи.
 */
 _Bool EE_WR_Byte(uint32_t address, uint8_t data)
 {
-   if (EE_RD_Byte(address) != data)
-   {
-      HAL_FLASHEx_DATAEEPROM_Unlock();   // Снять защиту EEPROM, чтобы разрешить запись
-      uint8_t err_write_eeprom = MAX_ERR_EEPROM;
-      while (HAL_FLASHEx_DATAEEPROM_Program(TYPEPROGRAMDATA_BYTE, address, data) != HAL_OK)
-      {
-         err_write_eeprom--;
-         if (!(err_write_eeprom))
-         {
-            HAL_FLASHEx_DATAEEPROM_Lock();   // Устанавливаем защиту EEPROM, чтобы запретить запись
-            return 1;
-         }
-      }
-      HAL_FLASHEx_DATAEEPROM_Lock();   // Устанавливаем защиту EEPROM, чтобы запретить запись
-   }
-   return 0;
+    if(EE_RD_Byte(address) != data) {
+        HAL_FLASHEx_DATAEEPROM_Unlock();    // Снять защиту EEPROM, чтобы разрешить запись
+        uint8_t err_write_eeprom = MAX_ERR_EEPROM;
+        while(HAL_FLASHEx_DATAEEPROM_Program(TYPEPROGRAMDATA_BYTE, address, data) != HAL_OK) {
+            err_write_eeprom--;
+            if(!(err_write_eeprom)) {
+                HAL_FLASHEx_DATAEEPROM_Lock();    // Устанавливаем защиту EEPROM, чтобы запретить запись
+                return 1;
+            }
+        }
+        HAL_FLASHEx_DATAEEPROM_Lock();    // Устанавливаем защиту EEPROM, чтобы запретить запись
+    }
+    return 0;
 }

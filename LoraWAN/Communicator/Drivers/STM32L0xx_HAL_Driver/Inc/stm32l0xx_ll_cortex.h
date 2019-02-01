@@ -51,14 +51,14 @@
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __STM32L0xx_LL_CORTEX_H
-#   define __STM32L0xx_LL_CORTEX_H
+#define __STM32L0xx_LL_CORTEX_H
 
-#   ifdef __cplusplus
+#ifdef __cplusplus
 extern "C" {
-#   endif
+#endif
 
 /* Includes ------------------------------------------------------------------*/
-#   include "stm32l0xx.h"
+#include "stm32l0xx.h"
 
 /** @addtogroup STM32L0xx_LL_Driver
  * @{
@@ -84,26 +84,26 @@ extern "C" {
 /** @defgroup CORTEX_LL_EC_CLKSOURCE_HCLK SYSTICK Clock Source
  * @{
  */
-#   define LL_SYSTICK_CLKSOURCE_HCLK_DIV8 \
-      ((uint32_t)0x00000000U) /*!< AHB clock divided by 8 selected as SysTick clock source.*/
-#   define LL_SYSTICK_CLKSOURCE_HCLK \
-      ((uint32_t)SysTick_CTRL_CLKSOURCE_Msk) /*!< AHB clock selected as SysTick clock source. */
+#define LL_SYSTICK_CLKSOURCE_HCLK_DIV8 \
+    ((uint32_t)0x00000000U) /*!< AHB clock divided by 8 selected as SysTick clock source.*/
+#define LL_SYSTICK_CLKSOURCE_HCLK \
+    ((uint32_t)SysTick_CTRL_CLKSOURCE_Msk) /*!< AHB clock selected as SysTick clock source. */
 /**
  * @}
  */
 
-#   if __MPU_PRESENT
+#if __MPU_PRESENT
 
 /** @defgroup CORTEX_LL_EC_CTRL_HFNMI_PRIVDEF MPU Control
  * @{
  */
-#      define LL_MPU_CTRL_HFNMI_PRIVDEF_NONE ((uint32_t)0x00000000U) /*!< Disable NMI and privileged SW access */
-#      define LL_MPU_CTRL_HARDFAULT_NMI \
-         MPU_CTRL_HFNMIENA_Msk /*!< Enables the operation of MPU during hard fault, NMI, and FAULTMASK handlers */
-#      define LL_MPU_CTRL_PRIVILEGED_DEFAULT \
-         MPU_CTRL_PRIVDEFENA_Msk /*!< Enable privileged software access to default memory map */
-#      define LL_MPU_CTRL_HFNMI_PRIVDEF \
-         (MPU_CTRL_HFNMIENA_Msk | MPU_CTRL_PRIVDEFENA_Msk) /*!< Enable NMI and privileged SW access */
+#define LL_MPU_CTRL_HFNMI_PRIVDEF_NONE ((uint32_t)0x00000000U) /*!< Disable NMI and privileged SW access */
+#define LL_MPU_CTRL_HARDFAULT_NMI \
+    MPU_CTRL_HFNMIENA_Msk /*!< Enables the operation of MPU during hard fault, NMI, and FAULTMASK handlers */
+#define LL_MPU_CTRL_PRIVILEGED_DEFAULT \
+    MPU_CTRL_PRIVDEFENA_Msk /*!< Enable privileged software access to default memory map */
+#define LL_MPU_CTRL_HFNMI_PRIVDEF \
+    (MPU_CTRL_HFNMIENA_Msk | MPU_CTRL_PRIVDEFENA_Msk) /*!< Enable NMI and privileged SW access */
 /**
  * @}
  */
@@ -111,14 +111,14 @@ extern "C" {
 /** @defgroup CORTEX_LL_EC_REGION MPU Region Number
  * @{
  */
-#      define LL_MPU_REGION_NUMBER0 ((uint32_t)0x00U) /*!< REGION Number 0 */
-#      define LL_MPU_REGION_NUMBER1 ((uint32_t)0x01U) /*!< REGION Number 1 */
-#      define LL_MPU_REGION_NUMBER2 ((uint32_t)0x02U) /*!< REGION Number 2 */
-#      define LL_MPU_REGION_NUMBER3 ((uint32_t)0x03U) /*!< REGION Number 3 */
-#      define LL_MPU_REGION_NUMBER4 ((uint32_t)0x04U) /*!< REGION Number 4 */
-#      define LL_MPU_REGION_NUMBER5 ((uint32_t)0x05U) /*!< REGION Number 5 */
-#      define LL_MPU_REGION_NUMBER6 ((uint32_t)0x06U) /*!< REGION Number 6 */
-#      define LL_MPU_REGION_NUMBER7 ((uint32_t)0x07U) /*!< REGION Number 7 */
+#define LL_MPU_REGION_NUMBER0 ((uint32_t)0x00U) /*!< REGION Number 0 */
+#define LL_MPU_REGION_NUMBER1 ((uint32_t)0x01U) /*!< REGION Number 1 */
+#define LL_MPU_REGION_NUMBER2 ((uint32_t)0x02U) /*!< REGION Number 2 */
+#define LL_MPU_REGION_NUMBER3 ((uint32_t)0x03U) /*!< REGION Number 3 */
+#define LL_MPU_REGION_NUMBER4 ((uint32_t)0x04U) /*!< REGION Number 4 */
+#define LL_MPU_REGION_NUMBER5 ((uint32_t)0x05U) /*!< REGION Number 5 */
+#define LL_MPU_REGION_NUMBER6 ((uint32_t)0x06U) /*!< REGION Number 6 */
+#define LL_MPU_REGION_NUMBER7 ((uint32_t)0x07U) /*!< REGION Number 7 */
 /**
  * @}
  */
@@ -126,62 +126,62 @@ extern "C" {
 /** @defgroup CORTEX_LL_EC_REGION_SIZE MPU Region Size
  * @{
  */
-#      define LL_MPU_REGION_SIZE_32B \
-         ((uint32_t)(0x04U << MPU_RASR_SIZE_Pos)) /*!< 32B Size of the MPU protection region */
-#      define LL_MPU_REGION_SIZE_64B \
-         ((uint32_t)(0x05U << MPU_RASR_SIZE_Pos)) /*!< 64B Size of the MPU protection region */
-#      define LL_MPU_REGION_SIZE_128B \
-         ((uint32_t)(0x06U << MPU_RASR_SIZE_Pos)) /*!< 128B Size of the MPU protection region */
-#      define LL_MPU_REGION_SIZE_256B \
-         ((uint32_t)(0x07U << MPU_RASR_SIZE_Pos)) /*!< 256B Size of the MPU protection region */
-#      define LL_MPU_REGION_SIZE_512B \
-         ((uint32_t)(0x08U << MPU_RASR_SIZE_Pos)) /*!< 512B Size of the MPU protection region */
-#      define LL_MPU_REGION_SIZE_1KB \
-         ((uint32_t)(0x09U << MPU_RASR_SIZE_Pos)) /*!< 1KB Size of the MPU protection region */
-#      define LL_MPU_REGION_SIZE_2KB \
-         ((uint32_t)(0x0AU << MPU_RASR_SIZE_Pos)) /*!< 2KB Size of the MPU protection region */
-#      define LL_MPU_REGION_SIZE_4KB \
-         ((uint32_t)(0x0BU << MPU_RASR_SIZE_Pos)) /*!< 4KB Size of the MPU protection region */
-#      define LL_MPU_REGION_SIZE_8KB \
-         ((uint32_t)(0x0CU << MPU_RASR_SIZE_Pos)) /*!< 8KB Size of the MPU protection region */
-#      define LL_MPU_REGION_SIZE_16KB \
-         ((uint32_t)(0x0DU << MPU_RASR_SIZE_Pos)) /*!< 16KB Size of the MPU protection region */
-#      define LL_MPU_REGION_SIZE_32KB \
-         ((uint32_t)(0x0EU << MPU_RASR_SIZE_Pos)) /*!< 32KB Size of the MPU protection region */
-#      define LL_MPU_REGION_SIZE_64KB \
-         ((uint32_t)(0x0FU << MPU_RASR_SIZE_Pos)) /*!< 64KB Size of the MPU protection region */
-#      define LL_MPU_REGION_SIZE_128KB \
-         ((uint32_t)(0x10U << MPU_RASR_SIZE_Pos)) /*!< 128KB Size of the MPU protection region */
-#      define LL_MPU_REGION_SIZE_256KB \
-         ((uint32_t)(0x11U << MPU_RASR_SIZE_Pos)) /*!< 256KB Size of the MPU protection region */
-#      define LL_MPU_REGION_SIZE_512KB \
-         ((uint32_t)(0x12U << MPU_RASR_SIZE_Pos)) /*!< 512KB Size of the MPU protection region */
-#      define LL_MPU_REGION_SIZE_1MB \
-         ((uint32_t)(0x13U << MPU_RASR_SIZE_Pos)) /*!< 1MB Size of the MPU protection region */
-#      define LL_MPU_REGION_SIZE_2MB \
-         ((uint32_t)(0x14U << MPU_RASR_SIZE_Pos)) /*!< 2MB Size of the MPU protection region */
-#      define LL_MPU_REGION_SIZE_4MB \
-         ((uint32_t)(0x15U << MPU_RASR_SIZE_Pos)) /*!< 4MB Size of the MPU protection region */
-#      define LL_MPU_REGION_SIZE_8MB \
-         ((uint32_t)(0x16U << MPU_RASR_SIZE_Pos)) /*!< 8MB Size of the MPU protection region */
-#      define LL_MPU_REGION_SIZE_16MB \
-         ((uint32_t)(0x17U << MPU_RASR_SIZE_Pos)) /*!< 16MB Size of the MPU protection region */
-#      define LL_MPU_REGION_SIZE_32MB \
-         ((uint32_t)(0x18U << MPU_RASR_SIZE_Pos)) /*!< 32MB Size of the MPU protection region */
-#      define LL_MPU_REGION_SIZE_64MB \
-         ((uint32_t)(0x19U << MPU_RASR_SIZE_Pos)) /*!< 64MB Size of the MPU protection region */
-#      define LL_MPU_REGION_SIZE_128MB \
-         ((uint32_t)(0x1AU << MPU_RASR_SIZE_Pos)) /*!< 128MB Size of the MPU protection region */
-#      define LL_MPU_REGION_SIZE_256MB \
-         ((uint32_t)(0x1BU << MPU_RASR_SIZE_Pos)) /*!< 256MB Size of the MPU protection region */
-#      define LL_MPU_REGION_SIZE_512MB \
-         ((uint32_t)(0x1CU << MPU_RASR_SIZE_Pos)) /*!< 512MB Size of the MPU protection region */
-#      define LL_MPU_REGION_SIZE_1GB \
-         ((uint32_t)(0x1DU << MPU_RASR_SIZE_Pos)) /*!< 1GB Size of the MPU protection region */
-#      define LL_MPU_REGION_SIZE_2GB \
-         ((uint32_t)(0x1EU << MPU_RASR_SIZE_Pos)) /*!< 2GB Size of the MPU protection region */
-#      define LL_MPU_REGION_SIZE_4GB \
-         ((uint32_t)(0x1FU << MPU_RASR_SIZE_Pos)) /*!< 4GB Size of the MPU protection region */
+#define LL_MPU_REGION_SIZE_32B \
+    ((uint32_t)(0x04U << MPU_RASR_SIZE_Pos)) /*!< 32B Size of the MPU protection region */
+#define LL_MPU_REGION_SIZE_64B \
+    ((uint32_t)(0x05U << MPU_RASR_SIZE_Pos)) /*!< 64B Size of the MPU protection region */
+#define LL_MPU_REGION_SIZE_128B \
+    ((uint32_t)(0x06U << MPU_RASR_SIZE_Pos)) /*!< 128B Size of the MPU protection region */
+#define LL_MPU_REGION_SIZE_256B \
+    ((uint32_t)(0x07U << MPU_RASR_SIZE_Pos)) /*!< 256B Size of the MPU protection region */
+#define LL_MPU_REGION_SIZE_512B \
+    ((uint32_t)(0x08U << MPU_RASR_SIZE_Pos)) /*!< 512B Size of the MPU protection region */
+#define LL_MPU_REGION_SIZE_1KB \
+    ((uint32_t)(0x09U << MPU_RASR_SIZE_Pos)) /*!< 1KB Size of the MPU protection region */
+#define LL_MPU_REGION_SIZE_2KB \
+    ((uint32_t)(0x0AU << MPU_RASR_SIZE_Pos)) /*!< 2KB Size of the MPU protection region */
+#define LL_MPU_REGION_SIZE_4KB \
+    ((uint32_t)(0x0BU << MPU_RASR_SIZE_Pos)) /*!< 4KB Size of the MPU protection region */
+#define LL_MPU_REGION_SIZE_8KB \
+    ((uint32_t)(0x0CU << MPU_RASR_SIZE_Pos)) /*!< 8KB Size of the MPU protection region */
+#define LL_MPU_REGION_SIZE_16KB \
+    ((uint32_t)(0x0DU << MPU_RASR_SIZE_Pos)) /*!< 16KB Size of the MPU protection region */
+#define LL_MPU_REGION_SIZE_32KB \
+    ((uint32_t)(0x0EU << MPU_RASR_SIZE_Pos)) /*!< 32KB Size of the MPU protection region */
+#define LL_MPU_REGION_SIZE_64KB \
+    ((uint32_t)(0x0FU << MPU_RASR_SIZE_Pos)) /*!< 64KB Size of the MPU protection region */
+#define LL_MPU_REGION_SIZE_128KB \
+    ((uint32_t)(0x10U << MPU_RASR_SIZE_Pos)) /*!< 128KB Size of the MPU protection region */
+#define LL_MPU_REGION_SIZE_256KB \
+    ((uint32_t)(0x11U << MPU_RASR_SIZE_Pos)) /*!< 256KB Size of the MPU protection region */
+#define LL_MPU_REGION_SIZE_512KB \
+    ((uint32_t)(0x12U << MPU_RASR_SIZE_Pos)) /*!< 512KB Size of the MPU protection region */
+#define LL_MPU_REGION_SIZE_1MB \
+    ((uint32_t)(0x13U << MPU_RASR_SIZE_Pos)) /*!< 1MB Size of the MPU protection region */
+#define LL_MPU_REGION_SIZE_2MB \
+    ((uint32_t)(0x14U << MPU_RASR_SIZE_Pos)) /*!< 2MB Size of the MPU protection region */
+#define LL_MPU_REGION_SIZE_4MB \
+    ((uint32_t)(0x15U << MPU_RASR_SIZE_Pos)) /*!< 4MB Size of the MPU protection region */
+#define LL_MPU_REGION_SIZE_8MB \
+    ((uint32_t)(0x16U << MPU_RASR_SIZE_Pos)) /*!< 8MB Size of the MPU protection region */
+#define LL_MPU_REGION_SIZE_16MB \
+    ((uint32_t)(0x17U << MPU_RASR_SIZE_Pos)) /*!< 16MB Size of the MPU protection region */
+#define LL_MPU_REGION_SIZE_32MB \
+    ((uint32_t)(0x18U << MPU_RASR_SIZE_Pos)) /*!< 32MB Size of the MPU protection region */
+#define LL_MPU_REGION_SIZE_64MB \
+    ((uint32_t)(0x19U << MPU_RASR_SIZE_Pos)) /*!< 64MB Size of the MPU protection region */
+#define LL_MPU_REGION_SIZE_128MB \
+    ((uint32_t)(0x1AU << MPU_RASR_SIZE_Pos)) /*!< 128MB Size of the MPU protection region */
+#define LL_MPU_REGION_SIZE_256MB \
+    ((uint32_t)(0x1BU << MPU_RASR_SIZE_Pos)) /*!< 256MB Size of the MPU protection region */
+#define LL_MPU_REGION_SIZE_512MB \
+    ((uint32_t)(0x1CU << MPU_RASR_SIZE_Pos)) /*!< 512MB Size of the MPU protection region */
+#define LL_MPU_REGION_SIZE_1GB \
+    ((uint32_t)(0x1DU << MPU_RASR_SIZE_Pos)) /*!< 1GB Size of the MPU protection region */
+#define LL_MPU_REGION_SIZE_2GB \
+    ((uint32_t)(0x1EU << MPU_RASR_SIZE_Pos)) /*!< 2GB Size of the MPU protection region */
+#define LL_MPU_REGION_SIZE_4GB \
+    ((uint32_t)(0x1FU << MPU_RASR_SIZE_Pos)) /*!< 4GB Size of the MPU protection region */
 /**
  * @}
  */
@@ -189,18 +189,18 @@ extern "C" {
 /** @defgroup CORTEX_LL_EC_REGION_PRIVILEDGES MPU Region Privileges
  * @{
  */
-#      define LL_MPU_REGION_NO_ACCESS ((uint32_t)(0x00U << MPU_RASR_AP_Pos)) /*!< No access*/
-#      define LL_MPU_REGION_PRIV_RW \
-         ((uint32_t)(0x01U << MPU_RASR_AP_Pos)) /*!< RW privileged (privileged access \ \
+#define LL_MPU_REGION_NO_ACCESS ((uint32_t)(0x00U << MPU_RASR_AP_Pos)) /*!< No access*/
+#define LL_MPU_REGION_PRIV_RW \
+    ((uint32_t)(0x01U << MPU_RASR_AP_Pos)) /*!< RW privileged (privileged access \ \
                                                    only)*/
-#      define LL_MPU_REGION_PRIV_RW_URO \
-         ((uint32_t)( \
-            0x02U << MPU_RASR_AP_Pos)) /*!< RW privileged - RO user (Write in a user program generates a fault) */
-#      define LL_MPU_REGION_FULL_ACCESS \
-         ((uint32_t)(0x03U << MPU_RASR_AP_Pos)) /*!< RW privileged & user (Full access) */
-#      define LL_MPU_REGION_PRIV_RO ((uint32_t)(0x05U << MPU_RASR_AP_Pos)) /*!< RO privileged (privileged read only)*/
-#      define LL_MPU_REGION_PRIV_RO_URO \
-         ((uint32_t)(0x06U << MPU_RASR_AP_Pos)) /*!< RO privileged & user (read only) \ \
+#define LL_MPU_REGION_PRIV_RW_URO \
+    ((uint32_t)( \
+        0x02U << MPU_RASR_AP_Pos)) /*!< RW privileged - RO user (Write in a user program generates a fault) */
+#define LL_MPU_REGION_FULL_ACCESS \
+    ((uint32_t)(0x03U << MPU_RASR_AP_Pos))                           /*!< RW privileged & user (Full access) */
+#define LL_MPU_REGION_PRIV_RO ((uint32_t)(0x05U << MPU_RASR_AP_Pos)) /*!< RO privileged (privileged read only)*/
+#define LL_MPU_REGION_PRIV_RO_URO \
+    ((uint32_t)(0x06U << MPU_RASR_AP_Pos)) /*!< RO privileged & user (read only) \ \
                                                  */
 /**
  * @}
@@ -209,10 +209,10 @@ extern "C" {
 /** @defgroup CORTEX_LL_EC_TEX MPU TEX Level
  * @{
  */
-#      define LL_MPU_TEX_LEVEL0 ((uint32_t)(0x00U << MPU_RASR_TEX_Pos)) /*!< b000 for TEX bits */
-#      define LL_MPU_TEX_LEVEL1 ((uint32_t)(0x01U << MPU_RASR_TEX_Pos)) /*!< b001 for TEX bits */
-#      define LL_MPU_TEX_LEVEL2 ((uint32_t)(0x02U << MPU_RASR_TEX_Pos)) /*!< b010 for TEX bits */
-#      define LL_MPU_TEX_LEVEL4 ((uint32_t)(0x04U << MPU_RASR_TEX_Pos)) /*!< b100 for TEX bits */
+#define LL_MPU_TEX_LEVEL0 ((uint32_t)(0x00U << MPU_RASR_TEX_Pos)) /*!< b000 for TEX bits */
+#define LL_MPU_TEX_LEVEL1 ((uint32_t)(0x01U << MPU_RASR_TEX_Pos)) /*!< b001 for TEX bits */
+#define LL_MPU_TEX_LEVEL2 ((uint32_t)(0x02U << MPU_RASR_TEX_Pos)) /*!< b010 for TEX bits */
+#define LL_MPU_TEX_LEVEL4 ((uint32_t)(0x04U << MPU_RASR_TEX_Pos)) /*!< b100 for TEX bits */
 /**
  * @}
  */
@@ -220,8 +220,8 @@ extern "C" {
 /** @defgroup CORTEX_LL_EC_INSTRUCTION_ACCESS MPU Instruction Access
  * @{
  */
-#      define LL_MPU_INSTRUCTION_ACCESS_ENABLE ((uint32_t)0x00U) /*!< Instruction fetches enabled */
-#      define LL_MPU_INSTRUCTION_ACCESS_DISABLE MPU_RASR_XN_Msk /*!< Instruction fetches disabled*/
+#define LL_MPU_INSTRUCTION_ACCESS_ENABLE ((uint32_t)0x00U) /*!< Instruction fetches enabled */
+#define LL_MPU_INSTRUCTION_ACCESS_DISABLE MPU_RASR_XN_Msk  /*!< Instruction fetches disabled*/
 /**
  * @}
  */
@@ -229,8 +229,8 @@ extern "C" {
 /** @defgroup CORTEX_LL_EC_SHAREABLE_ACCESS MPU Shareable Access
  * @{
  */
-#      define LL_MPU_ACCESS_SHAREABLE MPU_RASR_S_Msk /*!< Shareable memory attribute */
-#      define LL_MPU_ACCESS_NOT_SHAREABLE ((uint32_t)0x00U) /*!< Not Shareable memory attribute */
+#define LL_MPU_ACCESS_SHAREABLE MPU_RASR_S_Msk        /*!< Shareable memory attribute */
+#define LL_MPU_ACCESS_NOT_SHAREABLE ((uint32_t)0x00U) /*!< Not Shareable memory attribute */
 /**
  * @}
  */
@@ -238,8 +238,8 @@ extern "C" {
 /** @defgroup CORTEX_LL_EC_CACHEABLE_ACCESS MPU Cacheable Access
  * @{
  */
-#      define LL_MPU_ACCESS_CACHEABLE MPU_RASR_C_Msk /*!< Cacheable memory attribute */
-#      define LL_MPU_ACCESS_NOT_CACHEABLE ((uint32_t)0x00U) /*!< Not Cacheable memory attribute */
+#define LL_MPU_ACCESS_CACHEABLE MPU_RASR_C_Msk        /*!< Cacheable memory attribute */
+#define LL_MPU_ACCESS_NOT_CACHEABLE ((uint32_t)0x00U) /*!< Not Cacheable memory attribute */
 /**
  * @}
  */
@@ -247,12 +247,12 @@ extern "C" {
 /** @defgroup CORTEX_LL_EC_BUFFERABLE_ACCESS MPU Bufferable Access
  * @{
  */
-#      define LL_MPU_ACCESS_BUFFERABLE MPU_RASR_B_Msk /*!< Bufferable memory attribute */
-#      define LL_MPU_ACCESS_NOT_BUFFERABLE ((uint32_t)0x00U) /*!< Not Bufferable memory attribute */
+#define LL_MPU_ACCESS_BUFFERABLE MPU_RASR_B_Msk        /*!< Bufferable memory attribute */
+#define LL_MPU_ACCESS_NOT_BUFFERABLE ((uint32_t)0x00U) /*!< Not Bufferable memory attribute */
 /**
  * @}
  */
-#   endif /* __MPU_PRESENT */
+#endif /* __MPU_PRESENT */
 /**
  * @}
  */
@@ -276,7 +276,7 @@ extern "C" {
  */
 __STATIC_INLINE uint32_t LL_SYSTICK_IsActiveCounterFlag(void)
 {
-   return ((SysTick->CTRL & SysTick_CTRL_COUNTFLAG_Msk) == (SysTick_CTRL_COUNTFLAG_Msk));
+    return ((SysTick->CTRL & SysTick_CTRL_COUNTFLAG_Msk) == (SysTick_CTRL_COUNTFLAG_Msk));
 }
 
 /**
@@ -289,14 +289,12 @@ __STATIC_INLINE uint32_t LL_SYSTICK_IsActiveCounterFlag(void)
  */
 __STATIC_INLINE void LL_SYSTICK_SetClkSource(uint32_t Source)
 {
-   if (Source == LL_SYSTICK_CLKSOURCE_HCLK)
-   {
-      SET_BIT(SysTick->CTRL, LL_SYSTICK_CLKSOURCE_HCLK);
-   }
-   else
-   {
-      CLEAR_BIT(SysTick->CTRL, LL_SYSTICK_CLKSOURCE_HCLK);
-   }
+    if(Source == LL_SYSTICK_CLKSOURCE_HCLK) {
+        SET_BIT(SysTick->CTRL, LL_SYSTICK_CLKSOURCE_HCLK);
+    }
+    else {
+        CLEAR_BIT(SysTick->CTRL, LL_SYSTICK_CLKSOURCE_HCLK);
+    }
 }
 
 /**
@@ -308,7 +306,7 @@ __STATIC_INLINE void LL_SYSTICK_SetClkSource(uint32_t Source)
  */
 __STATIC_INLINE uint32_t LL_SYSTICK_GetClkSource(void)
 {
-   return READ_BIT(SysTick->CTRL, LL_SYSTICK_CLKSOURCE_HCLK);
+    return READ_BIT(SysTick->CTRL, LL_SYSTICK_CLKSOURCE_HCLK);
 }
 
 /**
@@ -318,7 +316,7 @@ __STATIC_INLINE uint32_t LL_SYSTICK_GetClkSource(void)
  */
 __STATIC_INLINE void LL_SYSTICK_EnableIT(void)
 {
-   SET_BIT(SysTick->CTRL, SysTick_CTRL_TICKINT_Msk);
+    SET_BIT(SysTick->CTRL, SysTick_CTRL_TICKINT_Msk);
 }
 
 /**
@@ -328,7 +326,7 @@ __STATIC_INLINE void LL_SYSTICK_EnableIT(void)
  */
 __STATIC_INLINE void LL_SYSTICK_DisableIT(void)
 {
-   CLEAR_BIT(SysTick->CTRL, SysTick_CTRL_TICKINT_Msk);
+    CLEAR_BIT(SysTick->CTRL, SysTick_CTRL_TICKINT_Msk);
 }
 
 /**
@@ -338,7 +336,7 @@ __STATIC_INLINE void LL_SYSTICK_DisableIT(void)
  */
 __STATIC_INLINE uint32_t LL_SYSTICK_IsEnabledIT(void)
 {
-   return (READ_BIT(SysTick->CTRL, SysTick_CTRL_TICKINT_Msk) == (SysTick_CTRL_TICKINT_Msk));
+    return (READ_BIT(SysTick->CTRL, SysTick_CTRL_TICKINT_Msk) == (SysTick_CTRL_TICKINT_Msk));
 }
 
 /**
@@ -356,8 +354,8 @@ __STATIC_INLINE uint32_t LL_SYSTICK_IsEnabledIT(void)
  */
 __STATIC_INLINE void LL_LPM_EnableSleep(void)
 {
-   /* Clear SLEEPDEEP bit of Cortex System Control Register */
-   CLEAR_BIT(SCB->SCR, ((uint32_t)SCB_SCR_SLEEPDEEP_Msk));
+    /* Clear SLEEPDEEP bit of Cortex System Control Register */
+    CLEAR_BIT(SCB->SCR, ((uint32_t)SCB_SCR_SLEEPDEEP_Msk));
 }
 
 /**
@@ -367,8 +365,8 @@ __STATIC_INLINE void LL_LPM_EnableSleep(void)
  */
 __STATIC_INLINE void LL_LPM_EnableDeepSleep(void)
 {
-   /* Set SLEEPDEEP bit of Cortex System Control Register */
-   SET_BIT(SCB->SCR, ((uint32_t)SCB_SCR_SLEEPDEEP_Msk));
+    /* Set SLEEPDEEP bit of Cortex System Control Register */
+    SET_BIT(SCB->SCR, ((uint32_t)SCB_SCR_SLEEPDEEP_Msk));
 }
 
 /**
@@ -380,8 +378,8 @@ __STATIC_INLINE void LL_LPM_EnableDeepSleep(void)
  */
 __STATIC_INLINE void LL_LPM_EnableSleepOnExit(void)
 {
-   /* Set SLEEPONEXIT bit of Cortex System Control Register */
-   SET_BIT(SCB->SCR, ((uint32_t)SCB_SCR_SLEEPONEXIT_Msk));
+    /* Set SLEEPONEXIT bit of Cortex System Control Register */
+    SET_BIT(SCB->SCR, ((uint32_t)SCB_SCR_SLEEPONEXIT_Msk));
 }
 
 /**
@@ -391,8 +389,8 @@ __STATIC_INLINE void LL_LPM_EnableSleepOnExit(void)
  */
 __STATIC_INLINE void LL_LPM_DisableSleepOnExit(void)
 {
-   /* Clear SLEEPONEXIT bit of Cortex System Control Register */
-   CLEAR_BIT(SCB->SCR, ((uint32_t)SCB_SCR_SLEEPONEXIT_Msk));
+    /* Clear SLEEPONEXIT bit of Cortex System Control Register */
+    CLEAR_BIT(SCB->SCR, ((uint32_t)SCB_SCR_SLEEPONEXIT_Msk));
 }
 
 /**
@@ -403,8 +401,8 @@ __STATIC_INLINE void LL_LPM_DisableSleepOnExit(void)
  */
 __STATIC_INLINE void LL_LPM_EnableEventOnPend(void)
 {
-   /* Set SEVEONPEND bit of Cortex System Control Register */
-   SET_BIT(SCB->SCR, ((uint32_t)SCB_SCR_SEVONPEND_Msk));
+    /* Set SEVEONPEND bit of Cortex System Control Register */
+    SET_BIT(SCB->SCR, ((uint32_t)SCB_SCR_SEVONPEND_Msk));
 }
 
 /**
@@ -415,8 +413,8 @@ __STATIC_INLINE void LL_LPM_EnableEventOnPend(void)
  */
 __STATIC_INLINE void LL_LPM_DisableEventOnPend(void)
 {
-   /* Clear SEVEONPEND bit of Cortex System Control Register */
-   CLEAR_BIT(SCB->SCR, ((uint32_t)SCB_SCR_SEVONPEND_Msk));
+    /* Clear SEVEONPEND bit of Cortex System Control Register */
+    CLEAR_BIT(SCB->SCR, ((uint32_t)SCB_SCR_SEVONPEND_Msk));
 }
 
 /**
@@ -434,7 +432,7 @@ __STATIC_INLINE void LL_LPM_DisableEventOnPend(void)
  */
 __STATIC_INLINE uint32_t LL_CPUID_GetImplementer(void)
 {
-   return (uint32_t)(READ_BIT(SCB->CPUID, SCB_CPUID_IMPLEMENTER_Msk) >> SCB_CPUID_IMPLEMENTER_Pos);
+    return (uint32_t)(READ_BIT(SCB->CPUID, SCB_CPUID_IMPLEMENTER_Msk) >> SCB_CPUID_IMPLEMENTER_Pos);
 }
 
 /**
@@ -444,7 +442,7 @@ __STATIC_INLINE uint32_t LL_CPUID_GetImplementer(void)
  */
 __STATIC_INLINE uint32_t LL_CPUID_GetVariant(void)
 {
-   return (uint32_t)(READ_BIT(SCB->CPUID, SCB_CPUID_VARIANT_Msk) >> SCB_CPUID_VARIANT_Pos);
+    return (uint32_t)(READ_BIT(SCB->CPUID, SCB_CPUID_VARIANT_Msk) >> SCB_CPUID_VARIANT_Pos);
 }
 
 /**
@@ -454,7 +452,7 @@ __STATIC_INLINE uint32_t LL_CPUID_GetVariant(void)
  */
 __STATIC_INLINE uint32_t LL_CPUID_GetArchitecture(void)
 {
-   return (uint32_t)(READ_BIT(SCB->CPUID, SCB_CPUID_ARCHITECTURE_Msk) >> SCB_CPUID_ARCHITECTURE_Pos);
+    return (uint32_t)(READ_BIT(SCB->CPUID, SCB_CPUID_ARCHITECTURE_Msk) >> SCB_CPUID_ARCHITECTURE_Pos);
 }
 
 /**
@@ -464,7 +462,7 @@ __STATIC_INLINE uint32_t LL_CPUID_GetArchitecture(void)
  */
 __STATIC_INLINE uint32_t LL_CPUID_GetParNo(void)
 {
-   return (uint32_t)(READ_BIT(SCB->CPUID, SCB_CPUID_PARTNO_Msk) >> SCB_CPUID_PARTNO_Pos);
+    return (uint32_t)(READ_BIT(SCB->CPUID, SCB_CPUID_PARTNO_Msk) >> SCB_CPUID_PARTNO_Pos);
 }
 
 /**
@@ -474,14 +472,14 @@ __STATIC_INLINE uint32_t LL_CPUID_GetParNo(void)
  */
 __STATIC_INLINE uint32_t LL_CPUID_GetRevision(void)
 {
-   return (uint32_t)(READ_BIT(SCB->CPUID, SCB_CPUID_REVISION_Msk) >> SCB_CPUID_REVISION_Pos);
+    return (uint32_t)(READ_BIT(SCB->CPUID, SCB_CPUID_REVISION_Msk) >> SCB_CPUID_REVISION_Pos);
 }
 
 /**
  * @}
  */
 
-#   if __MPU_PRESENT
+#if __MPU_PRESENT
 /** @defgroup CORTEX_LL_EF_MPU MPU
  * @{
  */
@@ -498,12 +496,12 @@ __STATIC_INLINE uint32_t LL_CPUID_GetRevision(void)
  */
 __STATIC_INLINE void LL_MPU_Enable(uint32_t Options)
 {
-   /* Enable the MPU*/
-   WRITE_REG(MPU->CTRL, (MPU_CTRL_ENABLE_Msk | Options));
-   /* Ensure MPU settings take effects */
-   __DSB();
-   /* Sequence instruction fetches using update settings */
-   __ISB();
+    /* Enable the MPU*/
+    WRITE_REG(MPU->CTRL, (MPU_CTRL_ENABLE_Msk | Options));
+    /* Ensure MPU settings take effects */
+    __DSB();
+    /* Sequence instruction fetches using update settings */
+    __ISB();
 }
 
 /**
@@ -513,10 +511,10 @@ __STATIC_INLINE void LL_MPU_Enable(uint32_t Options)
  */
 __STATIC_INLINE void LL_MPU_Disable(void)
 {
-   /* Make sure outstanding transfers are done */
-   __DMB();
-   /* Disable MPU*/
-   WRITE_REG(MPU->CTRL, 0U);
+    /* Make sure outstanding transfers are done */
+    __DMB();
+    /* Disable MPU*/
+    WRITE_REG(MPU->CTRL, 0U);
 }
 
 /**
@@ -526,7 +524,7 @@ __STATIC_INLINE void LL_MPU_Disable(void)
  */
 __STATIC_INLINE uint32_t LL_MPU_IsEnabled(void)
 {
-   return (READ_BIT(MPU->CTRL, MPU_CTRL_ENABLE_Msk) == (MPU_CTRL_ENABLE_Msk));
+    return (READ_BIT(MPU->CTRL, MPU_CTRL_ENABLE_Msk) == (MPU_CTRL_ENABLE_Msk));
 }
 
 /**
@@ -545,10 +543,10 @@ __STATIC_INLINE uint32_t LL_MPU_IsEnabled(void)
  */
 __STATIC_INLINE void LL_MPU_EnableRegion(uint32_t Region)
 {
-   /* Set Region number */
-   WRITE_REG(MPU->RNR, Region);
-   /* Enable the MPU region */
-   SET_BIT(MPU->RASR, MPU_RASR_ENABLE_Msk);
+    /* Set Region number */
+    WRITE_REG(MPU->RNR, Region);
+    /* Enable the MPU region */
+    SET_BIT(MPU->RASR, MPU_RASR_ENABLE_Msk);
 }
 
 /**
@@ -593,16 +591,16 @@ __STATIC_INLINE void LL_MPU_EnableRegion(uint32_t Region)
  * @retval None
  */
 __STATIC_INLINE void LL_MPU_ConfigRegion(uint32_t Region,
-                                         uint32_t SubRegionDisable,
-                                         uint32_t Address,
-                                         uint32_t Attributes)
+    uint32_t SubRegionDisable,
+    uint32_t Address,
+    uint32_t Attributes)
 {
-   /* Set Region number */
-   WRITE_REG(MPU->RNR, Region);
-   /* Set base address */
-   WRITE_REG(MPU->RBAR, (Address & 0xFFFFFFE0U));
-   /* Configure MPU */
-   WRITE_REG(MPU->RASR, (MPU_RASR_ENABLE_Msk | Attributes | SubRegionDisable << MPU_RASR_SRD_Pos));
+    /* Set Region number */
+    WRITE_REG(MPU->RNR, Region);
+    /* Set base address */
+    WRITE_REG(MPU->RBAR, (Address & 0xFFFFFFE0U));
+    /* Configure MPU */
+    WRITE_REG(MPU->RASR, (MPU_RASR_ENABLE_Msk | Attributes | SubRegionDisable << MPU_RASR_SRD_Pos));
 }
 
 /**
@@ -622,17 +620,17 @@ __STATIC_INLINE void LL_MPU_ConfigRegion(uint32_t Region,
  */
 __STATIC_INLINE void LL_MPU_DisableRegion(uint32_t Region)
 {
-   /* Set Region number */
-   WRITE_REG(MPU->RNR, Region);
-   /* Disable the MPU region */
-   CLEAR_BIT(MPU->RASR, MPU_RASR_ENABLE_Msk);
+    /* Set Region number */
+    WRITE_REG(MPU->RNR, Region);
+    /* Disable the MPU region */
+    CLEAR_BIT(MPU->RASR, MPU_RASR_ENABLE_Msk);
 }
 
 /**
  * @}
  */
 
-#   endif /* __MPU_PRESENT */
+#endif /* __MPU_PRESENT */
 /**
  * @}
  */
@@ -645,9 +643,9 @@ __STATIC_INLINE void LL_MPU_DisableRegion(uint32_t Region)
  * @}
  */
 
-#   ifdef __cplusplus
+#ifdef __cplusplus
 }
-#   endif
+#endif
 
 #endif /* __STM32L0xx_LL_CORTEX_H */
 

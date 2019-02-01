@@ -49,13 +49,13 @@
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __USBD_DESC__H__
-#   define __USBD_DESC__H__
+#define __USBD_DESC__H__
 
-#   ifdef __cplusplus
+#ifdef __cplusplus
 extern "C" {
-#   endif
+#endif
 /* Includes ------------------------------------------------------------------*/
-#   include "usbd_def.h"
+#include "usbd_def.h"
 
 /** @addtogroup STM32_USB_OTG_DEVICE_LIBRARY
  * @{
@@ -103,9 +103,9 @@ extern USBD_DescriptorsTypeDef FS_Desc;
 /**
  * @}
  */
-#   ifdef __cplusplus
+#ifdef __cplusplus
 }
-#   endif
+#endif
 
 #endif /* __USBD_DESC_H */
 

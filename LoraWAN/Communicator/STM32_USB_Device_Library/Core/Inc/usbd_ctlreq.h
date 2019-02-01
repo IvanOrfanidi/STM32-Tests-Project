@@ -27,14 +27,14 @@
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __USB_REQUEST_H
-#   define __USB_REQUEST_H
+#define __USB_REQUEST_H
 
-#   ifdef __cplusplus
+#ifdef __cplusplus
 extern "C" {
-#   endif
+#endif
 
 /* Includes ------------------------------------------------------------------*/
-#   include "usbd_def.h"
+#include "usbd_def.h"
 
 /** @addtogroup STM32_USB_DEVICE_LIBRARY
  * @{
@@ -90,9 +90,9 @@ void USBD_GetString(uint8_t* desc, uint8_t* unicode, uint16_t* len);
  * @}
  */
 
-#   ifdef __cplusplus
+#ifdef __cplusplus
 }
-#   endif
+#endif
 
 #endif /* __USB_REQUEST_H */
 

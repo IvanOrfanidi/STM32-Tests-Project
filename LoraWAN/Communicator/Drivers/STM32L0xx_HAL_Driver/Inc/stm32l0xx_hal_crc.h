@@ -37,14 +37,14 @@
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __STM32L0xx_HAL_CRC_H
-#   define __STM32L0xx_HAL_CRC_H
+#define __STM32L0xx_HAL_CRC_H
 
-#   ifdef __cplusplus
+#ifdef __cplusplus
 extern "C" {
-#   endif
+#endif
 
 /* Includes ------------------------------------------------------------------*/
-#   include "stm32l0xx_hal_def.h"
+#include "stm32l0xx_hal_def.h"
 
 /** @addtogroup STM32L0xx_HAL_Driver
  * @{
@@ -62,13 +62,12 @@ extern "C" {
 /**
  * @brief  CRC HAL State Structure definition
  */
-typedef enum
-{
-   HAL_CRC_STATE_RESET = 0x00U, /*!< CRC not yet initialized or disabled */
-   HAL_CRC_STATE_READY = 0x01U, /*!< CRC initialized and ready for use   */
-   HAL_CRC_STATE_BUSY = 0x02U, /*!< CRC internal process is ongoing     */
-   HAL_CRC_STATE_TIMEOUT = 0x03U, /*!< CRC timeout state                   */
-   HAL_CRC_STATE_ERROR = 0x04U /*!< CRC error state                     */
+typedef enum {
+    HAL_CRC_STATE_RESET = 0x00U,   /*!< CRC not yet initialized or disabled */
+    HAL_CRC_STATE_READY = 0x01U,   /*!< CRC initialized and ready for use   */
+    HAL_CRC_STATE_BUSY = 0x02U,    /*!< CRC internal process is ongoing     */
+    HAL_CRC_STATE_TIMEOUT = 0x03U, /*!< CRC timeout state                   */
+    HAL_CRC_STATE_ERROR = 0x04U    /*!< CRC error state                     */
 } HAL_CRC_StateTypeDef;
 
 /**
@@ -76,35 +75,35 @@ typedef enum
  */
 typedef struct
 {
-   uint8_t
-      DefaultPolynomialUse; /*!< This parameter is a value of @ref CRC_Default_Polynomial and indicates if default
+    uint8_t
+        DefaultPolynomialUse; /*!< This parameter is a value of @ref CRC_Default_Polynomial and indicates if default
                                polynomial is used. If set to DEFAULT_POLYNOMIAL_ENABLE, resort to default X^32 + X^26 +
                                X^23 + X^22 + X^16 + X^12 + X^11 + X^10 +X^8 + X^7 + X^5 + X^4 + X^2+ X +1. In that case,
                                there is no need to set GeneratingPolynomial field. If otherwise set to
                                DEFAULT_POLYNOMIAL_DISABLE, GeneratingPolynomial and CRCLength fields must be set */
 
-   uint8_t DefaultInitValueUse; /*!< This parameter is a value of @ref CRC_Default_InitValue_Use and indicates if
+    uint8_t DefaultInitValueUse; /*!< This parameter is a value of @ref CRC_Default_InitValue_Use and indicates if
                                    default init value is used. If set to DEFAULT_INIT_VALUE_ENABLE, resort to default
                                      0xFFFFFFFF value. In that case, there is no need to set InitValue field.
                                      If otherwise set to DEFAULT_INIT_VALUE_DISABLE,  InitValue field must be set */
 
-   uint32_t
-      GeneratingPolynomial; /*!< Set CRC generating polynomial. 7, 8, 16 or 32-bit long value for a polynomial degree
+    uint32_t
+        GeneratingPolynomial; /*!< Set CRC generating polynomial. 7, 8, 16 or 32-bit long value for a polynomial degree
                                  respectively equal to 7, 8, 16 or 32. This field is written in normal representation,
                                  e.g., for a polynomial of degree 7, X^7 + X^6 + X^5 + X^2 + 1 is written 0x65.
                                  No need to specify it if DefaultPolynomialUse is set to DEFAULT_POLYNOMIAL_ENABLE   */
 
-   uint32_t CRCLength; /*!< This parameter is a value of @ref CRC_Polynomial_Sizes and indicates CRC length.
+    uint32_t CRCLength; /*!< This parameter is a value of @ref CRC_Polynomial_Sizes and indicates CRC length.
                             Value can be either one of
                             CRC_POLYLENGTH_32B                  (32-bit CRC)
                             CRC_POLYLENGTH_16B                  (16-bit CRC)
                             CRC_POLYLENGTH_8B                   (8-bit CRC)
                             CRC_POLYLENGTH_7B                   (7-bit CRC) */
 
-   uint32_t InitValue; /*!< Init value to initiate CRC computation. No need to specify it if DefaultInitValueUse
+    uint32_t InitValue; /*!< Init value to initiate CRC computation. No need to specify it if DefaultInitValueUse
                             is set to DEFAULT_INIT_VALUE_ENABLE   */
 
-   uint32_t InputDataInversionMode; /*!< This parameter is a value of @ref CRCEx_Input_Data_Inversion and specifies
+    uint32_t InputDataInversionMode; /*!< This parameter is a value of @ref CRCEx_Input_Data_Inversion and specifies
                                        input data inversion mode. Can be either one of the following values
                                          CRC_INPUTDATA_INVERSION_NONE      no input data inversion
                                          CRC_INPUTDATA_INVERSION_BYTE      byte-wise inversion, 0x1A2B3C4D becomes
@@ -112,7 +111,7 @@ typedef struct
                                        becomes 0xD458B23C CRC_INPUTDATA_INVERSION_WORD      word-wise inversion,
                                        0x1A2B3C4D becomes 0xB23CD458 */
 
-   uint32_t OutputDataInversionMode; /*!< This parameter is a value of @ref CRCEx_Output_Data_Inversion and specifies
+    uint32_t OutputDataInversionMode; /*!< This parameter is a value of @ref CRCEx_Output_Data_Inversion and specifies
                                         output data (i.e. CRC) inversion mode. Can be either
                                            CRC_OUTPUTDATA_INVERSION_DISABLE   no CRC inversion, or
                                            CRC_OUTPUTDATA_INVERSION_ENABLE    CRC 0x11223344 is converted into
@@ -124,16 +123,16 @@ typedef struct
  */
 typedef struct
 {
-   CRC_TypeDef* Instance; /*!< Register base address        */
+    CRC_TypeDef* Instance; /*!< Register base address        */
 
-   CRC_InitTypeDef Init; /*!< CRC configuration parameters */
+    CRC_InitTypeDef Init; /*!< CRC configuration parameters */
 
-   HAL_LockTypeDef Lock; /*!< CRC Locking object           */
+    HAL_LockTypeDef Lock; /*!< CRC Locking object           */
 
-   __IO HAL_CRC_StateTypeDef State; /*!< CRC communication state      */
+    __IO HAL_CRC_StateTypeDef State; /*!< CRC communication state      */
 
-   uint32_t
-      InputDataFormat; /*!< This parameter is a value of @ref CRC_Input_Buffer_Format and specifies input data format.
+    uint32_t
+        InputDataFormat; /*!< This parameter is a value of @ref CRC_Input_Buffer_Format and specifies input data format.
                         Can be either
                         CRC_INPUTDATA_FORMAT_BYTES       input data is a stream of bytes (8-bit data)
                         CRC_INPUTDATA_FORMAT_HALFWORDS   input data is a stream of half-words (16-bit data)
@@ -154,7 +153,7 @@ typedef struct
 /** @defgroup CRC_Default_Polynomial_Value    Default CRC generating polynomial
  * @{
  */
-#   define DEFAULT_CRC32_POLY 0x04C11DB7U
+#define DEFAULT_CRC32_POLY 0x04C11DB7U
 
 /**
  * @}
@@ -163,7 +162,7 @@ typedef struct
 /** @defgroup CRC_Default_InitValue    Default CRC computation initialization value
  * @{
  */
-#   define DEFAULT_CRC_INITVALUE 0xFFFFFFFFU
+#define DEFAULT_CRC_INITVALUE 0xFFFFFFFFU
 
 /**
  * @}
@@ -172,8 +171,8 @@ typedef struct
 /** @defgroup CRC_Default_Polynomial    Indicates whether or not default polynomial is used
  * @{
  */
-#   define DEFAULT_POLYNOMIAL_ENABLE ((uint8_t)0x00U)
-#   define DEFAULT_POLYNOMIAL_DISABLE ((uint8_t)0x01U)
+#define DEFAULT_POLYNOMIAL_ENABLE ((uint8_t)0x00U)
+#define DEFAULT_POLYNOMIAL_DISABLE ((uint8_t)0x01U)
 
 /**
  * @}
@@ -182,8 +181,8 @@ typedef struct
 /** @defgroup CRC_Default_InitValue_Use    Indicates whether or not default init value is used
  * @{
  */
-#   define DEFAULT_INIT_VALUE_ENABLE ((uint8_t)0x00U)
-#   define DEFAULT_INIT_VALUE_DISABLE ((uint8_t)0x01U)
+#define DEFAULT_INIT_VALUE_ENABLE ((uint8_t)0x00U)
+#define DEFAULT_INIT_VALUE_DISABLE ((uint8_t)0x01U)
 
 /**
  * @}
@@ -192,10 +191,10 @@ typedef struct
 /** @defgroup CRC_Polynomial_Sizes Polynomial sizes to configure the IP
  * @{
  */
-#   define CRC_POLYLENGTH_32B ((uint32_t)0x00000000U)
-#   define CRC_POLYLENGTH_16B ((uint32_t)CRC_CR_POLYSIZE_0)
-#   define CRC_POLYLENGTH_8B ((uint32_t)CRC_CR_POLYSIZE_1)
-#   define CRC_POLYLENGTH_7B ((uint32_t)CRC_CR_POLYSIZE)
+#define CRC_POLYLENGTH_32B ((uint32_t)0x00000000U)
+#define CRC_POLYLENGTH_16B ((uint32_t)CRC_CR_POLYSIZE_0)
+#define CRC_POLYLENGTH_8B ((uint32_t)CRC_CR_POLYSIZE_1)
+#define CRC_POLYLENGTH_7B ((uint32_t)CRC_CR_POLYSIZE)
 /**
  * @}
  */
@@ -203,10 +202,10 @@ typedef struct
 /** @defgroup CRC_Polynomial_Size_Definitions CRC polynomial possible sizes actual definitions
  * @{
  */
-#   define HAL_CRC_LENGTH_32B 32U
-#   define HAL_CRC_LENGTH_16B 16U
-#   define HAL_CRC_LENGTH_8B 8U
-#   define HAL_CRC_LENGTH_7B 7U
+#define HAL_CRC_LENGTH_32B 32U
+#define HAL_CRC_LENGTH_16B 16U
+#define HAL_CRC_LENGTH_8B 8U
+#define HAL_CRC_LENGTH_7B 7U
 
 /**
  * @}
@@ -219,10 +218,10 @@ typedef struct
  * an error is triggered in HAL_CRC_Init() if InputDataFormat field is set
  * to CRC_INPUT_FORMAT_UNDEFINED: the format MUST be defined by the user for
  * the CRC APIs to provide a correct result */
-#   define CRC_INPUTDATA_FORMAT_UNDEFINED ((uint32_t)0x00000000U)
-#   define CRC_INPUTDATA_FORMAT_BYTES ((uint32_t)0x00000001U)
-#   define CRC_INPUTDATA_FORMAT_HALFWORDS ((uint32_t)0x00000002U)
-#   define CRC_INPUTDATA_FORMAT_WORDS ((uint32_t)0x00000003U)
+#define CRC_INPUTDATA_FORMAT_UNDEFINED ((uint32_t)0x00000000U)
+#define CRC_INPUTDATA_FORMAT_BYTES ((uint32_t)0x00000001U)
+#define CRC_INPUTDATA_FORMAT_HALFWORDS ((uint32_t)0x00000002U)
+#define CRC_INPUTDATA_FORMAT_WORDS ((uint32_t)0x00000003U)
 
 /**
  * @}
@@ -241,14 +240,14 @@ typedef struct
  * @param  __HANDLE__: CRC handle.
  * @retval None
  */
-#   define __HAL_CRC_RESET_HANDLE_STATE(__HANDLE__) ((__HANDLE__)->State = HAL_CRC_STATE_RESET)
+#define __HAL_CRC_RESET_HANDLE_STATE(__HANDLE__) ((__HANDLE__)->State = HAL_CRC_STATE_RESET)
 
 /**
  * @brief  Reset CRC Data Register.
  * @param  __HANDLE__: CRC handle
  * @retval None.
  */
-#   define __HAL_CRC_DR_RESET(__HANDLE__) ((__HANDLE__)->Instance->CR |= CRC_CR_RESET)
+#define __HAL_CRC_DR_RESET(__HANDLE__) ((__HANDLE__)->Instance->CR |= CRC_CR_RESET)
 
 /**
  * @brief  Set CRC INIT non-default value
@@ -256,7 +255,7 @@ typedef struct
  * @param  __INIT__      : 32-bit initial value
  * @retval None.
  */
-#   define __HAL_CRC_INITIALCRCVALUE_CONFIG(__HANDLE__, __INIT__) ((__HANDLE__)->Instance->INIT = (__INIT__))
+#define __HAL_CRC_INITIALCRCVALUE_CONFIG(__HANDLE__, __INIT__) ((__HANDLE__)->Instance->INIT = (__INIT__))
 
 /**
  * @brief Stores a 8-bit data in the Independent Data(ID) register.
@@ -264,14 +263,14 @@ typedef struct
  * @param __VALUE__: 8-bit value to be stored in the ID register
  * @retval None
  */
-#   define __HAL_CRC_SET_IDR(__HANDLE__, __VALUE__) (WRITE_REG((__HANDLE__)->Instance->IDR, (__VALUE__)))
+#define __HAL_CRC_SET_IDR(__HANDLE__, __VALUE__) (WRITE_REG((__HANDLE__)->Instance->IDR, (__VALUE__)))
 
 /**
  * @brief Returns the 8-bit data stored in the Independent Data(ID) register.
  * @param __HANDLE__: CRC handle
  * @retval 8-bit value of the ID register
  */
-#   define __HAL_CRC_GET_IDR(__HANDLE__) (((__HANDLE__)->Instance->IDR) & CRC_IDR_IDR)
+#define __HAL_CRC_GET_IDR(__HANDLE__) (((__HANDLE__)->Instance->IDR) & CRC_IDR_IDR)
 /**
  * @}
  */
@@ -281,34 +280,34 @@ typedef struct
  * @{
  */
 
-#   define IS_DEFAULT_POLYNOMIAL(__DEFAULT__) \
-      (((__DEFAULT__) == DEFAULT_POLYNOMIAL_ENABLE) || ((__DEFAULT__) == DEFAULT_POLYNOMIAL_DISABLE))
+#define IS_DEFAULT_POLYNOMIAL(__DEFAULT__) \
+    (((__DEFAULT__) == DEFAULT_POLYNOMIAL_ENABLE) || ((__DEFAULT__) == DEFAULT_POLYNOMIAL_DISABLE))
 
-#   define IS_DEFAULT_INIT_VALUE(__VALUE__) \
-      (((__VALUE__) == DEFAULT_INIT_VALUE_ENABLE) || ((__VALUE__) == DEFAULT_INIT_VALUE_DISABLE))
+#define IS_DEFAULT_INIT_VALUE(__VALUE__) \
+    (((__VALUE__) == DEFAULT_INIT_VALUE_ENABLE) || ((__VALUE__) == DEFAULT_INIT_VALUE_DISABLE))
 
-#   define IS_CRC_POL_LENGTH(__LENGTH__) \
-      (((__LENGTH__) == CRC_POLYLENGTH_32B) || ((__LENGTH__) == CRC_POLYLENGTH_16B) || \
-       ((__LENGTH__) == CRC_POLYLENGTH_8B) || ((__LENGTH__) == CRC_POLYLENGTH_7B))
+#define IS_CRC_POL_LENGTH(__LENGTH__) \
+    (((__LENGTH__) == CRC_POLYLENGTH_32B) || ((__LENGTH__) == CRC_POLYLENGTH_16B) || \
+        ((__LENGTH__) == CRC_POLYLENGTH_8B) || ((__LENGTH__) == CRC_POLYLENGTH_7B))
 
-#   define IS_CRC_INPUTDATA_FORMAT(__FORMAT__) \
-      (((__FORMAT__) == CRC_INPUTDATA_FORMAT_BYTES) || ((__FORMAT__) == CRC_INPUTDATA_FORMAT_HALFWORDS) || \
-       ((__FORMAT__) == CRC_INPUTDATA_FORMAT_WORDS))
+#define IS_CRC_INPUTDATA_FORMAT(__FORMAT__) \
+    (((__FORMAT__) == CRC_INPUTDATA_FORMAT_BYTES) || ((__FORMAT__) == CRC_INPUTDATA_FORMAT_HALFWORDS) || \
+        ((__FORMAT__) == CRC_INPUTDATA_FORMAT_WORDS))
 
 /**
  * @}
  */
 
 /* Include CRC HAL Extension module */
-#   include "stm32l0xx_hal_crc_ex.h"
+#include "stm32l0xx_hal_crc_ex.h"
 
 /** @defgroup CRC_Exported_Constants   CRC Exported Constants
  * @{
  */
 
 /* Aliases for inter STM32 series compatibility */
-#   define HAL_CRC_Input_Data_Reverse HAL_CRCEx_Input_Data_Reverse
-#   define HAL_CRC_Output_Data_Reverse HAL_CRCEx_Output_Data_Reverse
+#define HAL_CRC_Input_Data_Reverse HAL_CRCEx_Input_Data_Reverse
+#define HAL_CRC_Output_Data_Reverse HAL_CRCEx_Output_Data_Reverse
 
 /**
  * @}
@@ -372,9 +371,9 @@ HAL_CRC_StateTypeDef HAL_CRC_GetState(CRC_HandleTypeDef* hcrc);
  * @}
  */
 
-#   ifdef __cplusplus
+#ifdef __cplusplus
 }
-#   endif
+#endif
 
 #endif /* __STM32L0xx_HAL_CRC_H */
 

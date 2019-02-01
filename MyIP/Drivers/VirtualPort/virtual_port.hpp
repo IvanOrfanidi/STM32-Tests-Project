@@ -18,34 +18,31 @@
 #ifndef __VIRTUAL_PORT_HPP
 #define __VIRTUAL_PORT_HPP
 
-
 /* Includes ------------------------------------------------------------------*/
 #include <stdint.h>
 #include <stdlib.h>
 
-
 #ifdef __cplusplus
 
-class VirtualPort
-{
-    public:
-    
-        /// Transmits single data
-        virtual void Transmit(const uint8_t *, size_t) = 0;
+class VirtualPort {
+  public:
+    /// Transmits single data
+    virtual void Transmit(const uint8_t*, size_t) = 0;
 
-        /// Returns the most recent received data
-        virtual size_t Receive(uint8_t *, size_t) = 0;
+    /// Returns the most recent received data
+    virtual size_t Receive(uint8_t*, size_t) = 0;
 
-        virtual void ClearTransmit() = 0;
+    virtual void ClearTransmit() = 0;
 
-        virtual void ClearReceive() = 0;
-        
-        virtual size_t GetLen() = 0;
+    virtual void ClearReceive() = 0;
 
-        virtual void WaitingCompleteTransfer() = 0;
+    virtual size_t GetLen() = 0;
+
+    virtual void WaitingCompleteTransfer() = 0;
 };
 
-extern "C" {}
+extern "C" {
+}
 #endif
 
 #endif

@@ -37,14 +37,14 @@
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __STM32L0xx_HAL_PWR_EX_H
-#   define __STM32L0xx_HAL_PWR_EX_H
+#define __STM32L0xx_HAL_PWR_EX_H
 
-#   ifdef __cplusplus
+#ifdef __cplusplus
 extern "C" {
-#   endif
+#endif
 
 /* Includes ------------------------------------------------------------------*/
-#   include "stm32l0xx_hal_def.h"
+#include "stm32l0xx_hal_def.h"
 
 /** @addtogroup STM32L0xx_HAL_Driver
  * @{
@@ -63,14 +63,14 @@ extern "C" {
  *         FLASH_ACR register are both set , the Flash memory will not be woken up
  *         when exiting from deep-sleep mode.
  */
-#   define __HAL_PWR_FLASHWAKEUP_ENABLE() CLEAR_BIT(PWR->CR, PWR_CR_DSEEKOFF)
+#define __HAL_PWR_FLASHWAKEUP_ENABLE() CLEAR_BIT(PWR->CR, PWR_CR_DSEEKOFF)
 
 /** @brief  Macros to disable the Deep-sleep mode with Flash memory kept off.
  * @note   When entering low power mode (stop or standby only), if DS_EE_KOFF and RUN_PD of
  *         FLASH_ACR register are both set , the Flash memory will not be woken up
  *         when exiting from deep-sleep mode.
  */
-#   define __HAL_PWR_FLASHWAKEUP_DISABLE() SET_BIT(PWR->CR, PWR_CR_DSEEKOFF)
+#define __HAL_PWR_FLASHWAKEUP_DISABLE() SET_BIT(PWR->CR, PWR_CR_DSEEKOFF)
 /**
  * @}
  */
@@ -107,9 +107,9 @@ HAL_StatusTypeDef HAL_PWREx_DisableLowPowerRunMode(void);
  * @}
  */
 
-#   ifdef __cplusplus
+#ifdef __cplusplus
 }
-#   endif
+#endif
 
 #endif /* __STM32L0xx_HAL_PWR_EX_H */
 

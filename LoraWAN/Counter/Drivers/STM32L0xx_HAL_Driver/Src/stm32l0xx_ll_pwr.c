@@ -37,14 +37,14 @@
 #if defined(USE_FULL_LL_DRIVER)
 
 /* Includes ------------------------------------------------------------------*/
-#   include "stm32l0xx_ll_pwr.h"
-#   include "stm32l0xx_ll_bus.h"
+#include "stm32l0xx_ll_pwr.h"
+#include "stm32l0xx_ll_bus.h"
 
 /** @addtogroup STM32L0xx_LL_Driver
  * @{
  */
 
-#   if defined(PWR)
+#if defined(PWR)
 
 /** @defgroup PWR_LL PWR
  * @{
@@ -73,13 +73,13 @@
  */
 ErrorStatus LL_PWR_DeInit(void)
 {
-   /* Force reset of PWR clock */
-   LL_APB1_GRP1_ForceReset(LL_APB1_GRP1_PERIPH_PWR);
+    /* Force reset of PWR clock */
+    LL_APB1_GRP1_ForceReset(LL_APB1_GRP1_PERIPH_PWR);
 
-   /* Release reset of PWR clock */
-   LL_APB1_GRP1_ReleaseReset(LL_APB1_GRP1_PERIPH_PWR);
+    /* Release reset of PWR clock */
+    LL_APB1_GRP1_ReleaseReset(LL_APB1_GRP1_PERIPH_PWR);
 
-   return SUCCESS;
+    return SUCCESS;
 }
 
 /**
@@ -93,7 +93,7 @@ ErrorStatus LL_PWR_DeInit(void)
 /**
  * @}
  */
-#   endif /* defined(PWR) */
+#endif /* defined(PWR) */
 /**
  * @}
  */

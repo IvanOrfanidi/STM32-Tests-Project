@@ -37,14 +37,14 @@
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __STM32L0xx_HAL_LPTIM_EX_H
-#   define __STM32L0xx_HAL_LPTIM_EX_H
+#define __STM32L0xx_HAL_LPTIM_EX_H
 
-#   ifdef __cplusplus
+#ifdef __cplusplus
 extern "C" {
-#   endif
+#endif
 
 /* Includes ------------------------------------------------------------------*/
-#   include "stm32l0xx_hal_def.h"
+#include "stm32l0xx_hal_def.h"
 
 /** @addtogroup STM32L0xx_HAL_Driver
  * @{
@@ -63,20 +63,20 @@ extern "C" {
 /** @defgroup LPTIM_Trigger_Source Trigger source
  * @{
  */
-#   define LPTIM_TRIGSOURCE_SOFTWARE ((uint32_t)0x0000FFFFU)
-#   define LPTIM_TRIGSOURCE_0 ((uint32_t)0x00000000U)
-#   define LPTIM_TRIGSOURCE_1 ((uint32_t)LPTIM_CFGR_TRIGSEL_0)
-#   define LPTIM_TRIGSOURCE_2 LPTIM_CFGR_TRIGSEL_1
-#   define LPTIM_TRIGSOURCE_3 ((uint32_t)LPTIM_CFGR_TRIGSEL_0 | LPTIM_CFGR_TRIGSEL_1)
-#   define LPTIM_TRIGSOURCE_4 LPTIM_CFGR_TRIGSEL_2
+#define LPTIM_TRIGSOURCE_SOFTWARE ((uint32_t)0x0000FFFFU)
+#define LPTIM_TRIGSOURCE_0 ((uint32_t)0x00000000U)
+#define LPTIM_TRIGSOURCE_1 ((uint32_t)LPTIM_CFGR_TRIGSEL_0)
+#define LPTIM_TRIGSOURCE_2 LPTIM_CFGR_TRIGSEL_1
+#define LPTIM_TRIGSOURCE_3 ((uint32_t)LPTIM_CFGR_TRIGSEL_0 | LPTIM_CFGR_TRIGSEL_1)
+#define LPTIM_TRIGSOURCE_4 LPTIM_CFGR_TRIGSEL_2
 
-#   if defined(STM32L083xx) || defined(STM32L082xx) || defined(STM32L081xx) || defined(STM32L073xx) || \
-      defined(STM32L072xx) || defined(STM32L071xx) || defined(STM32L031xx) || defined(STM32L041xx)
-#      define LPTIM_TRIGSOURCE_5 ((uint32_t)LPTIM_CFGR_TRIGSEL_0 | LPTIM_CFGR_TRIGSEL_2)
-#   endif
+#if defined(STM32L083xx) || defined(STM32L082xx) || defined(STM32L081xx) || defined(STM32L073xx) || \
+    defined(STM32L072xx) || defined(STM32L071xx) || defined(STM32L031xx) || defined(STM32L041xx)
+#define LPTIM_TRIGSOURCE_5 ((uint32_t)LPTIM_CFGR_TRIGSEL_0 | LPTIM_CFGR_TRIGSEL_2)
+#endif
 
-#   define LPTIM_TRIGSOURCE_6 ((uint32_t)LPTIM_CFGR_TRIGSEL_1 | LPTIM_CFGR_TRIGSEL_2)
-#   define LPTIM_TRIGSOURCE_7 LPTIM_CFGR_TRIGSEL
+#define LPTIM_TRIGSOURCE_6 ((uint32_t)LPTIM_CFGR_TRIGSEL_1 | LPTIM_CFGR_TRIGSEL_2)
+#define LPTIM_TRIGSOURCE_7 LPTIM_CFGR_TRIGSEL
 /**
  * @}
  */
@@ -88,22 +88,22 @@ extern "C" {
 /** @addtogroup LPTIMEx_Private
  * @{
  */
-#   if defined(STM32L083xx) || defined(STM32L082xx) || defined(STM32L081xx) || defined(STM32L073xx) || \
-      defined(STM32L072xx) || defined(STM32L071xx) || defined(STM32L031xx) || defined(STM32L041xx)
+#if defined(STM32L083xx) || defined(STM32L082xx) || defined(STM32L081xx) || defined(STM32L073xx) || \
+    defined(STM32L072xx) || defined(STM32L071xx) || defined(STM32L031xx) || defined(STM32L041xx)
 
-#      define IS_LPTIM_TRG_SOURCE(__TRIG__) \
-         (((__TRIG__) == LPTIM_TRIGSOURCE_SOFTWARE) || ((__TRIG__) == LPTIM_TRIGSOURCE_0) || \
-          ((__TRIG__) == LPTIM_TRIGSOURCE_1) || ((__TRIG__) == LPTIM_TRIGSOURCE_2) || \
-          ((__TRIG__) == LPTIM_TRIGSOURCE_3) || ((__TRIG__) == LPTIM_TRIGSOURCE_4) || \
-          ((__TRIG__) == LPTIM_TRIGSOURCE_5) || ((__TRIG__) == LPTIM_TRIGSOURCE_6) || \
-          ((__TRIG__) == LPTIM_TRIGSOURCE_7))
-#   else
-#      define IS_LPTIM_TRG_SOURCE(__TRIG__) \
-         (((__TRIG__) == LPTIM_TRIGSOURCE_SOFTWARE) || ((__TRIG__) == LPTIM_TRIGSOURCE_0) || \
-          ((__TRIG__) == LPTIM_TRIGSOURCE_1) || ((__TRIG__) == LPTIM_TRIGSOURCE_2) || \
-          ((__TRIG__) == LPTIM_TRIGSOURCE_3) || ((__TRIG__) == LPTIM_TRIGSOURCE_4) || \
-          ((__TRIG__) == LPTIM_TRIGSOURCE_6) || ((__TRIG__) == LPTIM_TRIGSOURCE_7))
-#   endif
+#define IS_LPTIM_TRG_SOURCE(__TRIG__) \
+    (((__TRIG__) == LPTIM_TRIGSOURCE_SOFTWARE) || ((__TRIG__) == LPTIM_TRIGSOURCE_0) || \
+        ((__TRIG__) == LPTIM_TRIGSOURCE_1) || ((__TRIG__) == LPTIM_TRIGSOURCE_2) || \
+        ((__TRIG__) == LPTIM_TRIGSOURCE_3) || ((__TRIG__) == LPTIM_TRIGSOURCE_4) || \
+        ((__TRIG__) == LPTIM_TRIGSOURCE_5) || ((__TRIG__) == LPTIM_TRIGSOURCE_6) || \
+        ((__TRIG__) == LPTIM_TRIGSOURCE_7))
+#else
+#define IS_LPTIM_TRG_SOURCE(__TRIG__) \
+    (((__TRIG__) == LPTIM_TRIGSOURCE_SOFTWARE) || ((__TRIG__) == LPTIM_TRIGSOURCE_0) || \
+        ((__TRIG__) == LPTIM_TRIGSOURCE_1) || ((__TRIG__) == LPTIM_TRIGSOURCE_2) || \
+        ((__TRIG__) == LPTIM_TRIGSOURCE_3) || ((__TRIG__) == LPTIM_TRIGSOURCE_4) || \
+        ((__TRIG__) == LPTIM_TRIGSOURCE_6) || ((__TRIG__) == LPTIM_TRIGSOURCE_7))
+#endif
 /**
  * @}
  */
@@ -116,9 +116,9 @@ extern "C" {
  * @}
  */
 
-#   ifdef __cplusplus
+#ifdef __cplusplus
 }
-#   endif
+#endif
 
 #endif /* __STM32L0xx_HAL_LPTIM_EX_H */
 

@@ -62,107 +62,100 @@ void arm_max_q15(q15_t* pSrc, uint32_t blockSize, q15_t* pResult, uint32_t* pInd
 {
 #ifndef ARM_MATH_CM0_FAMILY
 
-   /* Run the below code for Cortex-M4 and Cortex-M3 */
-   q15_t maxVal1, maxVal2, out; /* Temporary variables to store the output value. */
-   uint32_t blkCnt, outIndex, count; /* loop counter */
+    /* Run the below code for Cortex-M4 and Cortex-M3 */
+    q15_t maxVal1, maxVal2, out;      /* Temporary variables to store the output value. */
+    uint32_t blkCnt, outIndex, count; /* loop counter */
 
-   /* Initialise the count value. */
-   count = 0u;
-   /* Initialise the index value to zero. */
-   outIndex = 0u;
-   /* Load first input value that act as reference value for comparision */
-   out = *pSrc++;
+    /* Initialise the count value. */
+    count = 0u;
+    /* Initialise the index value to zero. */
+    outIndex = 0u;
+    /* Load first input value that act as reference value for comparision */
+    out = *pSrc++;
 
-   /* Loop unrolling */
-   blkCnt = (blockSize - 1u) >> 2u;
+    /* Loop unrolling */
+    blkCnt = (blockSize - 1u) >> 2u;
 
-   /* Run the below code for Cortex-M4 and Cortex-M3 */
-   while (blkCnt > 0u)
-   {
-      /* Initialize maxVal to the next consecutive values one by one */
-      maxVal1 = *pSrc++;
+    /* Run the below code for Cortex-M4 and Cortex-M3 */
+    while(blkCnt > 0u) {
+        /* Initialize maxVal to the next consecutive values one by one */
+        maxVal1 = *pSrc++;
 
-      maxVal2 = *pSrc++;
+        maxVal2 = *pSrc++;
 
-      /* compare for the maximum value */
-      if (out < maxVal1)
-      {
-         /* Update the maximum value and its index */
-         out = maxVal1;
-         outIndex = count + 1u;
-      }
+        /* compare for the maximum value */
+        if(out < maxVal1) {
+            /* Update the maximum value and its index */
+            out = maxVal1;
+            outIndex = count + 1u;
+        }
 
-      maxVal1 = *pSrc++;
+        maxVal1 = *pSrc++;
 
-      /* compare for the maximum value */
-      if (out < maxVal2)
-      {
-         /* Update the maximum value and its index */
-         out = maxVal2;
-         outIndex = count + 2u;
-      }
+        /* compare for the maximum value */
+        if(out < maxVal2) {
+            /* Update the maximum value and its index */
+            out = maxVal2;
+            outIndex = count + 2u;
+        }
 
-      maxVal2 = *pSrc++;
+        maxVal2 = *pSrc++;
 
-      /* compare for the maximum value */
-      if (out < maxVal1)
-      {
-         /* Update the maximum value and its index */
-         out = maxVal1;
-         outIndex = count + 3u;
-      }
+        /* compare for the maximum value */
+        if(out < maxVal1) {
+            /* Update the maximum value and its index */
+            out = maxVal1;
+            outIndex = count + 3u;
+        }
 
-      /* compare for the maximum value */
-      if (out < maxVal2)
-      {
-         /* Update the maximum value and its index */
-         out = maxVal2;
-         outIndex = count + 4u;
-      }
+        /* compare for the maximum value */
+        if(out < maxVal2) {
+            /* Update the maximum value and its index */
+            out = maxVal2;
+            outIndex = count + 4u;
+        }
 
-      count += 4u;
+        count += 4u;
 
-      /* Decrement the loop counter */
-      blkCnt--;
-   }
+        /* Decrement the loop counter */
+        blkCnt--;
+    }
 
-   /* if (blockSize - 1u) is not multiple of 4 */
-   blkCnt = (blockSize - 1u) % 4u;
+    /* if (blockSize - 1u) is not multiple of 4 */
+    blkCnt = (blockSize - 1u) % 4u;
 
 #else
 
-   /* Run the below code for Cortex-M0 */
-   q15_t maxVal1, out; /* Temporary variables to store the output value. */
-   uint32_t blkCnt, outIndex; /* loop counter */
+    /* Run the below code for Cortex-M0 */
+    q15_t maxVal1, out;        /* Temporary variables to store the output value. */
+    uint32_t blkCnt, outIndex; /* loop counter */
 
-   blkCnt = (blockSize - 1u);
+    blkCnt = (blockSize - 1u);
 
-   /* Initialise the index value to zero. */
-   outIndex = 0u;
-   /* Load first input value that act as reference value for comparision */
-   out = *pSrc++;
+    /* Initialise the index value to zero. */
+    outIndex = 0u;
+    /* Load first input value that act as reference value for comparision */
+    out = *pSrc++;
 
 #endif /* #ifndef ARM_MATH_CM0_FAMILY */
 
-   while (blkCnt > 0u)
-   {
-      /* Initialize maxVal to the next consecutive values one by one */
-      maxVal1 = *pSrc++;
+    while(blkCnt > 0u) {
+        /* Initialize maxVal to the next consecutive values one by one */
+        maxVal1 = *pSrc++;
 
-      /* compare for the maximum value */
-      if (out < maxVal1)
-      {
-         /* Update the maximum value and it's index */
-         out = maxVal1;
-         outIndex = blockSize - blkCnt;
-      }
-      /* Decrement the loop counter */
-      blkCnt--;
-   }
+        /* compare for the maximum value */
+        if(out < maxVal1) {
+            /* Update the maximum value and it's index */
+            out = maxVal1;
+            outIndex = blockSize - blkCnt;
+        }
+        /* Decrement the loop counter */
+        blkCnt--;
+    }
 
-   /* Store the maximum value and its index into destination pointers */
-   *pResult = out;
-   *pIndex = outIndex;
+    /* Store the maximum value and its index into destination pointers */
+    *pResult = out;
+    *pIndex = outIndex;
 }
 
 /**

@@ -4,20 +4,19 @@
 
 void vLcdTask(void* pvParameters)
 {
-   RTC_t stDate;
-   char strMsgstDate[20];
-   uint16_t year = 0;
-   uint8_t month = 0;
-   uint8_t mday = 0;
+    RTC_t stDate;
+    char strMsgstDate[20];
+    uint16_t year = 0;
+    uint8_t month = 0;
+    uint8_t mday = 0;
 
-   LCD_Init();
-   LCD_Send_CMD(DISP_ON);
-   LCD_Send_CMD(CLR_DISP);
-   _delay_ms(250);
-   LCD_Send_STR("HELLO!");
+    LCD_Init();
+    LCD_Send_CMD(DISP_ON);
+    LCD_Send_CMD(CLR_DISP);
+    _delay_ms(250);
+    LCD_Send_STR("HELLO!");
 
-   while (1)
-   {
+    while(1) {
 #if 0     
    rtc_gettime(&stDate);
    
@@ -73,7 +72,7 @@ void vLcdTask(void* pvParameters)
      }
    }
 #endif
-      /*
+        /*
       LCD_Send_CMD(DD_RAM_ADDR3);
       for(uint8_t i=0; i<COLUMN_LCD; i++) {
                  LCD_Send_CHAR(0x20);
@@ -84,8 +83,8 @@ void vLcdTask(void* pvParameters)
                  LCD_Send_CHAR(0x20);
       }
        */
-      _delay_ms(1000);
-   }
+        _delay_ms(1000);
+    }
 
-   vTaskDelete(NULL);
+    vTaskDelete(NULL);
 }

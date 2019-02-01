@@ -76,7 +76,7 @@
  */
 void HAL_MspInit(void)
 {
-   /* NOTE : This function is eventually modified by the user */
+    /* NOTE : This function is eventually modified by the user */
 }
 
 /**
@@ -86,7 +86,7 @@ void HAL_MspInit(void)
  */
 void HAL_MspDeInit(void)
 {
-   /* NOTE : This function is eventually modified by the user */
+    /* NOTE : This function is eventually modified by the user */
 }
 
 /**
@@ -96,7 +96,7 @@ void HAL_MspDeInit(void)
  */
 void HAL_PPP_MspInit(void)
 {
-   /* NOTE : This function is eventually modified by the user */
+    /* NOTE : This function is eventually modified by the user */
 }
 
 /**
@@ -106,7 +106,7 @@ void HAL_PPP_MspInit(void)
  */
 void HAL_PPP_MspDeInit(void)
 {
-   /* NOTE : This function is eventually modified by the user */
+    /* NOTE : This function is eventually modified by the user */
 }
 
 /**

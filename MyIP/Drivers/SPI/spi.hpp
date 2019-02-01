@@ -24,60 +24,53 @@
 #include <stdlib.h>
 #include <string.h>
 
+class Spi : public VirtualPort {
+  public:
+    enum Default_t {
+        RX_ADD_SIZE = 16,
+        RX_BUFFER_SIZE = 1,
+    };
 
-class Spi : public VirtualPort
-{
-    public:
-    
-        enum Default_t
-        {
-            RX_ADD_SIZE     = 16,
-            RX_BUFFER_SIZE  = 1,
-        };
-            
-        /// Ñonstructor
-        Spi(SPI_TypeDef* const, SPI_InitTypeDef* initStruct, size_t rx_size = RX_BUFFER_SIZE);
-        
-        virtual ~Spi();    /// Destructor
+    /// Ñonstructor
+    Spi(SPI_TypeDef* const, SPI_InitTypeDef* initStruct, size_t rx_size = RX_BUFFER_SIZE);
 
-        virtual uint32_t GetLen() override;
+    virtual ~Spi();    /// Destructor
 
-        virtual void WaitingCompleteTransfer() override;
+    virtual uint32_t GetLen() override;
 
-        /// Transmits single data
-        void Transmit(const uint8_t*, size_t) override;
+    virtual void WaitingCompleteTransfer() override;
 
-        virtual void ClearTransmit() override;
+    /// Transmits single data
+    void Transmit(const uint8_t*, size_t) override;
 
-        /// Returns the most recent received data
-        virtual uint32_t Receive(uint8_t*, size_t) override;
+    virtual void ClearTransmit() override;
 
-        virtual void ClearReceive() override;
+    /// Returns the most recent received data
+    virtual uint32_t Receive(uint8_t*, size_t) override;
 
-        
-    private:
-    
-        bool InitDataBuf(size_t);
-    
-        void InitDefSpi() const;  /// Initialisation default SPI
+    virtual void ClearReceive() override;
 
-        enum Spis_t
-        {
-            SPI_1,
-            SPI_2,
-            SPI_3,
+  private:
+    bool InitDataBuf(size_t);
 
-            MAX_COUNT_SPI
-        };
+    void InitDefSpi() const;    /// Initialisation default SPI
 
-        static Spi* Spis[MAX_COUNT_SPI]; ///< Main array pointers of classes Spi
+    enum Spis_t {
+        SPI_1,
+        SPI_2,
+        SPI_3,
 
-        SPI_TypeDef* SPIx;  ///< Work SPI
+        MAX_COUNT_SPI
+    };
 
-        /* Recept val */
-        size_t RxBufSize;
-        size_t RxCount;
-        uint8_t *pRxBuf;  
+    static Spi* Spis[MAX_COUNT_SPI];    ///< Main array pointers of classes Spi
+
+    SPI_TypeDef* SPIx;    ///< Work SPI
+
+    /* Recept val */
+    size_t RxBufSize;
+    size_t RxCount;
+    uint8_t* pRxBuf;
 };
 
 #endif

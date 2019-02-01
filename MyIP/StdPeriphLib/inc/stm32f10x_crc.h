@@ -22,14 +22,14 @@
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __STM32F10x_CRC_H
-#   define __STM32F10x_CRC_H
+#define __STM32F10x_CRC_H
 
-#   ifdef __cplusplus
+#ifdef __cplusplus
 extern "C" {
-#   endif
+#endif
 
 /* Includes ------------------------------------------------------------------*/
-#   include "stm32f10x.h"
+#include "stm32f10x.h"
 
 /** @addtogroup STM32F10x_StdPeriph_Driver
  * @{
@@ -74,9 +74,9 @@ uint32_t CRC_GetCRC(void);
 void CRC_SetIDRegister(uint8_t IDValue);
 uint8_t CRC_GetIDRegister(void);
 
-#   ifdef __cplusplus
+#ifdef __cplusplus
 }
-#   endif
+#endif
 
 #endif /* __STM32F10x_CRC_H */
 /**

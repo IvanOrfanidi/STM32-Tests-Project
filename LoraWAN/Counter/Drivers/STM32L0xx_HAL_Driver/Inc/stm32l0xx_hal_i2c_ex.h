@@ -37,14 +37,14 @@
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __STM32L0xx_HAL_I2C_EX_H
-#   define __STM32L0xx_HAL_I2C_EX_H
+#define __STM32L0xx_HAL_I2C_EX_H
 
-#   ifdef __cplusplus
+#ifdef __cplusplus
 extern "C" {
-#   endif
+#endif
 
 /* Includes ------------------------------------------------------------------*/
-#   include "stm32l0xx_hal_def.h"
+#include "stm32l0xx_hal_def.h"
 
 /** @addtogroup STM32L0xx_HAL_Driver
  * @{
@@ -64,8 +64,8 @@ extern "C" {
 /** @defgroup I2CEx_Analog_Filter I2C Extended Analog Filter
  * @{
  */
-#   define I2C_ANALOGFILTER_ENABLE 0x00000000U
-#   define I2C_ANALOGFILTER_DISABLE I2C_CR1_ANFOFF
+#define I2C_ANALOGFILTER_ENABLE 0x00000000U
+#define I2C_ANALOGFILTER_DISABLE I2C_CR1_ANFOFF
 /**
  * @}
  */
@@ -73,24 +73,24 @@ extern "C" {
 /** @defgroup I2CEx_FastModePlus I2C Extended Fast Mode Plus
  * @{
  */
-#   define I2C_FMP_NOT_SUPPORTED 0xAAAA0000U /*!< Fast Mode Plus not supported       */
-#   define I2C_FASTMODEPLUS_PB6 SYSCFG_CFGR2_I2C_PB6_FMP /*!< Enable Fast Mode Plus on PB6       */
-#   define I2C_FASTMODEPLUS_PB7 SYSCFG_CFGR2_I2C_PB7_FMP /*!< Enable Fast Mode Plus on PB7       */
-#   define I2C_FASTMODEPLUS_PB8 SYSCFG_CFGR2_I2C_PB8_FMP /*!< Enable Fast Mode Plus on PB8       */
-#   define I2C_FASTMODEPLUS_PB9 SYSCFG_CFGR2_I2C_PB9_FMP /*!< Enable Fast Mode Plus on PB9       */
-#   define I2C_FASTMODEPLUS_I2C1 SYSCFG_CFGR2_I2C1_FMP /*!< Enable Fast Mode Plus on I2C1 pins */
-#   if defined(SYSCFG_CFGR2_I2C2_FMP)
-#      define I2C_FASTMODEPLUS_I2C2 SYSCFG_CFGR2_I2C2_FMP /*!< Enable Fast Mode Plus on I2C2 pins */
-#   else
-#      define I2C_FASTMODEPLUS_I2C2 \
-         (uint32_t)(0x00000200U | I2C_FMP_NOT_SUPPORTED) /*!< Fast Mode Plus I2C2 not supported  */
-#   endif
-#   if defined(SYSCFG_CFGR2_I2C3_FMP)
-#      define I2C_FASTMODEPLUS_I2C3 SYSCFG_CFGR2_I2C3_FMP /*!< Enable Fast Mode Plus on I2C3 pins */
-#   else
-#      define I2C_FASTMODEPLUS_I2C3 \
-         (uint32_t)(0x00000400U | I2C_FMP_NOT_SUPPORTED) /*!< Fast Mode Plus I2C3 not supported  */
-#   endif
+#define I2C_FMP_NOT_SUPPORTED 0xAAAA0000U             /*!< Fast Mode Plus not supported       */
+#define I2C_FASTMODEPLUS_PB6 SYSCFG_CFGR2_I2C_PB6_FMP /*!< Enable Fast Mode Plus on PB6       */
+#define I2C_FASTMODEPLUS_PB7 SYSCFG_CFGR2_I2C_PB7_FMP /*!< Enable Fast Mode Plus on PB7       */
+#define I2C_FASTMODEPLUS_PB8 SYSCFG_CFGR2_I2C_PB8_FMP /*!< Enable Fast Mode Plus on PB8       */
+#define I2C_FASTMODEPLUS_PB9 SYSCFG_CFGR2_I2C_PB9_FMP /*!< Enable Fast Mode Plus on PB9       */
+#define I2C_FASTMODEPLUS_I2C1 SYSCFG_CFGR2_I2C1_FMP   /*!< Enable Fast Mode Plus on I2C1 pins */
+#if defined(SYSCFG_CFGR2_I2C2_FMP)
+#define I2C_FASTMODEPLUS_I2C2 SYSCFG_CFGR2_I2C2_FMP /*!< Enable Fast Mode Plus on I2C2 pins */
+#else
+#define I2C_FASTMODEPLUS_I2C2 \
+    (uint32_t)(0x00000200U | I2C_FMP_NOT_SUPPORTED) /*!< Fast Mode Plus I2C2 not supported  */
+#endif
+#if defined(SYSCFG_CFGR2_I2C3_FMP)
+#define I2C_FASTMODEPLUS_I2C3 SYSCFG_CFGR2_I2C3_FMP /*!< Enable Fast Mode Plus on I2C3 pins */
+#else
+#define I2C_FASTMODEPLUS_I2C3 \
+    (uint32_t)(0x00000400U | I2C_FMP_NOT_SUPPORTED) /*!< Fast Mode Plus I2C3 not supported  */
+#endif
 /**
  * @}
  */
@@ -132,20 +132,20 @@ void HAL_I2CEx_DisableFastModePlus(uint32_t ConfigFastModePlus);
 /** @defgroup I2CEx_Private_Macro I2C Extended Private Macros
  * @{
  */
-#   define IS_I2C_ANALOG_FILTER(FILTER) \
-      (((FILTER) == I2C_ANALOGFILTER_ENABLE) || ((FILTER) == I2C_ANALOGFILTER_DISABLE))
+#define IS_I2C_ANALOG_FILTER(FILTER) \
+    (((FILTER) == I2C_ANALOGFILTER_ENABLE) || ((FILTER) == I2C_ANALOGFILTER_DISABLE))
 
-#   define IS_I2C_DIGITAL_FILTER(FILTER) ((FILTER) <= 0x0000000FU)
+#define IS_I2C_DIGITAL_FILTER(FILTER) ((FILTER) <= 0x0000000FU)
 
-#   define IS_I2C_FASTMODEPLUS(__CONFIG__) \
-      ((((__CONFIG__)&I2C_FMP_NOT_SUPPORTED) != I2C_FMP_NOT_SUPPORTED) && \
-       ((((__CONFIG__) & (I2C_FASTMODEPLUS_PB6)) == I2C_FASTMODEPLUS_PB6) || \
-        (((__CONFIG__) & (I2C_FASTMODEPLUS_PB7)) == I2C_FASTMODEPLUS_PB7) || \
-        (((__CONFIG__) & (I2C_FASTMODEPLUS_PB8)) == I2C_FASTMODEPLUS_PB8) || \
-        (((__CONFIG__) & (I2C_FASTMODEPLUS_PB9)) == I2C_FASTMODEPLUS_PB9) || \
-        (((__CONFIG__) & (I2C_FASTMODEPLUS_I2C1)) == I2C_FASTMODEPLUS_I2C1) || \
-        (((__CONFIG__) & (I2C_FASTMODEPLUS_I2C2)) == I2C_FASTMODEPLUS_I2C2) || \
-        (((__CONFIG__) & (I2C_FASTMODEPLUS_I2C3)) == I2C_FASTMODEPLUS_I2C3)))
+#define IS_I2C_FASTMODEPLUS(__CONFIG__) \
+    ((((__CONFIG__)&I2C_FMP_NOT_SUPPORTED) != I2C_FMP_NOT_SUPPORTED) && \
+        ((((__CONFIG__) & (I2C_FASTMODEPLUS_PB6)) == I2C_FASTMODEPLUS_PB6) || \
+            (((__CONFIG__) & (I2C_FASTMODEPLUS_PB7)) == I2C_FASTMODEPLUS_PB7) || \
+            (((__CONFIG__) & (I2C_FASTMODEPLUS_PB8)) == I2C_FASTMODEPLUS_PB8) || \
+            (((__CONFIG__) & (I2C_FASTMODEPLUS_PB9)) == I2C_FASTMODEPLUS_PB9) || \
+            (((__CONFIG__) & (I2C_FASTMODEPLUS_I2C1)) == I2C_FASTMODEPLUS_I2C1) || \
+            (((__CONFIG__) & (I2C_FASTMODEPLUS_I2C2)) == I2C_FASTMODEPLUS_I2C2) || \
+            (((__CONFIG__) & (I2C_FASTMODEPLUS_I2C3)) == I2C_FASTMODEPLUS_I2C3)))
 /**
  * @}
  */
@@ -175,9 +175,9 @@ void HAL_I2CEx_DisableFastModePlus(uint32_t ConfigFastModePlus);
  * @}
  */
 
-#   ifdef __cplusplus
+#ifdef __cplusplus
 }
-#   endif
+#endif
 
 #endif /* __STM32L0xx_HAL_I2C_EX_H */
 

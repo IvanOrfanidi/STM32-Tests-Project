@@ -65,8 +65,8 @@
 
 #ifdef HAL_RNG_MODULE_ENABLED
 
-#   if defined(STM32L052xx) || defined(STM32L053xx) || defined(STM32L062xx) || defined(STM32L063xx) || \
-      defined(STM32L072xx) || defined(STM32L073xx) || defined(STM32L082xx) || defined(STM32L083xx)
+#if defined(STM32L052xx) || defined(STM32L053xx) || defined(STM32L062xx) || defined(STM32L063xx) || \
+    defined(STM32L072xx) || defined(STM32L073xx) || defined(STM32L082xx) || defined(STM32L083xx)
 
 /** @addtogroup RNG
  * @{
@@ -77,7 +77,7 @@
 /** @addtogroup RNG_Private
  * @{
  */
-#      define RNG_TIMEOUT_VALUE 1000U
+#define RNG_TIMEOUT_VALUE 1000U
 /**
  * @}
  */
@@ -118,37 +118,35 @@
  */
 HAL_StatusTypeDef HAL_RNG_Init(RNG_HandleTypeDef* hrng)
 {
-   /* Check the RNG handle allocation */
-   if (hrng == NULL)
-   {
-      return HAL_ERROR;
-   }
-   assert_param(IS_RNG_ALL_INSTANCE(hrng->Instance));
+    /* Check the RNG handle allocation */
+    if(hrng == NULL) {
+        return HAL_ERROR;
+    }
+    assert_param(IS_RNG_ALL_INSTANCE(hrng->Instance));
 
-   __HAL_LOCK(hrng);
+    __HAL_LOCK(hrng);
 
-   if (hrng->State == HAL_RNG_STATE_RESET)
-   {
-      /* Allocate lock resource and initialize it */
-      hrng->Lock = HAL_UNLOCKED;
+    if(hrng->State == HAL_RNG_STATE_RESET) {
+        /* Allocate lock resource and initialize it */
+        hrng->Lock = HAL_UNLOCKED;
 
-      /* Init the low level hardware */
-      HAL_RNG_MspInit(hrng);
-   }
+        /* Init the low level hardware */
+        HAL_RNG_MspInit(hrng);
+    }
 
-   /* Change RNG peripheral state */
-   hrng->State = HAL_RNG_STATE_BUSY;
+    /* Change RNG peripheral state */
+    hrng->State = HAL_RNG_STATE_BUSY;
 
-   /* Enable the RNG Peripheral */
-   __HAL_RNG_ENABLE(hrng);
+    /* Enable the RNG Peripheral */
+    __HAL_RNG_ENABLE(hrng);
 
-   /* Initialize the RNG state */
-   hrng->State = HAL_RNG_STATE_READY;
+    /* Initialize the RNG state */
+    hrng->State = HAL_RNG_STATE_READY;
 
-   __HAL_UNLOCK(hrng);
+    __HAL_UNLOCK(hrng);
 
-   /* Return function status */
-   return HAL_OK;
+    /* Return function status */
+    return HAL_OK;
 }
 
 /**
@@ -158,28 +156,27 @@ HAL_StatusTypeDef HAL_RNG_Init(RNG_HandleTypeDef* hrng)
  */
 HAL_StatusTypeDef HAL_RNG_DeInit(RNG_HandleTypeDef* hrng)
 {
-   /* Check the RNG handle allocation */
-   if (hrng == NULL)
-   {
-      return HAL_ERROR;
-   }
-   /* Disable the RNG Peripheral */
-   CLEAR_BIT(hrng->Instance->CR, RNG_CR_IE | RNG_CR_RNGEN);
+    /* Check the RNG handle allocation */
+    if(hrng == NULL) {
+        return HAL_ERROR;
+    }
+    /* Disable the RNG Peripheral */
+    CLEAR_BIT(hrng->Instance->CR, RNG_CR_IE | RNG_CR_RNGEN);
 
-   /* Clear RNG interrupt status flags */
-   CLEAR_BIT(hrng->Instance->SR, RNG_SR_CEIS | RNG_SR_SEIS);
+    /* Clear RNG interrupt status flags */
+    CLEAR_BIT(hrng->Instance->SR, RNG_SR_CEIS | RNG_SR_SEIS);
 
-   /* DeInit the low level hardware */
-   HAL_RNG_MspDeInit(hrng);
+    /* DeInit the low level hardware */
+    HAL_RNG_MspDeInit(hrng);
 
-   /* Update the RNG state */
-   hrng->State = HAL_RNG_STATE_RESET;
+    /* Update the RNG state */
+    hrng->State = HAL_RNG_STATE_RESET;
 
-   /* Release Lock */
-   __HAL_UNLOCK(hrng);
+    /* Release Lock */
+    __HAL_UNLOCK(hrng);
 
-   /* Return the function status */
-   return HAL_OK;
+    /* Return the function status */
+    return HAL_OK;
 }
 
 /**
@@ -189,10 +186,10 @@ HAL_StatusTypeDef HAL_RNG_DeInit(RNG_HandleTypeDef* hrng)
  */
 __weak void HAL_RNG_MspInit(RNG_HandleTypeDef* hrng)
 {
-   /* Prevent unused argument(s) compilation warning */
-   UNUSED(hrng);
+    /* Prevent unused argument(s) compilation warning */
+    UNUSED(hrng);
 
-   /* NOTE : This function should not be modified. When the callback is needed,
+    /* NOTE : This function should not be modified. When the callback is needed,
              function HAL_RNG_MspInit must be implemented in the user file.
     */
 }
@@ -204,10 +201,10 @@ __weak void HAL_RNG_MspInit(RNG_HandleTypeDef* hrng)
  */
 __weak void HAL_RNG_MspDeInit(RNG_HandleTypeDef* hrng)
 {
-   /* Prevent unused argument(s) compilation warning */
-   UNUSED(hrng);
+    /* Prevent unused argument(s) compilation warning */
+    UNUSED(hrng);
 
-   /* NOTE : This function should not be modified. When the callback is needed,
+    /* NOTE : This function should not be modified. When the callback is needed,
              function HAL_RNG_MspDeInit must be implemented in the user file.
     */
 }
@@ -244,50 +241,46 @@ __weak void HAL_RNG_MspDeInit(RNG_HandleTypeDef* hrng)
 
 HAL_StatusTypeDef HAL_RNG_GenerateRandomNumber(RNG_HandleTypeDef* hrng, uint32_t* random32bit)
 {
-   uint32_t tickstart = 0U;
-   HAL_StatusTypeDef status = HAL_OK;
+    uint32_t tickstart = 0U;
+    HAL_StatusTypeDef status = HAL_OK;
 
-   /* Process Locked */
-   __HAL_LOCK(hrng);
+    /* Process Locked */
+    __HAL_LOCK(hrng);
 
-   /* Check RNG peripheral state */
-   if (hrng->State == HAL_RNG_STATE_READY)
-   {
-      /* Change RNG peripheral state */
-      hrng->State = HAL_RNG_STATE_BUSY;
+    /* Check RNG peripheral state */
+    if(hrng->State == HAL_RNG_STATE_READY) {
+        /* Change RNG peripheral state */
+        hrng->State = HAL_RNG_STATE_BUSY;
 
-      /* Get tick */
-      tickstart = HAL_GetTick();
+        /* Get tick */
+        tickstart = HAL_GetTick();
 
-      /* Check if data register contains valid random data */
-      while (__HAL_RNG_GET_FLAG(hrng, RNG_FLAG_DRDY) == RESET)
-      {
-         if ((HAL_GetTick() - tickstart) > RNG_TIMEOUT_VALUE)
-         {
-            hrng->State = HAL_RNG_STATE_ERROR;
+        /* Check if data register contains valid random data */
+        while(__HAL_RNG_GET_FLAG(hrng, RNG_FLAG_DRDY) == RESET) {
+            if((HAL_GetTick() - tickstart) > RNG_TIMEOUT_VALUE) {
+                hrng->State = HAL_RNG_STATE_ERROR;
 
-            /* Process Unlocked */
-            __HAL_UNLOCK(hrng);
+                /* Process Unlocked */
+                __HAL_UNLOCK(hrng);
 
-            return HAL_TIMEOUT;
-         }
-      }
+                return HAL_TIMEOUT;
+            }
+        }
 
-      /* Get a 32bit Random number */
-      hrng->RandomNumber = hrng->Instance->DR;
-      *random32bit = hrng->RandomNumber;
+        /* Get a 32bit Random number */
+        hrng->RandomNumber = hrng->Instance->DR;
+        *random32bit = hrng->RandomNumber;
 
-      hrng->State = HAL_RNG_STATE_READY;
-   }
-   else
-   {
-      status = HAL_ERROR;
-   }
+        hrng->State = HAL_RNG_STATE_READY;
+    }
+    else {
+        status = HAL_ERROR;
+    }
 
-   /* Process Unlocked */
-   __HAL_UNLOCK(hrng);
+    /* Process Unlocked */
+    __HAL_UNLOCK(hrng);
 
-   return status;
+    return status;
 }
 
 /**
@@ -297,32 +290,30 @@ HAL_StatusTypeDef HAL_RNG_GenerateRandomNumber(RNG_HandleTypeDef* hrng, uint32_t
  */
 HAL_StatusTypeDef HAL_RNG_GenerateRandomNumber_IT(RNG_HandleTypeDef* hrng)
 {
-   HAL_StatusTypeDef status = HAL_OK;
+    HAL_StatusTypeDef status = HAL_OK;
 
-   /* Process Locked */
-   __HAL_LOCK(hrng);
+    /* Process Locked */
+    __HAL_LOCK(hrng);
 
-   /* Check RNG peripheral state */
-   if (hrng->State == HAL_RNG_STATE_READY)
-   {
-      /* Change RNG peripheral state */
-      hrng->State = HAL_RNG_STATE_BUSY;
+    /* Check RNG peripheral state */
+    if(hrng->State == HAL_RNG_STATE_READY) {
+        /* Change RNG peripheral state */
+        hrng->State = HAL_RNG_STATE_BUSY;
 
-      /* Process Unlocked */
-      __HAL_UNLOCK(hrng);
+        /* Process Unlocked */
+        __HAL_UNLOCK(hrng);
 
-      /* Enable the RNG Interrupts: Data Ready, Clock error, Seed error */
-      __HAL_RNG_ENABLE_IT(hrng);
-   }
-   else
-   {
-      /* Process Unlocked */
-      __HAL_UNLOCK(hrng);
+        /* Enable the RNG Interrupts: Data Ready, Clock error, Seed error */
+        __HAL_RNG_ENABLE_IT(hrng);
+    }
+    else {
+        /* Process Unlocked */
+        __HAL_UNLOCK(hrng);
 
-      status = HAL_ERROR;
-   }
+        status = HAL_ERROR;
+    }
 
-   return status;
+    return status;
 }
 
 /**
@@ -347,36 +338,33 @@ HAL_StatusTypeDef HAL_RNG_GenerateRandomNumber_IT(RNG_HandleTypeDef* hrng)
   */
 void HAL_RNG_IRQHandler(RNG_HandleTypeDef* hrng)
 {
-   /* RNG clock error interrupt occurred */
-   if ((__HAL_RNG_GET_IT(hrng, RNG_IT_CEI) != RESET) || (__HAL_RNG_GET_IT(hrng, RNG_IT_SEI) != RESET))
-   {
-      /* Change RNG peripheral state */
-      hrng->State = HAL_RNG_STATE_ERROR;
+    /* RNG clock error interrupt occurred */
+    if((__HAL_RNG_GET_IT(hrng, RNG_IT_CEI) != RESET) || (__HAL_RNG_GET_IT(hrng, RNG_IT_SEI) != RESET)) {
+        /* Change RNG peripheral state */
+        hrng->State = HAL_RNG_STATE_ERROR;
 
-      HAL_RNG_ErrorCallback(hrng);
+        HAL_RNG_ErrorCallback(hrng);
 
-      /* Clear the clock error flag */
-      __HAL_RNG_CLEAR_IT(hrng, RNG_IT_CEI | RNG_IT_SEI);
-   }
+        /* Clear the clock error flag */
+        __HAL_RNG_CLEAR_IT(hrng, RNG_IT_CEI | RNG_IT_SEI);
+    }
 
-   /* Check RNG data ready interrupt occurred */
-   if (__HAL_RNG_GET_IT(hrng, RNG_IT_DRDY) != RESET)
-   {
-      /* Generate random number once, so disable the IT */
-      __HAL_RNG_DISABLE_IT(hrng);
+    /* Check RNG data ready interrupt occurred */
+    if(__HAL_RNG_GET_IT(hrng, RNG_IT_DRDY) != RESET) {
+        /* Generate random number once, so disable the IT */
+        __HAL_RNG_DISABLE_IT(hrng);
 
-      /* Get the 32bit Random number (DRDY flag automatically cleared) */
-      hrng->RandomNumber = hrng->Instance->DR;
+        /* Get the 32bit Random number (DRDY flag automatically cleared) */
+        hrng->RandomNumber = hrng->Instance->DR;
 
-      if (hrng->State != HAL_RNG_STATE_ERROR)
-      {
-         /* Change RNG peripheral state */
-         hrng->State = HAL_RNG_STATE_READY;
+        if(hrng->State != HAL_RNG_STATE_ERROR) {
+            /* Change RNG peripheral state */
+            hrng->State = HAL_RNG_STATE_READY;
 
-         /* Data Ready callback */
-         HAL_RNG_ReadyDataCallback(hrng, hrng->RandomNumber);
-      }
-   }
+            /* Data Ready callback */
+            HAL_RNG_ReadyDataCallback(hrng, hrng->RandomNumber);
+        }
+    }
 }
 
 /**
@@ -388,14 +376,12 @@ void HAL_RNG_IRQHandler(RNG_HandleTypeDef* hrng)
  */
 uint32_t HAL_RNG_GetRandomNumber(RNG_HandleTypeDef* hrng)
 {
-   if (HAL_RNG_GenerateRandomNumber(hrng, &(hrng->RandomNumber)) == HAL_OK)
-   {
-      return hrng->RandomNumber;
-   }
-   else
-   {
-      return 0U;
-   }
+    if(HAL_RNG_GenerateRandomNumber(hrng, &(hrng->RandomNumber)) == HAL_OK) {
+        return hrng->RandomNumber;
+    }
+    else {
+        return 0U;
+    }
 }
 
 /**
@@ -406,22 +392,22 @@ uint32_t HAL_RNG_GetRandomNumber(RNG_HandleTypeDef* hrng)
  */
 uint32_t HAL_RNG_GetRandomNumber_IT(RNG_HandleTypeDef* hrng)
 {
-   uint32_t random32bit = 0U;
+    uint32_t random32bit = 0U;
 
-   /* Process locked */
-   __HAL_LOCK(hrng);
+    /* Process locked */
+    __HAL_LOCK(hrng);
 
-   /* Change RNG peripheral state */
-   hrng->State = HAL_RNG_STATE_BUSY;
+    /* Change RNG peripheral state */
+    hrng->State = HAL_RNG_STATE_BUSY;
 
-   /* Get a 32bit Random number */
-   random32bit = hrng->Instance->DR;
+    /* Get a 32bit Random number */
+    random32bit = hrng->Instance->DR;
 
-   /* Enable the RNG Interrupts: Data Ready, Clock error, Seed error */
-   __HAL_RNG_ENABLE_IT(hrng);
+    /* Enable the RNG Interrupts: Data Ready, Clock error, Seed error */
+    __HAL_RNG_ENABLE_IT(hrng);
 
-   /* Return the 32 bit random number */
-   return random32bit;
+    /* Return the 32 bit random number */
+    return random32bit;
 }
 
 /**
@@ -431,7 +417,7 @@ uint32_t HAL_RNG_GetRandomNumber_IT(RNG_HandleTypeDef* hrng)
  */
 uint32_t HAL_RNG_ReadLastRandomNumber(RNG_HandleTypeDef* hrng)
 {
-   return (hrng->RandomNumber);
+    return (hrng->RandomNumber);
 }
 
 /**
@@ -442,10 +428,10 @@ uint32_t HAL_RNG_ReadLastRandomNumber(RNG_HandleTypeDef* hrng)
  */
 __weak void HAL_RNG_ReadyDataCallback(RNG_HandleTypeDef* hrng, uint32_t random32bit)
 {
-   /* Prevent unused argument(s) compilation warning */
-   UNUSED(hrng);
+    /* Prevent unused argument(s) compilation warning */
+    UNUSED(hrng);
 
-   /* NOTE : This function should not be modified. When the callback is needed,
+    /* NOTE : This function should not be modified. When the callback is needed,
              function HAL_RNG_ReadyDataCallback must be implemented in the user file.
     */
 }
@@ -457,10 +443,10 @@ __weak void HAL_RNG_ReadyDataCallback(RNG_HandleTypeDef* hrng, uint32_t random32
  */
 __weak void HAL_RNG_ErrorCallback(RNG_HandleTypeDef* hrng)
 {
-   /* Prevent unused argument(s) compilation warning */
-   UNUSED(hrng);
+    /* Prevent unused argument(s) compilation warning */
+    UNUSED(hrng);
 
-   /* NOTE : This function should not be modified. When the callback is needed,
+    /* NOTE : This function should not be modified. When the callback is needed,
              function HAL_RNG_ErrorCallback must be implemented in the user file.
     */
 }
@@ -490,7 +476,7 @@ __weak void HAL_RNG_ErrorCallback(RNG_HandleTypeDef* hrng)
  */
 HAL_RNG_StateTypeDef HAL_RNG_GetState(RNG_HandleTypeDef* hrng)
 {
-   return hrng->State;
+    return hrng->State;
 }
 
 /**
@@ -505,7 +491,7 @@ HAL_RNG_StateTypeDef HAL_RNG_GetState(RNG_HandleTypeDef* hrng)
  * @}
  */
 
-#   endif /*  if defined (STM32L052xx) || defined (STM32L053xx) || defined (STM32L062xx) ||  defined (STM32L063xx) || \
+#endif /*  if defined (STM32L052xx) || defined (STM32L053xx) || defined (STM32L062xx) ||  defined (STM32L063xx) || \
              \ defined (STM32L072xx) || defined (STM32L073xx) || defined (STM32L082xx) ||  defined (STM32L083xx) */
 
 #endif /* HAL_RNG_MODULE_ENABLED */

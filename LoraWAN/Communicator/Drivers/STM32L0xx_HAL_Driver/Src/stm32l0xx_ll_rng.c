@@ -37,20 +37,20 @@
 #if defined(USE_FULL_LL_DRIVER)
 
 /* Includes ------------------------------------------------------------------*/
-#   include "stm32l0xx_ll_rng.h"
-#   include "stm32l0xx_ll_bus.h"
+#include "stm32l0xx_ll_rng.h"
+#include "stm32l0xx_ll_bus.h"
 
-#   ifdef USE_FULL_ASSERT
-#      include "stm32_assert.h"
-#   else
-#      define assert_param(expr) ((void)0U)
-#   endif
+#ifdef USE_FULL_ASSERT
+#include "stm32_assert.h"
+#else
+#define assert_param(expr) ((void)0U)
+#endif
 
 /** @addtogroup STM32L0xx_LL_Driver
  * @{
  */
 
-#   if defined(RNG)
+#if defined(RNG)
 
 /** @addtogroup RNG_LL
  * @{
@@ -80,16 +80,16 @@
  */
 ErrorStatus LL_RNG_DeInit(RNG_TypeDef* RNGx)
 {
-   /* Check the parameters */
-   assert_param(IS_RNG_ALL_INSTANCE(RNGx));
+    /* Check the parameters */
+    assert_param(IS_RNG_ALL_INSTANCE(RNGx));
 
-   /* Enable RNG reset state */
-   LL_AHB1_GRP1_ForceReset(LL_AHB1_GRP1_PERIPH_RNG);
+    /* Enable RNG reset state */
+    LL_AHB1_GRP1_ForceReset(LL_AHB1_GRP1_PERIPH_RNG);
 
-   /* Release RNG from reset state */
-   LL_AHB1_GRP1_ReleaseReset(LL_AHB1_GRP1_PERIPH_RNG);
+    /* Release RNG from reset state */
+    LL_AHB1_GRP1_ReleaseReset(LL_AHB1_GRP1_PERIPH_RNG);
 
-   return (SUCCESS);
+    return (SUCCESS);
 }
 
 /**
@@ -104,7 +104,7 @@ ErrorStatus LL_RNG_DeInit(RNG_TypeDef* RNGx)
  * @}
  */
 
-#   endif /* defined (RNG) */
+#endif /* defined (RNG) */
 
 /**
  * @}

@@ -51,8 +51,7 @@ typedef struct
 } RTC_t;
 #pragma pack(pop)
 
-class Rtc
-{
+class Rtc {
   public:
     static void InitRTC();    ///< Initializes HW RTC.
 

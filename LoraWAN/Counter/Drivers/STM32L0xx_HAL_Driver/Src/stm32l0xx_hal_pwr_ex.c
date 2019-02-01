@@ -59,7 +59,7 @@
 /** @defgroup PWR_Extended_TimeOut_Value PWREx Flag Setting Time Out Value
  * @{
  */
-#   define PWR_FLAG_SETTING_DELAY_US 50U
+#define PWR_FLAG_SETTING_DELAY_US 50U
 /**
  * @}
  */
@@ -86,7 +86,7 @@
  */
 uint32_t HAL_PWREx_GetVoltageRange(void)
 {
-   return (PWR->CR & PWR_CR_VOS);
+    return (PWR->CR & PWR_CR_VOS);
 }
 
 /**
@@ -98,8 +98,8 @@ uint32_t HAL_PWREx_GetVoltageRange(void)
  */
 void HAL_PWREx_EnableFastWakeUp(void)
 {
-   /* Enable the fast wake up */
-   SET_BIT(PWR->CR, PWR_CR_FWU);
+    /* Enable the fast wake up */
+    SET_BIT(PWR->CR, PWR_CR_FWU);
 }
 
 /**
@@ -108,8 +108,8 @@ void HAL_PWREx_EnableFastWakeUp(void)
  */
 void HAL_PWREx_DisableFastWakeUp(void)
 {
-   /* Disable the fast wake up */
-   CLEAR_BIT(PWR->CR, PWR_CR_FWU);
+    /* Disable the fast wake up */
+    CLEAR_BIT(PWR->CR, PWR_CR_FWU);
 }
 
 /**
@@ -118,8 +118,8 @@ void HAL_PWREx_DisableFastWakeUp(void)
  */
 void HAL_PWREx_EnableUltraLowPower(void)
 {
-   /* Enable the Ultra Low Power mode */
-   SET_BIT(PWR->CR, PWR_CR_ULP);
+    /* Enable the Ultra Low Power mode */
+    SET_BIT(PWR->CR, PWR_CR_ULP);
 }
 
 /**
@@ -128,8 +128,8 @@ void HAL_PWREx_EnableUltraLowPower(void)
  */
 void HAL_PWREx_DisableUltraLowPower(void)
 {
-   /* Disable the Ultra Low Power mode */
-   CLEAR_BIT(PWR->CR, PWR_CR_ULP);
+    /* Disable the Ultra Low Power mode */
+    CLEAR_BIT(PWR->CR, PWR_CR_ULP);
 }
 
 /**
@@ -146,9 +146,9 @@ void HAL_PWREx_DisableUltraLowPower(void)
  */
 void HAL_PWREx_EnableLowPowerRunMode(void)
 {
-   /* Enters the Low Power Run mode */
-   SET_BIT(PWR->CR, PWR_CR_LPSDSR);
-   SET_BIT(PWR->CR, PWR_CR_LPRUN);
+    /* Enters the Low Power Run mode */
+    SET_BIT(PWR->CR, PWR_CR_LPSDSR);
+    SET_BIT(PWR->CR, PWR_CR_LPRUN);
 }
 
 /**
@@ -161,26 +161,24 @@ void HAL_PWREx_EnableLowPowerRunMode(void)
  */
 HAL_StatusTypeDef HAL_PWREx_DisableLowPowerRunMode(void)
 {
-   uint32_t wait_loop_index = 0U;
+    uint32_t wait_loop_index = 0U;
 
-   /* Exit the Low Power Run mode */
-   CLEAR_BIT(PWR->CR, PWR_CR_LPRUN);
-   CLEAR_BIT(PWR->CR, PWR_CR_LPSDSR);
+    /* Exit the Low Power Run mode */
+    CLEAR_BIT(PWR->CR, PWR_CR_LPRUN);
+    CLEAR_BIT(PWR->CR, PWR_CR_LPSDSR);
 
-   /* Wait until REGLPF is reset */
-   wait_loop_index = (PWR_FLAG_SETTING_DELAY_US * (SystemCoreClock / 1000000U));
+    /* Wait until REGLPF is reset */
+    wait_loop_index = (PWR_FLAG_SETTING_DELAY_US * (SystemCoreClock / 1000000U));
 
-   while ((wait_loop_index != 0U) && (HAL_IS_BIT_SET(PWR->CSR, PWR_CSR_REGLPF)))
-   {
-      wait_loop_index--;
-   }
+    while((wait_loop_index != 0U) && (HAL_IS_BIT_SET(PWR->CSR, PWR_CSR_REGLPF))) {
+        wait_loop_index--;
+    }
 
-   if (HAL_IS_BIT_SET(PWR->CSR, PWR_CSR_REGLPF))
-   {
-      return HAL_TIMEOUT;
-   }
+    if(HAL_IS_BIT_SET(PWR->CSR, PWR_CSR_REGLPF)) {
+        return HAL_TIMEOUT;
+    }
 
-   return HAL_OK;
+    return HAL_OK;
 }
 
 /**
