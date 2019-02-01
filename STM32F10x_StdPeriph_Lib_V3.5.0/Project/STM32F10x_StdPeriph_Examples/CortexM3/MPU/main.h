@@ -17,7 +17,7 @@
   *
   * <h2><center>&copy; COPYRIGHT 2011 STMicroelectronics</center></h2>
   ******************************************************************************  
-  */ 
+  */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __MAIN_H
@@ -31,19 +31,19 @@
 /* Exported macro ------------------------------------------------------------*/
 /* Public macro --------------------------------------------------------------*/
 /* Public define -------------------------------------------------------------*/
-#define RAM_ADDRESS_START                        (0x20000000UL)
-#define RAM_SIZE                                 (0x19UL << 0UL)
-#define PERIPH_ADDRESS_START                     (0x40000000)
-#define PERIPH_SIZE                              (0x39UL << 0UL)
-#define FLASH_ADDRESS_START                      (0x08000000)
-#define FLASH_SIZE                               (0x27UL << 0UL)
-#define portMPU_REGION_READ_WRITE                (0x03UL << MPU_RASR_AP_Pos)
-#define portMPU_REGION_PRIVILEGED_READ_ONLY      (0x05UL << MPU_RASR_AP_Pos)
-#define portMPU_REGION_READ_ONLY                 (0x06UL << MPU_RASR_AP_Pos)
-#define portMPU_REGION_PRIVILEGED_READ_WRITE     (0x01UL << MPU_RASR_AP_Pos)
-#define RAM_REGION_NUMBER                        (0x00UL << MPU_RNR_REGION_Pos)
-#define FLASH_REGION_NUMBER                      (0x01UL << MPU_RNR_REGION_Pos)
-#define PERIPH_REGION_NUMBER                     (0x02UL << MPU_RNR_REGION_Pos)
+#define RAM_ADDRESS_START (0x20000000UL)
+#define RAM_SIZE (0x19UL << 0UL)
+#define PERIPH_ADDRESS_START (0x40000000)
+#define PERIPH_SIZE (0x39UL << 0UL)
+#define FLASH_ADDRESS_START (0x08000000)
+#define FLASH_SIZE (0x27UL << 0UL)
+#define portMPU_REGION_READ_WRITE (0x03UL << MPU_RASR_AP_Pos)
+#define portMPU_REGION_PRIVILEGED_READ_ONLY (0x05UL << MPU_RASR_AP_Pos)
+#define portMPU_REGION_READ_ONLY (0x06UL << MPU_RASR_AP_Pos)
+#define portMPU_REGION_PRIVILEGED_READ_WRITE (0x01UL << MPU_RASR_AP_Pos)
+#define RAM_REGION_NUMBER (0x00UL << MPU_RNR_REGION_Pos)
+#define FLASH_REGION_NUMBER (0x01UL << MPU_RNR_REGION_Pos)
+#define PERIPH_REGION_NUMBER (0x02UL << MPU_RNR_REGION_Pos)
 
 /* Exported functions ------------------------------------------------------- */
 void accesspermission(void);

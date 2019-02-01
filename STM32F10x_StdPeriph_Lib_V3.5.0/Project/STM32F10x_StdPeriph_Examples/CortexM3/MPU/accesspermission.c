@@ -17,8 +17,7 @@
   *
   * <h2><center>&copy; COPYRIGHT 2011 STMicroelectronics</center></h2>
   ******************************************************************************  
-  */ 
-
+  */
 
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
@@ -30,27 +29,27 @@
 /** @addtogroup CortexM3_MPU
   * @{
   */
-  
+
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
-#define ARRAY_ADDRESS_START    (0x20002000UL)
-#define ARRAY_SIZE             (0x09UL << 0UL)
-#define ARRAY_REGION_NUMBER    (0x03UL << MPU_RNR_REGION_Pos) 
+#define ARRAY_ADDRESS_START (0x20002000UL)
+#define ARRAY_SIZE (0x09UL << 0UL)
+#define ARRAY_REGION_NUMBER (0x03UL << MPU_RNR_REGION_Pos)
 
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
 
-#if defined ( __CC_ARM   )
+#if defined(__CC_ARM)
 uint8_t privilegedreadonlyarray[32] __attribute__((at(0x20002000)));
 
-#elif defined ( __ICCARM__ )
-#pragma location=0x20002000
+#elif defined(__ICCARM__)
+#pragma location = 0x20002000
 __no_init uint8_t privilegedreadonlyarray[32];
 
-#elif defined   (  __GNUC__  )
+#elif defined(__GNUC__)
 uint8_t privilegedreadonlyarray[32] __attribute__((section(".ROarraySection")));
 
-#elif defined   (  __TASKING__  )
+#elif defined(__TASKING__)
 uint8_t privilegedreadonlyarray[32] __at(0x20002000);
 #endif
 
@@ -62,21 +61,20 @@ uint8_t privilegedreadonlyarray[32] __at(0x20002000);
   */
 void accesspermission(void)
 {
- uint8_t a; 
-  
-  /* Configure region for privilegedreadonlyarray as REGION NÝ3, 32byte and R 
+    uint8_t a;
+
+    /* Configure region for privilegedreadonlyarray as REGION NÝ3, 32byte and R 
      only in privileged mode */
-  MPU->RNR  = ARRAY_REGION_NUMBER;
-  MPU->RBAR |= ARRAY_ADDRESS_START;
-  MPU->RASR |= ARRAY_SIZE | portMPU_REGION_PRIVILEGED_READ_ONLY;
-  
-  /* Read from privilegedreadonlyarray. This will not generate error */
-  a = privilegedreadonlyarray[0];
-  
-  /* Uncomment the following line to write to privilegedreadonlyarray. This will
+    MPU->RNR = ARRAY_REGION_NUMBER;
+    MPU->RBAR |= ARRAY_ADDRESS_START;
+    MPU->RASR |= ARRAY_SIZE | portMPU_REGION_PRIVILEGED_READ_ONLY;
+
+    /* Read from privilegedreadonlyarray. This will not generate error */
+    a = privilegedreadonlyarray[0];
+
+    /* Uncomment the following line to write to privilegedreadonlyarray. This will
      generate error */
-  //privilegedreadonlyarray[0] = 'e';
-  
+    //privilegedreadonlyarray[0] = 'e';
 }
 
 /**

@@ -17,7 +17,7 @@
   *
   * <h2><center>&copy; COPYRIGHT 2011 STMicroelectronics</center></h2>
   ******************************************************************************
-  */ 
+  */
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f10x.h"
@@ -28,14 +28,14 @@
 
 /** @addtogroup TIM_6Steps
   * @{
-  */ 
+  */
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
-TIM_TimeBaseInitTypeDef  TIM_TimeBaseStructure;
-TIM_OCInitTypeDef  TIM_OCInitStructure;
+TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure;
+TIM_OCInitTypeDef TIM_OCInitStructure;
 TIM_BDTRInitTypeDef TIM_BDTRInitStructure;
 uint16_t CCR1_Val = 32767;
 uint16_t CCR2_Val = 24575;
@@ -57,26 +57,26 @@ void NVIC_Configuration(void);
   */
 int main(void)
 {
-  /*!< At this stage the microcontroller clock setting is already configured, 
+    /*!< At this stage the microcontroller clock setting is already configured, 
        this is done through SystemInit() function which is called from startup
        file (startup_stm32f10x_xx.s) before to branch to application main.
        To reconfigure the default setting of SystemInit() function, refer to
        system_stm32f10x.c file
-     */     
-           
-  /* System Clocks Configuration */
-  RCC_Configuration();
+     */
 
-  /* NVIC Configuration */
-  NVIC_Configuration();
+    /* System Clocks Configuration */
+    RCC_Configuration();
 
-  /* GPIO Configuration */
-  GPIO_Configuration();
+    /* NVIC Configuration */
+    NVIC_Configuration();
 
-  /* SysTick Configuration */
-  SysTick_Configuration();
+    /* GPIO Configuration */
+    GPIO_Configuration();
 
-  /*-----------------------------------------------------------------------------
+    /* SysTick Configuration */
+    SysTick_Configuration();
+
+    /*-----------------------------------------------------------------------------
   The STM32F10x TIM1 peripheral offers the possibility to program in advance the 
   configuration for the next TIM1 outputs behaviour (step) and change the configuration
   of all the channels at the same time. This operation is possible when the COM 
@@ -105,56 +105,56 @@ int main(void)
    ----------------------------------------------------------
   -----------------------------------------------------------------------------*/
 
-  /* Time Base configuration */
-  TIM_TimeBaseStructure.TIM_Prescaler = 0;
-  TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
-  TIM_TimeBaseStructure.TIM_Period = 4095;
-  TIM_TimeBaseStructure.TIM_ClockDivision = 0;
-  TIM_TimeBaseStructure.TIM_RepetitionCounter = 0;
+    /* Time Base configuration */
+    TIM_TimeBaseStructure.TIM_Prescaler = 0;
+    TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
+    TIM_TimeBaseStructure.TIM_Period = 4095;
+    TIM_TimeBaseStructure.TIM_ClockDivision = 0;
+    TIM_TimeBaseStructure.TIM_RepetitionCounter = 0;
 
-  TIM_TimeBaseInit(TIM1, &TIM_TimeBaseStructure);
+    TIM_TimeBaseInit(TIM1, &TIM_TimeBaseStructure);
 
-  /* Channel 1, 2,3 and 4 Configuration in PWM mode */
-  TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_Timing;
-  TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
-  TIM_OCInitStructure.TIM_OutputNState = TIM_OutputNState_Enable;
-  TIM_OCInitStructure.TIM_Pulse = 2047;
-  TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_High;
-  TIM_OCInitStructure.TIM_OCNPolarity = TIM_OCNPolarity_High;
-  TIM_OCInitStructure.TIM_OCIdleState = TIM_OCIdleState_Set;
-  TIM_OCInitStructure.TIM_OCNIdleState = TIM_OCNIdleState_Set;
+    /* Channel 1, 2,3 and 4 Configuration in PWM mode */
+    TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_Timing;
+    TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
+    TIM_OCInitStructure.TIM_OutputNState = TIM_OutputNState_Enable;
+    TIM_OCInitStructure.TIM_Pulse = 2047;
+    TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_High;
+    TIM_OCInitStructure.TIM_OCNPolarity = TIM_OCNPolarity_High;
+    TIM_OCInitStructure.TIM_OCIdleState = TIM_OCIdleState_Set;
+    TIM_OCInitStructure.TIM_OCNIdleState = TIM_OCNIdleState_Set;
 
-  TIM_OC1Init(TIM1, &TIM_OCInitStructure);
+    TIM_OC1Init(TIM1, &TIM_OCInitStructure);
 
-  TIM_OCInitStructure.TIM_Pulse = 1023;
-  TIM_OC2Init(TIM1, &TIM_OCInitStructure);
+    TIM_OCInitStructure.TIM_Pulse = 1023;
+    TIM_OC2Init(TIM1, &TIM_OCInitStructure);
 
-  TIM_OCInitStructure.TIM_Pulse = 511;
-  TIM_OC3Init(TIM1, &TIM_OCInitStructure);
+    TIM_OCInitStructure.TIM_Pulse = 511;
+    TIM_OC3Init(TIM1, &TIM_OCInitStructure);
 
-  /* Automatic Output enable, Break, dead time and lock configuration*/
-  TIM_BDTRInitStructure.TIM_OSSRState = TIM_OSSRState_Enable;
-  TIM_BDTRInitStructure.TIM_OSSIState = TIM_OSSIState_Enable;
-  TIM_BDTRInitStructure.TIM_LOCKLevel = TIM_LOCKLevel_OFF;
-  TIM_BDTRInitStructure.TIM_DeadTime = 1;
-  TIM_BDTRInitStructure.TIM_Break = TIM_Break_Enable;
-  TIM_BDTRInitStructure.TIM_BreakPolarity = TIM_BreakPolarity_High;
-  TIM_BDTRInitStructure.TIM_AutomaticOutput = TIM_AutomaticOutput_Enable;
+    /* Automatic Output enable, Break, dead time and lock configuration*/
+    TIM_BDTRInitStructure.TIM_OSSRState = TIM_OSSRState_Enable;
+    TIM_BDTRInitStructure.TIM_OSSIState = TIM_OSSIState_Enable;
+    TIM_BDTRInitStructure.TIM_LOCKLevel = TIM_LOCKLevel_OFF;
+    TIM_BDTRInitStructure.TIM_DeadTime = 1;
+    TIM_BDTRInitStructure.TIM_Break = TIM_Break_Enable;
+    TIM_BDTRInitStructure.TIM_BreakPolarity = TIM_BreakPolarity_High;
+    TIM_BDTRInitStructure.TIM_AutomaticOutput = TIM_AutomaticOutput_Enable;
 
-  TIM_BDTRConfig(TIM1, &TIM_BDTRInitStructure);
+    TIM_BDTRConfig(TIM1, &TIM_BDTRInitStructure);
 
-  TIM_CCPreloadControl(TIM1, ENABLE);
+    TIM_CCPreloadControl(TIM1, ENABLE);
 
-  TIM_ITConfig(TIM1, TIM_IT_COM, ENABLE);
+    TIM_ITConfig(TIM1, TIM_IT_COM, ENABLE);
 
-  /* TIM1 counter enable */
-  TIM_Cmd(TIM1, ENABLE);
+    /* TIM1 counter enable */
+    TIM_Cmd(TIM1, ENABLE);
 
-  /* Main Output Enable */
-  TIM_CtrlPWMOutputs(TIM1, ENABLE);
+    /* Main Output Enable */
+    TIM_CtrlPWMOutputs(TIM1, ENABLE);
 
-  while (1)
-  {}
+    while(1) {
+    }
 }
 
 /**
@@ -163,10 +163,11 @@ int main(void)
   * @retval None
   */
 void RCC_Configuration(void)
-{  
-  /* TIM1, GPIOA, GPIOB, GPIOE and AFIO clocks enable */
-  RCC_APB2PeriphClockCmd(RCC_APB2Periph_TIM1 | RCC_APB2Periph_GPIOA | RCC_APB2Periph_GPIOE|
-                         RCC_APB2Periph_GPIOB |RCC_APB2Periph_AFIO, ENABLE);
+{
+    /* TIM1, GPIOA, GPIOB, GPIOE and AFIO clocks enable */
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_TIM1 | RCC_APB2Periph_GPIOA | RCC_APB2Periph_GPIOE |
+                               RCC_APB2Periph_GPIOB | RCC_APB2Periph_AFIO,
+        ENABLE);
 }
 
 /**
@@ -176,42 +177,42 @@ void RCC_Configuration(void)
   */
 void GPIO_Configuration(void)
 {
-  GPIO_InitTypeDef GPIO_InitStructure;
+    GPIO_InitTypeDef GPIO_InitStructure;
 
 #ifdef STM32F10X_CL
-  /* GPIOE Configuration: Channel 1/1N, 2/2N, 3/3N as alternate function push-pull */
-  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_9|GPIO_Pin_11|GPIO_Pin_13|
-                                GPIO_Pin_8|GPIO_Pin_10|GPIO_Pin_12;
-  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
-  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    /* GPIOE Configuration: Channel 1/1N, 2/2N, 3/3N as alternate function push-pull */
+    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_9 | GPIO_Pin_11 | GPIO_Pin_13 |
+                                  GPIO_Pin_8 | GPIO_Pin_10 | GPIO_Pin_12;
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
 
-  GPIO_Init(GPIOE, &GPIO_InitStructure);
+    GPIO_Init(GPIOE, &GPIO_InitStructure);
 
-  /* GPIOE Configuration: BKIN pin */
-  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_15;
-  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
-  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    /* GPIOE Configuration: BKIN pin */
+    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_15;
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
 
-  GPIO_Init(GPIOE, &GPIO_InitStructure);
+    GPIO_Init(GPIOE, &GPIO_InitStructure);
 
-  /* TIM1 Full remapping pins */
-  GPIO_PinRemapConfig(GPIO_FullRemap_TIM1, ENABLE); 
+    /* TIM1 Full remapping pins */
+    GPIO_PinRemapConfig(GPIO_FullRemap_TIM1, ENABLE);
 
 #else
-  /* GPIOA Configuration: Channel 1, 2 and 3 as alternate function push-pull */
-  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_8 | GPIO_Pin_9 | GPIO_Pin_10;
-  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
-  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-  GPIO_Init(GPIOA, &GPIO_InitStructure);
+    /* GPIOA Configuration: Channel 1, 2 and 3 as alternate function push-pull */
+    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_8 | GPIO_Pin_9 | GPIO_Pin_10;
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    GPIO_Init(GPIOA, &GPIO_InitStructure);
 
-  /* GPIOB Configuration: Channel 1N, 2N and 3N as alternate function push-pull */
-  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_13 | GPIO_Pin_14 | GPIO_Pin_15;
-  GPIO_Init(GPIOB, &GPIO_InitStructure);
+    /* GPIOB Configuration: Channel 1N, 2N and 3N as alternate function push-pull */
+    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_13 | GPIO_Pin_14 | GPIO_Pin_15;
+    GPIO_Init(GPIOB, &GPIO_InitStructure);
 
-  /* GPIOB Configuration: BKIN pin */
-  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_12;
-  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
-  GPIO_Init(GPIOB, &GPIO_InitStructure);  
+    /* GPIOB Configuration: BKIN pin */
+    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_12;
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
+    GPIO_Init(GPIOB, &GPIO_InitStructure);
 #endif
 }
 
@@ -222,14 +223,14 @@ void GPIO_Configuration(void)
   */
 void SysTick_Configuration(void)
 {
-  /* Setup SysTick Timer for 100 msec interrupts  */
-  if (SysTick_Config((SystemCoreClock) / 10))
-  { 
-    /* Capture error */ 
-    while (1);
-  }
+    /* Setup SysTick Timer for 100 msec interrupts  */
+    if(SysTick_Config((SystemCoreClock) / 10)) {
+        /* Capture error */
+        while(1)
+            ;
+    }
 
-   NVIC_SetPriority(SysTick_IRQn, 0x0);
+    NVIC_SetPriority(SysTick_IRQn, 0x0);
 }
 
 /**
@@ -239,22 +240,21 @@ void SysTick_Configuration(void)
   */
 void NVIC_Configuration(void)
 {
-  NVIC_InitTypeDef NVIC_InitStructure;
+    NVIC_InitTypeDef NVIC_InitStructure;
 
-  /* Enable the TIM1 Interrupt */
-#if defined (STM32F10X_LD_VL) || defined (STM32F10X_MD_VL) || defined (STM32F10X_HD_VL)
-  NVIC_InitStructure.NVIC_IRQChannel = TIM1_TRG_COM_TIM17_IRQn;
+    /* Enable the TIM1 Interrupt */
+#if defined(STM32F10X_LD_VL) || defined(STM32F10X_MD_VL) || defined(STM32F10X_HD_VL)
+    NVIC_InitStructure.NVIC_IRQChannel = TIM1_TRG_COM_TIM17_IRQn;
 #else
-  NVIC_InitStructure.NVIC_IRQChannel = TIM1_TRG_COM_IRQn;
+    NVIC_InitStructure.NVIC_IRQChannel = TIM1_TRG_COM_IRQn;
 #endif
-  NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
-  NVIC_InitStructure.NVIC_IRQChannelSubPriority = 1;
-  NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
-  NVIC_Init(&NVIC_InitStructure); 
-
+    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
+    NVIC_InitStructure.NVIC_IRQChannelSubPriority = 1;
+    NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+    NVIC_Init(&NVIC_InitStructure);
 }
 
-#ifdef  USE_FULL_ASSERT
+#ifdef USE_FULL_ASSERT
 
 /**
   * @brief  Reports the name of the source file and the source line number
@@ -265,20 +265,20 @@ void NVIC_Configuration(void)
   */
 void assert_failed(uint8_t* file, uint32_t line)
 {
-  /* User can add his own implementation to report the file name and line number,
+    /* User can add his own implementation to report the file name and line number,
      ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
 
-  while (1)
-  {}
+    while(1) {
+    }
 }
 
 #endif
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}
-  */ 
+  */
 
 /******************* (C) COPYRIGHT 2011 STMicroelectronics *****END OF FILE****/

@@ -17,7 +17,7 @@
   *
   * <h2><center>&copy; COPYRIGHT 2011 STMicroelectronics</center></h2>
   ******************************************************************************
-  */ 
+  */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __MAIN_H
@@ -35,10 +35,10 @@
 #define SYSCLK_FREQ_24MHz
 
 #if !defined STM32F10X_LD_VL && !defined STM32F10X_MD_VL && !defined STM32F10X_HD_VL
-  //#define SYSCLK_FREQ_36MHz
-  //#define SYSCLK_FREQ_48MHz
-  //#define SYSCLK_FREQ_56MHz
-  #define SYSCLK_FREQ_72MHz
+//#define SYSCLK_FREQ_36MHz
+//#define SYSCLK_FREQ_48MHz
+//#define SYSCLK_FREQ_56MHz
+#define SYSCLK_FREQ_72MHz
 #endif
 
 /* Exported macro ------------------------------------------------------------*/

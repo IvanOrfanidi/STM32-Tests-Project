@@ -17,7 +17,7 @@
   *
   * <h2><center>&copy; COPYRIGHT 2011 STMicroelectronics</center></h2>
   ******************************************************************************
-  */ 
+  */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __STM32F10x_CONF_H
@@ -55,25 +55,25 @@
    Standard Peripheral Library drivers code */
 /* #define USE_FULL_ASSERT    1 */
 
-#if !defined (CEC_DEVICE1) && !defined (CEC_DEVICE2)
-  #define CEC_DEVICE1  1
-  /* #define CEC_DEVICE2  2 */
+#if !defined(CEC_DEVICE1) && !defined(CEC_DEVICE2)
+#define CEC_DEVICE1 1
+/* #define CEC_DEVICE2  2 */
 #endif
 
 #ifdef CEC_DEVICE1
- #define MY_DEVICE_ADDRESS  0x01 /* My device address: is my initiator address
-                                    in case of transmit and the follower address
-                                    in case of receive */ 
- #define FOLLOWER           0x02                                
-#elif defined  CEC_DEVICE2
- #define MY_DEVICE_ADDRESS  0x02 /* My device address: is my initiator address
+#define MY_DEVICE_ADDRESS 0x01 /* My device address: is my initiator address
                                     in case of transmit and the follower address
                                     in case of receive */
- #define FOLLOWER           0x01                                                                           
-#endif                                 
+#define FOLLOWER 0x02
+#elif defined CEC_DEVICE2
+#define MY_DEVICE_ADDRESS 0x02 /* My device address: is my initiator address
+                                    in case of transmit and the follower address
+                                    in case of receive */
+#define FOLLOWER 0x01
+#endif
 
 /* Exported macro ------------------------------------------------------------*/
-#ifdef  USE_FULL_ASSERT
+#ifdef USE_FULL_ASSERT
 
 /**
   * @brief  The assert_param macro is used for function's parameters check.
@@ -82,11 +82,11 @@
   *         that failed. If expr is true, it returns no value.
   * @retval None
   */
-  #define assert_param(expr) ((expr) ? (void)0 : assert_failed((uint8_t *)__FILE__, __LINE__))
+#define assert_param(expr) ((expr) ? (void)0 : assert_failed((uint8_t*)__FILE__, __LINE__))
 /* Exported functions ------------------------------------------------------- */
-  void assert_failed(uint8_t* file, uint32_t line);
+void assert_failed(uint8_t* file, uint32_t line);
 #else
-  #define assert_param(expr) ((void)0)
+#define assert_param(expr) ((void)0)
 #endif /* USE_FULL_ASSERT */
 
 #endif /* __STM32F10x_CONF_H */

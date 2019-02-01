@@ -19,7 +19,7 @@
   *
   * <h2><center>&copy; COPYRIGHT 2011 STMicroelectronics</center></h2>
   ******************************************************************************
-  */ 
+  */
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f10x_it.h"
@@ -30,7 +30,7 @@
 
 /** @addtogroup CAN_Networking
   * @{
-  */ 
+  */
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
@@ -39,7 +39,7 @@
 CanRxMsg RxMessage;
 extern uint8_t KeyNumber;
 extern void LED_Display(uint8_t Ledstatus);
- 
+
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
 
@@ -63,10 +63,9 @@ void NMI_Handler(void)
   */
 void HardFault_Handler(void)
 {
-  /* Go to infinite loop when Hard Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Hard Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -76,10 +75,9 @@ void HardFault_Handler(void)
   */
 void MemManage_Handler(void)
 {
-  /* Go to infinite loop when Memory Manage exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Memory Manage exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -89,10 +87,9 @@ void MemManage_Handler(void)
   */
 void BusFault_Handler(void)
 {
-  /* Go to infinite loop when Bus Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Bus Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -102,10 +99,9 @@ void BusFault_Handler(void)
   */
 void UsageFault_Handler(void)
 {
-  /* Go to infinite loop when Usage Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Usage Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -159,12 +155,11 @@ void USB_LP_CAN1_RX0_IRQHandler(void)
 void CAN1_RX0_IRQHandler(void)
 #endif
 {
-  CAN_Receive(CAN1, CAN_FIFO0, &RxMessage);
-  if ((RxMessage.StdId == 0x321)&&(RxMessage.IDE == CAN_ID_STD) && (RxMessage.DLC == 1))
-  {
-    LED_Display(RxMessage.Data[0]);
-    KeyNumber = RxMessage.Data[0];
-  }
+    CAN_Receive(CAN1, CAN_FIFO0, &RxMessage);
+    if((RxMessage.StdId == 0x321) && (RxMessage.IDE == CAN_ID_STD) && (RxMessage.DLC == 1)) {
+        LED_Display(RxMessage.Data[0]);
+        KeyNumber = RxMessage.Data[0];
+    }
 }
 
 /**
@@ -175,12 +170,11 @@ void CAN1_RX0_IRQHandler(void)
 #ifdef STM32F10X_CL
 void CAN2_RX0_IRQHandler(void)
 {
-  CAN_Receive(CAN2, CAN_FIFO0, &RxMessage);
-  if ((RxMessage.StdId == 0x321)&&(RxMessage.IDE == CAN_ID_STD) && (RxMessage.DLC == 1))
-  {
-    LED_Display(RxMessage.Data[0]);
-    KeyNumber = RxMessage.Data[0];
-  }
+    CAN_Receive(CAN2, CAN_FIFO0, &RxMessage);
+    if((RxMessage.StdId == 0x321) && (RxMessage.IDE == CAN_ID_STD) && (RxMessage.DLC == 1)) {
+        LED_Display(RxMessage.Data[0]);
+        KeyNumber = RxMessage.Data[0];
+    }
 }
 #endif
 /******************************************************************************/
@@ -201,11 +195,10 @@ void CAN2_RX0_IRQHandler(void)
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}
-  */ 
-
+  */
 
 /******************* (C) COPYRIGHT 2011 STMicroelectronics *****END OF FILE****/

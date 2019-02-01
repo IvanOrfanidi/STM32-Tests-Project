@@ -19,7 +19,7 @@
   *
   * <h2><center>&copy; COPYRIGHT 2011 STMicroelectronics</center></h2>
   ******************************************************************************
-  */ 
+  */
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f10x_it.h"
@@ -31,13 +31,13 @@
 
 /** @addtogroup USART_Smartcard
   * @{
-  */ 
+  */
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
-extern __IO uint32_t CardInserted; 
+extern __IO uint32_t CardInserted;
 
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
@@ -62,10 +62,9 @@ void NMI_Handler(void)
   */
 void HardFault_Handler(void)
 {
-  /* Go to infinite loop when Hard Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Hard Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -75,10 +74,9 @@ void HardFault_Handler(void)
   */
 void MemManage_Handler(void)
 {
-  /* Go to infinite loop when Memory Manage exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Memory Manage exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -88,10 +86,9 @@ void MemManage_Handler(void)
   */
 void BusFault_Handler(void)
 {
-  /* Go to infinite loop when Bus Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Bus Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -101,10 +98,9 @@ void BusFault_Handler(void)
   */
 void UsageFault_Handler(void)
 {
-  /* Go to infinite loop when Usage Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Usage Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -154,20 +150,20 @@ void SysTick_Handler(void)
   */
 void EXTI9_5_IRQHandler(void)
 {
-  /* Select Smart Card CMDVCC */  
-  GPIO_ResetBits(GPIO_CMDVCC, SC_CMDVCC);
+    /* Select Smart Card CMDVCC */
+    GPIO_ResetBits(GPIO_CMDVCC, SC_CMDVCC);
 
-  /* Set RSTIN LOW */  
-  GPIO_ResetBits(GPIO_RESET, SC_RESET);
+    /* Set RSTIN LOW */
+    GPIO_ResetBits(GPIO_RESET, SC_RESET);
 
-  /* Set RSTIN HIGH */  
-  GPIO_SetBits(GPIO_RESET, SC_RESET);
-    
-  /* Clear SC EXTIT Line Pending Bit */
-  EXTI_ClearITPendingBit(SC_EXTI);
+    /* Set RSTIN HIGH */
+    GPIO_SetBits(GPIO_RESET, SC_RESET);
 
-  /* Smart card detected */
-  CardInserted = 1;
+    /* Clear SC EXTIT Line Pending Bit */
+    EXTI_ClearITPendingBit(SC_EXTI);
+
+    /* Smart card detected */
+    CardInserted = 1;
 }
 
 /**
@@ -177,21 +173,19 @@ void EXTI9_5_IRQHandler(void)
   */
 void SC_USART_IRQHandler(void)
 {
-  /* If the SC_USART detects a parity error */
-  if(USART_GetITStatus(SC_USART, USART_IT_PE) != RESET)
-  {
-    /* Enable SC_USART RXNE Interrupt (until receiving the corrupted byte) */
-    USART_ITConfig(SC_USART, USART_IT_RXNE, ENABLE);
-    /* Flush the SC_USART DR register */
-    USART_ReceiveData(SC_USART);
-  }
-  
-  if(USART_GetITStatus(SC_USART, USART_IT_RXNE) != RESET)
-  {
-    /* Disable SC_USART RXNE Interrupt */
-    USART_ITConfig(SC_USART, USART_IT_RXNE, DISABLE);
-    USART_ReceiveData(SC_USART);
-  }
+    /* If the SC_USART detects a parity error */
+    if(USART_GetITStatus(SC_USART, USART_IT_PE) != RESET) {
+        /* Enable SC_USART RXNE Interrupt (until receiving the corrupted byte) */
+        USART_ITConfig(SC_USART, USART_IT_RXNE, ENABLE);
+        /* Flush the SC_USART DR register */
+        USART_ReceiveData(SC_USART);
+    }
+
+    if(USART_GetITStatus(SC_USART, USART_IT_RXNE) != RESET) {
+        /* Disable SC_USART RXNE Interrupt */
+        USART_ITConfig(SC_USART, USART_IT_RXNE, DISABLE);
+        USART_ReceiveData(SC_USART);
+    }
 }
 
 /**
@@ -201,20 +195,20 @@ void SC_USART_IRQHandler(void)
   */
 void EXTI15_10_IRQHandler(void)
 {
-  /* Select Smart Card CMDVCC */  
-  GPIO_ResetBits(GPIO_CMDVCC, SC_CMDVCC);
+    /* Select Smart Card CMDVCC */
+    GPIO_ResetBits(GPIO_CMDVCC, SC_CMDVCC);
 
-  /* Set RSTIN LOW */  
-  GPIO_ResetBits(GPIO_RESET, SC_RESET);
+    /* Set RSTIN LOW */
+    GPIO_ResetBits(GPIO_RESET, SC_RESET);
 
-  /* Set RSTIN HIGH */  
-  GPIO_SetBits(GPIO_RESET, SC_RESET);
-    
-  /* Clear SC EXTIT Line Pending Bit */
-  EXTI_ClearITPendingBit(SC_EXTI);
+    /* Set RSTIN HIGH */
+    GPIO_SetBits(GPIO_RESET, SC_RESET);
 
-  /* Smart card detected */
-  CardInserted = 1;
+    /* Clear SC EXTIT Line Pending Bit */
+    EXTI_ClearITPendingBit(SC_EXTI);
+
+    /* Smart card detected */
+    CardInserted = 1;
 }
 
 /******************************************************************************/
@@ -235,8 +229,7 @@ void EXTI15_10_IRQHandler(void)
 
 /**
   * @}
-  */ 
-
+  */
 
 /**
   * @}

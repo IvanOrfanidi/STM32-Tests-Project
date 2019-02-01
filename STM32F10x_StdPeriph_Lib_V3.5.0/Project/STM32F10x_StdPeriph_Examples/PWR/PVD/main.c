@@ -17,7 +17,7 @@
   *
   * <h2><center>&copy; COPYRIGHT 2011 STMicroelectronics</center></h2>
   ******************************************************************************
-  */ 
+  */
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f10x.h"
@@ -29,7 +29,7 @@
 
 /** @addtogroup PWR_PVD
   * @{
-  */ 
+  */
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
@@ -48,34 +48,33 @@ void NVIC_Configuration(void);
   */
 int main(void)
 {
-  /*!< At this stage the microcontroller clock setting is already configured, 
+    /*!< At this stage the microcontroller clock setting is already configured, 
        this is done through SystemInit() function which is called from startup
        file (startup_stm32f10x_xx.s) before to branch to application main.
        To reconfigure the default setting of SystemInit() function, refer to
        system_stm32f10x.c file
-     */     
+     */
 
-  /* Initialize LEDs and Key Button mounted on STM3210X-EVAL board */
-  STM_EVAL_LEDInit(LED1);
+    /* Initialize LEDs and Key Button mounted on STM3210X-EVAL board */
+    STM_EVAL_LEDInit(LED1);
 
-  /* Enable PWR and BKP clock */
-  RCC_APB1PeriphClockCmd(RCC_APB1Periph_PWR | RCC_APB1Periph_BKP, ENABLE);
+    /* Enable PWR and BKP clock */
+    RCC_APB1PeriphClockCmd(RCC_APB1Periph_PWR | RCC_APB1Periph_BKP, ENABLE);
 
-  /* Configure EXTI Line to generate an interrupt on falling edge */
-  EXTI_Configuration();
+    /* Configure EXTI Line to generate an interrupt on falling edge */
+    EXTI_Configuration();
 
-  /* NVIC configuration */
-  NVIC_Configuration();
- 
-  /* Configure the PVD Level to 2.9V */
-  PWR_PVDLevelConfig(PWR_PVDLevel_2V9);
+    /* NVIC configuration */
+    NVIC_Configuration();
 
-  /* Enable the PVD Output */
-  PWR_PVDCmd(ENABLE);
-  
-  while (1)
-  {
-  }
+    /* Configure the PVD Level to 2.9V */
+    PWR_PVDLevelConfig(PWR_PVDLevel_2V9);
+
+    /* Enable the PVD Output */
+    PWR_PVDCmd(ENABLE);
+
+    while(1) {
+    }
 }
 
 /**
@@ -85,16 +84,16 @@ int main(void)
   */
 void EXTI_Configuration(void)
 {
-  EXTI_InitTypeDef EXTI_InitStructure;
+    EXTI_InitTypeDef EXTI_InitStructure;
 
-  /* Configure EXTI Line16(PVD Output) to generate an interrupt on rising and
+    /* Configure EXTI Line16(PVD Output) to generate an interrupt on rising and
      falling edges */
-  EXTI_ClearITPendingBit(EXTI_Line17);
-  EXTI_InitStructure.EXTI_Line = EXTI_Line17;
-  EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt;
-  EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Rising_Falling;
-  EXTI_InitStructure.EXTI_LineCmd = ENABLE;
-  EXTI_Init(&EXTI_InitStructure);
+    EXTI_ClearITPendingBit(EXTI_Line17);
+    EXTI_InitStructure.EXTI_Line = EXTI_Line17;
+    EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt;
+    EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Rising_Falling;
+    EXTI_InitStructure.EXTI_LineCmd = ENABLE;
+    EXTI_Init(&EXTI_InitStructure);
 }
 
 /**
@@ -104,20 +103,20 @@ void EXTI_Configuration(void)
   */
 void NVIC_Configuration(void)
 {
-  NVIC_InitTypeDef NVIC_InitStructure;
-  
-  /* Configure one bit for preemption priority */
-  NVIC_PriorityGroupConfig(NVIC_PriorityGroup_1);
-  
-  /* Enable the PVD Interrupt */
-  NVIC_InitStructure.NVIC_IRQChannel = PVD_IRQn;
-  NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
-  NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
-  NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
-  NVIC_Init(&NVIC_InitStructure);
+    NVIC_InitTypeDef NVIC_InitStructure;
+
+    /* Configure one bit for preemption priority */
+    NVIC_PriorityGroupConfig(NVIC_PriorityGroup_1);
+
+    /* Enable the PVD Interrupt */
+    NVIC_InitStructure.NVIC_IRQChannel = PVD_IRQn;
+    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
+    NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
+    NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+    NVIC_Init(&NVIC_InitStructure);
 }
 
-#ifdef  USE_FULL_ASSERT
+#ifdef USE_FULL_ASSERT
 
 /**
   * @brief  Reports the name of the source file and the source line number
@@ -127,14 +126,13 @@ void NVIC_Configuration(void)
   * @retval None
   */
 void assert_failed(uint8_t* file, uint32_t line)
-{ 
-  /* User can add his own implementation to report the file name and line number,
+{
+    /* User can add his own implementation to report the file name and line number,
      ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
 
-  /* Infinite loop */
-  while (1)
-  {
-  }
+    /* Infinite loop */
+    while(1) {
+    }
 }
 
 #endif

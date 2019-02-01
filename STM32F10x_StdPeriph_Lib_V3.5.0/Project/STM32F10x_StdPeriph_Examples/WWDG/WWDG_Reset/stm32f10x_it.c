@@ -19,7 +19,7 @@
   *
   * <h2><center>&copy; COPYRIGHT 2011 STMicroelectronics</center></h2>
   ******************************************************************************
-  */ 
+  */
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f10x_it.h"
@@ -62,9 +62,9 @@ void NMI_Handler(void)
   */
 void HardFault_Handler(void)
 {
-  /* Go to infinite loop when Hard Fault exception occurs */
-  while (1)
-  {}
+    /* Go to infinite loop when Hard Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -74,9 +74,9 @@ void HardFault_Handler(void)
   */
 void MemManage_Handler(void)
 {
-  /* Go to infinite loop when Memory Manage exception occurs */
-  while (1)
-  {}
+    /* Go to infinite loop when Memory Manage exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -86,9 +86,9 @@ void MemManage_Handler(void)
   */
 void BusFault_Handler(void)
 {
-  /* Go to infinite loop when Bus Fault exception occurs */
-  while (1)
-  {}
+    /* Go to infinite loop when Bus Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -98,9 +98,9 @@ void BusFault_Handler(void)
   */
 void UsageFault_Handler(void)
 {
-  /* Go to infinite loop when Usage Fault exception occurs */
-  while (1)
-  {}
+    /* Go to infinite loop when Usage Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -137,7 +137,7 @@ void PendSV_Handler(void)
   */
 void SysTick_Handler(void)
 {
-  TimingDelay--;
+    TimingDelay--;
 }
 
 /******************************************************************************/
@@ -151,16 +151,15 @@ void SysTick_Handler(void)
   */
 void EXTI9_5_IRQHandler(void)
 {
-  if (EXTI_GetITStatus(KEY_BUTTON_EXTI_LINE) != RESET)
-  {  
-    /* Clear the Key Button EXTI Line Pending Bit */
-    EXTI_ClearITPendingBit(KEY_BUTTON_EXTI_LINE);
-    
-    /* As the following address is invalid (not mapped), a Hardfault exception
+    if(EXTI_GetITStatus(KEY_BUTTON_EXTI_LINE) != RESET) {
+        /* Clear the Key Button EXTI Line Pending Bit */
+        EXTI_ClearITPendingBit(KEY_BUTTON_EXTI_LINE);
+
+        /* As the following address is invalid (not mapped), a Hardfault exception
 	  will be generated with an infinite loop and when the WWDG counter falls to 63
     the WWDG reset occurs */
- 	  *(__IO uint32_t *) 0x000000FF = 0xFF;
-  }
+        *(__IO uint32_t*)0x000000FF = 0xFF;
+    }
 }
 
 /******************************************************************************/
@@ -179,13 +178,12 @@ void EXTI9_5_IRQHandler(void)
 {
 }*/
 
+/**
+  * @}
+  */
 
 /**
   * @}
-  */ 
-
-/**
-  * @}
-  */ 
+  */
 
 /******************* (C) COPYRIGHT 2011 STMicroelectronics *****END OF FILE****/

@@ -18,14 +18,14 @@
   *
   * <h2><center>&copy; COPYRIGHT 2011 STMicroelectronics</center></h2>
   ******************************************************************************  
-  */ 
-  
+  */
+
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __STM3210E_EVAL_FSMC_NOR_H
 #define __STM3210E_EVAL_FSMC_NOR_H
 
 #ifdef __cplusplus
- extern "C" {
+extern "C" {
 #endif
 
 /* Includes ------------------------------------------------------------------*/
@@ -34,59 +34,58 @@
 /** @addtogroup Utilities
   * @{
   */
-  
+
 /** @addtogroup STM32_EVAL
   * @{
-  */ 
+  */
 
 /** @addtogroup STM3210E_EVAL
   * @{
   */
-  
+
 /** @addtogroup STM3210E_EVAL_FSMC_NOR
   * @{
-  */  
+  */
 
 /** @defgroup STM3210E_EVAL_FSMC_NOR_Exported_Types
   * @{
   */
 typedef struct
 {
-  uint16_t Manufacturer_Code;
-  uint16_t Device_Code1;
-  uint16_t Device_Code2;
-  uint16_t Device_Code3;
-}NOR_IDTypeDef;
+    uint16_t Manufacturer_Code;
+    uint16_t Device_Code1;
+    uint16_t Device_Code2;
+    uint16_t Device_Code3;
+} NOR_IDTypeDef;
 
 /* NOR Status */
-typedef enum
-{
-  NOR_SUCCESS = 0,
-  NOR_ONGOING,
-  NOR_ERROR,
-  NOR_TIMEOUT
-}NOR_Status;  
+typedef enum {
+    NOR_SUCCESS = 0,
+    NOR_ONGOING,
+    NOR_ERROR,
+    NOR_TIMEOUT
+} NOR_Status;
 /**
   * @}
   */
-  
+
 /** @defgroup STM3210E_EVAL_FSMC_NOR_Exported_Constants
   * @{
-  */ 
+  */
 /**
   * @}
-  */ 
-  
+  */
+
 /** @defgroup STM3210E_EVAL_FSMC_NOR_Exported_Macros
   * @{
-  */ 
+  */
 /**
   * @}
-  */ 
+  */
 
 /** @defgroup STM3210E_EVAL_FSMC_NOR_Exported_Functions
   * @{
-  */ 
+  */
 void NOR_Init(void);
 void NOR_ReadID(NOR_IDTypeDef* NOR_ID);
 NOR_Status NOR_EraseBlock(uint32_t BlockAddr);
@@ -119,10 +118,10 @@ NOR_Status NOR_GetStatus(uint32_t Timeout);
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}
-  */ 
+  */
 
 /******************* (C) COPYRIGHT 2011 STMicroelectronics *****END OF FILE****/

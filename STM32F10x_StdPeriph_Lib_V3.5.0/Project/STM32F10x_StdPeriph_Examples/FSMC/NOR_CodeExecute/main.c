@@ -17,7 +17,7 @@
   *
   * <h2><center>&copy; COPYRIGHT 2011 STMicroelectronics</center></h2>
   ******************************************************************************
-  */ 
+  */
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm3210e_eval_fsmc_nor.h"
@@ -28,13 +28,13 @@
 
 /** @addtogroup FSMC_NOR_CodeExecute
   * @{
-  */ 
+  */
 
 /* Private typedef -----------------------------------------------------------*/
-typedef  void (*pFunction)(void);
+typedef void (*pFunction)(void);
 
 /* Private define ------------------------------------------------------------*/
-#define ApplicationAddress       ((uint32_t)0x64000000)
+#define ApplicationAddress ((uint32_t)0x64000000)
 
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
@@ -51,35 +51,34 @@ __IO uint32_t JumpAddress;
   */
 int main(void)
 {
-  /*!< At this stage the microcontroller clock setting is already configured, 
+    /*!< At this stage the microcontroller clock setting is already configured, 
        this is done through SystemInit() function which is called from startup
        file (startup_stm32f10x_xx.s) before to branch to application main.
        To reconfigure the default setting of SystemInit() function, refer to
        system_stm32f10x.c file
-     */     
+     */
 
-  /* FSMC NOR configuration  **************************************************/
-  /* Enable the FSMC Clock */
-  RCC_AHBPeriphClockCmd(RCC_AHBPeriph_FSMC, ENABLE);
+    /* FSMC NOR configuration  **************************************************/
+    /* Enable the FSMC Clock */
+    RCC_AHBPeriphClockCmd(RCC_AHBPeriph_FSMC, ENABLE);
 
-  /* Configure FSMC Bank1 NOR/SRAM2 */
-  NOR_Init();
+    /* Configure FSMC Bank1 NOR/SRAM2 */
+    NOR_Init();
 
-  /* Jump to code loaded in NOR memory and execute it *************************/
-  JumpAddress = *(__IO uint32_t*) (ApplicationAddress + 4);
-  Jump_To_Application = (pFunction) JumpAddress;
+    /* Jump to code loaded in NOR memory and execute it *************************/
+    JumpAddress = *(__IO uint32_t*)(ApplicationAddress + 4);
+    Jump_To_Application = (pFunction)JumpAddress;
 
-  /* Initialize user application's Stack Pointer */
-  __set_MSP(*(__IO uint32_t*) ApplicationAddress); 
+    /* Initialize user application's Stack Pointer */
+    __set_MSP(*(__IO uint32_t*)ApplicationAddress);
 
-  Jump_To_Application();
+    Jump_To_Application();
 
-  while (1)
-  {
-  }
+    while(1) {
+    }
 }
 
-#ifdef  USE_FULL_ASSERT
+#ifdef USE_FULL_ASSERT
 
 /**
   * @brief  Reports the name of the source file and the source line number
@@ -89,24 +88,23 @@ int main(void)
   * @retval None
   */
 void assert_failed(uint8_t* file, uint32_t line)
-{ 
-  /* User can add his own implementation to report the file name and line number,
+{
+    /* User can add his own implementation to report the file name and line number,
      ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
 
-  /* Infinite loop */
-  while (1)
-  {
-  }
+    /* Infinite loop */
+    while(1) {
+    }
 }
 
 #endif
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}
-  */ 
+  */
 
 /******************* (C) COPYRIGHT 2011 STMicroelectronics *****END OF FILE****/

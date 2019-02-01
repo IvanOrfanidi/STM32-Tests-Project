@@ -19,7 +19,7 @@
   *
   * <h2><center>&copy; COPYRIGHT 2011 STMicroelectronics</center></h2>
   ******************************************************************************
-  */ 
+  */
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f10x_it.h"
@@ -31,7 +31,7 @@
 
 /** @addtogroup I2C_TSENSOR
   * @{
-  */ 
+  */
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
@@ -62,10 +62,9 @@ void NMI_Handler(void)
   */
 void HardFault_Handler(void)
 {
-  /* Go to infinite loop when Hard Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Hard Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -75,10 +74,9 @@ void HardFault_Handler(void)
   */
 void MemManage_Handler(void)
 {
-  /* Go to infinite loop when Memory Manage exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Memory Manage exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -88,10 +86,9 @@ void MemManage_Handler(void)
   */
 void BusFault_Handler(void)
 {
-  /* Go to infinite loop when Bus Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Bus Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -101,10 +98,9 @@ void BusFault_Handler(void)
   */
 void UsageFault_Handler(void)
 {
-  /* Go to infinite loop when Usage Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Usage Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -157,43 +153,36 @@ void I2C2_ER_IRQHandler(void)
 void I2C1_ER_IRQHandler(void)
 #endif /* STM32100E-EVAL */
 {
-  /* Check on I2C2 SMBALERT flag and clear it */
-  if (I2C_GetITStatus(LM75_I2C, I2C_IT_SMBALERT))
-  {
-    I2C_ClearITPendingBit(LM75_I2C, I2C_IT_SMBALERT);
-    SMbusAlertOccurred++;
-  }
-  /* Check on I2C2 Time out flag and clear it */
-  if (I2C_GetITStatus(LM75_I2C, I2C_IT_TIMEOUT))
-  {
-    I2C_ClearITPendingBit(LM75_I2C, I2C_IT_TIMEOUT);
-  }
-  /* Check on I2C2 Arbitration Lost flag and clear it */
-  if (I2C_GetITStatus(LM75_I2C, I2C_IT_ARLO))
-  {
-    I2C_ClearITPendingBit(LM75_I2C, I2C_IT_ARLO);
-  } 
+    /* Check on I2C2 SMBALERT flag and clear it */
+    if(I2C_GetITStatus(LM75_I2C, I2C_IT_SMBALERT)) {
+        I2C_ClearITPendingBit(LM75_I2C, I2C_IT_SMBALERT);
+        SMbusAlertOccurred++;
+    }
+    /* Check on I2C2 Time out flag and clear it */
+    if(I2C_GetITStatus(LM75_I2C, I2C_IT_TIMEOUT)) {
+        I2C_ClearITPendingBit(LM75_I2C, I2C_IT_TIMEOUT);
+    }
+    /* Check on I2C2 Arbitration Lost flag and clear it */
+    if(I2C_GetITStatus(LM75_I2C, I2C_IT_ARLO)) {
+        I2C_ClearITPendingBit(LM75_I2C, I2C_IT_ARLO);
+    }
 
-  /* Check on I2C2 PEC error flag and clear it */
-  if (I2C_GetITStatus(LM75_I2C, I2C_IT_PECERR))
-  {
-    I2C_ClearITPendingBit(LM75_I2C, I2C_IT_PECERR);
-  } 
-  /* Check on I2C2 Overrun/Underrun error flag and clear it */
-  if (I2C_GetITStatus(LM75_I2C, I2C_IT_OVR))
-  {
-    I2C_ClearITPendingBit(LM75_I2C, I2C_IT_OVR);
-  } 
-  /* Check on I2C2 Acknowledge failure error flag and clear it */
-  if (I2C_GetITStatus(LM75_I2C, I2C_IT_AF))
-  {
-    I2C_ClearITPendingBit(LM75_I2C, I2C_IT_AF);
-  }
-  /* Check on I2C2 Bus error flag and clear it */
-  if (I2C_GetITStatus(LM75_I2C, I2C_IT_BERR))
-  {
-    I2C_ClearITPendingBit(LM75_I2C, I2C_IT_BERR);
-  }   
+    /* Check on I2C2 PEC error flag and clear it */
+    if(I2C_GetITStatus(LM75_I2C, I2C_IT_PECERR)) {
+        I2C_ClearITPendingBit(LM75_I2C, I2C_IT_PECERR);
+    }
+    /* Check on I2C2 Overrun/Underrun error flag and clear it */
+    if(I2C_GetITStatus(LM75_I2C, I2C_IT_OVR)) {
+        I2C_ClearITPendingBit(LM75_I2C, I2C_IT_OVR);
+    }
+    /* Check on I2C2 Acknowledge failure error flag and clear it */
+    if(I2C_GetITStatus(LM75_I2C, I2C_IT_AF)) {
+        I2C_ClearITPendingBit(LM75_I2C, I2C_IT_AF);
+    }
+    /* Check on I2C2 Bus error flag and clear it */
+    if(I2C_GetITStatus(LM75_I2C, I2C_IT_BERR)) {
+        I2C_ClearITPendingBit(LM75_I2C, I2C_IT_BERR);
+    }
 }
 
 /******************************************************************************/
@@ -214,10 +203,10 @@ void I2C1_ER_IRQHandler(void)
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}
-  */ 
+  */
 
 /******************* (C) COPYRIGHT 2011 STMicroelectronics *****END OF FILE****/

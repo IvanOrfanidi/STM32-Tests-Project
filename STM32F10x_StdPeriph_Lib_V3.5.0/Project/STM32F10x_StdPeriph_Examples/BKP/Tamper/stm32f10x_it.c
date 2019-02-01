@@ -19,7 +19,7 @@
   *
   * <h2><center>&copy; COPYRIGHT 2011 STMicroelectronics</center></h2>
   ******************************************************************************
-  */ 
+  */
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f10x_it.h"
@@ -31,7 +31,7 @@
 
 /** @addtogroup BKP_Tamper
   * @{
-  */ 
+  */
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
@@ -60,10 +60,9 @@ void NMI_Handler(void)
   */
 void HardFault_Handler(void)
 {
-  /* Go to infinite loop when Hard Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Hard Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -73,10 +72,9 @@ void HardFault_Handler(void)
   */
 void MemManage_Handler(void)
 {
-  /* Go to infinite loop when Memory Manage exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Memory Manage exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -86,10 +84,9 @@ void MemManage_Handler(void)
   */
 void BusFault_Handler(void)
 {
-  /* Go to infinite loop when Bus Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Bus Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -99,10 +96,9 @@ void BusFault_Handler(void)
   */
 void UsageFault_Handler(void)
 {
-  /* Go to infinite loop when Usage Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Usage Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -152,35 +148,31 @@ void SysTick_Handler(void)
   */
 void TAMPER_IRQHandler(void)
 {
-  if(BKP_GetITStatus() != RESET)
-  { /* Tamper detection event occurred */
+    if(BKP_GetITStatus() != RESET) { /* Tamper detection event occurred */
 
-    /* Check if Backup registers are cleared */
-    if(IsBackupRegReset() == 0)
-    {/* OK, Backup registers are reset as expected */
+        /* Check if Backup registers are cleared */
+        if(IsBackupRegReset() == 0) { /* OK, Backup registers are reset as expected */
 
-      /* Turn on LED3 */
-      STM_EVAL_LEDOn(LED3);
+            /* Turn on LED3 */
+            STM_EVAL_LEDOn(LED3);
+        }
+        else { /* Backup registers are not reset */
+            /* Turn on LED4 */
+            STM_EVAL_LEDOn(LED4);
+        }
+
+        /* Clear Tamper pin interrupt pending bit */
+        BKP_ClearITPendingBit();
+
+        /* Clear Tamper pin Event(TE) pending flag */
+        BKP_ClearFlag();
+
+        /* Disable Tamper pin */
+        BKP_TamperPinCmd(DISABLE);
+
+        /* Enable Tamper pin */
+        BKP_TamperPinCmd(ENABLE);
     }
-    else
-    {/* Backup registers are not reset */
-      /* Turn on LED4 */
-      STM_EVAL_LEDOn(LED4);
-    }
-
-    /* Clear Tamper pin interrupt pending bit */
-    BKP_ClearITPendingBit();
-
-    /* Clear Tamper pin Event(TE) pending flag */
-    BKP_ClearFlag();
-
-    /* Disable Tamper pin */
-    BKP_TamperPinCmd(DISABLE);
-    
-    /* Enable Tamper pin */
-    BKP_TamperPinCmd(ENABLE);
-      
-  }
 }
 
 /******************************************************************************/
@@ -201,10 +193,10 @@ void TAMPER_IRQHandler(void)
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}
-  */ 
+  */
 
 /******************* (C) COPYRIGHT 2011 STMicroelectronics *****END OF FILE****/

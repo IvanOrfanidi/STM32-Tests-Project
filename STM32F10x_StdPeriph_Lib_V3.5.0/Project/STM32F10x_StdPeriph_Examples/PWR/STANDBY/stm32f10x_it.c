@@ -19,7 +19,7 @@
   *
   * <h2><center>&copy; COPYRIGHT 2011 STMicroelectronics</center></h2>
   ******************************************************************************
-  */ 
+  */
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f10x_it.h"
@@ -31,7 +31,7 @@
 
 /** @addtogroup PWR_STANDBY
   * @{
-  */ 
+  */
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
@@ -60,10 +60,9 @@ void NMI_Handler(void)
   */
 void HardFault_Handler(void)
 {
-  /* Go to infinite loop when Hard Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Hard Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -73,10 +72,9 @@ void HardFault_Handler(void)
   */
 void MemManage_Handler(void)
 {
-  /* Go to infinite loop when Memory Manage exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Memory Manage exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -86,10 +84,9 @@ void MemManage_Handler(void)
   */
 void BusFault_Handler(void)
 {
-  /* Go to infinite loop when Bus Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Bus Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -99,10 +96,9 @@ void BusFault_Handler(void)
   */
 void UsageFault_Handler(void)
 {
-  /* Go to infinite loop when Usage Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Usage Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -139,8 +135,8 @@ void PendSV_Handler(void)
   */
 void SysTick_Handler(void)
 {
-  /* Toggle LED1 */
-  STM_EVAL_LEDToggle(LED1);
+    /* Toggle LED1 */
+    STM_EVAL_LEDToggle(LED1);
 }
 
 /******************************************************************************/
@@ -154,26 +150,26 @@ void SysTick_Handler(void)
   */
 void EXTI9_5_IRQHandler(void)
 {
-  if(EXTI_GetITStatus(KEY_BUTTON_EXTI_LINE) != RESET)
-  { 
-    /* Clear the Key Button EXTI line pending bit */  
-    EXTI_ClearITPendingBit(KEY_BUTTON_EXTI_LINE);
+    if(EXTI_GetITStatus(KEY_BUTTON_EXTI_LINE) != RESET) {
+        /* Clear the Key Button EXTI line pending bit */
+        EXTI_ClearITPendingBit(KEY_BUTTON_EXTI_LINE);
 
-    /* Turn on LED1 */
-    STM_EVAL_LEDOn(LED1);
+        /* Turn on LED1 */
+        STM_EVAL_LEDOn(LED1);
 
-    /* Wait till RTC Second event occurs */
-    RTC_ClearFlag(RTC_FLAG_SEC);
-    while(RTC_GetFlagStatus(RTC_FLAG_SEC) == RESET);
+        /* Wait till RTC Second event occurs */
+        RTC_ClearFlag(RTC_FLAG_SEC);
+        while(RTC_GetFlagStatus(RTC_FLAG_SEC) == RESET)
+            ;
 
-    /* Set the RTC Alarm after 3s */
-    RTC_SetAlarm(RTC_GetCounter()+ 3);
-    /* Wait until last write operation on RTC registers has finished */
-    RTC_WaitForLastTask();
+        /* Set the RTC Alarm after 3s */
+        RTC_SetAlarm(RTC_GetCounter() + 3);
+        /* Wait until last write operation on RTC registers has finished */
+        RTC_WaitForLastTask();
 
-    /* Request to enter STANDBY mode (Wake Up flag is cleared in PWR_EnterSTANDBYMode function) */
-    PWR_EnterSTANDBYMode();
-  }
+        /* Request to enter STANDBY mode (Wake Up flag is cleared in PWR_EnterSTANDBYMode function) */
+        PWR_EnterSTANDBYMode();
+    }
 }
 
 /******************************************************************************/

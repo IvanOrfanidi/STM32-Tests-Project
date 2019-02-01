@@ -38,7 +38,7 @@
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
 uint8_t TestStatus = 0;
-uint16_t SRC_Buffer[10] = {0x30, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38, 0x39};
+uint16_t SRC_Buffer[10] = { 0x30, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38, 0x39 };
 extern uint16_t DST_Buffer[10];
 extern __IO uint32_t LowPowerMode;
 extern uint8_t Buffercmp16(uint16_t*, uint16_t*, uint16_t);
@@ -67,10 +67,9 @@ void NMI_Handler(void)
   */
 void HardFault_Handler(void)
 {
-  /* Go to infinite loop when Hard Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Hard Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -80,10 +79,9 @@ void HardFault_Handler(void)
   */
 void MemManage_Handler(void)
 {
-  /* Go to infinite loop when Memory Manage exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Memory Manage exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -93,10 +91,9 @@ void MemManage_Handler(void)
   */
 void BusFault_Handler(void)
 {
-  /* Go to infinite loop when Bus Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Bus Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -106,10 +103,9 @@ void BusFault_Handler(void)
   */
 void UsageFault_Handler(void)
 {
-  /* Go to infinite loop when Usage Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Usage Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -159,22 +155,19 @@ void SysTick_Handler(void)
   */
 void DMA1_Channel5_IRQHandler(void)
 {
-  if(DMA_GetITStatus(DMA1_IT_TC5))
-  {
-    DMA_ClearITPendingBit(DMA1_IT_GL5);
+    if(DMA_GetITStatus(DMA1_IT_TC5)) {
+        DMA_ClearITPendingBit(DMA1_IT_GL5);
 
-    /* Check the received buffer */
-    TestStatus = Buffercmp16(SRC_Buffer, DST_Buffer, 10);
+        /* Check the received buffer */
+        TestStatus = Buffercmp16(SRC_Buffer, DST_Buffer, 10);
 
-    if(TestStatus == 0)
-    {
-      STM_EVAL_LEDToggle(LED2);
+        if(TestStatus == 0) {
+            STM_EVAL_LEDToggle(LED2);
+        }
+        else {
+            STM_EVAL_LEDToggle(LED3);
+        }
     }
-    else
-    {
-      STM_EVAL_LEDToggle(LED3);
-    }
-  }
 }
 
 /**
@@ -184,22 +177,19 @@ void DMA1_Channel5_IRQHandler(void)
   */
 void DMA1_Channel6_IRQHandler(void)
 {
-  if(DMA_GetITStatus(DMA1_IT_TC6))
-  {
-    DMA_ClearITPendingBit(DMA1_IT_GL6);
+    if(DMA_GetITStatus(DMA1_IT_TC6)) {
+        DMA_ClearITPendingBit(DMA1_IT_GL6);
 
-    /* Check the received buffer */
-    TestStatus = Buffercmp16(SRC_Buffer, DST_Buffer, 10);
+        /* Check the received buffer */
+        TestStatus = Buffercmp16(SRC_Buffer, DST_Buffer, 10);
 
-    if(TestStatus == 0)
-    {
-      STM_EVAL_LEDToggle(LED2);
+        if(TestStatus == 0) {
+            STM_EVAL_LEDToggle(LED2);
+        }
+        else {
+            STM_EVAL_LEDToggle(LED3);
+        }
     }
-    else
-    {
-      STM_EVAL_LEDToggle(LED3);
-    }
-  }
 }
 
 /**
@@ -209,12 +199,11 @@ void DMA1_Channel6_IRQHandler(void)
   */
 void EXTI9_5_IRQHandler(void)
 {
-  if(EXTI_GetITStatus(KEY_BUTTON_EXTI_LINE) != RESET)
-  {
-    EXTI_ClearITPendingBit(KEY_BUTTON_EXTI_LINE);
-  
-    LowPowerMode = 1;
-  }  
+    if(EXTI_GetITStatus(KEY_BUTTON_EXTI_LINE) != RESET) {
+        EXTI_ClearITPendingBit(KEY_BUTTON_EXTI_LINE);
+
+        LowPowerMode = 1;
+    }
 }
 
 /******************************************************************************/

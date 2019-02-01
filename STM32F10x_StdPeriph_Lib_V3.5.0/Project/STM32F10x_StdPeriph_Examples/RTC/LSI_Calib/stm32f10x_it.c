@@ -19,11 +19,11 @@
   *
   * <h2><center>&copy; COPYRIGHT 2011 STMicroelectronics</center></h2>
   ******************************************************************************
-  */ 
+  */
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f10x_it.h"
-#include "main.h" 
+#include "main.h"
 
 /** @addtogroup STM32F10x_StdPeriph_Examples
   * @{
@@ -31,13 +31,13 @@
 
 /** @addtogroup RTC_LSI_Calib
   * @{
-  */ 
+  */
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
-uint16_t tmpCC4[2] = {0, 0};
+uint16_t tmpCC4[2] = { 0, 0 };
 
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
@@ -62,9 +62,9 @@ void NMI_Handler(void)
   */
 void HardFault_Handler(void)
 {
-  /* Go to infinite loop when Hard Fault exception occurs */
-  while (1)
-  {}
+    /* Go to infinite loop when Hard Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -74,9 +74,9 @@ void HardFault_Handler(void)
   */
 void MemManage_Handler(void)
 {
-  /* Go to infinite loop when Memory Manage exception occurs */
-  while (1)
-  {}
+    /* Go to infinite loop when Memory Manage exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -86,9 +86,9 @@ void MemManage_Handler(void)
   */
 void BusFault_Handler(void)
 {
-  /* Go to infinite loop when Bus Fault exception occurs */
-  while (1)
-  {}
+    /* Go to infinite loop when Bus Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -98,9 +98,9 @@ void BusFault_Handler(void)
   */
 void UsageFault_Handler(void)
 {
-  /* Go to infinite loop when Usage Fault exception occurs */
-  while (1)
-  {}
+    /* Go to infinite loop when Usage Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -150,14 +150,13 @@ void SysTick_Handler(void)
   */
 void RTC_IRQHandler(void)
 {
-  if (RTC_GetITStatus(RTC_IT_SEC) != RESET)
-  {
-    /* Toggle LED1 */
-    STM_EVAL_LEDToggle(LED1);
+    if(RTC_GetITStatus(RTC_IT_SEC) != RESET) {
+        /* Toggle LED1 */
+        STM_EVAL_LEDToggle(LED1);
 
-    /* Clear Interrupt pending bit */
-    RTC_ClearITPendingBit(RTC_FLAG_SEC);
-  }
+        /* Clear Interrupt pending bit */
+        RTC_ClearITPendingBit(RTC_FLAG_SEC);
+    }
 }
 
 /**
@@ -167,25 +166,23 @@ void RTC_IRQHandler(void)
   */
 void TIM5_IRQHandler(void)
 {
-  uint32_t tmp = 0; 
-  
-  if (TIM_GetITStatus(TIM5, TIM_IT_CC4) == SET)
-  {
-    tmpCC4[IncrementVar_OperationComplete()] = (uint16_t)(TIM5->CCR4);
+    uint32_t tmp = 0;
 
-    TIM_ClearITPendingBit(TIM5, TIM_IT_CC4);
+    if(TIM_GetITStatus(TIM5, TIM_IT_CC4) == SET) {
+        tmpCC4[IncrementVar_OperationComplete()] = (uint16_t)(TIM5->CCR4);
 
-    if (GetVar_OperationComplete() >= 2)
-    {
-      /* Compute the period length */
-      tmp = (uint16_t)(tmpCC4[1] - tmpCC4[0] + 1);
-      SetVar_PeriodValue(tmp);
+        TIM_ClearITPendingBit(TIM5, TIM_IT_CC4);
 
-      /* Disable the interrupt */
-      TIM_ITConfig(TIM5, TIM_IT_CC4, DISABLE);
-      TIM_Cmd(TIM5, DISABLE);
+        if(GetVar_OperationComplete() >= 2) {
+            /* Compute the period length */
+            tmp = (uint16_t)(tmpCC4[1] - tmpCC4[0] + 1);
+            SetVar_PeriodValue(tmp);
+
+            /* Disable the interrupt */
+            TIM_ITConfig(TIM5, TIM_IT_CC4, DISABLE);
+            TIM_Cmd(TIM5, DISABLE);
+        }
     }
-  }
 }
 
 /******************************************************************************/

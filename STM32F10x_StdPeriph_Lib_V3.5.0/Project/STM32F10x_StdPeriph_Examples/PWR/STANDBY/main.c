@@ -17,7 +17,7 @@
   *
   * <h2><center>&copy; COPYRIGHT 2011 STMicroelectronics</center></h2>
   ******************************************************************************
-  */ 
+  */
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f10x.h"
@@ -49,39 +49,38 @@ void SysTick_Configuration(void);
   */
 int main(void)
 {
-  /*!< At this stage the microcontroller clock setting is already configured, 
+    /*!< At this stage the microcontroller clock setting is already configured, 
        this is done through SystemInit() function which is called from startup
        file (startup_stm32f10x_xx.s) before to branch to application main.
        To reconfigure the default setting of SystemInit() function, refer to
        system_stm32f10x.c file
-     */     
+     */
 
-  /* Initialize LEDs and Key Button mounted on STM3210X-EVAL board */       
-  STM_EVAL_LEDInit(LED1);
-  STM_EVAL_LEDInit(LED2);
-  STM_EVAL_PBInit(BUTTON_KEY, BUTTON_MODE_EXTI);
+    /* Initialize LEDs and Key Button mounted on STM3210X-EVAL board */
+    STM_EVAL_LEDInit(LED1);
+    STM_EVAL_LEDInit(LED2);
+    STM_EVAL_PBInit(BUTTON_KEY, BUTTON_MODE_EXTI);
 
-  /* Turn on LED1 */
-  STM_EVAL_LEDOn(LED1);
+    /* Turn on LED1 */
+    STM_EVAL_LEDOn(LED1);
 
-  /* Enable PWR and BKP clock */
-  RCC_APB1PeriphClockCmd(RCC_APB1Periph_PWR | RCC_APB1Periph_BKP, ENABLE);
+    /* Enable PWR and BKP clock */
+    RCC_APB1PeriphClockCmd(RCC_APB1Periph_PWR | RCC_APB1Periph_BKP, ENABLE);
 
-  /* Enable WKUP pin */
-  PWR_WakeUpPinCmd(ENABLE);
+    /* Enable WKUP pin */
+    PWR_WakeUpPinCmd(ENABLE);
 
-  /* Allow access to BKP Domain */
-  PWR_BackupAccessCmd(ENABLE);
+    /* Allow access to BKP Domain */
+    PWR_BackupAccessCmd(ENABLE);
 
-  /* Configure RTC clock source and prescaler */
-  RTC_Configuration();
+    /* Configure RTC clock source and prescaler */
+    RTC_Configuration();
 
-  /* Configure the SysTick to generate an interrupt each 250 ms */
-  SysTick_Configuration();
- 
-  while (1)
-  {
-  }
+    /* Configure the SysTick to generate an interrupt each 250 ms */
+    SysTick_Configuration();
+
+    while(1) {
+    }
 }
 
 /**
@@ -91,50 +90,47 @@ int main(void)
   */
 void RTC_Configuration(void)
 {
-  /* Check if the StandBy flag is set */
-  if(PWR_GetFlagStatus(PWR_FLAG_SB) != RESET)
-  {/* System resumed from STANDBY mode */
+    /* Check if the StandBy flag is set */
+    if(PWR_GetFlagStatus(PWR_FLAG_SB) != RESET) { /* System resumed from STANDBY mode */
 
-    /* Turn on LED2 */
-    STM_EVAL_LEDOn(LED2);
+        /* Turn on LED2 */
+        STM_EVAL_LEDOn(LED2);
 
-    /* Clear StandBy flag */
-    PWR_ClearFlag(PWR_FLAG_SB);
+        /* Clear StandBy flag */
+        PWR_ClearFlag(PWR_FLAG_SB);
 
-    /* Wait for RTC APB registers synchronisation */
-    RTC_WaitForSynchro();
-    /* No need to configure the RTC as the RTC configuration(clock source, enable,
+        /* Wait for RTC APB registers synchronisation */
+        RTC_WaitForSynchro();
+        /* No need to configure the RTC as the RTC configuration(clock source, enable,
        prescaler,...) is kept after wake-up from STANDBY */
-  }
-  else
-  {/* StandBy flag is not set */
-
-    /* RTC clock source configuration ----------------------------------------*/
-    /* Reset Backup Domain */
-    BKP_DeInit();
-  
-    /* Enable LSE OSC */
-    RCC_LSEConfig(RCC_LSE_ON);
-    /* Wait till LSE is ready */
-    while(RCC_GetFlagStatus(RCC_FLAG_LSERDY) == RESET)
-    {
     }
+    else { /* StandBy flag is not set */
 
-    /* Select the RTC Clock Source */
-    RCC_RTCCLKConfig(RCC_RTCCLKSource_LSE);
+        /* RTC clock source configuration ----------------------------------------*/
+        /* Reset Backup Domain */
+        BKP_DeInit();
 
-    /* Enable the RTC Clock */
-    RCC_RTCCLKCmd(ENABLE);
+        /* Enable LSE OSC */
+        RCC_LSEConfig(RCC_LSE_ON);
+        /* Wait till LSE is ready */
+        while(RCC_GetFlagStatus(RCC_FLAG_LSERDY) == RESET) {
+        }
 
-    /* RTC configuration -----------------------------------------------------*/
-    /* Wait for RTC APB registers synchronisation */
-    RTC_WaitForSynchro();
+        /* Select the RTC Clock Source */
+        RCC_RTCCLKConfig(RCC_RTCCLKSource_LSE);
 
-    /* Set the RTC time base to 1s */
-    RTC_SetPrescaler(32767);  
-    /* Wait until last write operation on RTC registers has finished */
-    RTC_WaitForLastTask();
-  }
+        /* Enable the RTC Clock */
+        RCC_RTCCLKCmd(ENABLE);
+
+        /* RTC configuration -----------------------------------------------------*/
+        /* Wait for RTC APB registers synchronisation */
+        RTC_WaitForSynchro();
+
+        /* Set the RTC time base to 1s */
+        RTC_SetPrescaler(32767);
+        /* Wait until last write operation on RTC registers has finished */
+        RTC_WaitForLastTask();
+    }
 }
 
 /**
@@ -144,21 +140,21 @@ void RTC_Configuration(void)
   */
 void SysTick_Configuration(void)
 {
-  /* SysTick interrupt each 250 ms with SysTick Clock equal to (HCLK/8) */
-  if (SysTick_Config((SystemCoreClock/8) / 4))
-  { 
-    /* Capture error */ 
-    while (1);
-  }
+    /* SysTick interrupt each 250 ms with SysTick Clock equal to (HCLK/8) */
+    if(SysTick_Config((SystemCoreClock / 8) / 4)) {
+        /* Capture error */
+        while(1)
+            ;
+    }
 
-  /* Select AHB clock(HCLK) divided by 8 as SysTick clock source */
-  SysTick_CLKSourceConfig(SysTick_CLKSource_HCLK_Div8);
+    /* Select AHB clock(HCLK) divided by 8 as SysTick clock source */
+    SysTick_CLKSourceConfig(SysTick_CLKSource_HCLK_Div8);
 
-  /* Set SysTick Preemption Priority to 1 */
-  NVIC_SetPriority(SysTick_IRQn, 0x04);
+    /* Set SysTick Preemption Priority to 1 */
+    NVIC_SetPriority(SysTick_IRQn, 0x04);
 }
 
-#ifdef  USE_FULL_ASSERT
+#ifdef USE_FULL_ASSERT
 
 /**
   * @brief  Reports the name of the source file and the source line number
@@ -168,14 +164,13 @@ void SysTick_Configuration(void)
   * @retval None
   */
 void assert_failed(uint8_t* file, uint32_t line)
-{ 
-  /* User can add his own implementation to report the file name and line number,
+{
+    /* User can add his own implementation to report the file name and line number,
      ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
 
-  /* Infinite loop */
-  while (1)
-  {
-  }
+    /* Infinite loop */
+    while(1) {
+    }
 }
 
 #endif
@@ -186,6 +181,6 @@ void assert_failed(uint8_t* file, uint32_t line)
 
 /**
   * @}
-  */ 
+  */
 
 /******************* (C) COPYRIGHT 2011 STMicroelectronics *****END OF FILE****/

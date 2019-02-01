@@ -17,7 +17,7 @@
   *
   * <h2><center>&copy; COPYRIGHT 2011 STMicroelectronics</center></h2>
   ******************************************************************************
-  */ 
+  */
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f10x.h"
@@ -28,14 +28,14 @@
 
 /** @addtogroup TIM10_PWMOutput
   * @{
-  */ 
+  */
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
-TIM_TimeBaseInitTypeDef  TIM_TimeBaseStructure;
-TIM_OCInitTypeDef  TIM_OCInitStructure;
+TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure;
+TIM_OCInitTypeDef TIM_OCInitStructure;
 uint16_t CCR1Val = 249;
 uint16_t PrescalerValue = 0;
 
@@ -52,17 +52,17 @@ void GPIO_Configuration(void);
   */
 int main(void)
 {
-  /*!< At this stage the microcontroller clock setting is already configured, 
+    /*!< At this stage the microcontroller clock setting is already configured, 
        this is done through SystemInit() function which is called from startup
        file (startup_stm32f10x_xx.s) before to branch to application main.
        To reconfigure the default setting of SystemInit() function, refer to
        system_stm32f10x.c file
-     */     
-       
-  /* GPIO Configuration */
-  GPIO_Configuration();
+     */
 
-  /* -----------------------------------------------------------------------
+    /* GPIO Configuration */
+    GPIO_Configuration();
+
+    /* -----------------------------------------------------------------------
     TIM10 Configuration: generate 1 PWM signal.
     The TIM10CLK frequency is set to SystemCoreClock (72 MHz), to get TIM10 counter
     clock at 24 MHz the Prescaler is computed as following:
@@ -72,33 +72,33 @@ int main(void)
                                                   = 24 MHz / 666 = 36 KHz
     TIM10 Channel1 duty cycle = (TIM10_CCR1/ TIM10_ARR)* 100 = 37.5%
   ----------------------------------------------------------------------- */
-  /* Compute the prescaler value */
-  PrescalerValue = (uint16_t) (SystemCoreClock / 24000000) - 1;
-  /* Time base configuration */
-  TIM_TimeBaseStructure.TIM_Period = 665;
-  TIM_TimeBaseStructure.TIM_Prescaler = PrescalerValue;
-  TIM_TimeBaseStructure.TIM_ClockDivision = 0;
-  TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
+    /* Compute the prescaler value */
+    PrescalerValue = (uint16_t)(SystemCoreClock / 24000000) - 1;
+    /* Time base configuration */
+    TIM_TimeBaseStructure.TIM_Period = 665;
+    TIM_TimeBaseStructure.TIM_Prescaler = PrescalerValue;
+    TIM_TimeBaseStructure.TIM_ClockDivision = 0;
+    TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
 
-  TIM_TimeBaseInit(TIM10, &TIM_TimeBaseStructure);
+    TIM_TimeBaseInit(TIM10, &TIM_TimeBaseStructure);
 
-  /* PWM1 Mode configuration: Channel1 */
-  TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_PWM1;
-  TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
-  TIM_OCInitStructure.TIM_Pulse = CCR1Val;
-  TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_High;
+    /* PWM1 Mode configuration: Channel1 */
+    TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_PWM1;
+    TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
+    TIM_OCInitStructure.TIM_Pulse = CCR1Val;
+    TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_High;
 
-  TIM_OC1Init(TIM10, &TIM_OCInitStructure);
+    TIM_OC1Init(TIM10, &TIM_OCInitStructure);
 
-  TIM_OC1PreloadConfig(TIM10, TIM_OCPreload_Enable);
+    TIM_OC1PreloadConfig(TIM10, TIM_OCPreload_Enable);
 
-  TIM_ARRPreloadConfig(TIM10, ENABLE);
+    TIM_ARRPreloadConfig(TIM10, ENABLE);
 
-  /* TIM10 enable counter */
-  TIM_Cmd(TIM10, ENABLE);
+    /* TIM10 enable counter */
+    TIM_Cmd(TIM10, ENABLE);
 
-  while (1)
-  {}
+    while(1) {
+    }
 }
 
 /**
@@ -108,24 +108,25 @@ int main(void)
   */
 void GPIO_Configuration(void)
 {
-  GPIO_InitTypeDef GPIO_InitStructure;
+    GPIO_InitTypeDef GPIO_InitStructure;
 
-  /* Enable TIM10 and GPIOF clock */
-  RCC_APB2PeriphClockCmd(RCC_APB2Periph_TIM10 | RCC_APB2Periph_GPIOF |
-                         RCC_APB2Periph_AFIO, ENABLE);
+    /* Enable TIM10 and GPIOF clock */
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_TIM10 | RCC_APB2Periph_GPIOF |
+                               RCC_APB2Periph_AFIO,
+        ENABLE);
 
-  /* Remap TIM10_CH1 on PF6 pin */
-  GPIO_PinRemapConfig(GPIO_Remap_TIM10, ENABLE);	
-  
-  /* GPIOF Configuration: TIM10 Channel1 as alternate function push-pull */
-  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6;
-  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
-  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    /* Remap TIM10_CH1 on PF6 pin */
+    GPIO_PinRemapConfig(GPIO_Remap_TIM10, ENABLE);
 
-  GPIO_Init(GPIOF, &GPIO_InitStructure);
+    /* GPIOF Configuration: TIM10 Channel1 as alternate function push-pull */
+    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6;
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+
+    GPIO_Init(GPIOF, &GPIO_InitStructure);
 }
 
-#ifdef  USE_FULL_ASSERT
+#ifdef USE_FULL_ASSERT
 
 /**
   * @brief  Reports the name of the source file and the source line number
@@ -136,21 +137,21 @@ void GPIO_Configuration(void)
   */
 void assert_failed(uint8_t* file, uint32_t line)
 {
-  /* User can add his own implementation to report the file name and line number,
+    /* User can add his own implementation to report the file name and line number,
      ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
 
-  while (1)
-  {}
+    while(1) {
+    }
 }
 
 #endif
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}
-  */ 
+  */
 
 /******************* (C) COPYRIGHT 2011 STMicroelectronics *****END OF FILE****/

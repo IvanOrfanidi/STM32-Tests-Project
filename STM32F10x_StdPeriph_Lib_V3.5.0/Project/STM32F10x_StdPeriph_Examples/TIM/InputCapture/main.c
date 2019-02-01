@@ -17,7 +17,7 @@
   *
   * <h2><center>&copy; COPYRIGHT 2011 STMicroelectronics</center></h2>
   ******************************************************************************
-  */ 
+  */
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f10x.h"
@@ -28,13 +28,13 @@
 
 /** @addtogroup TIM_Input_Capture
   * @{
-  */ 
+  */
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
-TIM_ICInitTypeDef  TIM_ICInitStructure;
+TIM_ICInitTypeDef TIM_ICInitStructure;
 
 /* Private function prototypes -----------------------------------------------*/
 void RCC_Configuration(void);
@@ -50,43 +50,44 @@ void NVIC_Configuration(void);
   */
 int main(void)
 {
-  /*!< At this stage the microcontroller clock setting is already configured, 
+    /*!< At this stage the microcontroller clock setting is already configured, 
        this is done through SystemInit() function which is called from startup
        file (startup_stm32f10x_xx.s) before to branch to application main.
        To reconfigure the default setting of SystemInit() function, refer to
        system_stm32f10x.c file
-     */     
-       
-  /* System Clocks Configuration */
-  RCC_Configuration();
+     */
 
-  /* NVIC configuration */
-  NVIC_Configuration();
+    /* System Clocks Configuration */
+    RCC_Configuration();
 
-  /* Configure the GPIO ports */
-  GPIO_Configuration();
+    /* NVIC configuration */
+    NVIC_Configuration();
 
-  /* TIM3 configuration: Input Capture mode ---------------------
+    /* Configure the GPIO ports */
+    GPIO_Configuration();
+
+    /* TIM3 configuration: Input Capture mode ---------------------
      The external signal is connected to TIM3 CH2 pin (PA.07)  
      The Rising edge is used as active edge,
      The TIM3 CCR2 is used to compute the frequency value 
   ------------------------------------------------------------ */
 
-  TIM_ICInitStructure.TIM_Channel = TIM_Channel_2;
-  TIM_ICInitStructure.TIM_ICPolarity = TIM_ICPolarity_Rising;
-  TIM_ICInitStructure.TIM_ICSelection = TIM_ICSelection_DirectTI;
-  TIM_ICInitStructure.TIM_ICPrescaler = TIM_ICPSC_DIV1;
-  TIM_ICInitStructure.TIM_ICFilter = 0x0;
+    TIM_ICInitStructure.TIM_Channel = TIM_Channel_2;
+    TIM_ICInitStructure.TIM_ICPolarity = TIM_ICPolarity_Rising;
+    TIM_ICInitStructure.TIM_ICSelection = TIM_ICSelection_DirectTI;
+    TIM_ICInitStructure.TIM_ICPrescaler = TIM_ICPSC_DIV1;
+    TIM_ICInitStructure.TIM_ICFilter = 0x0;
 
-  TIM_ICInit(TIM3, &TIM_ICInitStructure);
-  
-  /* TIM enable counter */
-  TIM_Cmd(TIM3, ENABLE);
+    TIM_ICInit(TIM3, &TIM_ICInitStructure);
 
-  /* Enable the CC2 Interrupt Request */
-  TIM_ITConfig(TIM3, TIM_IT_CC2, ENABLE);
+    /* TIM enable counter */
+    TIM_Cmd(TIM3, ENABLE);
 
-  while (1);
+    /* Enable the CC2 Interrupt Request */
+    TIM_ITConfig(TIM3, TIM_IT_CC2, ENABLE);
+
+    while(1)
+        ;
 }
 
 /**
@@ -96,11 +97,11 @@ int main(void)
   */
 void RCC_Configuration(void)
 {
-  /* TIM3 clock enable */
-  RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM3, ENABLE);
+    /* TIM3 clock enable */
+    RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM3, ENABLE);
 
-  /* GPIOA and GPIOB clock enable */
-  RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);
+    /* GPIOA and GPIOB clock enable */
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);
 }
 
 /**
@@ -110,14 +111,14 @@ void RCC_Configuration(void)
   */
 void GPIO_Configuration(void)
 {
-  GPIO_InitTypeDef GPIO_InitStructure;
+    GPIO_InitTypeDef GPIO_InitStructure;
 
-  /* TIM3 channel 2 pin (PA.07) configuration */
-  GPIO_InitStructure.GPIO_Pin =  GPIO_Pin_7;
-  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
-  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    /* TIM3 channel 2 pin (PA.07) configuration */
+    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_7;
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
 
-  GPIO_Init(GPIOA, &GPIO_InitStructure);
+    GPIO_Init(GPIOA, &GPIO_InitStructure);
 }
 
 /**
@@ -127,17 +128,17 @@ void GPIO_Configuration(void)
   */
 void NVIC_Configuration(void)
 {
-  NVIC_InitTypeDef NVIC_InitStructure;
+    NVIC_InitTypeDef NVIC_InitStructure;
 
-  /* Enable the TIM3 global Interrupt */
-  NVIC_InitStructure.NVIC_IRQChannel = TIM3_IRQn;
-  NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
-  NVIC_InitStructure.NVIC_IRQChannelSubPriority = 1;
-  NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
-  NVIC_Init(&NVIC_InitStructure);
+    /* Enable the TIM3 global Interrupt */
+    NVIC_InitStructure.NVIC_IRQChannel = TIM3_IRQn;
+    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
+    NVIC_InitStructure.NVIC_IRQChannelSubPriority = 1;
+    NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+    NVIC_Init(&NVIC_InitStructure);
 }
 
-#ifdef  USE_FULL_ASSERT
+#ifdef USE_FULL_ASSERT
 
 /**
   * @brief  Reports the name of the source file and the source line number
@@ -148,21 +149,21 @@ void NVIC_Configuration(void)
   */
 void assert_failed(uint8_t* file, uint32_t line)
 {
-  /* User can add his own implementation to report the file name and line number,
+    /* User can add his own implementation to report the file name and line number,
      ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
 
-  while (1)
-  {}
+    while(1) {
+    }
 }
 
 #endif
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}
-  */ 
+  */
 
 /******************* (C) COPYRIGHT 2011 STMicroelectronics *****END OF FILE****/

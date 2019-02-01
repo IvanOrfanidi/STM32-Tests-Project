@@ -17,7 +17,7 @@
   *
   * <h2><center>&copy; COPYRIGHT 2011 STMicroelectronics</center></h2>
   ******************************************************************************
-  */ 
+  */
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f10x.h"
@@ -29,14 +29,14 @@
 
 /** @addtogroup USART_HyperTerminal_Interrupt
   * @{
-  */ 
+  */
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
 #ifdef USE_STM3210C_EVAL
-  #define USARTx_IRQn   USART2_IRQn
+#define USARTx_IRQn USART2_IRQn
 #else
-  #define USARTx_IRQn   USART1_IRQn
+#define USARTx_IRQn USART1_IRQn
 #endif
 
 /* Private macro -------------------------------------------------------------*/
@@ -45,7 +45,7 @@ USART_InitTypeDef USART_InitStructure;
 
 /* Private function prototypes -----------------------------------------------*/
 void NVIC_Configuration(void);
-  
+
 /* Private functions ---------------------------------------------------------*/
 
 /**
@@ -55,18 +55,18 @@ void NVIC_Configuration(void);
   */
 int main(void)
 {
-  /*!< At this stage the microcontroller clock setting is already configured, 
+    /*!< At this stage the microcontroller clock setting is already configured, 
        this is done through SystemInit() function which is called from startup
        file (startup_stm32f10x_xx.s) before to branch to application main.
        To reconfigure the default setting of SystemInit() function, refer to
        system_stm32f10x.c file
-     */     
-              
-  /* NVIC configuration */
-  NVIC_Configuration();
-  
-/* USARTx configuration ------------------------------------------------------*/
-  /* USARTx configured as follow:
+     */
+
+    /* NVIC configuration */
+    NVIC_Configuration();
+
+    /* USARTx configuration ------------------------------------------------------*/
+    /* USARTx configured as follow:
         - BaudRate = 9600 baud  
         - Word Length = 8 Bits
         - Two Stop Bit
@@ -74,26 +74,25 @@ int main(void)
         - Hardware flow control disabled (RTS and CTS signals)
         - Receive and transmit enabled
   */
-  USART_InitStructure.USART_BaudRate = 9600;
-  USART_InitStructure.USART_WordLength = USART_WordLength_8b;
-  USART_InitStructure.USART_StopBits = USART_StopBits_2;
-  USART_InitStructure.USART_Parity = USART_Parity_Odd;
-  USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;
-  USART_InitStructure.USART_Mode = USART_Mode_Rx | USART_Mode_Tx;
+    USART_InitStructure.USART_BaudRate = 9600;
+    USART_InitStructure.USART_WordLength = USART_WordLength_8b;
+    USART_InitStructure.USART_StopBits = USART_StopBits_2;
+    USART_InitStructure.USART_Parity = USART_Parity_Odd;
+    USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;
+    USART_InitStructure.USART_Mode = USART_Mode_Rx | USART_Mode_Tx;
 
-  STM_EVAL_COMInit(COM1, &USART_InitStructure);
+    STM_EVAL_COMInit(COM1, &USART_InitStructure);
 
-  /* Enable the EVAL_COM1 Transmit interrupt: this interrupt is generated when the 
-     EVAL_COM1 transmit data register is empty */  
-  USART_ITConfig(EVAL_COM1, USART_IT_TXE, ENABLE);
+    /* Enable the EVAL_COM1 Transmit interrupt: this interrupt is generated when the 
+     EVAL_COM1 transmit data register is empty */
+    USART_ITConfig(EVAL_COM1, USART_IT_TXE, ENABLE);
 
-  /* Enable the EVAL_COM1 Receive interrupt: this interrupt is generated when the 
+    /* Enable the EVAL_COM1 Receive interrupt: this interrupt is generated when the 
      EVAL_COM1 receive data register is not empty */
-  USART_ITConfig(EVAL_COM1, USART_IT_RXNE, ENABLE);
+    USART_ITConfig(EVAL_COM1, USART_IT_RXNE, ENABLE);
 
-  while (1)
-  {
-  }
+    while(1) {
+    }
 }
 
 /**
@@ -103,17 +102,17 @@ int main(void)
   */
 void NVIC_Configuration(void)
 {
-  NVIC_InitTypeDef NVIC_InitStructure;
+    NVIC_InitTypeDef NVIC_InitStructure;
 
-  /* Enable the USARTx Interrupt */
-  NVIC_InitStructure.NVIC_IRQChannel = USARTx_IRQn;
-  NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
-  NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
-  NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
-  NVIC_Init(&NVIC_InitStructure);
+    /* Enable the USARTx Interrupt */
+    NVIC_InitStructure.NVIC_IRQChannel = USARTx_IRQn;
+    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
+    NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
+    NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+    NVIC_Init(&NVIC_InitStructure);
 }
 
-#ifdef  USE_FULL_ASSERT
+#ifdef USE_FULL_ASSERT
 
 /**
   * @brief  Reports the name of the source file and the source line number
@@ -123,24 +122,23 @@ void NVIC_Configuration(void)
   * @retval None
   */
 void assert_failed(uint8_t* file, uint32_t line)
-{ 
-  /* User can add his own implementation to report the file name and line number,
+{
+    /* User can add his own implementation to report the file name and line number,
      ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
 
-  /* Infinite loop */
-  while (1)
-  {
-  }
+    /* Infinite loop */
+    while(1) {
+    }
 }
 
 #endif
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}
-  */ 
+  */
 
 /******************* (C) COPYRIGHT 2011 STMicroelectronics *****END OF FILE****/

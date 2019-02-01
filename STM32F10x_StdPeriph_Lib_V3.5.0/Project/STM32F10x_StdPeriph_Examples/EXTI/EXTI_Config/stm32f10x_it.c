@@ -31,7 +31,7 @@
 
 /** @addtogroup EXTI_Config
   * @{
-  */ 
+  */
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
@@ -60,10 +60,9 @@ void NMI_Handler(void)
   */
 void HardFault_Handler(void)
 {
-  /* Go to infinite loop when Hard Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Hard Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -73,10 +72,9 @@ void HardFault_Handler(void)
   */
 void MemManage_Handler(void)
 {
-  /* Go to infinite loop when Memory Manage exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Memory Manage exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -86,10 +84,9 @@ void MemManage_Handler(void)
   */
 void BusFault_Handler(void)
 {
-  /* Go to infinite loop when Bus Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Bus Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -99,10 +96,9 @@ void BusFault_Handler(void)
   */
 void UsageFault_Handler(void)
 {
-  /* Go to infinite loop when Usage Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Usage Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -152,14 +148,13 @@ void SysTick_Handler(void)
   */
 void EXTI0_IRQHandler(void)
 {
-  if(EXTI_GetITStatus(EXTI_Line0) != RESET)
-  {
-    /* Toggle LED1 */
-     STM_EVAL_LEDToggle(LED1);
+    if(EXTI_GetITStatus(EXTI_Line0) != RESET) {
+        /* Toggle LED1 */
+        STM_EVAL_LEDToggle(LED1);
 
-    /* Clear the  EXTI line 0 pending bit */
-    EXTI_ClearITPendingBit(EXTI_Line0);
-  }
+        /* Clear the  EXTI line 0 pending bit */
+        EXTI_ClearITPendingBit(EXTI_Line0);
+    }
 }
 
 /**
@@ -169,24 +164,22 @@ void EXTI0_IRQHandler(void)
   */
 void EXTI9_5_IRQHandler(void)
 {
-#if defined (STM32F10X_HD_VL) || defined (STM32F10X_HD) || defined (STM32F10X_XL)
-  if(EXTI_GetITStatus(EXTI_Line8) != RESET)
-  {
-    /* Toggle LED2 */
-     STM_EVAL_LEDToggle(LED2);
+#if defined(STM32F10X_HD_VL) || defined(STM32F10X_HD) || defined(STM32F10X_XL)
+    if(EXTI_GetITStatus(EXTI_Line8) != RESET) {
+        /* Toggle LED2 */
+        STM_EVAL_LEDToggle(LED2);
 
-    /* Clear the  EXTI line 8 pending bit */
-    EXTI_ClearITPendingBit(EXTI_Line8);
-  }
+        /* Clear the  EXTI line 8 pending bit */
+        EXTI_ClearITPendingBit(EXTI_Line8);
+    }
 #else
-  if(EXTI_GetITStatus(EXTI_Line9) != RESET)
-  {
-    /* Toggle LED2 */
-     STM_EVAL_LEDToggle(LED2);
+    if(EXTI_GetITStatus(EXTI_Line9) != RESET) {
+        /* Toggle LED2 */
+        STM_EVAL_LEDToggle(LED2);
 
-    /* Clear the  EXTI line 9 pending bit */
-    EXTI_ClearITPendingBit(EXTI_Line9);
-  }
+        /* Clear the  EXTI line 9 pending bit */
+        EXTI_ClearITPendingBit(EXTI_Line9);
+    }
 #endif
 }
 
@@ -208,10 +201,10 @@ void EXTI9_5_IRQHandler(void)
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}
-  */ 
+  */
 
 /******************* (C) COPYRIGHT 2011 STMicroelectronics *****END OF FILE****/

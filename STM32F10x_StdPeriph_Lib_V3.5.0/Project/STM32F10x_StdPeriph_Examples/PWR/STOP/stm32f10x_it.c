@@ -19,7 +19,7 @@
   *
   * <h2><center>&copy; COPYRIGHT 2011 STMicroelectronics</center></h2>
   ******************************************************************************
-  */ 
+  */
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f10x_it.h"
@@ -62,10 +62,9 @@ void NMI_Handler(void)
   */
 void HardFault_Handler(void)
 {
-  /* Go to infinite loop when Hard Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Hard Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -75,10 +74,9 @@ void HardFault_Handler(void)
   */
 void MemManage_Handler(void)
 {
-  /* Go to infinite loop when Memory Manage exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Memory Manage exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -88,10 +86,9 @@ void MemManage_Handler(void)
   */
 void BusFault_Handler(void)
 {
-  /* Go to infinite loop when Bus Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Bus Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -101,10 +98,9 @@ void BusFault_Handler(void)
   */
 void UsageFault_Handler(void)
 {
-  /* Go to infinite loop when Usage Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Usage Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -141,7 +137,7 @@ void PendSV_Handler(void)
   */
 void SysTick_Handler(void)
 {
-  TimingDelay--;
+    TimingDelay--;
 }
 
 /******************************************************************************/
@@ -155,14 +151,13 @@ void SysTick_Handler(void)
   */
 void EXTI9_5_IRQHandler(void)
 {
-  if(EXTI_GetITStatus(KEY_BUTTON_EXTI_LINE) != RESET)
-  { 
-    /* Clear the Key Button EXTI line pending bit */  
-    EXTI_ClearITPendingBit(KEY_BUTTON_EXTI_LINE);
+    if(EXTI_GetITStatus(KEY_BUTTON_EXTI_LINE) != RESET) {
+        /* Clear the Key Button EXTI line pending bit */
+        EXTI_ClearITPendingBit(KEY_BUTTON_EXTI_LINE);
 
-    /* Toggle LED2 */
-    STM_EVAL_LEDToggle(LED2);
-  }
+        /* Toggle LED2 */
+        STM_EVAL_LEDToggle(LED2);
+    }
 }
 
 /**
@@ -172,28 +167,26 @@ void EXTI9_5_IRQHandler(void)
   */
 void RTCAlarm_IRQHandler(void)
 {
-  if(RTC_GetITStatus(RTC_IT_ALR) != RESET)
-  {
-    /* Toggle LED3 */
-    STM_EVAL_LEDToggle(LED3);
+    if(RTC_GetITStatus(RTC_IT_ALR) != RESET) {
+        /* Toggle LED3 */
+        STM_EVAL_LEDToggle(LED3);
 
-    /* Clear EXTI line17 pending bit */
-    EXTI_ClearITPendingBit(EXTI_Line17);
+        /* Clear EXTI line17 pending bit */
+        EXTI_ClearITPendingBit(EXTI_Line17);
 
-    /* Check if the Wake-Up flag is set */
-    if(PWR_GetFlagStatus(PWR_FLAG_WU) != RESET)
-    {
-      /* Clear Wake Up flag */
-      PWR_ClearFlag(PWR_FLAG_WU);
+        /* Check if the Wake-Up flag is set */
+        if(PWR_GetFlagStatus(PWR_FLAG_WU) != RESET) {
+            /* Clear Wake Up flag */
+            PWR_ClearFlag(PWR_FLAG_WU);
+        }
+
+        /* Wait until last write operation on RTC registers has finished */
+        RTC_WaitForLastTask();
+        /* Clear RTC Alarm interrupt pending bit */
+        RTC_ClearITPendingBit(RTC_IT_ALR);
+        /* Wait until last write operation on RTC registers has finished */
+        RTC_WaitForLastTask();
     }
-
-    /* Wait until last write operation on RTC registers has finished */
-    RTC_WaitForLastTask();   
-    /* Clear RTC Alarm interrupt pending bit */
-    RTC_ClearITPendingBit(RTC_IT_ALR);
-    /* Wait until last write operation on RTC registers has finished */
-    RTC_WaitForLastTask();
-  }
 }
 
 /******************************************************************************/

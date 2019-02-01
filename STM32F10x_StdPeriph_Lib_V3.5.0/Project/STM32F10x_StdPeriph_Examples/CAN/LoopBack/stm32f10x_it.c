@@ -19,7 +19,7 @@
   *
   * <h2><center>&copy; COPYRIGHT 2011 STMicroelectronics</center></h2>
   ******************************************************************************
-  */ 
+  */
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f10x_it.h"
@@ -30,7 +30,7 @@
 
 /** @addtogroup CAN_LoopBack
   * @{
-  */ 
+  */
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
@@ -61,10 +61,9 @@ void NMI_Handler(void)
   */
 void HardFault_Handler(void)
 {
-  /* Go to infinite loop when Hard Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Hard Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -74,10 +73,9 @@ void HardFault_Handler(void)
   */
 void MemManage_Handler(void)
 {
-  /* Go to infinite loop when Memory Manage exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Memory Manage exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -87,10 +85,9 @@ void MemManage_Handler(void)
   */
 void BusFault_Handler(void)
 {
-  /* Go to infinite loop when Bus Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Bus Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -100,10 +97,9 @@ void BusFault_Handler(void)
   */
 void UsageFault_Handler(void)
 {
-  /* Go to infinite loop when Usage Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Usage Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -157,27 +153,24 @@ void USB_LP_CAN1_RX0_IRQHandler(void)
 void CAN1_RX0_IRQHandler(void)
 #endif
 {
-  CanRxMsg RxMessage;
+    CanRxMsg RxMessage;
 
-  RxMessage.StdId=0x00;
-  RxMessage.ExtId=0x00;
-  RxMessage.IDE=0;
-  RxMessage.DLC=0;
-  RxMessage.FMI=0;
-  RxMessage.Data[0]=0x00;
-  RxMessage.Data[1]=0x00;
+    RxMessage.StdId = 0x00;
+    RxMessage.ExtId = 0x00;
+    RxMessage.IDE = 0;
+    RxMessage.DLC = 0;
+    RxMessage.FMI = 0;
+    RxMessage.Data[0] = 0x00;
+    RxMessage.Data[1] = 0x00;
 
-  CAN_Receive(CAN1, CAN_FIFO0, &RxMessage);
+    CAN_Receive(CAN1, CAN_FIFO0, &RxMessage);
 
-  if((RxMessage.ExtId==0x1234) && (RxMessage.IDE==CAN_ID_EXT)
-     && (RxMessage.DLC==2) && ((RxMessage.Data[1]|RxMessage.Data[0]<<8)==0xDECA))
-  {
-    ret = 1; 
-  }
-  else
-  {
-    ret = 0; 
-  }
+    if((RxMessage.ExtId == 0x1234) && (RxMessage.IDE == CAN_ID_EXT) && (RxMessage.DLC == 2) && ((RxMessage.Data[1] | RxMessage.Data[0] << 8) == 0xDECA)) {
+        ret = 1;
+    }
+    else {
+        ret = 0;
+    }
 }
 
 /**
@@ -189,27 +182,24 @@ void CAN1_RX0_IRQHandler(void)
 void CAN2_RX0_IRQHandler(void)
 
 {
-  CanRxMsg RxMessage;
+    CanRxMsg RxMessage;
 
-  RxMessage.StdId=0x00;
-  RxMessage.ExtId=0x00;
-  RxMessage.IDE=0;
-  RxMessage.DLC=0;
-  RxMessage.FMI=0;
-  RxMessage.Data[0]=0x00;
-  RxMessage.Data[1]=0x00;
+    RxMessage.StdId = 0x00;
+    RxMessage.ExtId = 0x00;
+    RxMessage.IDE = 0;
+    RxMessage.DLC = 0;
+    RxMessage.FMI = 0;
+    RxMessage.Data[0] = 0x00;
+    RxMessage.Data[1] = 0x00;
 
-  CAN_Receive(CAN2, CAN_FIFO0, &RxMessage);
+    CAN_Receive(CAN2, CAN_FIFO0, &RxMessage);
 
-  if((RxMessage.ExtId==0x1234) && (RxMessage.IDE==CAN_ID_EXT)
-     && (RxMessage.DLC==2) && ((RxMessage.Data[1]|RxMessage.Data[0]<<8)==0xDECA))
-  {
-    ret = 1; 
-  }
-  else
-  {
-    ret = 0; 
-  }
+    if((RxMessage.ExtId == 0x1234) && (RxMessage.IDE == CAN_ID_EXT) && (RxMessage.DLC == 2) && ((RxMessage.Data[1] | RxMessage.Data[0] << 8) == 0xDECA)) {
+        ret = 1;
+    }
+    else {
+        ret = 0;
+    }
 }
 #endif
 /******************************************************************************/
@@ -230,10 +220,10 @@ void CAN2_RX0_IRQHandler(void)
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}
-  */ 
-  
+  */
+
 /******************* (C) COPYRIGHT 2011 STMicroelectronics *****END OF FILE****/

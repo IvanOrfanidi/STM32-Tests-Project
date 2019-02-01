@@ -19,7 +19,7 @@
   *
   * <h2><center>&copy; COPYRIGHT 2011 STMicroelectronics</center></h2>
   ******************************************************************************
-  */ 
+  */
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f10x_it.h"
@@ -30,7 +30,7 @@
 
 /** @addtogroup CAN_DualCAN
   * @{
-  */ 
+  */
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
@@ -38,7 +38,7 @@
 /* Private variables ---------------------------------------------------------*/
 CanRxMsg RxMessage;
 extern void LED_Display(uint8_t Ledstatus);
- 
+
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
 
@@ -62,10 +62,9 @@ void NMI_Handler(void)
   */
 void HardFault_Handler(void)
 {
-  /* Go to infinite loop when Hard Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Hard Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -75,10 +74,9 @@ void HardFault_Handler(void)
   */
 void MemManage_Handler(void)
 {
-  /* Go to infinite loop when Memory Manage exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Memory Manage exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -88,10 +86,9 @@ void MemManage_Handler(void)
   */
 void BusFault_Handler(void)
 {
-  /* Go to infinite loop when Bus Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Bus Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -101,10 +98,9 @@ void BusFault_Handler(void)
   */
 void UsageFault_Handler(void)
 {
-  /* Go to infinite loop when Usage Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Usage Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -147,7 +143,6 @@ void SysTick_Handler(void)
 /*            STM32F10x Peripherals Interrupt Handlers                        */
 /******************************************************************************/
 
-
 /**
   * @brief  This function handles CAN1 RX0 Handler.
   * @param  None
@@ -155,18 +150,16 @@ void SysTick_Handler(void)
   */
 void CAN1_RX0_IRQHandler(void)
 {
-  CAN_Receive(CAN1, CAN_FIFO0, &RxMessage);
+    CAN_Receive(CAN1, CAN_FIFO0, &RxMessage);
 
-  if ((RxMessage.StdId == 0x321)&&(RxMessage.IDE == CAN_ID_STD)&&(RxMessage.DLC == 1)&&(RxMessage.Data[0] == 0xAA))
-  {
-    /* Turn On LED3 */
-    LED_Display(0x03); /* OK */
-  }
-  else
-  {
-    /* Turn Off LED3 */
-    LED_Display(0x05); /* Error */
-  }
+    if((RxMessage.StdId == 0x321) && (RxMessage.IDE == CAN_ID_STD) && (RxMessage.DLC == 1) && (RxMessage.Data[0] == 0xAA)) {
+        /* Turn On LED3 */
+        LED_Display(0x03); /* OK */
+    }
+    else {
+        /* Turn Off LED3 */
+        LED_Display(0x05); /* Error */
+    }
 }
 
 /**
@@ -177,18 +170,16 @@ void CAN1_RX0_IRQHandler(void)
 
 void CAN2_RX0_IRQHandler(void)
 {
-  CAN_Receive(CAN2, CAN_FIFO0, &RxMessage);
+    CAN_Receive(CAN2, CAN_FIFO0, &RxMessage);
 
-  if ((RxMessage.StdId == 0x321)&&(RxMessage.IDE == CAN_ID_STD)&&(RxMessage.DLC == 1)&&(RxMessage.Data[0] == 0x55))
-  {
-    /* Turn On LED4 */
-    LED_Display(0x04); /* OK */
-  }
-  else
-  {
-    /* Turn Off LED4 */
-    LED_Display(0x06); /* Error */
-  }
+    if((RxMessage.StdId == 0x321) && (RxMessage.IDE == CAN_ID_STD) && (RxMessage.DLC == 1) && (RxMessage.Data[0] == 0x55)) {
+        /* Turn On LED4 */
+        LED_Display(0x04); /* OK */
+    }
+    else {
+        /* Turn Off LED4 */
+        LED_Display(0x06); /* Error */
+    }
 }
 
 /******************************************************************************/
@@ -209,11 +200,10 @@ void CAN2_RX0_IRQHandler(void)
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}
-  */ 
-
+  */
 
 /******************* (C) COPYRIGHT 2011 STMicroelectronics *****END OF FILE****/

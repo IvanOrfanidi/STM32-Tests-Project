@@ -17,7 +17,7 @@
   *
   * <h2><center>&copy; COPYRIGHT 2011 STMicroelectronics</center></h2>
   ******************************************************************************
-  */ 
+  */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __STM32F10X_IP_DBG_H
@@ -32,7 +32,7 @@
 /* Exported functions ------------------------------------------------------- */
 
 void debug(void);
-					 
+
 #endif /* __STM32F10X_IP_DBG_H */
 
 /******************* (C) COPYRIGHT 2011 STMicroelectronics *****END OF FILE****/

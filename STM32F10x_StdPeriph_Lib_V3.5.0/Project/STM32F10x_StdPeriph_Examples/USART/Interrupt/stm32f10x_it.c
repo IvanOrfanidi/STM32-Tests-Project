@@ -19,7 +19,7 @@
   *
   * <h2><center>&copy; COPYRIGHT 2011 STMicroelectronics</center></h2>
   ******************************************************************************
-  */ 
+  */
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f10x_it.h"
@@ -31,19 +31,19 @@
 
 /** @addtogroup USART_Interrupt
   * @{
-  */ 
+  */
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
-extern uint8_t TxBuffer1[]; 
-extern uint8_t TxBuffer2[]; 
+extern uint8_t TxBuffer1[];
+extern uint8_t TxBuffer2[];
 extern uint8_t RxBuffer1[];
 extern uint8_t RxBuffer2[];
 extern __IO uint8_t TxCounter1;
 extern __IO uint8_t TxCounter2;
-extern __IO uint8_t RxCounter1; 
+extern __IO uint8_t RxCounter1;
 extern __IO uint8_t RxCounter2;
 extern uint8_t NbrOfDataToTransfer1;
 extern uint8_t NbrOfDataToTransfer2;
@@ -73,10 +73,9 @@ void NMI_Handler(void)
   */
 void HardFault_Handler(void)
 {
-  /* Go to infinite loop when Hard Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Hard Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -86,10 +85,9 @@ void HardFault_Handler(void)
   */
 void MemManage_Handler(void)
 {
-  /* Go to infinite loop when Memory Manage exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Memory Manage exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -99,10 +97,9 @@ void MemManage_Handler(void)
   */
 void BusFault_Handler(void)
 {
-  /* Go to infinite loop when Bus Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Bus Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -112,10 +109,9 @@ void BusFault_Handler(void)
   */
 void UsageFault_Handler(void)
 {
-  /* Go to infinite loop when Usage Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Usage Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -165,29 +161,25 @@ void SysTick_Handler(void)
   */
 void USARTy_IRQHandler(void)
 {
-  if(USART_GetITStatus(USARTy, USART_IT_RXNE) != RESET)
-  {
-    /* Read one byte from the receive data register */
-    RxBuffer1[RxCounter1++] = USART_ReceiveData(USARTy);
+    if(USART_GetITStatus(USARTy, USART_IT_RXNE) != RESET) {
+        /* Read one byte from the receive data register */
+        RxBuffer1[RxCounter1++] = USART_ReceiveData(USARTy);
 
-    if(RxCounter1 == NbrOfDataToRead1)
-    {
-      /* Disable the USARTy Receive interrupt */
-      USART_ITConfig(USARTy, USART_IT_RXNE, DISABLE);
+        if(RxCounter1 == NbrOfDataToRead1) {
+            /* Disable the USARTy Receive interrupt */
+            USART_ITConfig(USARTy, USART_IT_RXNE, DISABLE);
+        }
     }
-  }
-  
-  if(USART_GetITStatus(USARTy, USART_IT_TXE) != RESET)
-  {   
-    /* Write one byte to the transmit data register */
-    USART_SendData(USARTy, TxBuffer1[TxCounter1++]);
 
-    if(TxCounter1 == NbrOfDataToTransfer1)
-    {
-      /* Disable the USARTy Transmit interrupt */
-      USART_ITConfig(USARTy, USART_IT_TXE, DISABLE);
-    }    
-  }
+    if(USART_GetITStatus(USARTy, USART_IT_TXE) != RESET) {
+        /* Write one byte to the transmit data register */
+        USART_SendData(USARTy, TxBuffer1[TxCounter1++]);
+
+        if(TxCounter1 == NbrOfDataToTransfer1) {
+            /* Disable the USARTy Transmit interrupt */
+            USART_ITConfig(USARTy, USART_IT_TXE, DISABLE);
+        }
+    }
 }
 
 /**
@@ -197,29 +189,25 @@ void USARTy_IRQHandler(void)
   */
 void USARTz_IRQHandler(void)
 {
-  if(USART_GetITStatus(USARTz, USART_IT_RXNE) != RESET)
-  {
-    /* Read one byte from the receive data register */
-    RxBuffer2[RxCounter2++] = USART_ReceiveData(USARTz);
+    if(USART_GetITStatus(USARTz, USART_IT_RXNE) != RESET) {
+        /* Read one byte from the receive data register */
+        RxBuffer2[RxCounter2++] = USART_ReceiveData(USARTz);
 
-    if(RxCounter2 == NbrOfDataToRead1)
-    {
-      /* Disable the USARTz Receive interrupt */
-      USART_ITConfig(USARTz, USART_IT_RXNE, DISABLE);
+        if(RxCounter2 == NbrOfDataToRead1) {
+            /* Disable the USARTz Receive interrupt */
+            USART_ITConfig(USARTz, USART_IT_RXNE, DISABLE);
+        }
     }
-  }
-  
-  if(USART_GetITStatus(USARTz, USART_IT_TXE) != RESET)
-  {   
-    /* Write one byte to the transmit data register */
-    USART_SendData(USARTz, TxBuffer2[TxCounter2++]);
 
-    if(TxCounter2 == NbrOfDataToTransfer2)
-    {
-      /* Disable the USARTz Transmit interrupt */
-      USART_ITConfig(USARTz, USART_IT_TXE, DISABLE);
+    if(USART_GetITStatus(USARTz, USART_IT_TXE) != RESET) {
+        /* Write one byte to the transmit data register */
+        USART_SendData(USARTz, TxBuffer2[TxCounter2++]);
+
+        if(TxCounter2 == NbrOfDataToTransfer2) {
+            /* Disable the USARTz Transmit interrupt */
+            USART_ITConfig(USARTz, USART_IT_TXE, DISABLE);
+        }
     }
-  }
 }
 
 /******************************************************************************/
@@ -240,10 +228,10 @@ void USARTz_IRQHandler(void)
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}
-  */ 
+  */
 
 /******************* (C) COPYRIGHT 2011 STMicroelectronics *****END OF FILE****/

@@ -38,7 +38,7 @@
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
 extern uint8_t PreemptionOccured;
-extern uint8_t PreemptionPriorityValue; 
+extern uint8_t PreemptionPriorityValue;
 
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
@@ -63,10 +63,9 @@ void NMI_Handler(void)
   */
 void HardFault_Handler(void)
 {
-  /* Go to infinite loop when Hard Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Hard Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -76,10 +75,9 @@ void HardFault_Handler(void)
   */
 void MemManage_Handler(void)
 {
-  /* Go to infinite loop when Memory Manage exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Memory Manage exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -89,10 +87,9 @@ void MemManage_Handler(void)
   */
 void BusFault_Handler(void)
 {
-  /* Go to infinite loop when Bus Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Bus Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -102,10 +99,9 @@ void BusFault_Handler(void)
   */
 void UsageFault_Handler(void)
 {
-  /* Go to infinite loop when Usage Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Usage Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -142,11 +138,10 @@ void PendSV_Handler(void)
   */
 void SysTick_Handler(void)
 {
-  /* If the EXTI0 IRQ Handler was preempted by SysTick Handler */
-  if(NVIC_GetActive(WAKEUP_BUTTON_EXTI_IRQn) != 0)
-  {
-    PreemptionOccured = 1;
-  }
+    /* If the EXTI0 IRQ Handler was preempted by SysTick Handler */
+    if(NVIC_GetActive(WAKEUP_BUTTON_EXTI_IRQn) != 0) {
+        PreemptionOccured = 1;
+    }
 }
 
 /******************************************************************************/
@@ -160,11 +155,11 @@ void SysTick_Handler(void)
   */
 void EXTI0_IRQHandler(void)
 {
-  /* Generate SysTick exception */
-  SCB->ICSR |= 0x04000000;
-  
-  /* Clear WAKEUP_BUTTON_EXTI_LINE pending bit */
-  EXTI_ClearITPendingBit(WAKEUP_BUTTON_EXTI_LINE);
+    /* Generate SysTick exception */
+    SCB->ICSR |= 0x04000000;
+
+    /* Clear WAKEUP_BUTTON_EXTI_LINE pending bit */
+    EXTI_ClearITPendingBit(WAKEUP_BUTTON_EXTI_LINE);
 }
 
 /**
@@ -174,26 +169,25 @@ void EXTI0_IRQHandler(void)
   */
 void EXTI9_5_IRQHandler(void)
 {
-  NVIC_InitTypeDef NVIC_InitStructure;
-  
-  if(EXTI_GetITStatus(KEY_BUTTON_EXTI_LINE) != RESET)
-  {
-    PreemptionPriorityValue = !PreemptionPriorityValue;
-    PreemptionOccured = 0;
+    NVIC_InitTypeDef NVIC_InitStructure;
 
-    /* Modify the WAKEUP_BUTTON_EXTI_IRQn Interrupt Preemption Priority */
-    NVIC_InitStructure.NVIC_IRQChannel = WAKEUP_BUTTON_EXTI_IRQn;
-    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = PreemptionPriorityValue;
-    NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
-    NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
-    NVIC_Init(&NVIC_InitStructure);
-    
-    /* Configure the SysTick Handler Priority: Preemption priority and subpriority */
-    NVIC_SetPriority(SysTick_IRQn, NVIC_EncodePriority(NVIC_GetPriorityGrouping(), !PreemptionPriorityValue, 0));    
+    if(EXTI_GetITStatus(KEY_BUTTON_EXTI_LINE) != RESET) {
+        PreemptionPriorityValue = !PreemptionPriorityValue;
+        PreemptionOccured = 0;
 
-    /* Clear KEY_BUTTON_EXTI_LINE pending bit */
-    EXTI_ClearITPendingBit(KEY_BUTTON_EXTI_LINE);
-  }
+        /* Modify the WAKEUP_BUTTON_EXTI_IRQn Interrupt Preemption Priority */
+        NVIC_InitStructure.NVIC_IRQChannel = WAKEUP_BUTTON_EXTI_IRQn;
+        NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = PreemptionPriorityValue;
+        NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
+        NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+        NVIC_Init(&NVIC_InitStructure);
+
+        /* Configure the SysTick Handler Priority: Preemption priority and subpriority */
+        NVIC_SetPriority(SysTick_IRQn, NVIC_EncodePriority(NVIC_GetPriorityGrouping(), !PreemptionPriorityValue, 0));
+
+        /* Clear KEY_BUTTON_EXTI_LINE pending bit */
+        EXTI_ClearITPendingBit(KEY_BUTTON_EXTI_LINE);
+    }
 }
 
 /******************************************************************************/

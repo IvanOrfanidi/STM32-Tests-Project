@@ -19,7 +19,7 @@
   *
   * <h2><center>&copy; COPYRIGHT 2011 STMicroelectronics</center></h2>
   ******************************************************************************
-  */ 
+  */
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f10x_it.h"
@@ -30,7 +30,7 @@
 
 /** @addtogroup USART_DMA_Interrupt
   * @{
-  */ 
+  */
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
@@ -63,10 +63,9 @@ void NMI_Handler(void)
   */
 void HardFault_Handler(void)
 {
-  /* Go to infinite loop when Hard Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Hard Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -76,10 +75,9 @@ void HardFault_Handler(void)
   */
 void MemManage_Handler(void)
 {
-  /* Go to infinite loop when Memory Manage exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Memory Manage exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -89,10 +87,9 @@ void MemManage_Handler(void)
   */
 void BusFault_Handler(void)
 {
-  /* Go to infinite loop when Bus Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Bus Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -102,10 +99,9 @@ void BusFault_Handler(void)
   */
 void UsageFault_Handler(void)
 {
-  /* Go to infinite loop when Usage Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Usage Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -155,17 +151,15 @@ void SysTick_Handler(void)
   */
 void USART2_IRQHandler(void)
 {
-  if(USART_GetITStatus(USART2, USART_IT_RXNE) != RESET)
-  {
-    /* Read one byte from the receive data register */
-    RxBuffer2[RxCounter++] = USART_ReceiveData(USART2);
+    if(USART_GetITStatus(USART2, USART_IT_RXNE) != RESET) {
+        /* Read one byte from the receive data register */
+        RxBuffer2[RxCounter++] = USART_ReceiveData(USART2);
 
-    if(RxCounter == NbrOfDataToRead)
-    {
-      /* Disable the USART2 Receive interrupt */
-      USART_ITConfig(USART2, USART_IT_RXNE, DISABLE);
+        if(RxCounter == NbrOfDataToRead) {
+            /* Disable the USART2 Receive interrupt */
+            USART_ITConfig(USART2, USART_IT_RXNE, DISABLE);
+        }
     }
-  }
 }
 
 /**
@@ -175,17 +169,15 @@ void USART2_IRQHandler(void)
   */
 void USART3_IRQHandler(void)
 {
-  if(USART_GetITStatus(USART3, USART_IT_RXNE) != RESET)
-  {
-    /* Read one byte from the receive data register */
-    RxBuffer2[RxCounter++] = USART_ReceiveData(USART3);
+    if(USART_GetITStatus(USART3, USART_IT_RXNE) != RESET) {
+        /* Read one byte from the receive data register */
+        RxBuffer2[RxCounter++] = USART_ReceiveData(USART3);
 
-    if(RxCounter == NbrOfDataToRead)
-    {
-      /* Disable the USART3 Receive interrupt */
-      USART_ITConfig(USART3, USART_IT_RXNE, DISABLE);
+        if(RxCounter == NbrOfDataToRead) {
+            /* Disable the USART3 Receive interrupt */
+            USART_ITConfig(USART3, USART_IT_RXNE, DISABLE);
+        }
     }
-  }
 }
 
 /******************************************************************************/
@@ -206,10 +198,10 @@ void USART3_IRQHandler(void)
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}
-  */ 
+  */
 
 /******************* (C) COPYRIGHT 2011 STMicroelectronics *****END OF FILE****/

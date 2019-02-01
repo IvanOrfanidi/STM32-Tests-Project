@@ -19,7 +19,7 @@
   *
   * <h2><center>&copy; COPYRIGHT 2011 STMicroelectronics</center></h2>
   ******************************************************************************
-  */ 
+  */
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f10x_it.h"
@@ -30,7 +30,7 @@
 
 /** @addtogroup TIM_OCInactive
   * @{
-  */ 
+  */
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
@@ -59,9 +59,9 @@ void NMI_Handler(void)
   */
 void HardFault_Handler(void)
 {
-  /* Go to infinite loop when Hard Fault exception occurs */
-  while (1)
-  {}
+    /* Go to infinite loop when Hard Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -71,9 +71,9 @@ void HardFault_Handler(void)
   */
 void MemManage_Handler(void)
 {
-  /* Go to infinite loop when Memory Manage exception occurs */
-  while (1)
-  {}
+    /* Go to infinite loop when Memory Manage exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -83,9 +83,9 @@ void MemManage_Handler(void)
   */
 void BusFault_Handler(void)
 {
-  /* Go to infinite loop when Bus Fault exception occurs */
-  while (1)
-  {}
+    /* Go to infinite loop when Bus Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -95,9 +95,9 @@ void BusFault_Handler(void)
   */
 void UsageFault_Handler(void)
 {
-  /* Go to infinite loop when Usage Fault exception occurs */
-  while (1)
-  {}
+    /* Go to infinite loop when Usage Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -106,7 +106,8 @@ void UsageFault_Handler(void)
   * @retval None
   */
 void DebugMon_Handler(void)
-{}
+{
+}
 
 /**
   * @brief  This function handles SVCall exception.
@@ -114,7 +115,8 @@ void DebugMon_Handler(void)
   * @retval None
   */
 void SVC_Handler(void)
-{}
+{
+}
 
 /**
   * @brief  This function handles PendSV_Handler exception.
@@ -122,7 +124,8 @@ void SVC_Handler(void)
   * @retval None
   */
 void PendSV_Handler(void)
-{}
+{
+}
 
 /**
   * @brief  This function handles SysTick Handler.
@@ -130,7 +133,8 @@ void PendSV_Handler(void)
   * @retval None
   */
 void SysTick_Handler(void)
-{}
+{
+}
 
 /******************************************************************************/
 /*            STM32F10x Peripherals Interrupt Handlers                        */
@@ -143,38 +147,34 @@ void SysTick_Handler(void)
   */
 void TIM2_IRQHandler(void)
 {
-  if (TIM_GetITStatus(TIM2, TIM_IT_CC1) != RESET)
-  {
-    /* Clear TIM2 Capture Compare1 interrupt pending bit*/
-    TIM_ClearITPendingBit(TIM2, TIM_IT_CC1);
+    if(TIM_GetITStatus(TIM2, TIM_IT_CC1) != RESET) {
+        /* Clear TIM2 Capture Compare1 interrupt pending bit*/
+        TIM_ClearITPendingBit(TIM2, TIM_IT_CC1);
 
-    /* PC.06 turnoff after 1000 ms */
-    GPIO_ResetBits(GPIOC, GPIO_Pin_6);
-  }
-  else if (TIM_GetITStatus(TIM2, TIM_IT_CC2) != RESET)
-  {
-    /* Clear TIM2 Capture Compare2 interrupt pending bit*/
-    TIM_ClearITPendingBit(TIM2, TIM_IT_CC2);
+        /* PC.06 turnoff after 1000 ms */
+        GPIO_ResetBits(GPIOC, GPIO_Pin_6);
+    }
+    else if(TIM_GetITStatus(TIM2, TIM_IT_CC2) != RESET) {
+        /* Clear TIM2 Capture Compare2 interrupt pending bit*/
+        TIM_ClearITPendingBit(TIM2, TIM_IT_CC2);
 
-    /* PC.07 turnoff after 500 ms */
-    GPIO_ResetBits(GPIOC, GPIO_Pin_7);
-  }
-  else if (TIM_GetITStatus(TIM2, TIM_IT_CC3) != RESET)
-  {
-    /* Clear TIM2 Capture Compare3 interrupt pending bit*/
-    TIM_ClearITPendingBit(TIM2, TIM_IT_CC3);
+        /* PC.07 turnoff after 500 ms */
+        GPIO_ResetBits(GPIOC, GPIO_Pin_7);
+    }
+    else if(TIM_GetITStatus(TIM2, TIM_IT_CC3) != RESET) {
+        /* Clear TIM2 Capture Compare3 interrupt pending bit*/
+        TIM_ClearITPendingBit(TIM2, TIM_IT_CC3);
 
-    /* PC.08 turnoff after 250 ms */
-    GPIO_ResetBits(GPIOC, GPIO_Pin_8);
-  }
-  else
-  {
-    /* Clear TIM2 Capture Compare4 interrupt pending bit*/
-    TIM_ClearITPendingBit(TIM2, TIM_IT_CC4);
+        /* PC.08 turnoff after 250 ms */
+        GPIO_ResetBits(GPIOC, GPIO_Pin_8);
+    }
+    else {
+        /* Clear TIM2 Capture Compare4 interrupt pending bit*/
+        TIM_ClearITPendingBit(TIM2, TIM_IT_CC4);
 
-    /* PC.09 turnoff after 125 ms */
-    GPIO_ResetBits(GPIOC, GPIO_Pin_9);
-  }
+        /* PC.09 turnoff after 125 ms */
+        GPIO_ResetBits(GPIOC, GPIO_Pin_9);
+    }
 }
 
 /******************************************************************************/
@@ -195,10 +195,10 @@ void TIM2_IRQHandler(void)
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}
-  */ 
+  */
 
 /******************* (C) COPYRIGHT 2011 STMicroelectronics *****END OF FILE****/

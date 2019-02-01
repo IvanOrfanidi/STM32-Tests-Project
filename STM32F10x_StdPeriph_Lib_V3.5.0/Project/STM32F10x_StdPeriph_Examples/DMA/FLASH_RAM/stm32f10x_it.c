@@ -19,7 +19,7 @@
   *
   * <h2><center>&copy; COPYRIGHT 2011 STMicroelectronics</center></h2>
   ******************************************************************************
-  */ 
+  */
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f10x_it.h"
@@ -30,7 +30,7 @@
 
 /** @addtogroup DMA_FLASH_RAM
   * @{
-  */ 
+  */
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
@@ -61,10 +61,9 @@ void NMI_Handler(void)
   */
 void HardFault_Handler(void)
 {
-  /* Go to infinite loop when Hard Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Hard Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -74,10 +73,9 @@ void HardFault_Handler(void)
   */
 void MemManage_Handler(void)
 {
-  /* Go to infinite loop when Memory Manage exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Memory Manage exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -87,10 +85,9 @@ void MemManage_Handler(void)
   */
 void BusFault_Handler(void)
 {
-  /* Go to infinite loop when Bus Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Bus Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -100,10 +97,9 @@ void BusFault_Handler(void)
   */
 void UsageFault_Handler(void)
 {
-  /* Go to infinite loop when Usage Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Usage Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -153,14 +149,13 @@ void SysTick_Handler(void)
   */
 void DMA1_Channel6_IRQHandler(void)
 {
-  /* Test on DMA1 Channel6 Transfer Complete interrupt */
-  if(DMA_GetITStatus(DMA1_IT_TC6))
-  {
-    /* Get Current Data Counter value after complete transfer */
-    CurrDataCounterEnd = DMA_GetCurrDataCounter(DMA1_Channel6);
-    /* Clear DMA1 Channel6 Half Transfer, Transfer Complete and Global interrupt pending bits */
-    DMA_ClearITPendingBit(DMA1_IT_GL6);
-  }
+    /* Test on DMA1 Channel6 Transfer Complete interrupt */
+    if(DMA_GetITStatus(DMA1_IT_TC6)) {
+        /* Get Current Data Counter value after complete transfer */
+        CurrDataCounterEnd = DMA_GetCurrDataCounter(DMA1_Channel6);
+        /* Clear DMA1 Channel6 Half Transfer, Transfer Complete and Global interrupt pending bits */
+        DMA_ClearITPendingBit(DMA1_IT_GL6);
+    }
 }
 
 /******************************************************************************/
@@ -181,10 +176,10 @@ void DMA1_Channel6_IRQHandler(void)
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}
-  */ 
+  */
 
 /******************* (C) COPYRIGHT 2011 STMicroelectronics *****END OF FILE****/

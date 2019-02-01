@@ -17,7 +17,7 @@
   *
   * <h2><center>&copy; COPYRIGHT 2011 STMicroelectronics</center></h2>
   ******************************************************************************
-  */ 
+  */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __STM32F10x_IT_H
@@ -40,12 +40,12 @@ void SVC_Handler(void);
 void DebugMon_Handler(void);
 void PendSV_Handler(void);
 void SysTick_Handler(void);
-#if defined (STM32F10X_LD_VL) || defined (STM32F10X_MD_VL)
+#if defined(STM32F10X_LD_VL) || defined(STM32F10X_MD_VL)
 void ADC1_IRQHandler(void);
 #else
 void ADC1_2_IRQHandler(void);
 #endif
-					 
+
 #endif /* __STM32F10x_IT_H */
 
 /******************* (C) COPYRIGHT 2011 STMicroelectronics *****END OF FILE****/

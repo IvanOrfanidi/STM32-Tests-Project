@@ -19,7 +19,7 @@
   *
   * <h2><center>&copy; COPYRIGHT 2011 STMicroelectronics</center></h2>
   ******************************************************************************
-  */ 
+  */
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f10x_it.h"
@@ -31,7 +31,7 @@
 
 /** @addtogroup IWDG_Reset
   * @{
-  */ 
+  */
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
@@ -66,9 +66,9 @@ void NMI_Handler(void)
   */
 void HardFault_Handler(void)
 {
-  /* Go to infinite loop when Hard Fault exception occurs */
-  while (1)
-  {}
+    /* Go to infinite loop when Hard Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -78,9 +78,9 @@ void HardFault_Handler(void)
   */
 void MemManage_Handler(void)
 {
-  /* Go to infinite loop when Memory Manage exception occurs */
-  while (1)
-  {}
+    /* Go to infinite loop when Memory Manage exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -90,9 +90,9 @@ void MemManage_Handler(void)
   */
 void BusFault_Handler(void)
 {
-  /* Go to infinite loop when Bus Fault exception occurs */
-  while (1)
-  {}
+    /* Go to infinite loop when Bus Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -102,9 +102,9 @@ void BusFault_Handler(void)
   */
 void UsageFault_Handler(void)
 {
-  /* Go to infinite loop when Usage Fault exception occurs */
-  while (1)
-  {}
+    /* Go to infinite loop when Usage Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -141,7 +141,7 @@ void PendSV_Handler(void)
   */
 void SysTick_Handler(void)
 {
-  TimingDelay--;
+    TimingDelay--;
 }
 
 /******************************************************************************/
@@ -155,16 +155,15 @@ void SysTick_Handler(void)
   */
 void EXTI9_5_IRQHandler(void)
 {
-  if (EXTI_GetITStatus(KEY_BUTTON_EXTI_LINE) != RESET)
-  {
-    /* Clear the Key Button EXTI Line Pending Bit */
-    EXTI_ClearITPendingBit(KEY_BUTTON_EXTI_LINE);
-    
-    /* As the following address is invalid (not mapped), a Hardfault exception
+    if(EXTI_GetITStatus(KEY_BUTTON_EXTI_LINE) != RESET) {
+        /* Clear the Key Button EXTI Line Pending Bit */
+        EXTI_ClearITPendingBit(KEY_BUTTON_EXTI_LINE);
+
+        /* As the following address is invalid (not mapped), a Hardfault exception
 	  will be generated with an infinite loop and when the IWDG counter reaches 0
     the IWDG reset occurs */
- 	  *(__IO uint32_t *) 0x000000FF = 0xFF;
-  }
+        *(__IO uint32_t*)0x000000FF = 0xFF;
+    }
 }
 
 /**
@@ -174,37 +173,32 @@ void EXTI9_5_IRQHandler(void)
   */
 void TIM5_IRQHandler(void)
 {
-  if (TIM_GetITStatus(TIM5, TIM_IT_CC4) != RESET)
-  {    
-    if(CaptureNumber == 0)
-    {
-      /* Get the Input Capture value */
-      IC1ReadValue1 = TIM_GetCapture4(TIM5);
+    if(TIM_GetITStatus(TIM5, TIM_IT_CC4) != RESET) {
+        if(CaptureNumber == 0) {
+            /* Get the Input Capture value */
+            IC1ReadValue1 = TIM_GetCapture4(TIM5);
+        }
+        else if(CaptureNumber == 1) {
+            /* Get the Input Capture value */
+            IC1ReadValue2 = TIM_GetCapture4(TIM5);
+
+            /* Capture computation */
+            if(IC1ReadValue2 > IC1ReadValue1) {
+                Capture = (IC1ReadValue2 - IC1ReadValue1);
+            }
+            else {
+                Capture = ((0xFFFF - IC1ReadValue1) + IC1ReadValue2);
+            }
+            /* Frequency computation */
+            LsiFreq = (uint32_t)SystemCoreClock / Capture;
+            LsiFreq *= 8;
+        }
+
+        CaptureNumber++;
+
+        /* Clear TIM5 Capture compare interrupt pending bit */
+        TIM_ClearITPendingBit(TIM5, TIM_IT_CC4);
     }
-    else if(CaptureNumber == 1)
-    {
-      /* Get the Input Capture value */
-      IC1ReadValue2 = TIM_GetCapture4(TIM5); 
-      
-      /* Capture computation */
-      if (IC1ReadValue2 > IC1ReadValue1)
-      {
-        Capture = (IC1ReadValue2 - IC1ReadValue1); 
-      }
-      else
-      {
-        Capture = ((0xFFFF - IC1ReadValue1) + IC1ReadValue2); 
-      }
-      /* Frequency computation */ 
-      LsiFreq = (uint32_t) SystemCoreClock / Capture;
-      LsiFreq *= 8;
-    }
-    
-    CaptureNumber++;
-    
-    /* Clear TIM5 Capture compare interrupt pending bit */
-    TIM_ClearITPendingBit(TIM5, TIM_IT_CC4);
-  }
 }
 
 /******************************************************************************/
@@ -225,7 +219,7 @@ void TIM5_IRQHandler(void)
 
 /**
   * @}
-  */ 
+  */
 /**
   * @}
   */

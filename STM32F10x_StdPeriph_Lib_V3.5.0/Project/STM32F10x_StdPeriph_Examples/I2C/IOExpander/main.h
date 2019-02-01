@@ -17,7 +17,7 @@
   *
   * <h2><center>&copy; COPYRIGHT 2011 STMicroelectronics</center></h2>
   ******************************************************************************
-  */ 
+  */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __MAIN_H
@@ -26,20 +26,20 @@
 /* Includes ------------------------------------------------------------------*/
 
 #if !(defined USE_STM32100E_EVAL) && !(defined USE_STM3210C_EVAL)
- #error "Please select STM3210C_EVAL or STM32100E_EVAL board For this example"
+#error "Please select STM3210C_EVAL or STM32100E_EVAL board For this example"
 #endif
 
 #include "stm32f10x.h"
 #include "stm32_eval.h"
 #include <stdio.h>
- 
+
 #ifdef USE_STM3210C_EVAL
- #include "stm3210c_eval_lcd.h"
- #include "stm3210c_eval_ioe.h"
- 
+#include "stm3210c_eval_lcd.h"
+#include "stm3210c_eval_ioe.h"
+
 #elif defined USE_STM32100E_EVAL
- #include "stm32100e_eval_lcd.h"
- #include "stm32100e_eval_ioe.h"
+#include "stm32100e_eval_lcd.h"
+#include "stm32100e_eval_ioe.h"
 #endif
 
 /* Exported types ------------------------------------------------------------*/
@@ -50,7 +50,6 @@
 
 /* Exported macro ------------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */
-
 
 #endif /* __MAIN_H */
 
