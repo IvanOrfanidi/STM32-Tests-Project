@@ -21,14 +21,14 @@
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __STM32F10x_IT_H
-#   define __STM32F10x_IT_H
+#define __STM32F10x_IT_H
 
-#   ifdef __cplusplus
+#ifdef __cplusplus
 extern "C" {
-#   endif
+#endif
 
 /* Includes ------------------------------------------------------------------*/
-#   include "stm32f10x.h"
+#include "stm32f10x.h"
 
 /* Exported types
  * ------------------------------------------------------------*/
@@ -48,20 +48,20 @@ void SVC_Handler(void);
 void DebugMon_Handler(void);
 void PendSV_Handler(void);
 void SysTick_Handler(void);
-#   if defined(STM32L1XX_MD) || defined(STM32L1XX_HD) || defined(STM32L1XX_MD_PLUS) || defined(STM32F37X)
+#if defined(STM32L1XX_MD) || defined(STM32L1XX_HD) || defined(STM32L1XX_MD_PLUS) || defined(STM32F37X)
 void USB_LP_IRQHandler(void);
-#   else
+#else
 void USB_LP_CAN1_RX0_IRQHandler(void);
-#   endif
+#endif
 void USB_HP_IRQHandler(void);
-#   ifdef __cplusplus
+#ifdef __cplusplus
 }
-#   endif
-#   if defined(STM32L1XX_MD) || defined(STM32L1XX_HD) || defined(STM32L1XX_MD_PLUS)
+#endif
+#if defined(STM32L1XX_MD) || defined(STM32L1XX_HD) || defined(STM32L1XX_MD_PLUS)
 void USB_FS_WKUP_IRQHandler(void);
-#   else
+#else
 void USBWakeUp_IRQHandler(void);
-#   endif
+#endif
 
 #endif /* __STM32F10x_IT_H */
 

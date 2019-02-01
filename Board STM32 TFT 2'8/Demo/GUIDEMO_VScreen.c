@@ -57,12 +57,11 @@ Purpose     : Virtual screen demo
   ******************************************************************************
   */
 
-
 #include <stdlib.h>
 
 #include "GUIDEMO.h"
 
-#if (SHOW_GUIDEMO_VSCREEN)
+#if(SHOW_GUIDEMO_VSCREEN)
 
 /*********************************************************************
 *
@@ -74,69 +73,71 @@ Purpose     : Virtual screen demo
 *
 *       _Loop
 */
-static int _Loop(int y, int d, int n, int Delay) {
-  do {
-    y += d;
-    GUI_SetOrg(0, y);
-    GUI_Delay(Delay);
-    if (GUIDEMO_CheckCancel()) {
-      return 1;
-    }
-  } while (--n);
-  return 0;
+static int _Loop(int y, int d, int n, int Delay)
+{
+    do {
+        y += d;
+        GUI_SetOrg(0, y);
+        GUI_Delay(Delay);
+        if(GUIDEMO_CheckCancel()) {
+            return 1;
+        }
+    } while(--n);
+    return 0;
 }
 
 /*********************************************************************
 *
 *       _DemoVScreen
 */
-static void _DemoVScreen(void) {
-  int xSize, ySize, j, n;
-  int _aDelay[] = { 20, 5};
-  GUI_RECT Rect;
-  xSize = LCD_GetXSize();
-  ySize = LCD_GetYSize();
-  GUI_SetFont(&GUI_FontComic24B_ASCII);
-  GUI_SetTextMode(GUI_TM_TRANS);
-  Rect.x0 = 0;
-  Rect.y0 = 0;
-  Rect.x1 = xSize - 1;
-  Rect.y1 = ySize - 1;
-  GUI_SetColor(GUI_WHITE);
-  GUI_DispStringInRect("Default screen", &Rect, GUI_TA_HCENTER | GUI_TA_VCENTER);
-  GUI_Delay(250);
-  Rect.y0 += ySize;
-  Rect.y1 += ySize;
-  GUI_DrawGradientV(Rect.x0, Rect.y0, Rect.x1, Rect.y1, 0xFFFFFF, 0x000000);
-  Rect.y1 -= ySize / 3;
-  GUI_SetColor(GUI_DARKGREEN);
-  GUI_DispStringInRect("Here is the virtual screen", &Rect, GUI_TA_HCENTER | GUI_TA_VCENTER);
-  n = ySize / 5;
-  for (j = 0; j < GUI_COUNTOF(_aDelay); j++) {
-    if (_Loop(0, 5, n, _aDelay[j]) == 1) {
-      return;
-    }
-    GUI_SetOrg(0, ySize);
+static void _DemoVScreen(void)
+{
+    int xSize, ySize, j, n;
+    int _aDelay[] = { 20, 5 };
+    GUI_RECT Rect;
+    xSize = LCD_GetXSize();
+    ySize = LCD_GetYSize();
+    GUI_SetFont(&GUI_FontComic24B_ASCII);
+    GUI_SetTextMode(GUI_TM_TRANS);
+    Rect.x0 = 0;
+    Rect.y0 = 0;
+    Rect.x1 = xSize - 1;
+    Rect.y1 = ySize - 1;
+    GUI_SetColor(GUI_WHITE);
+    GUI_DispStringInRect("Default screen", &Rect, GUI_TA_HCENTER | GUI_TA_VCENTER);
     GUI_Delay(250);
-    if (_Loop(ySize, -5, n, _aDelay[j]) == 1) {
-      return;
+    Rect.y0 += ySize;
+    Rect.y1 += ySize;
+    GUI_DrawGradientV(Rect.x0, Rect.y0, Rect.x1, Rect.y1, 0xFFFFFF, 0x000000);
+    Rect.y1 -= ySize / 3;
+    GUI_SetColor(GUI_DARKGREEN);
+    GUI_DispStringInRect("Here is the virtual screen", &Rect, GUI_TA_HCENTER | GUI_TA_VCENTER);
+    n = ySize / 5;
+    for(j = 0; j < GUI_COUNTOF(_aDelay); j++) {
+        if(_Loop(0, 5, n, _aDelay[j]) == 1) {
+            return;
+        }
+        GUI_SetOrg(0, ySize);
+        GUI_Delay(250);
+        if(_Loop(ySize, -5, n, _aDelay[j]) == 1) {
+            return;
+        }
+        GUI_SetOrg(0, 0);
+        GUI_Delay(250);
+        if(GUIDEMO_CheckCancel()) {
+            return;
+        }
     }
-    GUI_SetOrg(0, 0);
-    GUI_Delay(250);
-    if (GUIDEMO_CheckCancel()) {
-      return;
+    for(j = 0; j < 5; j++) {
+        GUI_SetOrg(0, ySize);
+        GUI_Delay(200);
+        GUI_SetOrg(0, 0);
+        GUI_Delay(200);
+        if(GUIDEMO_CheckCancel()) {
+            return;
+        }
     }
-  }
-  for (j = 0; j < 5; j++) {
-    GUI_SetOrg(0, ySize);
-    GUI_Delay(200);
-    GUI_SetOrg(0, 0);
-    GUI_Delay(200);
-    if (GUIDEMO_CheckCancel()) {
-      return;
-    }
-  }
-  GUIDEMO_Delay(1000);
+    GUIDEMO_Delay(1000);
 }
 
 /*********************************************************************
@@ -149,20 +150,21 @@ static void _DemoVScreen(void) {
 *
 *       GUIDEMO_VScreen
 */
-void GUIDEMO_VScreen(void) {
-  int ySize, vySize;
+void GUIDEMO_VScreen(void)
+{
+    int ySize, vySize;
 
-  ySize  = LCD_GetYSize();
-  vySize = LCD_GetVYSize();
-  if (vySize < (ySize << 1)) {
-    return;
-  }
-  GUIDEMO_ShowIntro("VScreen demo",
-                    "Demonstrates how to use\n"
-                    "virtual screens");
-  GUIDEMO_DrawBk(1);
-  _DemoVScreen();
-  GUI_SetOrg(0, 0);
+    ySize = LCD_GetYSize();
+    vySize = LCD_GetVYSize();
+    if(vySize < (ySize << 1)) {
+        return;
+    }
+    GUIDEMO_ShowIntro("VScreen demo",
+        "Demonstrates how to use\n"
+        "virtual screens");
+    GUIDEMO_DrawBk(1);
+    _DemoVScreen();
+    GUI_SetOrg(0, 0);
 }
 
 #else

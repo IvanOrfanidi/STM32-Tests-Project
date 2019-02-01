@@ -67,28 +67,28 @@ Purpose     : SLIDER private header file
 **********************************************************************
 */
 typedef struct {
-  WIDGET_DRAW_ITEM_FUNC * pfDrawSkin;
+    WIDGET_DRAW_ITEM_FUNC* pfDrawSkin;
 } SLIDER_SKIN_PRIVATE;
 
 typedef struct {
-  GUI_COLOR BkColor;
-  GUI_COLOR BarColor;
-  GUI_COLOR FocusColor;
-  GUI_COLOR TickColor;
-  SLIDER_SKIN_PRIVATE SkinPrivate;
+    GUI_COLOR BkColor;
+    GUI_COLOR BarColor;
+    GUI_COLOR FocusColor;
+    GUI_COLOR TickColor;
+    SLIDER_SKIN_PRIVATE SkinPrivate;
 } SLIDER_PROPS;
 
 typedef struct {
-  WIDGET Widget;
-  SLIDER_PROPS Props;
-  WIDGET_SKIN const * pWidgetSkin;
-  int Min, Max, v;
-  int Flags;
-  int NumTicks;
-  I16 Width;
-  #if GUI_DEBUG_LEVEL >1
+    WIDGET Widget;
+    SLIDER_PROPS Props;
+    WIDGET_SKIN const* pWidgetSkin;
+    int Min, Max, v;
+    int Flags;
+    int NumTicks;
+    I16 Width;
+#if GUI_DEBUG_LEVEL > 1
     U32 DebugId;
-  #endif
+#endif
 } SLIDER_Obj;
 
 /*********************************************************************
@@ -98,20 +98,20 @@ typedef struct {
 **********************************************************************
 */
 #if GUI_DEBUG_LEVEL >= GUI_DEBUG_LEVEL_CHECK_ALL
-  #define SLIDER_INIT_ID(p) p->DebugId = SLIDER_ID
+#define SLIDER_INIT_ID(p) p->DebugId = SLIDER_ID
 #else
-  #define SLIDER_INIT_ID(p)
+#define SLIDER_INIT_ID(p)
 #endif
 
 #if GUI_DEBUG_LEVEL >= GUI_DEBUG_LEVEL_CHECK_ALL
-  SLIDER_Obj * SLIDER_LockH(SLIDER_Handle h);
-  #define SLIDER_LOCK_H(h)   SLIDER_LockH(h)
+SLIDER_Obj* SLIDER_LockH(SLIDER_Handle h);
+#define SLIDER_LOCK_H(h) SLIDER_LockH(h)
 #else
-  #define SLIDER_LOCK_H(h)   (SLIDER_Obj *)GUI_LOCK_H(h)
+#define SLIDER_LOCK_H(h) (SLIDER_Obj*)GUI_LOCK_H(h)
 #endif
 
-#ifndef   SLIDER_SUPPORT_TRANSPARENCY
-  #define SLIDER_SUPPORT_TRANSPARENCY WM_SUPPORT_TRANSPARENCY
+#ifndef SLIDER_SUPPORT_TRANSPARENCY
+#define SLIDER_SUPPORT_TRANSPARENCY WM_SUPPORT_TRANSPARENCY
 #endif
 
 /*********************************************************************
@@ -123,9 +123,9 @@ typedef struct {
 extern SLIDER_PROPS SLIDER__DefaultProps;
 
 extern const WIDGET_SKIN SLIDER__SkinClassic;
-extern       WIDGET_SKIN SLIDER__Skin;
+extern WIDGET_SKIN SLIDER__Skin;
 
-extern WIDGET_SKIN const * SLIDER__pSkinDefault;
+extern WIDGET_SKIN const* SLIDER__pSkinDefault;
 
 #endif
 

@@ -55,16 +55,14 @@ Attention : Do not modify this file ! If you do, you will not
   ******************************************************************************
   */
 
-
-#ifndef  GUI_FONTINTERN_H    /* Guard against multiple inclusion */
-#define  GUI_FONTINTERN_H
+#ifndef GUI_FONTINTERN_H /* Guard against multiple inclusion */
+#define GUI_FONTINTERN_H
 
 #include "GUI.h"
 
 #if defined(__cplusplus)
-extern "C" {     /* Make sure we have C-declarations in C++ programs */
+extern "C" { /* Make sure we have C-declarations in C++ programs */
 #endif
-
 
 extern GUI_CONST_STORAGE GUI_FONT_PROP GUI_Font8ASCII_Prop;
 extern GUI_CONST_STORAGE GUI_FONT_PROP GUI_Font10S_ASCII_FontProp1;
@@ -93,12 +91,10 @@ extern GUI_CONST_STORAGE GUI_CHARINFO GUI_Font13HB_ASCII_CharInfo[95];
 extern GUI_CONST_STORAGE GUI_CHARINFO GUI_Font16_HK_CharInfo[169];
 extern GUI_CONST_STORAGE GUI_CHARINFO GUI_Font16B_ASCII_CharInfo[95];
 
-
 #if defined(__cplusplus)
-  }
+}
 #endif
 
-
-#endif   /* Guard against multiple inclusion */
+#endif /* Guard against multiple inclusion */
 
 /*************************** End of file ****************************/

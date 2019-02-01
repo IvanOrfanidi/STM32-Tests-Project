@@ -47,9 +47,9 @@
   */
 void NMI_Handler(void)
 {
-  // —бросим флаг системы контрол€ HSE 
-  if (RCC->CIR & RCC_CIR_CSSF) RCC->CIR |= RCC_CIR_CSSC;  
-  //SetSysClockHSI();
+    // —бросим флаг системы контрол€ HSE
+    if(RCC->CIR & RCC_CIR_CSSF) RCC->CIR |= RCC_CIR_CSSC;
+    //SetSysClockHSI();
 }
 
 /**
@@ -59,10 +59,9 @@ void NMI_Handler(void)
   */
 void HardFault_Handler(void)
 {
-  /* Go to infinite loop when Hard Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Hard Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -72,10 +71,9 @@ void HardFault_Handler(void)
   */
 void MemManage_Handler(void)
 {
-  /* Go to infinite loop when Memory Manage exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Memory Manage exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -85,10 +83,9 @@ void MemManage_Handler(void)
   */
 void BusFault_Handler(void)
 {
-  /* Go to infinite loop when Bus Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Bus Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -98,10 +95,9 @@ void BusFault_Handler(void)
   */
 void UsageFault_Handler(void)
 {
-  /* Go to infinite loop when Usage Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Usage Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -141,11 +137,10 @@ void PendSV_Handler(void)
   */
 void SDIO_IRQHandler(void)
 {
-  /* Process All SDIO Interrupt Sources */
-  SD_ProcessIRQSrc();
+    /* Process All SDIO Interrupt Sources */
+    SD_ProcessIRQSrc();
 }
 /******************* (C) COPYRIGHT 2007 STMicroelectronics *****END OF FILE****/
-
 
 /*******************************************************************************
 * Function Name  : USART1_IRQHandler
@@ -169,7 +164,6 @@ void USART2_IRQHandler(void)
 {
 }
 
-
 /*******************************************************************************
 * Function Name  : USART3_IRQHandler
 * Description    : This function handles USART3 global interrupt request.
@@ -180,7 +174,6 @@ void USART2_IRQHandler(void)
 void USART3_IRQHandler(void)
 {
 }
-
 
 /******************************************************************************/
 /*                 STM32F10x Peripherals Interrupt Handlers                   */
@@ -200,7 +193,6 @@ void USART3_IRQHandler(void)
 
 /**
   * @}
-  */ 
-
+  */
 
 /******************* (C) COPYRIGHT 2011 STMicroelectronics *****END OF FILE****/

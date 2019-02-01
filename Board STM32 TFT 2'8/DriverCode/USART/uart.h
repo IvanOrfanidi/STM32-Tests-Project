@@ -21,65 +21,62 @@
 #ifdef UART_GLOBAL
 #define UART_EXTERN
 #else
-#define UART_EXTERN  extern
+#define UART_EXTERN extern
 #endif
 
-#define UART_FIFO_SIZE        50
-#define UART_MAX_BAUD_RATE    256000
-#define UART1_INTR_PRI        5
-#define UART2_INTR_PRI        6
-#define UART3_INTR_PRI        7
+#define UART_FIFO_SIZE 50
+#define UART_MAX_BAUD_RATE 256000
+#define UART1_INTR_PRI 5
+#define UART2_INTR_PRI 6
+#define UART3_INTR_PRI 7
 
 // Define UARTs
-typedef enum
-{
-  UART_1 = 0, UART_2, UART_3,
+typedef enum {
+    UART_1 = 0,
+    UART_2,
+    UART_3,
 } UartNum_t;
 
-typedef struct _UartFifo_t
-{
-  Int32U PushIndx;
-  Int32U PopIndx;
-  Int8U  Buffer[UART_FIFO_SIZE];
+typedef struct _UartFifo_t {
+    Int32U PushIndx;
+    Int32U PopIndx;
+    Int8U Buffer[UART_FIFO_SIZE];
 } UartFifo_t, *pUartFifo_t;
 
-typedef union _UartModemLineState_t
-{
-  Int32U Data;
-  struct {
-    Int32U  bDTR          : 1;
-    Int32U  bRTS          : 1;
-    Int32U                :30;
-  };
+typedef union _UartModemLineState_t {
+    Int32U Data;
+    struct {
+        Int32U bDTR : 1;
+        Int32U bRTS : 1;
+        Int32U : 30;
+    };
 } UartModemLineState_t, *pUartModemLineState_t;
 
-typedef union _UartLineEvents_t
-{
-  Int32U Data;
-  struct {
-    Int32U              : 1;
-    Int32U  bOE         : 1;
-    Int32U  bPE         : 1;
-    Int32U  bFE         : 1;
-    Int32U  bBI         : 1;
-    Int32U              :27;
-  };
+typedef union _UartLineEvents_t {
+    Int32U Data;
+    struct {
+        Int32U : 1;
+        Int32U bOE : 1;
+        Int32U bPE : 1;
+        Int32U bFE : 1;
+        Int32U bBI : 1;
+        Int32U : 27;
+    };
 } UartLineEvents_t, *pUartLineEvents_t;
 
-typedef union _UartModemEvents_t
-{
-  Int32U Data;
-  struct {
-    Int32U  bDCTS       : 1;
-    Int32U  bDDSR       : 1;
-    Int32U  bDRI        : 1;
-    Int32U  bDDCD       : 1;
-    Int32U  bCTS        : 1;
-    Int32U  bDSR        : 1;
-    Int32U  bRI         : 1;
-    Int32U  bDCD        : 1;
-    Int32U              :24;
-  };
+typedef union _UartModemEvents_t {
+    Int32U Data;
+    struct {
+        Int32U bDCTS : 1;
+        Int32U bDDSR : 1;
+        Int32U bDRI : 1;
+        Int32U bDDCD : 1;
+        Int32U bCTS : 1;
+        Int32U bDSR : 1;
+        Int32U bRI : 1;
+        Int32U bDCD : 1;
+        Int32U : 24;
+    };
 } UartModemEvents_t, *pUartModemEvents_t;
 
 /*************************************************************************
@@ -124,7 +121,7 @@ void Uart3Isr(void);
  * Description: Init UART
  *
  *************************************************************************/
-Boolean UartInit(UartNum_t Uart,Int32U IrqSlot);
+Boolean UartInit(UartNum_t Uart, Int32U IrqSlot);
 
 /*************************************************************************
  * Function Name: UartSetLineCoding
@@ -135,7 +132,7 @@ Boolean UartInit(UartNum_t Uart,Int32U IrqSlot);
  * Description: Init UART Baud rate, Word width, Stop bits, Parity type
  *
  *************************************************************************/
-void UartSetLineCoding(UartNum_t Uart,USART_InitTypeDef UartCoding);
+void UartSetLineCoding(UartNum_t Uart, USART_InitTypeDef UartCoding);
 
 /*************************************************************************
  * Function Name: UartRead
@@ -170,7 +167,7 @@ Int32U UartWrite(UartNum_t Uart, pInt8U pBuffer, Int32U BufferSize);
  * Description: Get Uart Line events (PE,OE, FE, BI)
  *
  *************************************************************************/
-UartLineEvents_t UartGetUartLineEvents (UartNum_t Uart);
+UartLineEvents_t UartGetUartLineEvents(UartNum_t Uart);
 
 /*************************************************************************
  * Function Name: UartSetUartLineState
@@ -181,6 +178,6 @@ UartLineEvents_t UartGetUartLineEvents (UartNum_t Uart);
  * Description: Set Uart Break Event
  *
  *************************************************************************/
-void UartSetUartLineState (UartNum_t Uart, Boolean Break);
+void UartSetUartLineState(UartNum_t Uart, Boolean Break);
 
-#endif // __UART_H
+#endif    // __UART_H

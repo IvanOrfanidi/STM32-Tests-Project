@@ -63,52 +63,50 @@
     1 tab == 4 spaces!
 */
 
-
 #ifndef QUEUE_H
 #define QUEUE_H
 
 #ifndef INC_FREERTOS_H
-	#error "include FreeRTOS.h" must appear in source files before "include queue.h"
+#error "include FreeRTOS.h" must appear in source files before "include queue.h"
 #endif
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-
 /**
  * Type by which queues are referenced.  For example, a call to xQueueCreate()
  * returns an QueueHandle_t variable that can then be used as a parameter to
  * xQueueSend(), xQueueReceive(), etc.
  */
-typedef void * QueueHandle_t;
+typedef void* QueueHandle_t;
 
 /**
  * Type by which queue sets are referenced.  For example, a call to
  * xQueueCreateSet() returns an xQueueSet variable that can then be used as a
  * parameter to xQueueSelectFromSet(), xQueueAddToSet(), etc.
  */
-typedef void * QueueSetHandle_t;
+typedef void* QueueSetHandle_t;
 
 /**
  * Queue sets can contain both queues and semaphores, so the
  * QueueSetMemberHandle_t is defined as a type to be used where a parameter or
  * return value can be either an QueueHandle_t or an SemaphoreHandle_t.
  */
-typedef void * QueueSetMemberHandle_t;
+typedef void* QueueSetMemberHandle_t;
 
 /* For internal use only. */
-#define	queueSEND_TO_BACK		( ( BaseType_t ) 0 )
-#define	queueSEND_TO_FRONT		( ( BaseType_t ) 1 )
-#define queueOVERWRITE			( ( BaseType_t ) 2 )
+#define queueSEND_TO_BACK ((BaseType_t)0)
+#define queueSEND_TO_FRONT ((BaseType_t)1)
+#define queueOVERWRITE ((BaseType_t)2)
 
 /* For internal use only.  These definitions *must* match those in queue.c. */
-#define queueQUEUE_TYPE_BASE				( ( uint8_t ) 0U )
-#define queueQUEUE_TYPE_SET					( ( uint8_t ) 0U )
-#define queueQUEUE_TYPE_MUTEX 				( ( uint8_t ) 1U )
-#define queueQUEUE_TYPE_COUNTING_SEMAPHORE	( ( uint8_t ) 2U )
-#define queueQUEUE_TYPE_BINARY_SEMAPHORE	( ( uint8_t ) 3U )
-#define queueQUEUE_TYPE_RECURSIVE_MUTEX		( ( uint8_t ) 4U )
+#define queueQUEUE_TYPE_BASE ((uint8_t)0U)
+#define queueQUEUE_TYPE_SET ((uint8_t)0U)
+#define queueQUEUE_TYPE_MUTEX ((uint8_t)1U)
+#define queueQUEUE_TYPE_COUNTING_SEMAPHORE ((uint8_t)2U)
+#define queueQUEUE_TYPE_BINARY_SEMAPHORE ((uint8_t)3U)
+#define queueQUEUE_TYPE_RECURSIVE_MUTEX ((uint8_t)4U)
 
 /**
  * queue. h
@@ -166,7 +164,7 @@ typedef void * QueueSetMemberHandle_t;
  * \defgroup xQueueCreate xQueueCreate
  * \ingroup QueueManagement
  */
-#define xQueueCreate( uxQueueLength, uxItemSize ) xQueueGenericCreate( uxQueueLength, uxItemSize, queueQUEUE_TYPE_BASE )
+#define xQueueCreate(uxQueueLength, uxItemSize) xQueueGenericCreate(uxQueueLength, uxItemSize, queueQUEUE_TYPE_BASE)
 
 /**
  * queue. h
@@ -248,7 +246,7 @@ typedef void * QueueSetMemberHandle_t;
  * \defgroup xQueueSend xQueueSend
  * \ingroup QueueManagement
  */
-#define xQueueSendToFront( xQueue, pvItemToQueue, xTicksToWait ) xQueueGenericSend( ( xQueue ), ( pvItemToQueue ), ( xTicksToWait ), queueSEND_TO_FRONT )
+#define xQueueSendToFront(xQueue, pvItemToQueue, xTicksToWait) xQueueGenericSend((xQueue), (pvItemToQueue), (xTicksToWait), queueSEND_TO_FRONT)
 
 /**
  * queue. h
@@ -330,7 +328,7 @@ typedef void * QueueSetMemberHandle_t;
  * \defgroup xQueueSend xQueueSend
  * \ingroup QueueManagement
  */
-#define xQueueSendToBack( xQueue, pvItemToQueue, xTicksToWait ) xQueueGenericSend( ( xQueue ), ( pvItemToQueue ), ( xTicksToWait ), queueSEND_TO_BACK )
+#define xQueueSendToBack(xQueue, pvItemToQueue, xTicksToWait) xQueueGenericSend((xQueue), (pvItemToQueue), (xTicksToWait), queueSEND_TO_BACK)
 
 /**
  * queue. h
@@ -414,7 +412,7 @@ typedef void * QueueSetMemberHandle_t;
  * \defgroup xQueueSend xQueueSend
  * \ingroup QueueManagement
  */
-#define xQueueSend( xQueue, pvItemToQueue, xTicksToWait ) xQueueGenericSend( ( xQueue ), ( pvItemToQueue ), ( xTicksToWait ), queueSEND_TO_BACK )
+#define xQueueSend(xQueue, pvItemToQueue, xTicksToWait) xQueueGenericSend((xQueue), (pvItemToQueue), (xTicksToWait), queueSEND_TO_BACK)
 
 /**
  * queue. h
@@ -497,8 +495,7 @@ typedef void * QueueSetMemberHandle_t;
  * \defgroup xQueueOverwrite xQueueOverwrite
  * \ingroup QueueManagement
  */
-#define xQueueOverwrite( xQueue, pvItemToQueue ) xQueueGenericSend( ( xQueue ), ( pvItemToQueue ), 0, queueOVERWRITE )
-
+#define xQueueOverwrite(xQueue, pvItemToQueue) xQueueGenericSend((xQueue), (pvItemToQueue), 0, queueOVERWRITE)
 
 /**
  * queue. h
@@ -585,7 +582,7 @@ typedef void * QueueSetMemberHandle_t;
  * \defgroup xQueueSend xQueueSend
  * \ingroup QueueManagement
  */
-BaseType_t xQueueGenericSend( QueueHandle_t xQueue, const void * const pvItemToQueue, TickType_t xTicksToWait, const BaseType_t xCopyPosition ) PRIVILEGED_FUNCTION;
+BaseType_t xQueueGenericSend(QueueHandle_t xQueue, const void* const pvItemToQueue, TickType_t xTicksToWait, const BaseType_t xCopyPosition) PRIVILEGED_FUNCTION;
 
 /**
  * queue. h
@@ -681,7 +678,7 @@ BaseType_t xQueueGenericSend( QueueHandle_t xQueue, const void * const pvItemToQ
  * \defgroup xQueueReceive xQueueReceive
  * \ingroup QueueManagement
  */
-#define xQueuePeek( xQueue, pvBuffer, xTicksToWait ) xQueueGenericReceive( ( xQueue ), ( pvBuffer ), ( xTicksToWait ), pdTRUE )
+#define xQueuePeek(xQueue, pvBuffer, xTicksToWait) xQueueGenericReceive((xQueue), (pvBuffer), (xTicksToWait), pdTRUE)
 
 /**
  * queue. h
@@ -714,7 +711,7 @@ BaseType_t xQueueGenericSend( QueueHandle_t xQueue, const void * const pvItemToQ
  * \defgroup xQueuePeekFromISR xQueuePeekFromISR
  * \ingroup QueueManagement
  */
-BaseType_t xQueuePeekFromISR( QueueHandle_t xQueue, void * const pvBuffer ) PRIVILEGED_FUNCTION;
+BaseType_t xQueuePeekFromISR(QueueHandle_t xQueue, void* const pvBuffer) PRIVILEGED_FUNCTION;
 
 /**
  * queue. h
@@ -807,8 +804,7 @@ BaseType_t xQueuePeekFromISR( QueueHandle_t xQueue, void * const pvBuffer ) PRIV
  * \defgroup xQueueReceive xQueueReceive
  * \ingroup QueueManagement
  */
-#define xQueueReceive( xQueue, pvBuffer, xTicksToWait ) xQueueGenericReceive( ( xQueue ), ( pvBuffer ), ( xTicksToWait ), pdFALSE )
-
+#define xQueueReceive(xQueue, pvBuffer, xTicksToWait) xQueueGenericReceive((xQueue), (pvBuffer), (xTicksToWait), pdFALSE)
 
 /**
  * queue. h
@@ -906,7 +902,7 @@ BaseType_t xQueuePeekFromISR( QueueHandle_t xQueue, void * const pvBuffer ) PRIV
  * \defgroup xQueueReceive xQueueReceive
  * \ingroup QueueManagement
  */
-BaseType_t xQueueGenericReceive( QueueHandle_t xQueue, void * const pvBuffer, TickType_t xTicksToWait, const BaseType_t xJustPeek ) PRIVILEGED_FUNCTION;
+BaseType_t xQueueGenericReceive(QueueHandle_t xQueue, void* const pvBuffer, TickType_t xTicksToWait, const BaseType_t xJustPeek) PRIVILEGED_FUNCTION;
 
 /**
  * queue. h
@@ -921,7 +917,7 @@ BaseType_t xQueueGenericReceive( QueueHandle_t xQueue, void * const pvBuffer, Ti
  * \defgroup uxQueueMessagesWaiting uxQueueMessagesWaiting
  * \ingroup QueueManagement
  */
-UBaseType_t uxQueueMessagesWaiting( const QueueHandle_t xQueue ) PRIVILEGED_FUNCTION;
+UBaseType_t uxQueueMessagesWaiting(const QueueHandle_t xQueue) PRIVILEGED_FUNCTION;
 
 /**
  * queue. h
@@ -938,7 +934,7 @@ UBaseType_t uxQueueMessagesWaiting( const QueueHandle_t xQueue ) PRIVILEGED_FUNC
  * \defgroup uxQueueMessagesWaiting uxQueueMessagesWaiting
  * \ingroup QueueManagement
  */
-UBaseType_t uxQueueSpacesAvailable( const QueueHandle_t xQueue ) PRIVILEGED_FUNCTION;
+UBaseType_t uxQueueSpacesAvailable(const QueueHandle_t xQueue) PRIVILEGED_FUNCTION;
 
 /**
  * queue. h
@@ -952,7 +948,7 @@ UBaseType_t uxQueueSpacesAvailable( const QueueHandle_t xQueue ) PRIVILEGED_FUNC
  * \defgroup vQueueDelete vQueueDelete
  * \ingroup QueueManagement
  */
-void vQueueDelete( QueueHandle_t xQueue ) PRIVILEGED_FUNCTION;
+void vQueueDelete(QueueHandle_t xQueue) PRIVILEGED_FUNCTION;
 
 /**
  * queue. h
@@ -1022,8 +1018,7 @@ void vQueueDelete( QueueHandle_t xQueue ) PRIVILEGED_FUNCTION;
  * \defgroup xQueueSendFromISR xQueueSendFromISR
  * \ingroup QueueManagement
  */
-#define xQueueSendToFrontFromISR( xQueue, pvItemToQueue, pxHigherPriorityTaskWoken ) xQueueGenericSendFromISR( ( xQueue ), ( pvItemToQueue ), ( pxHigherPriorityTaskWoken ), queueSEND_TO_FRONT )
-
+#define xQueueSendToFrontFromISR(xQueue, pvItemToQueue, pxHigherPriorityTaskWoken) xQueueGenericSendFromISR((xQueue), (pvItemToQueue), (pxHigherPriorityTaskWoken), queueSEND_TO_FRONT)
 
 /**
  * queue. h
@@ -1093,7 +1088,7 @@ void vQueueDelete( QueueHandle_t xQueue ) PRIVILEGED_FUNCTION;
  * \defgroup xQueueSendFromISR xQueueSendFromISR
  * \ingroup QueueManagement
  */
-#define xQueueSendToBackFromISR( xQueue, pvItemToQueue, pxHigherPriorityTaskWoken ) xQueueGenericSendFromISR( ( xQueue ), ( pvItemToQueue ), ( pxHigherPriorityTaskWoken ), queueSEND_TO_BACK )
+#define xQueueSendToBackFromISR(xQueue, pvItemToQueue, pxHigherPriorityTaskWoken) xQueueGenericSendFromISR((xQueue), (pvItemToQueue), (pxHigherPriorityTaskWoken), queueSEND_TO_BACK)
 
 /**
  * queue. h
@@ -1180,7 +1175,7 @@ uint32_t ulVarToSend, ulValReceived;
  * \defgroup xQueueOverwriteFromISR xQueueOverwriteFromISR
  * \ingroup QueueManagement
  */
-#define xQueueOverwriteFromISR( xQueue, pvItemToQueue, pxHigherPriorityTaskWoken ) xQueueGenericSendFromISR( ( xQueue ), ( pvItemToQueue ), ( pxHigherPriorityTaskWoken ), queueOVERWRITE )
+#define xQueueOverwriteFromISR(xQueue, pvItemToQueue, pxHigherPriorityTaskWoken) xQueueGenericSendFromISR((xQueue), (pvItemToQueue), (pxHigherPriorityTaskWoken), queueOVERWRITE)
 
 /**
  * queue. h
@@ -1254,7 +1249,7 @@ uint32_t ulVarToSend, ulValReceived;
  * \defgroup xQueueSendFromISR xQueueSendFromISR
  * \ingroup QueueManagement
  */
-#define xQueueSendFromISR( xQueue, pvItemToQueue, pxHigherPriorityTaskWoken ) xQueueGenericSendFromISR( ( xQueue ), ( pvItemToQueue ), ( pxHigherPriorityTaskWoken ), queueSEND_TO_BACK )
+#define xQueueSendFromISR(xQueue, pvItemToQueue, pxHigherPriorityTaskWoken) xQueueGenericSendFromISR((xQueue), (pvItemToQueue), (pxHigherPriorityTaskWoken), queueSEND_TO_BACK)
 
 /**
  * queue. h
@@ -1332,7 +1327,7 @@ uint32_t ulVarToSend, ulValReceived;
  * \defgroup xQueueSendFromISR xQueueSendFromISR
  * \ingroup QueueManagement
  */
-BaseType_t xQueueGenericSendFromISR( QueueHandle_t xQueue, const void * const pvItemToQueue, BaseType_t * const pxHigherPriorityTaskWoken, const BaseType_t xCopyPosition ) PRIVILEGED_FUNCTION;
+BaseType_t xQueueGenericSendFromISR(QueueHandle_t xQueue, const void* const pvItemToQueue, BaseType_t* const pxHigherPriorityTaskWoken, const BaseType_t xCopyPosition) PRIVILEGED_FUNCTION;
 
 /**
  * queue. h
@@ -1421,16 +1416,15 @@ BaseType_t xQueueGenericSendFromISR( QueueHandle_t xQueue, const void * const pv
  * \defgroup xQueueReceiveFromISR xQueueReceiveFromISR
  * \ingroup QueueManagement
  */
-BaseType_t xQueueReceiveFromISR( QueueHandle_t xQueue, void * const pvBuffer, BaseType_t * const pxHigherPriorityTaskWoken ) PRIVILEGED_FUNCTION;
+BaseType_t xQueueReceiveFromISR(QueueHandle_t xQueue, void* const pvBuffer, BaseType_t* const pxHigherPriorityTaskWoken) PRIVILEGED_FUNCTION;
 
 /*
  * Utilities to query queues that are safe to use from an ISR.  These utilities
  * should be used only from witin an ISR, or within a critical section.
  */
-BaseType_t xQueueIsQueueEmptyFromISR( const QueueHandle_t xQueue ) PRIVILEGED_FUNCTION;
-BaseType_t xQueueIsQueueFullFromISR( const QueueHandle_t xQueue ) PRIVILEGED_FUNCTION;
-UBaseType_t uxQueueMessagesWaitingFromISR( const QueueHandle_t xQueue ) PRIVILEGED_FUNCTION;
-
+BaseType_t xQueueIsQueueEmptyFromISR(const QueueHandle_t xQueue) PRIVILEGED_FUNCTION;
+BaseType_t xQueueIsQueueFullFromISR(const QueueHandle_t xQueue) PRIVILEGED_FUNCTION;
+UBaseType_t uxQueueMessagesWaitingFromISR(const QueueHandle_t xQueue) PRIVILEGED_FUNCTION;
 
 /*
  * xQueueAltGenericSend() is an alternative version of xQueueGenericSend().
@@ -1446,12 +1440,12 @@ UBaseType_t uxQueueMessagesWaitingFromISR( const QueueHandle_t xQueue ) PRIVILEG
  * responsiveness to gain execution speed, whereas the fully featured API
  * sacrifices execution speed to ensure better interrupt responsiveness.
  */
-BaseType_t xQueueAltGenericSend( QueueHandle_t xQueue, const void * const pvItemToQueue, TickType_t xTicksToWait, BaseType_t xCopyPosition );
-BaseType_t xQueueAltGenericReceive( QueueHandle_t xQueue, void * const pvBuffer, TickType_t xTicksToWait, BaseType_t xJustPeeking );
-#define xQueueAltSendToFront( xQueue, pvItemToQueue, xTicksToWait ) xQueueAltGenericSend( ( xQueue ), ( pvItemToQueue ), ( xTicksToWait ), queueSEND_TO_FRONT )
-#define xQueueAltSendToBack( xQueue, pvItemToQueue, xTicksToWait ) xQueueAltGenericSend( ( xQueue ), ( pvItemToQueue ), ( xTicksToWait ), queueSEND_TO_BACK )
-#define xQueueAltReceive( xQueue, pvBuffer, xTicksToWait ) xQueueAltGenericReceive( ( xQueue ), ( pvBuffer ), ( xTicksToWait ), pdFALSE )
-#define xQueueAltPeek( xQueue, pvBuffer, xTicksToWait ) xQueueAltGenericReceive( ( xQueue ), ( pvBuffer ), ( xTicksToWait ), pdTRUE )
+BaseType_t xQueueAltGenericSend(QueueHandle_t xQueue, const void* const pvItemToQueue, TickType_t xTicksToWait, BaseType_t xCopyPosition);
+BaseType_t xQueueAltGenericReceive(QueueHandle_t xQueue, void* const pvBuffer, TickType_t xTicksToWait, BaseType_t xJustPeeking);
+#define xQueueAltSendToFront(xQueue, pvItemToQueue, xTicksToWait) xQueueAltGenericSend((xQueue), (pvItemToQueue), (xTicksToWait), queueSEND_TO_FRONT)
+#define xQueueAltSendToBack(xQueue, pvItemToQueue, xTicksToWait) xQueueAltGenericSend((xQueue), (pvItemToQueue), (xTicksToWait), queueSEND_TO_BACK)
+#define xQueueAltReceive(xQueue, pvBuffer, xTicksToWait) xQueueAltGenericReceive((xQueue), (pvBuffer), (xTicksToWait), pdFALSE)
+#define xQueueAltPeek(xQueue, pvBuffer, xTicksToWait) xQueueAltGenericReceive((xQueue), (pvBuffer), (xTicksToWait), pdTRUE)
 
 /*
  * The functions defined above are for passing data to and from tasks.  The
@@ -1462,26 +1456,26 @@ BaseType_t xQueueAltGenericReceive( QueueHandle_t xQueue, void * const pvBuffer,
  * should not be called directly from application code.  Instead use the macro
  * wrappers defined within croutine.h.
  */
-BaseType_t xQueueCRSendFromISR( QueueHandle_t xQueue, const void *pvItemToQueue, BaseType_t xCoRoutinePreviouslyWoken );
-BaseType_t xQueueCRReceiveFromISR( QueueHandle_t xQueue, void *pvBuffer, BaseType_t *pxTaskWoken );
-BaseType_t xQueueCRSend( QueueHandle_t xQueue, const void *pvItemToQueue, TickType_t xTicksToWait );
-BaseType_t xQueueCRReceive( QueueHandle_t xQueue, void *pvBuffer, TickType_t xTicksToWait );
+BaseType_t xQueueCRSendFromISR(QueueHandle_t xQueue, const void* pvItemToQueue, BaseType_t xCoRoutinePreviouslyWoken);
+BaseType_t xQueueCRReceiveFromISR(QueueHandle_t xQueue, void* pvBuffer, BaseType_t* pxTaskWoken);
+BaseType_t xQueueCRSend(QueueHandle_t xQueue, const void* pvItemToQueue, TickType_t xTicksToWait);
+BaseType_t xQueueCRReceive(QueueHandle_t xQueue, void* pvBuffer, TickType_t xTicksToWait);
 
 /*
  * For internal use only.  Use xSemaphoreCreateMutex(),
  * xSemaphoreCreateCounting() or xSemaphoreGetMutexHolder() instead of calling
  * these functions directly.
  */
-QueueHandle_t xQueueCreateMutex( const uint8_t ucQueueType ) PRIVILEGED_FUNCTION;
-QueueHandle_t xQueueCreateCountingSemaphore( const UBaseType_t uxMaxCount, const UBaseType_t uxInitialCount ) PRIVILEGED_FUNCTION;
-void* xQueueGetMutexHolder( QueueHandle_t xSemaphore ) PRIVILEGED_FUNCTION;
+QueueHandle_t xQueueCreateMutex(const uint8_t ucQueueType) PRIVILEGED_FUNCTION;
+QueueHandle_t xQueueCreateCountingSemaphore(const UBaseType_t uxMaxCount, const UBaseType_t uxInitialCount) PRIVILEGED_FUNCTION;
+void* xQueueGetMutexHolder(QueueHandle_t xSemaphore) PRIVILEGED_FUNCTION;
 
 /*
  * For internal use only.  Use xSemaphoreTakeMutexRecursive() or
  * xSemaphoreGiveMutexRecursive() instead of calling these functions directly.
  */
-BaseType_t xQueueTakeMutexRecursive( QueueHandle_t xMutex, TickType_t xTicksToWait ) PRIVILEGED_FUNCTION;
-BaseType_t xQueueGiveMutexRecursive( QueueHandle_t pxMutex ) PRIVILEGED_FUNCTION;
+BaseType_t xQueueTakeMutexRecursive(QueueHandle_t xMutex, TickType_t xTicksToWait) PRIVILEGED_FUNCTION;
+BaseType_t xQueueGiveMutexRecursive(QueueHandle_t pxMutex) PRIVILEGED_FUNCTION;
 
 /*
  * Reset a queue back to its original empty state.  pdPASS is returned if the
@@ -1489,7 +1483,7 @@ BaseType_t xQueueGiveMutexRecursive( QueueHandle_t pxMutex ) PRIVILEGED_FUNCTION
  * reset because there are tasks blocked on the queue waiting to either
  * receive from the queue or send to the queue.
  */
-#define xQueueReset( xQueue ) xQueueGenericReset( xQueue, pdFALSE )
+#define xQueueReset(xQueue) xQueueGenericReset(xQueue, pdFALSE)
 
 /*
  * The registry is provided as a means for kernel aware debuggers to
@@ -1514,7 +1508,7 @@ BaseType_t xQueueGiveMutexRecursive( QueueHandle_t pxMutex ) PRIVILEGED_FUNCTION
  * preferably in ROM/Flash), not on the stack.
  */
 #if configQUEUE_REGISTRY_SIZE > 0
-	void vQueueAddToRegistry( QueueHandle_t xQueue, const char *pcName ) PRIVILEGED_FUNCTION; /*lint !e971 Unqualified char types are allowed for strings and single characters only. */
+void vQueueAddToRegistry(QueueHandle_t xQueue, const char* pcName) PRIVILEGED_FUNCTION; /*lint !e971 Unqualified char types are allowed for strings and single characters only. */
 #endif
 
 /*
@@ -1528,14 +1522,14 @@ BaseType_t xQueueGiveMutexRecursive( QueueHandle_t pxMutex ) PRIVILEGED_FUNCTION
  * @param xQueue The handle of the queue being removed from the registry.
  */
 #if configQUEUE_REGISTRY_SIZE > 0
-	void vQueueUnregisterQueue( QueueHandle_t xQueue ) PRIVILEGED_FUNCTION;
+void vQueueUnregisterQueue(QueueHandle_t xQueue) PRIVILEGED_FUNCTION;
 #endif
 
 /*
  * Generic version of the queue creation function, which is in turn called by
  * any queue, semaphore or mutex creation function or macro.
  */
-QueueHandle_t xQueueGenericCreate( const UBaseType_t uxQueueLength, const UBaseType_t uxItemSize, const uint8_t ucQueueType ) PRIVILEGED_FUNCTION;
+QueueHandle_t xQueueGenericCreate(const UBaseType_t uxQueueLength, const UBaseType_t uxItemSize, const uint8_t ucQueueType) PRIVILEGED_FUNCTION;
 
 /*
  * Queue sets provide a mechanism to allow a task to block (pend) on a read
@@ -1585,7 +1579,7 @@ QueueHandle_t xQueueGenericCreate( const UBaseType_t uxQueueLength, const UBaseT
  * @return If the queue set is created successfully then a handle to the created
  * queue set is returned.  Otherwise NULL is returned.
  */
-QueueSetHandle_t xQueueCreateSet( const UBaseType_t uxEventQueueLength ) PRIVILEGED_FUNCTION;
+QueueSetHandle_t xQueueCreateSet(const UBaseType_t uxEventQueueLength) PRIVILEGED_FUNCTION;
 
 /*
  * Adds a queue or semaphore to a queue set that was previously created by a
@@ -1609,7 +1603,7 @@ QueueSetHandle_t xQueueCreateSet( const UBaseType_t uxEventQueueLength ) PRIVILE
  * queue set because it is already a member of a different queue set then pdFAIL
  * is returned.
  */
-BaseType_t xQueueAddToSet( QueueSetMemberHandle_t xQueueOrSemaphore, QueueSetHandle_t xQueueSet ) PRIVILEGED_FUNCTION;
+BaseType_t xQueueAddToSet(QueueSetMemberHandle_t xQueueOrSemaphore, QueueSetHandle_t xQueueSet) PRIVILEGED_FUNCTION;
 
 /*
  * Removes a queue or semaphore from a queue set.  A queue or semaphore can only
@@ -1628,7 +1622,7 @@ BaseType_t xQueueAddToSet( QueueSetMemberHandle_t xQueueOrSemaphore, QueueSetHan
  * then pdPASS is returned.  If the queue was not in the queue set, or the
  * queue (or semaphore) was not empty, then pdFAIL is returned.
  */
-BaseType_t xQueueRemoveFromSet( QueueSetMemberHandle_t xQueueOrSemaphore, QueueSetHandle_t xQueueSet ) PRIVILEGED_FUNCTION;
+BaseType_t xQueueRemoveFromSet(QueueSetMemberHandle_t xQueueOrSemaphore, QueueSetHandle_t xQueueSet) PRIVILEGED_FUNCTION;
 
 /*
  * xQueueSelectFromSet() selects from the members of a queue set a queue or
@@ -1664,24 +1658,22 @@ BaseType_t xQueueRemoveFromSet( QueueSetMemberHandle_t xQueueOrSemaphore, QueueS
  * in the queue set that is available, or NULL if no such queue or semaphore
  * exists before before the specified block time expires.
  */
-QueueSetMemberHandle_t xQueueSelectFromSet( QueueSetHandle_t xQueueSet, const TickType_t xTicksToWait ) PRIVILEGED_FUNCTION;
+QueueSetMemberHandle_t xQueueSelectFromSet(QueueSetHandle_t xQueueSet, const TickType_t xTicksToWait) PRIVILEGED_FUNCTION;
 
 /*
  * A version of xQueueSelectFromSet() that can be used from an ISR.
  */
-QueueSetMemberHandle_t xQueueSelectFromSetFromISR( QueueSetHandle_t xQueueSet ) PRIVILEGED_FUNCTION;
+QueueSetMemberHandle_t xQueueSelectFromSetFromISR(QueueSetHandle_t xQueueSet) PRIVILEGED_FUNCTION;
 
 /* Not public API functions. */
-void vQueueWaitForMessageRestricted( QueueHandle_t xQueue, TickType_t xTicksToWait ) PRIVILEGED_FUNCTION;
-BaseType_t xQueueGenericReset( QueueHandle_t xQueue, BaseType_t xNewQueue ) PRIVILEGED_FUNCTION;
-void vQueueSetQueueNumber( QueueHandle_t xQueue, UBaseType_t uxQueueNumber ) PRIVILEGED_FUNCTION;
-UBaseType_t uxQueueGetQueueNumber( QueueHandle_t xQueue ) PRIVILEGED_FUNCTION;
-uint8_t ucQueueGetQueueType( QueueHandle_t xQueue ) PRIVILEGED_FUNCTION;
-
+void vQueueWaitForMessageRestricted(QueueHandle_t xQueue, TickType_t xTicksToWait) PRIVILEGED_FUNCTION;
+BaseType_t xQueueGenericReset(QueueHandle_t xQueue, BaseType_t xNewQueue) PRIVILEGED_FUNCTION;
+void vQueueSetQueueNumber(QueueHandle_t xQueue, UBaseType_t uxQueueNumber) PRIVILEGED_FUNCTION;
+UBaseType_t uxQueueGetQueueNumber(QueueHandle_t xQueue) PRIVILEGED_FUNCTION;
+uint8_t ucQueueGetQueueType(QueueHandle_t xQueue) PRIVILEGED_FUNCTION;
 
 #ifdef __cplusplus
 }
 #endif
 
 #endif /* QUEUE_H */
-

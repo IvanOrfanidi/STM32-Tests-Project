@@ -17,26 +17,24 @@ This function is called in f_mount function to create a new
 /  returned, the f_mount function fails with FR_INT_ERR.
 */
 
-BOOL ff_cre_syncobj (	/* TRUE:Function succeeded, FALSE:Could not create due to any error */
-	BYTE vol,			/* Corresponding logical drive being processed */
-	_SYNC_t *sobj		/* Pointer to return the created sync object */
+BOOL ff_cre_syncobj(/* TRUE:Function succeeded, FALSE:Could not create due to any error */
+    BYTE vol,       /* Corresponding logical drive being processed */
+    _SYNC_t* sobj   /* Pointer to return the created sync object */
 )
 {
-	BOOL ret;
+    BOOL ret;
 
-	*sobj = CreateMutex(NULL, FALSE, NULL);					// Win32
-	ret = (*sobj != INVALID_HANDLE_VALUE) ? TRUE : FALSE;	//
+    *sobj = CreateMutex(NULL, FALSE, NULL);                  // Win32
+    ret = (*sobj != INVALID_HANDLE_VALUE) ? TRUE : FALSE;    //
 
-//	*sobj = VolumeSemId[vol];	// uITRON (give a static created sync object)
-//	ret = TRUE;					// The initial value of the semaphore must be 1.
+    //	*sobj = VolumeSemId[vol];	// uITRON (give a static created sync object)
+    //	ret = TRUE;					// The initial value of the semaphore must be 1.
 
-//	*sobj = OSMutexCreate(0, &err);				// uC/OS-II
-//	ret = (err == OS_NO_ERR) ? TRUE : FALSE;	//
+    //	*sobj = OSMutexCreate(0, &err);				// uC/OS-II
+    //	ret = (err == OS_NO_ERR) ? TRUE : FALSE;	//
 
-	return ret;
+    return ret;
 }
-
-
 
 /*------------------------------------------------------------------------*/
 /* Delete a Synchronization Object                                        */
@@ -46,23 +44,21 @@ BOOL ff_cre_syncobj (	/* TRUE:Function succeeded, FALSE:Could not create due to 
 /  returned, the f_mount function fails with FR_INT_ERR.
 */
 
-BOOL ff_del_syncobj (	/* TRUE:Function succeeded, FALSE:Could not delete due to any error */
-	_SYNC_t sobj		/* Sync object tied to the logical drive to be deleted */
+BOOL ff_del_syncobj(/* TRUE:Function succeeded, FALSE:Could not delete due to any error */
+    _SYNC_t sobj    /* Sync object tied to the logical drive to be deleted */
 )
 {
-	BOOL ret;
+    BOOL ret;
 
-	ret = CloseHandle(sobj);	// Win32
+    ret = CloseHandle(sobj);    // Win32
 
-//	ret = TRUE;					// uITRON (nothing to do)
+    //	ret = TRUE;					// uITRON (nothing to do)
 
-//	OSMutexDel(sobj, OS_DEL_ALWAYS, &err);		// uC/OS-II
-//	ret = (err == OS_NO_ERR) ? TRUE : FALSE;	//
+    //	OSMutexDel(sobj, OS_DEL_ALWAYS, &err);		// uC/OS-II
+    //	ret = (err == OS_NO_ERR) ? TRUE : FALSE;	//
 
-	return ret;
+    return ret;
 }
-
-
 
 /*------------------------------------------------------------------------*/
 /* Request Grant to Access the Volume                                     */
@@ -71,23 +67,21 @@ BOOL ff_del_syncobj (	/* TRUE:Function succeeded, FALSE:Could not delete due to 
 /  When a FALSE is returned, the file function fails with FR_TIMEOUT.
 */
 
-BOOL ff_req_grant (	/* TRUE:Got a grant to access the volume, FALSE:Could not get a grant */
-	_SYNC_t sobj	/* Sync object to wait */
+BOOL ff_req_grant(/* TRUE:Got a grant to access the volume, FALSE:Could not get a grant */
+    _SYNC_t sobj  /* Sync object to wait */
 )
 {
-	BOOL ret;
+    BOOL ret;
 
-	ret = (WaitForSingleObject(sobj, _TIMEOUT) == WAIT_OBJECT_0) ? TRUE : FALSE;	// Win32
+    ret = (WaitForSingleObject(sobj, _TIMEOUT) == WAIT_OBJECT_0) ? TRUE : FALSE;    // Win32
 
-//	ret = (wai_sem(sobj) == E_OK) ? TRUE : FALSE;	// uITRON
+    //	ret = (wai_sem(sobj) == E_OK) ? TRUE : FALSE;	// uITRON
 
-//	OSMutexPend(sobj, _TIMEOUT, &err));				// uC/OS-II
-//	ret = (err == OS_NO_ERR) ? TRUE : FALSE;		//
+    //	OSMutexPend(sobj, _TIMEOUT, &err));				// uC/OS-II
+    //	ret = (err == OS_NO_ERR) ? TRUE : FALSE;		//
 
-	return ret;
+    return ret;
 }
-
-
 
 /*------------------------------------------------------------------------*/
 /* Release Grant to Access the Volume                                     */
@@ -95,17 +89,16 @@ BOOL ff_req_grant (	/* TRUE:Got a grant to access the volume, FALSE:Could not ge
 /* This function is called on leaving file functions to unlock the volume.
 */
 
-void ff_rel_grant (
-	_SYNC_t sobj	/* Sync object to be signaled */
+void ff_rel_grant(
+    _SYNC_t sobj /* Sync object to be signaled */
 )
 {
-	ReleaseMutex(sobj);	// Win32
+    ReleaseMutex(sobj);    // Win32
 
-//	sig_sem(sobj);		// uITRON
+    //	sig_sem(sobj);		// uITRON
 
-//	OSMutexPost(sobj);	// uC/OS-II
+    //	OSMutexPost(sobj);	// uC/OS-II
 }
-
 
 #else
 

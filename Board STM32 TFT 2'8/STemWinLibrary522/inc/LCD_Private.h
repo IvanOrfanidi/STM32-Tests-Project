@@ -62,7 +62,7 @@ Purpose     : To be used only by the display drivers
 *
 *       API functions
 */
-extern const struct tLCDDEV_APIList_struct * /* const */ LCD_aAPI[GUI_NUM_LAYERS];
+extern const struct tLCDDEV_APIList_struct* /* const */ LCD_aAPI[GUI_NUM_LAYERS];
 
 /*********************************************************************
 *
@@ -72,11 +72,11 @@ extern const struct tLCDDEV_APIList_struct * /* const */ LCD_aAPI[GUI_NUM_LAYERS
 #define LCD_TYPE_COMTRANS U16
 
 #ifdef LCD_LUT_COM
-  extern LCD_TYPE_COMTRANS LCD__aLine2Com0[LCD_YSIZE];
+extern LCD_TYPE_COMTRANS LCD__aLine2Com0[LCD_YSIZE];
 #endif
 
 #ifdef LCD_LUT_SEG
-  extern LCD_TYPE_COMTRANS LCD__aCol2Seg0[LCD_XSIZE];
+extern LCD_TYPE_COMTRANS LCD__aCol2Seg0[LCD_XSIZE];
 #endif
 
 /*********************************************************************
@@ -84,21 +84,21 @@ extern const struct tLCDDEV_APIList_struct * /* const */ LCD_aAPI[GUI_NUM_LAYERS
 *       Support for multiple display controllers
 */
 #define DECLARE_PROTOTYPES(DISTX) \
-  void     LCD_##DISTX##_SetPixelIndex(int x, int y, int PixelIndex); \
-  unsigned LCD_##DISTX##_GetPixelIndex(int x, int y); \
-  void     LCD_##DISTX##_XorPixel     (int x, int y); \
-  void     LCD_##DISTX##_DrawHLine    (int x0, int y,  int x1); \
-  void     LCD_##DISTX##_DrawVLine    (int x, int y0,  int y1); \
-  void     LCD_##DISTX##_FillRect     (int x0, int y0, int x1, int y1); \
-  void     LCD_##DISTX##_DrawBitmap   (int x0, int y0, int xsize, int ysize, int BitsPerPixel, int BytesPerLine,  const U8 GUI_UNI_PTR * pData, int Diff, const LCD_PIXELINDEX * pTrans); \
-  void     LCD_##DISTX##_SetOrg       (int x, int y); \
-  void     LCD_##DISTX##_On           (void); \
-  void     LCD_##DISTX##_Off          (void); \
-  int      LCD_##DISTX##_Init         (void); \
-  void     LCD_##DISTX##_SetLUTEntry  (U8 Pos, LCD_COLOR Color); \
-  void   * LCD_##DISTX##_GetDevFunc   (int Index); \
-  void     LCD_##DISTX##_ReInit       (void)
-    
+    void LCD_##DISTX##_SetPixelIndex(int x, int y, int PixelIndex); \
+    unsigned LCD_##DISTX##_GetPixelIndex(int x, int y); \
+    void LCD_##DISTX##_XorPixel(int x, int y); \
+    void LCD_##DISTX##_DrawHLine(int x0, int y, int x1); \
+    void LCD_##DISTX##_DrawVLine(int x, int y0, int y1); \
+    void LCD_##DISTX##_FillRect(int x0, int y0, int x1, int y1); \
+    void LCD_##DISTX##_DrawBitmap(int x0, int y0, int xsize, int ysize, int BitsPerPixel, int BytesPerLine, const U8 GUI_UNI_PTR* pData, int Diff, const LCD_PIXELINDEX* pTrans); \
+    void LCD_##DISTX##_SetOrg(int x, int y); \
+    void LCD_##DISTX##_On(void); \
+    void LCD_##DISTX##_Off(void); \
+    int LCD_##DISTX##_Init(void); \
+    void LCD_##DISTX##_SetLUTEntry(U8 Pos, LCD_COLOR Color); \
+    void* LCD_##DISTX##_GetDevFunc(int Index); \
+    void LCD_##DISTX##_ReInit(void)
+
 DECLARE_PROTOTYPES(DIST0);
 DECLARE_PROTOTYPES(DIST1);
 DECLARE_PROTOTYPES(DIST2);

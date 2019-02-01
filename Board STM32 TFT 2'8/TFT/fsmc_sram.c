@@ -17,13 +17,13 @@
   * CODING INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
   *
   * <h2><center>&copy; COPYRIGHT 2009 STMicroelectronics</center></h2>
-  */ 
+  */
 
 /* Includes ------------------------------------------------------------------*/
 #include "fsmc_sram.h"
 #include "stm32f10x_fsmc.h"
 
-#pragma optimize=none
+#pragma optimize = none
 /**
   * @brief  Configures the FSMC and GPIOs to interface with the SRAM memory.
   *         This function must be called before any write/read operation
@@ -33,48 +33,45 @@
   */
 void FSMC_LCD_Init(void)
 {
-  
-   /* Enable the FSMC Clock */
-  RCC_AHBPeriphClockCmd(RCC_AHBPeriph_FSMC, ENABLE);
-  
-  FSMC_NORSRAMInitTypeDef  FSMC_NORSRAMInitStructure;
-  FSMC_NORSRAMTimingInitTypeDef FSMC_NORSRAMTimingInitStructure;
+    /* Enable the FSMC Clock */
+    RCC_AHBPeriphClockCmd(RCC_AHBPeriph_FSMC, ENABLE);
 
-  FSMC_NORSRAMInitStructure.FSMC_Bank = FSMC_Bank1_NORSRAM1;
-  FSMC_NORSRAMInitStructure.FSMC_DataAddressMux = FSMC_DataAddressMux_Disable;
-  FSMC_NORSRAMInitStructure.FSMC_MemoryType = FSMC_MemoryType_SRAM;
-  FSMC_NORSRAMInitStructure.FSMC_MemoryDataWidth = FSMC_MemoryDataWidth_16b;
-  FSMC_NORSRAMInitStructure.FSMC_BurstAccessMode = FSMC_BurstAccessMode_Disable;
-  FSMC_NORSRAMInitStructure.FSMC_WaitSignalPolarity = FSMC_WaitSignalPolarity_Low;
-  FSMC_NORSRAMInitStructure.FSMC_WrapMode = FSMC_WrapMode_Disable;
-  FSMC_NORSRAMInitStructure.FSMC_WaitSignalActive = FSMC_WaitSignalActive_BeforeWaitState;
-  FSMC_NORSRAMInitStructure.FSMC_WriteOperation = FSMC_WriteOperation_Enable;
-  FSMC_NORSRAMInitStructure.FSMC_WaitSignal = FSMC_WaitSignal_Disable;
-  FSMC_NORSRAMInitStructure.FSMC_AsynchronousWait = FSMC_AsynchronousWait_Disable;
-  FSMC_NORSRAMInitStructure.FSMC_ExtendedMode = FSMC_ExtendedMode_Disable;
-  FSMC_NORSRAMInitStructure.FSMC_WriteBurst = FSMC_WriteBurst_Disable;
-  FSMC_NORSRAMInitStructure.FSMC_ReadWriteTimingStruct = &FSMC_NORSRAMTimingInitStructure;
-  FSMC_NORSRAMInit(&FSMC_NORSRAMInitStructure); 
- 
-  FSMC_NORSRAMTimingInitStructure.FSMC_AddressSetupTime = 10;  
-  FSMC_NORSRAMTimingInitStructure.FSMC_AddressHoldTime = 3;        
-  FSMC_NORSRAMTimingInitStructure.FSMC_DataSetupTime = 3;       
-  FSMC_NORSRAMTimingInitStructure.FSMC_BusTurnAroundDuration = 0x00;
-  FSMC_NORSRAMTimingInitStructure.FSMC_CLKDivision = 0x00;
-  FSMC_NORSRAMTimingInitStructure.FSMC_DataLatency = 0x00;
-  FSMC_NORSRAMTimingInitStructure.FSMC_AccessMode = FSMC_AccessMode_A;  /* FSMC mode */
-  FSMC_NORSRAMInitStructure.FSMC_WriteTimingStruct = &FSMC_NORSRAMTimingInitStructure;    
+    FSMC_NORSRAMInitTypeDef FSMC_NORSRAMInitStructure;
+    FSMC_NORSRAMTimingInitTypeDef FSMC_NORSRAMTimingInitStructure;
 
-  FSMC_NORSRAMInit(&FSMC_NORSRAMInitStructure); 
+    FSMC_NORSRAMInitStructure.FSMC_Bank = FSMC_Bank1_NORSRAM1;
+    FSMC_NORSRAMInitStructure.FSMC_DataAddressMux = FSMC_DataAddressMux_Disable;
+    FSMC_NORSRAMInitStructure.FSMC_MemoryType = FSMC_MemoryType_SRAM;
+    FSMC_NORSRAMInitStructure.FSMC_MemoryDataWidth = FSMC_MemoryDataWidth_16b;
+    FSMC_NORSRAMInitStructure.FSMC_BurstAccessMode = FSMC_BurstAccessMode_Disable;
+    FSMC_NORSRAMInitStructure.FSMC_WaitSignalPolarity = FSMC_WaitSignalPolarity_Low;
+    FSMC_NORSRAMInitStructure.FSMC_WrapMode = FSMC_WrapMode_Disable;
+    FSMC_NORSRAMInitStructure.FSMC_WaitSignalActive = FSMC_WaitSignalActive_BeforeWaitState;
+    FSMC_NORSRAMInitStructure.FSMC_WriteOperation = FSMC_WriteOperation_Enable;
+    FSMC_NORSRAMInitStructure.FSMC_WaitSignal = FSMC_WaitSignal_Disable;
+    FSMC_NORSRAMInitStructure.FSMC_AsynchronousWait = FSMC_AsynchronousWait_Disable;
+    FSMC_NORSRAMInitStructure.FSMC_ExtendedMode = FSMC_ExtendedMode_Disable;
+    FSMC_NORSRAMInitStructure.FSMC_WriteBurst = FSMC_WriteBurst_Disable;
+    FSMC_NORSRAMInitStructure.FSMC_ReadWriteTimingStruct = &FSMC_NORSRAMTimingInitStructure;
+    FSMC_NORSRAMInit(&FSMC_NORSRAMInitStructure);
 
+    FSMC_NORSRAMTimingInitStructure.FSMC_AddressSetupTime = 10;
+    FSMC_NORSRAMTimingInitStructure.FSMC_AddressHoldTime = 3;
+    FSMC_NORSRAMTimingInitStructure.FSMC_DataSetupTime = 3;
+    FSMC_NORSRAMTimingInitStructure.FSMC_BusTurnAroundDuration = 0x00;
+    FSMC_NORSRAMTimingInitStructure.FSMC_CLKDivision = 0x00;
+    FSMC_NORSRAMTimingInitStructure.FSMC_DataLatency = 0x00;
+    FSMC_NORSRAMTimingInitStructure.FSMC_AccessMode = FSMC_AccessMode_A; /* FSMC mode */
+    FSMC_NORSRAMInitStructure.FSMC_WriteTimingStruct = &FSMC_NORSRAMTimingInitStructure;
 
-  
-  /* Enable FSMC Bank1_SRAM Bank */
-  FSMC_NORSRAMCmd(FSMC_Bank1_NORSRAM1, ENABLE);  
-  
-  //FSMC_NORSRAMCmd(FSMC_Bank1_NORSRAM2, ENABLE); 
-  //FSMC_NORSRAMCmd(FSMC_Bank1_NORSRAM3, ENABLE);  
-  //FSMC_NORSRAMCmd(FSMC_Bank1_NORSRAM4, ENABLE);  
+    FSMC_NORSRAMInit(&FSMC_NORSRAMInitStructure);
+
+    /* Enable FSMC Bank1_SRAM Bank */
+    FSMC_NORSRAMCmd(FSMC_Bank1_NORSRAM1, ENABLE);
+
+    //FSMC_NORSRAMCmd(FSMC_Bank1_NORSRAM2, ENABLE);
+    //FSMC_NORSRAMCmd(FSMC_Bank1_NORSRAM3, ENABLE);
+    //FSMC_NORSRAMCmd(FSMC_Bank1_NORSRAM4, ENABLE);
 }
 
 /**
@@ -85,6 +82,5 @@ void FSMC_LCD_Init(void)
   * @param NumHalfwordToWrite : number of half-words to write. 
   * @retval : None
   */
-
 
 /******************* (C) COPYRIGHT 2009 STMicroelectronics *****END OF FILE****/

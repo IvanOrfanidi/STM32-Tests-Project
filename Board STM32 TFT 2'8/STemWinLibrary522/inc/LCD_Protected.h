@@ -57,7 +57,7 @@ Purpose     : LCD level - To be used only internally by the GUI
 #include "LCD.h"
 
 #if defined(__cplusplus)
-extern "C" {     /* Make sure we have C-declarations in C++ programs */
+extern "C" { /* Make sure we have C-declarations in C++ programs */
 #endif
 
 /*********************************************************************
@@ -65,16 +65,16 @@ extern "C" {     /* Make sure we have C-declarations in C++ programs */
 *       Data types
 */
 typedef struct {
-  LCD_COLOR * paColor;
-  I16         NumEntries;
+    LCD_COLOR* paColor;
+    I16 NumEntries;
 } LCD_LUT_INFO;
 
 typedef struct {
-  tLCDDEV_DrawPixel  * pfDrawPixel;
-  tLCDDEV_DrawHLine  * pfDrawHLine;
-  tLCDDEV_DrawVLine  * pfDrawVLine;
-  tLCDDEV_FillRect   * pfFillRect;
-  tLCDDEV_DrawBitmap * pfDrawBitmap;
+    tLCDDEV_DrawPixel* pfDrawPixel;
+    tLCDDEV_DrawHLine* pfDrawHLine;
+    tLCDDEV_DrawVLine* pfDrawVLine;
+    tLCDDEV_FillRect* pfFillRect;
+    tLCDDEV_DrawBitmap* pfDrawBitmap;
 } LCD_API_LIST;
 
 /*********************************************************************
@@ -82,33 +82,20 @@ typedef struct {
 *       External data
 */
 extern GUI_CONST_STORAGE U8 LCD_aMirror[256];
-extern LCD_PIXELINDEX * LCD__aConvTable;
+extern LCD_PIXELINDEX* LCD__aConvTable;
 
 /*********************************************************************
 *
 *       Misc functions
 */
-void LCD_UpdateColorIndices   (void);
-int  LCD_PassingBitmapsAllowed(void);
-void LCD_EnableCursor         (int OnOff);
-void LCD_SelectLCD            (void);
+void LCD_UpdateColorIndices(void);
+int LCD_PassingBitmapsAllowed(void);
+void LCD_EnableCursor(int OnOff);
+void LCD_SelectLCD(void);
 
-void LCD_DrawBitmap(int x0,    int y0,
-                    int xsize, int ysize,
-                    int xMul,  int yMul,
-                    int BitsPerPixel,
-                    int BytesPerLine,
-                    const U8 GUI_UNI_PTR * pPixel,
-                    const LCD_PIXELINDEX * pTrans);
+void LCD_DrawBitmap(int x0, int y0, int xsize, int ysize, int xMul, int yMul, int BitsPerPixel, int BytesPerLine, const U8 GUI_UNI_PTR* pPixel, const LCD_PIXELINDEX* pTrans);
 
-void LCD__DrawBitmap_1bpp(int x0,    int y0,
-                          int xsize, int ysize,
-                          int xMul,  int yMul,
-                          int BitsPerPixel,
-                          int BytesPerLine,
-                          const U8 GUI_UNI_PTR * pPixel,
-                          const LCD_PIXELINDEX * pTrans,
-                          int OffData);
+void LCD__DrawBitmap_1bpp(int x0, int y0, int xsize, int ysize, int xMul, int yMul, int BitsPerPixel, int BytesPerLine, const U8 GUI_UNI_PTR* pPixel, const LCD_PIXELINDEX* pTrans, int OffData);
 
 /*********************************************************************
 *
@@ -138,4 +125,3 @@ tLCDDEV_Color2Index LCD_Color2Index_8666;
 #endif /* LCD_PROTECTED_H */
 
 /*************************** End of file ****************************/
-

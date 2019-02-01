@@ -55,7 +55,7 @@ Purpose     : Interface definition for GUIDRV_DCache driver
 #define GUIDRV_DCACHE_H
 
 #if defined(__cplusplus)
-extern "C" {     /* Make sure we have C-declarations in C++ programs */
+extern "C" { /* Make sure we have C-declarations in C++ programs */
 #endif
 
 /*********************************************************************
@@ -72,11 +72,11 @@ extern const GUI_DEVICE_API GUIDRV_DCache_API;
 //
 #if defined(WIN32) && !defined(LCD_SIMCONTROLLER)
 
-  #define GUIDRV_DCACHE &GUIDRV_Win_API
+#define GUIDRV_DCACHE &GUIDRV_Win_API
 
 #else
 
-  #define GUIDRV_DCACHE &GUIDRV_DCache_API
+#define GUIDRV_DCACHE &GUIDRV_DCache_API
 
 #endif
 
@@ -86,13 +86,13 @@ extern const GUI_DEVICE_API GUIDRV_DCache_API;
 */
 #if defined(WIN32) && !defined(LCD_SIMCONTROLLER)
 
-  #define GUIDRV_DCache_AddDriver(pDevice, pDriver)
-  #define GUIDRV_DCache_SetMode1bpp(pDevice)
+#define GUIDRV_DCache_AddDriver(pDevice, pDriver)
+#define GUIDRV_DCache_SetMode1bpp(pDevice)
 
 #else
 
-  void GUIDRV_DCache_AddDriver  (GUI_DEVICE * pDevice, GUI_DEVICE * pDriver);
-  void GUIDRV_DCache_SetMode1bpp(GUI_DEVICE * pDevice);
+void GUIDRV_DCache_AddDriver(GUI_DEVICE* pDevice, GUI_DEVICE* pDriver);
+void GUIDRV_DCache_SetMode1bpp(GUI_DEVICE* pDevice);
 
 #endif
 

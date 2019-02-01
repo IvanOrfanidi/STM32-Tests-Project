@@ -59,7 +59,7 @@ Purpose     : Hook handling routines
 #if GUI_WINSUPPORT
 
 #if defined(__cplusplus)
-extern "C" {     /* Make sure we have C-declarations in C++ programs */
+extern "C" { /* Make sure we have C-declarations in C++ programs */
 #endif
 
 /*********************************************************************
@@ -72,8 +72,8 @@ extern "C" {     /* Make sure we have C-declarations in C++ programs */
 typedef int GUI_HOOK_FUNC(WM_MESSAGE* pMsg);
 
 typedef struct GUI_HOOK {
-  struct GUI_HOOK* pNext;
-  GUI_HOOK_FUNC*   pHookFunc;
+    struct GUI_HOOK* pNext;
+    GUI_HOOK_FUNC* pHookFunc;
 } GUI_HOOK;
 
 /*********************************************************************
@@ -83,14 +83,14 @@ typedef struct GUI_HOOK {
 **********************************************************************
 */
 
-void GUI_HOOK_Add   (GUI_HOOK** ppFirstHook, GUI_HOOK* pNewHook, GUI_HOOK_FUNC* pHookFunc);
+void GUI_HOOK_Add(GUI_HOOK** ppFirstHook, GUI_HOOK* pNewHook, GUI_HOOK_FUNC* pHookFunc);
 void GUI_HOOK_Remove(GUI_HOOK** ppFirstHook, GUI_HOOK* pHook);
 
 #if defined(__cplusplus)
-  }
+}
 #endif
 
-#endif   /* GUI_WINSUPPORT */
-#endif   /* GUI_HOOK_H */
+#endif /* GUI_WINSUPPORT */
+#endif /* GUI_HOOK_H */
 
 /*************************** End of file ****************************/

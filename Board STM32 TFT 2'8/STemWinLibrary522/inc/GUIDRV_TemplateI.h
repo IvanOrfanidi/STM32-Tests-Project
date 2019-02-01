@@ -55,7 +55,7 @@ Purpose     : Interface definition for GUIDRV_TemplateI driver
 #define GUIDRV_TEMPLATE_I_H
 
 #if defined(__cplusplus)
-extern "C" {     /* Make sure we have C-declarations in C++ programs */
+extern "C" { /* Make sure we have C-declarations in C++ programs */
 #endif
 
 /*********************************************************************
@@ -63,12 +63,12 @@ extern "C" {     /* Make sure we have C-declarations in C++ programs */
 *       Configuration structure
 */
 typedef struct {
-  //
-  // Driver specific configuration items
-  //
-  int FirstSEG;
-  int FirstCOM;
-  int UseCache;
+    //
+    // Driver specific configuration items
+    //
+    int FirstSEG;
+    int FirstCOM;
+    int UseCache;
 } CONFIG_TEMPLATE_I;
 
 /*********************************************************************
@@ -92,25 +92,25 @@ extern const GUI_DEVICE_API GUIDRV_TEMPLATE_I_OSXY_16_API;
 //
 #if defined(WIN32) && !defined(LCD_SIMCONTROLLER)
 
-  #define GUIDRV_TEMPLATE_I_16       &GUIDRV_Win_API
-  #define GUIDRV_TEMPLATE_I_OY_16    &GUIDRV_Win_API
-  #define GUIDRV_TEMPLATE_I_OX_16    &GUIDRV_Win_API
-  #define GUIDRV_TEMPLATE_I_OXY_16   &GUIDRV_Win_API
-  #define GUIDRV_TEMPLATE_I_OS_16    &GUIDRV_Win_API
-  #define GUIDRV_TEMPLATE_I_OSY_16   &GUIDRV_Win_API
-  #define GUIDRV_TEMPLATE_I_OSX_16   &GUIDRV_Win_API
-  #define GUIDRV_TEMPLATE_I_OSXY_16  &GUIDRV_Win_API
+#define GUIDRV_TEMPLATE_I_16 &GUIDRV_Win_API
+#define GUIDRV_TEMPLATE_I_OY_16 &GUIDRV_Win_API
+#define GUIDRV_TEMPLATE_I_OX_16 &GUIDRV_Win_API
+#define GUIDRV_TEMPLATE_I_OXY_16 &GUIDRV_Win_API
+#define GUIDRV_TEMPLATE_I_OS_16 &GUIDRV_Win_API
+#define GUIDRV_TEMPLATE_I_OSY_16 &GUIDRV_Win_API
+#define GUIDRV_TEMPLATE_I_OSX_16 &GUIDRV_Win_API
+#define GUIDRV_TEMPLATE_I_OSXY_16 &GUIDRV_Win_API
 
 #else
 
-  #define GUIDRV_TEMPLATE_I_16       &GUIDRV_TEMPLATE_I_16_API
-  #define GUIDRV_TEMPLATE_I_OY_16    &GUIDRV_TEMPLATE_I_OY_16_API
-  #define GUIDRV_TEMPLATE_I_OX_16    &GUIDRV_TEMPLATE_I_OX_16_API
-  #define GUIDRV_TEMPLATE_I_OXY_16   &GUIDRV_TEMPLATE_I_OXY_16_API
-  #define GUIDRV_TEMPLATE_I_OS_16    &GUIDRV_TEMPLATE_I_OS_16_API
-  #define GUIDRV_TEMPLATE_I_OSY_16   &GUIDRV_TEMPLATE_I_OSY_16_API
-  #define GUIDRV_TEMPLATE_I_OSX_16   &GUIDRV_TEMPLATE_I_OSX_16_API
-  #define GUIDRV_TEMPLATE_I_OSXY_16  &GUIDRV_TEMPLATE_I_OSXY_16_API
+#define GUIDRV_TEMPLATE_I_16 &GUIDRV_TEMPLATE_I_16_API
+#define GUIDRV_TEMPLATE_I_OY_16 &GUIDRV_TEMPLATE_I_OY_16_API
+#define GUIDRV_TEMPLATE_I_OX_16 &GUIDRV_TEMPLATE_I_OX_16_API
+#define GUIDRV_TEMPLATE_I_OXY_16 &GUIDRV_TEMPLATE_I_OXY_16_API
+#define GUIDRV_TEMPLATE_I_OS_16 &GUIDRV_TEMPLATE_I_OS_16_API
+#define GUIDRV_TEMPLATE_I_OSY_16 &GUIDRV_TEMPLATE_I_OSY_16_API
+#define GUIDRV_TEMPLATE_I_OSX_16 &GUIDRV_TEMPLATE_I_OSX_16_API
+#define GUIDRV_TEMPLATE_I_OSXY_16 &GUIDRV_TEMPLATE_I_OSXY_16_API
 
 #endif
 
@@ -118,8 +118,8 @@ extern const GUI_DEVICE_API GUIDRV_TEMPLATE_I_OSXY_16_API;
 *
 *       Public routines
 */
-void GUIDRV_TemplateI_Config    (GUI_DEVICE * pDevice, CONFIG_TEMPLATE_I * pConfig);
-void GUIDRV_TemplateI_SetBus_XXX(GUI_DEVICE * pDevice, GUI_PORT_API * pHW_API);
+void GUIDRV_TemplateI_Config(GUI_DEVICE* pDevice, CONFIG_TEMPLATE_I* pConfig);
+void GUIDRV_TemplateI_SetBus_XXX(GUI_DEVICE* pDevice, GUI_PORT_API* pHW_API);
 
 #if defined(__cplusplus)
 }

@@ -20,9 +20,7 @@
 #include "board.hpp"
 #include "stm32f10x_conf.h"
 
-
 uint32_t Board::SysCount = 0;
-
 
 /*
  * @brief  Set NVIC Priority Group.
@@ -30,7 +28,7 @@ uint32_t Board::SysCount = 0;
  */
 void Board::SetNvicPriorityGroup(uint32_t priority_group)
 {
-   /* clang-format off */
+    /* clang-format off */
     /* The table below gives the allowed values of the pre-emption priority and subpriority according
      to the Priority Grouping configuration performed by NVIC_PriorityGroupConfig function
       ============================================================================================================================
@@ -52,10 +50,9 @@ void Board::SetNvicPriorityGroup(uint32_t priority_group)
                              |                                   |                             |   0 bits for subpriority                       
       ============================================================================================================================
     */
-   /* clang-format on */
-   NVIC_PriorityGroupConfig(priority_group);
+    /* clang-format on */
+    NVIC_PriorityGroupConfig(priority_group);
 }
-
 
 /**
  * @brief  Update and geting System Clock Core.
@@ -63,10 +60,9 @@ void Board::SetNvicPriorityGroup(uint32_t priority_group)
  */
 uint32_t Board::ClockUpdate()
 {
-   SystemCoreClockUpdate();
-   return SystemCoreClock;
+    SystemCoreClockUpdate();
+    return SystemCoreClock;
 }
-
 
 /**
  * @brief  This method configures System Tick
@@ -78,13 +74,11 @@ uint32_t Board::ClockUpdate()
  */
 void Board::InitSysTick(uint32_t ticks_us)
 {
-   while (SysTick_Config(SystemCoreClock / ticks_us))
-   {
-      // Wait running System Tick
-   }
-   __enable_irq();
+    while(SysTick_Config(SystemCoreClock / ticks_us)) {
+        // Wait running System Tick
+    }
+    __enable_irq();
 }
-
 
 /**
  * @brief  Initialisation Led.
@@ -92,18 +86,17 @@ void Board::InitSysTick(uint32_t ticks_us)
  */
 void Board::InitLed()
 {
-   // Init Led Light
-   RCC_APB2PeriphClockCmd(PORT_LED_CLK, ENABLE);
+    // Init Led Light
+    RCC_APB2PeriphClockCmd(PORT_LED_CLK, ENABLE);
 
-   // Init Led Light Pin
-   GPIO_InitTypeDef GPIO_InitStructure;
-   GPIO_InitStructure.GPIO_Pin = LED_PIN;
-   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;
-   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
-   GPIO_Init(PORT_LED, &GPIO_InitStructure);
-   LedOff();   // Led in OFF
+    // Init Led Light Pin
+    GPIO_InitTypeDef GPIO_InitStructure;
+    GPIO_InitStructure.GPIO_Pin = LED_PIN;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
+    GPIO_Init(PORT_LED, &GPIO_InitStructure);
+    LedOff();    // Led in OFF
 }
-
 
 /**
  * @brief  Enable Led.
@@ -111,9 +104,8 @@ void Board::InitLed()
  */
 void Board::LedOn()
 {
-   GPIO_ResetBits(PORT_LED, LED_PIN);
+    GPIO_ResetBits(PORT_LED, LED_PIN);
 }
-
 
 /**
  * @brief  Disable Led.
@@ -121,9 +113,8 @@ void Board::LedOn()
  */
 void Board::LedOff()
 {
-   GPIO_SetBits(PORT_LED, LED_PIN);
+    GPIO_SetBits(PORT_LED, LED_PIN);
 }
-
 
 /**
  * @brief  Initialisation Backup.
@@ -131,17 +122,16 @@ void Board::LedOff()
  */
 void Board::InitBKP()
 {
-   /* Enable PWR and BKP clock */
-   RCC_APB1PeriphClockCmd(RCC_APB1Periph_PWR, ENABLE);
-   RCC_APB1PeriphClockCmd(RCC_APB1Periph_BKP, ENABLE);
+    /* Enable PWR and BKP clock */
+    RCC_APB1PeriphClockCmd(RCC_APB1Periph_PWR, ENABLE);
+    RCC_APB1PeriphClockCmd(RCC_APB1Periph_BKP, ENABLE);
 
-   /* Enable write access to Backup domain */
-   PWR_BackupAccessCmd(ENABLE);
+    /* Enable write access to Backup domain */
+    PWR_BackupAccessCmd(ENABLE);
 
-   /* Clear Tamper pin Event(TE) pending flag */
-   BKP_ClearFlag();
+    /* Clear Tamper pin Event(TE) pending flag */
+    BKP_ClearFlag();
 }
-
 
 /**
  * @brief  Initialisation Watchdog timer.
@@ -149,19 +139,20 @@ void Board::InitBKP()
  */
 void Board::InitIWDG()
 {
-   /* Enable the LSI OSC */
-   RCC_LSICmd(ENABLE);
+    /* Enable the LSI OSC */
+    RCC_LSICmd(ENABLE);
 
-   /* Wait till LSI is ready */
-   while (RCC_GetFlagStatus(RCC_FLAG_LSIRDY) == RESET);
+    /* Wait till LSI is ready */
+    while(RCC_GetFlagStatus(RCC_FLAG_LSIRDY) == RESET)
+        ;
 
-   /* IWDG timeout equal to 2000 ms (the timeout may varies due to LSI
+    /* IWDG timeout equal to 2000 ms (the timeout may varies due to LSI
     frequency dispersion) */
-   /* Enable write access to IWDG_PR and IWDG_RLR registers */
-   IWDG_WriteAccessCmd(IWDG_WriteAccess_Enable);
+    /* Enable write access to IWDG_PR and IWDG_RLR registers */
+    IWDG_WriteAccessCmd(IWDG_WriteAccess_Enable);
 
-   /* IWDG counter clock: LSI/32 */
-   IWDG_SetPrescaler(IWDG_Prescaler_256);
+    /* IWDG counter clock: LSI/32 */
+    IWDG_SetPrescaler(IWDG_Prescaler_256);
 
 /* Set counter reload value to obtain 250ms IWDG TimeOut.
    Counter Reload Value = 250ms/IWDG counter clock period
@@ -171,15 +162,14 @@ void Board::InitIWDG()
                         = LsiFreq/128
  */
 #define LSI_FREQ 40000
-   IWDG_SetReload(LSI_FREQ / 64);
+    IWDG_SetReload(LSI_FREQ / 64);
 
-   /* Reload IWDG counter */
-   IWDG_ReloadCounter();
+    /* Reload IWDG counter */
+    IWDG_ReloadCounter();
 
-   /* Enable IWDG (the LSI oscillator will be enabled by hardware) */
-   IWDG_Enable();
+    /* Enable IWDG (the LSI oscillator will be enabled by hardware) */
+    IWDG_Enable();
 }
-
 
 /**
  * @brief  Sleep Device.
@@ -187,11 +177,10 @@ void Board::InitIWDG()
  */
 void Board::SleepDevice()
 {
-   /* Allow access to BKP Domain */
-   PWR_BackupAccessCmd(ENABLE);
-   PWR_EnterSTANDBYMode();   //  -_-zZ
+    /* Allow access to BKP Domain */
+    PWR_BackupAccessCmd(ENABLE);
+    PWR_EnterSTANDBYMode();    //  -_-zZ
 }
-
 
 /**
  * @brief Enable WKUP pin.
@@ -199,28 +188,26 @@ void Board::SleepDevice()
  */
 void Board::WakeUpPinEnable()
 {
-   /* Enable WKUP pin */
-   PWR_WakeUpPinCmd(ENABLE);
+    /* Enable WKUP pin */
+    PWR_WakeUpPinCmd(ENABLE);
 }
-
 
 uint32_t Board::GetSysCount()
 {
-   return SysCount;
+    return SysCount;
 }
-
 
 void Board::DelayMS(uint32_t delay)
 {
-   delay += SysCount;
-   while(delay >= SysCount);
+    delay += SysCount;
+    while(delay >= SysCount)
+        ;
 }
-
 
 /*
  *       INTERRUPTS
  */
 void SysTick_Handler(void)
 {
-   Board::SysCount++;
+    Board::SysCount++;
 }

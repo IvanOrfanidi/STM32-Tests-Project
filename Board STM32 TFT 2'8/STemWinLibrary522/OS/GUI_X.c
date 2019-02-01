@@ -70,13 +70,16 @@ volatile GUI_TIMER_TIME OS_TimeMS;
   1 ms.
 */
 
-GUI_TIMER_TIME GUI_X_GetTime(void) { 
-  return OS_TimeMS; 
+GUI_TIMER_TIME GUI_X_GetTime(void)
+{
+    return OS_TimeMS;
 }
 
-void GUI_X_Delay(int ms) { 
-  int tEnd = OS_TimeMS + ms;
-  while ((tEnd - OS_TimeMS) > 0);
+void GUI_X_Delay(int ms)
+{
+    int tEnd = OS_TimeMS + ms;
+    while((tEnd - OS_TimeMS) > 0)
+        ;
 }
 
 /*********************************************************************
@@ -90,7 +93,6 @@ void GUI_X_Delay(int ms) {
 */
 
 void GUI_X_Init(void) {}
-
 
 /*********************************************************************
 *
@@ -116,8 +118,17 @@ Note:
 
 */
 
-void GUI_X_Log     (const char *s) { GUI_USE_PARA(s); }
-void GUI_X_Warn    (const char *s) { GUI_USE_PARA(s); }
-void GUI_X_ErrorOut(const char *s) { GUI_USE_PARA(s); }
+void GUI_X_Log(const char* s)
+{
+    GUI_USE_PARA(s);
+}
+void GUI_X_Warn(const char* s)
+{
+    GUI_USE_PARA(s);
+}
+void GUI_X_ErrorOut(const char* s)
+{
+    GUI_USE_PARA(s);
+}
 
 /*************************** End of file ****************************/

@@ -1,58 +1,56 @@
-#include "LCD_Private.h"      /* private modul definitions & config */
+#include "LCD_Private.h" /* private modul definitions & config */
 #include "GUI_Private.h"
 //#include "GUIDebug.h"
 #include "ili9320.h"
 
-
 #define BKCOLOR LCD_BKCOLORINDEX
-#define   COLOR LCD_COLORINDEX
+#define COLOR LCD_COLORINDEX
 
-
-
-#if (LCD_CONTROLLER == 9320) 
+#if(LCD_CONTROLLER == 9320)
 
 int LCD_L0_Init(void)
-{  
-  ili9320_Initializtion();
-  return 0;
+{
+    ili9320_Initializtion();
+    return 0;
 }
 
 void LCD_L0_SetPixelIndex(int x, int y, int PixelIndex)
 {
-  //ili9320_SetPoint(x,y,COLOR);
-  ili9320_SetPoint(x,y,PixelIndex);
+    //ili9320_SetPoint(x,y,COLOR);
+    ili9320_SetPoint(x, y, PixelIndex);
 }
 
 unsigned int LCD_L0_GetPixelIndex(int x, int y)
 {
-  return ili9320_GetPoint(x,y);
+    return ili9320_GetPoint(x, y);
 }
 
 void LCD_L0_XorPixel(int x, int y)
 {
-  LCD_PIXELINDEX Index = ili9320_GetPoint(x,y);
-  ili9320_SetPoint(x,y,(1L<<LCD_BITSPERPIXEL)-1-Index);
+    LCD_PIXELINDEX Index = ili9320_GetPoint(x, y);
+    ili9320_SetPoint(x, y, (1L << LCD_BITSPERPIXEL) - 1 - Index);
 }
 
-void LCD_L0_DrawHLine  (int x0, int y,  int x1)
+void LCD_L0_DrawHLine(int x0, int y, int x1)
 {
-  GUI_Line(x0,y,x1,y,LCD_COLORINDEX);
+    GUI_Line(x0, y, x1, y, LCD_COLORINDEX);
 }
 
-void LCD_L0_DrawVLine  (int x, int y0,  int y1)
+void LCD_L0_DrawVLine(int x, int y0, int y1)
 {
-  GUI_Line(x,y0,x,y1,LCD_COLORINDEX);
+    GUI_Line(x, y0, x, y1, LCD_COLORINDEX);
 }
 
-void LCD_L0_FillRect(int x0, int y0, int x1, int y1) {
+void LCD_L0_FillRect(int x0, int y0, int x1, int y1)
+{
 #if !LCD_SWAP_XY
-  for (; y0 <= y1; y0++) {
-    LCD_L0_DrawHLine(x0,y0, x1);
-  }
+    for(; y0 <= y1; y0++) {
+        LCD_L0_DrawHLine(x0, y0, x1);
+    }
 #else
-  for (; x0 <= x1; x0++) {
-    LCD_L0_DrawVLine(x0,y0, y1);
-  }
+    for(; x0 <= x1; x0++) {
+        LCD_L0_DrawVLine(x0, y0, y1);
+    }
 #endif
 }
 
@@ -68,10 +66,10 @@ void DrawBitLine1BPP(int x, int y, U8 const*p, int Diff, int xsize, const LCD_PI
   pixels = *p;
   switch (GUI_Context.DrawMode & (LCD_DRAWMODE_TRANS|LCD_DRAWMODE_XOR)) {
   case 0:
-    #if defined (SETNEXTPIXEL)   /* Optimization ! */
+#if defined(SETNEXTPIXEL) /* Optimization ! */
       x+=Diff;
       ili9320_SetCursor(x,y);
-    #endif
+#endif
     switch (Diff&7) {
     case 0:   
       goto WriteBit0;
@@ -609,8 +607,9 @@ void LCD_L0_DrawBitmap   (int x0, int y0,
 
 #endif
 
-void LCD_L0_SetLUTEntry(U8 Pos, LCD_COLOR color){}
-void LCD_L0_On(void){}
+void LCD_L0_SetLUTEntry(U8 Pos, LCD_COLOR color)
+{
+}
+void LCD_L0_On(void) {}
 //void LCD_L0_SetOrg(int x, int y){}
 #endif /* (LCD_CONTROLLER == 9320) */
-

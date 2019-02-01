@@ -69,19 +69,18 @@ void EP1_IN_Callback(void)
  *******************************************************************************/
 void EP3_OUT_Callback(void)
 {
-   static int16_t len = 0;
-   Receive_length = GetEPRxCount(ENDP3);   // Len data buffers USB.
-   PMAToUserBufferCopy((unsigned char*)Receive_Buffer, ENDP3_RXADDR, Receive_length);
-   extern uint8_t UsbRxBuffer[];
-   memcpy(&UsbRxBuffer[len], (unsigned char*)Receive_Buffer, Receive_length);   // Copy buffers USB -> TEMP.
-   memset((unsigned char*)Receive_Buffer, 0, Receive_length);   // Clear buffer USB.
-   len += Receive_length;
-   if (len > SIZE_USB_DATA_BUFFER)
-   {
-      len = 0;
-   }
+    static int16_t len = 0;
+    Receive_length = GetEPRxCount(ENDP3);    // Len data buffers USB.
+    PMAToUserBufferCopy((unsigned char*)Receive_Buffer, ENDP3_RXADDR, Receive_length);
+    extern uint8_t UsbRxBuffer[];
+    memcpy(&UsbRxBuffer[len], (unsigned char*)Receive_Buffer, Receive_length);    // Copy buffers USB -> TEMP.
+    memset((unsigned char*)Receive_Buffer, 0, Receive_length);                    // Clear buffer USB.
+    len += Receive_length;
+    if(len > SIZE_USB_DATA_BUFFER) {
+        len = 0;
+    }
 
-   SetEPRxValid(ENDP3);
+    SetEPRxValid(ENDP3);
 }
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

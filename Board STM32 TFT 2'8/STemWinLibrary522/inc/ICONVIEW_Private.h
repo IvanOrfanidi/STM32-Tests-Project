@@ -67,44 +67,44 @@ Purpose     : ICONVIEW private header file
 **********************************************************************
 */
 typedef struct {
-  const GUI_FONT GUI_UNI_PTR * pFont;
-  GUI_COLOR                    aBkColor[3];
-  GUI_COLOR                    aTextColor[3];
-  int                          FrameX, FrameY;
-  int                          SpaceX, SpaceY;
-  int                          TextAlign;
-  int                          IconAlign;
-  GUI_WRAPMODE                 WrapMode;
+    const GUI_FONT GUI_UNI_PTR* pFont;
+    GUI_COLOR aBkColor[3];
+    GUI_COLOR aTextColor[3];
+    int FrameX, FrameY;
+    int SpaceX, SpaceY;
+    int TextAlign;
+    int IconAlign;
+    GUI_WRAPMODE WrapMode;
 } ICONVIEW_PROPS;
 
 typedef struct {
-  WIDGET          Widget;
-  WM_SCROLL_STATE ScrollStateV;
-  WM_SCROLL_STATE ScrollStateH;
-  ICONVIEW_PROPS  Props;
-  GUI_ARRAY       ItemArray;
-  int             xSizeItems;
-  int             ySizeItems;
-  int             Sel;
-  U16             Flags;
-  /* Type check in debug version */
-  #if GUI_DEBUG_LEVEL >= GUI_DEBUG_LEVEL_CHECK_ALL
+    WIDGET Widget;
+    WM_SCROLL_STATE ScrollStateV;
+    WM_SCROLL_STATE ScrollStateH;
+    ICONVIEW_PROPS Props;
+    GUI_ARRAY ItemArray;
+    int xSizeItems;
+    int ySizeItems;
+    int Sel;
+    U16 Flags;
+/* Type check in debug version */
+#if GUI_DEBUG_LEVEL >= GUI_DEBUG_LEVEL_CHECK_ALL
     U32 DebugId;
-  #endif  
+#endif
 } ICONVIEW_OBJ;
 
-typedef void tDrawImage    (const void * pData, int xPos, int yPos);
-typedef void tDrawText     (ICONVIEW_OBJ * pObj, GUI_RECT * pRect, const char * s);
-typedef void tGetImageSizes(const void * pData, int * xSize, int * ySize);
+typedef void tDrawImage(const void* pData, int xPos, int yPos);
+typedef void tDrawText(ICONVIEW_OBJ* pObj, GUI_RECT* pRect, const char* s);
+typedef void tGetImageSizes(const void* pData, int* xSize, int* ySize);
 
 typedef struct {
-  tDrawImage     * pfDrawImage;
-  tDrawText      * pfDrawText;
-  tGetImageSizes * pfGetImageSizes;
-  const void     * pData;
-  U32              UserData;
-  int              SizeofData;
-  char             acText[1];
+    tDrawImage* pfDrawImage;
+    tDrawText* pfDrawText;
+    tGetImageSizes* pfGetImageSizes;
+    const void* pData;
+    U32 UserData;
+    int SizeofData;
+    char acText[1];
 } ICONVIEW_ITEM;
 
 /*********************************************************************
@@ -113,7 +113,7 @@ typedef struct {
 *
 **********************************************************************
 */
-extern void (* ICONVIEW__pfDrawStreamedBitmap)(const void * p, int x, int y);
+extern void (*ICONVIEW__pfDrawStreamedBitmap)(const void* p, int x, int y);
 
 /*********************************************************************
 *
@@ -122,19 +122,19 @@ extern void (* ICONVIEW__pfDrawStreamedBitmap)(const void * p, int x, int y);
 **********************************************************************
 */
 #if GUI_DEBUG_LEVEL >= GUI_DEBUG_LEVEL_CHECK_ALL
-  #define ICONVIEW_INIT_ID(p) (p->DebugId = ICONVIEW_ID)
+#define ICONVIEW_INIT_ID(p) (p->DebugId = ICONVIEW_ID)
 #else
-  #define ICONVIEW_INIT_ID(p)
+#define ICONVIEW_INIT_ID(p)
 #endif
 
 #if GUI_DEBUG_LEVEL >= GUI_DEBUG_LEVEL_CHECK_ALL
-  ICONVIEW_OBJ * ICONVIEW_LockH(ICONVIEW_Handle h);
-  #define ICONVIEW_LOCK_H(h)   ICONVIEW_LockH(h)
+ICONVIEW_OBJ* ICONVIEW_LockH(ICONVIEW_Handle h);
+#define ICONVIEW_LOCK_H(h) ICONVIEW_LockH(h)
 #else
-  #define ICONVIEW_LOCK_H(h)   (ICONVIEW_OBJ *)GUI_LOCK_H(h)
+#define ICONVIEW_LOCK_H(h) (ICONVIEW_OBJ*)GUI_LOCK_H(h)
 #endif
 
-#endif   /* GUI_WINSUPPORT */
-#endif   /* ICONVIEW_H */
+#endif /* GUI_WINSUPPORT */
+#endif /* ICONVIEW_H */
 
 /*************************** End of file ****************************/

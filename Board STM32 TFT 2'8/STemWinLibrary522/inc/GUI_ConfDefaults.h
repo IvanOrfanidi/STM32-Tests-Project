@@ -55,26 +55,26 @@ Attention : Do not modify this file ! If you do, you will not
   ******************************************************************************
   */
 
-#ifndef  GUI_CONFDEFAULTS_H
-#define  GUI_CONFDEFAULTS_H
+#ifndef GUI_CONFDEFAULTS_H
+#define GUI_CONFDEFAULTS_H
 
 #include "GUIConf.h"
 
-#ifndef   LCD_MAX_LOG_COLORS
-  #define LCD_MAX_LOG_COLORS 256
+#ifndef LCD_MAX_LOG_COLORS
+#define LCD_MAX_LOG_COLORS 256
 #else
-  #if (LCD_MAX_LOG_COLORS > 256)
-    #error The value of LCD_MAX_LOG_COLORS must be <= 256!
-  #endif
+#if(LCD_MAX_LOG_COLORS > 256)
+#error The value of LCD_MAX_LOG_COLORS must be <= 256!
+#endif
 #endif
 
 #define LCD_PIXELINDEX U32
 
 #ifndef LCD_YMAG
-  #define LCD_YMAG 1
+#define LCD_YMAG 1
 #endif
 #ifndef LCD_XMAG
-  #define LCD_XMAG 1
+#define LCD_XMAG 1
 #endif
 
 /**********************************************************************
@@ -89,10 +89,10 @@ Attention : Do not modify this file ! If you do, you will not
    since a default pointer can access RAM only, not the built-in Flash
 */
 #ifndef GUI_UNI_PTR
-  #define GUI_UNI_PTR
-  #define GUI_UNI_PTR_USED 0
+#define GUI_UNI_PTR
+#define GUI_UNI_PTR_USED 0
 #else
-  #define GUI_UNI_PTR_USED 1
+#define GUI_UNI_PTR_USED 1
 #endif
 
 /* Define const storage. Normally, this is not needed (define will expand to const)
@@ -100,81 +100,80 @@ Attention : Do not modify this file ! If you do, you will not
    since otherwise constants are copied into RAM
 */
 #ifndef GUI_CONST_STORAGE
-  #define GUI_CONST_STORAGE const
+#define GUI_CONST_STORAGE const
 #endif
 
 #ifndef GUI_USE_MEMDEV_1BPP_FOR_SCREEN
-  #define GUI_USE_MEMDEV_1BPP_FOR_SCREEN 1
+#define GUI_USE_MEMDEV_1BPP_FOR_SCREEN 1
 #endif
 
 #ifndef GUI_BIDI_MAX_CHARS_PER_LINE
-  #define GUI_BIDI_MAX_CHARS_PER_LINE 80
+#define GUI_BIDI_MAX_CHARS_PER_LINE 80
 #endif
 
 #ifndef GUI_SUPPORT_TOUCH
-  #define GUI_SUPPORT_TOUCH   0
+#define GUI_SUPPORT_TOUCH 0
 #endif
 
 #ifndef GUI_SUPPORT_MOUSE
-  #define GUI_SUPPORT_MOUSE   0
+#define GUI_SUPPORT_MOUSE 0
 #endif
 
 #ifndef GUI_SUPPORT_MEMDEV
-  #define GUI_SUPPORT_MEMDEV  0
+#define GUI_SUPPORT_MEMDEV 0
 #endif
 
 #ifndef GUI_OS
-  #define GUI_OS              0
+#define GUI_OS 0
 #endif
 
 #ifndef GUI_NUM_LAYERS
-  #define GUI_NUM_LAYERS      1
+#define GUI_NUM_LAYERS 1
 #endif
 
 #ifndef GUI_SUPPORT_CURSOR
-  #define GUI_SUPPORT_CURSOR  (GUI_SUPPORT_MOUSE | GUI_SUPPORT_TOUCH)
+#define GUI_SUPPORT_CURSOR (GUI_SUPPORT_MOUSE | GUI_SUPPORT_TOUCH)
 #endif
 
-#ifndef   GUI_CURSOR_LAYER
-  #define GUI_CURSOR_LAYER 0
+#ifndef GUI_CURSOR_LAYER
+#define GUI_CURSOR_LAYER 0
 #endif
 
 #ifndef GUI_MEMCPY
-  #define GUI_MEMCPY(pDest, pSrc, NumBytes) memcpy(pDest, pSrc, NumBytes)
+#define GUI_MEMCPY(pDest, pSrc, NumBytes) memcpy(pDest, pSrc, NumBytes)
 #endif
 
 #ifndef GUI_SUPPORT_ROTATION
-  #define GUI_SUPPORT_ROTATION 1
+#define GUI_SUPPORT_ROTATION 1
 #endif
 
 /* In order to avoid warnings for undefined parameters */
 #ifndef GUI_USE_PARA
-  #if defined (__BORLANDC__) || defined(NC30) || defined(NC308)
-    #define GUI_USE_PARA(para)
-  #else
-    #define GUI_USE_PARA(para) (void)para
-  #endif
+#if defined(__BORLANDC__) || defined(NC30) || defined(NC308)
+#define GUI_USE_PARA(para)
+#else
+#define GUI_USE_PARA(para) (void)para
+#endif
 #endif
 
 /* Default for types */
 #ifndef GUI_TIMER_TIME
-  #define GUI_TIMER_TIME int  /* default is to use 16 bits for 16 bit CPUs,
+#define GUI_TIMER_TIME int /* default is to use 16 bits for 16 bit CPUs,
 	                           32 bits on 32 bit CPUs for timing */
 #endif
 
 /* Types used for memory allocation */
-#define GUI_ALLOC_DATATYPE   I32
+#define GUI_ALLOC_DATATYPE I32
 #define GUI_ALLOC_DATATYPE_U U32
 
-#ifndef   GUI_MAX_XBF_BYTES
-  #define GUI_MAX_XBF_BYTES 200
+#ifndef GUI_MAX_XBF_BYTES
+#define GUI_MAX_XBF_BYTES 200
 #endif
 
-#ifndef   GUI_MEMSET
-  #define GUI_MEMSET GUI__memset
+#ifndef GUI_MEMSET
+#define GUI_MEMSET GUI__memset
 #endif
 
-
-#endif   /* ifdef GUI_CONFDEFAULTS_H */
+#endif /* ifdef GUI_CONFDEFAULTS_H */
 
 /*************************** End of file ****************************/

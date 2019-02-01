@@ -70,11 +70,11 @@ extern const GUI_DEVICE_API GUIDRV_Template_API;
 //
 #if defined(WIN32) && !defined(LCD_SIMCONTROLLER)
 
-  #define GUIDRV_TEMPLATE            &GUIDRV_Win_API
+#define GUIDRV_TEMPLATE &GUIDRV_Win_API
 
 #else
 
-  #define GUIDRV_TEMPLATE            &GUIDRV_Template_API
+#define GUIDRV_TEMPLATE &GUIDRV_Template_API
 
 #endif
 

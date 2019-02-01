@@ -51,11 +51,11 @@ Purpose     : Include file defining current GUI version
   ******************************************************************************
   */
 
-#ifndef  GUI_VERSION_H
-#define  GUI_VERSION_H
+#ifndef GUI_VERSION_H
+#define GUI_VERSION_H
 
 #define GUI_VERSION 52200
 
-#endif   /* Avoid multiple inclusion */
+#endif /* Avoid multiple inclusion */
 
 /*************************** End of file ****************************/

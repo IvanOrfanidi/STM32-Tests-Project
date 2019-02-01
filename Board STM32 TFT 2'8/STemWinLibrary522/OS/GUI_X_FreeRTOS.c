@@ -54,18 +54,18 @@ Purpose     : This file provides emWin Interface with FreeRTOS
 /* Includes ------------------------------------------------------------------*/
 
 #include "GUI.h"
-    
-    /* FreeRTOS include files */
+
+/* FreeRTOS include files */
 #include "FreeRTOS.h"
 #include "task.h"
 #include "timers.h"
 #include "semphr.h"
-    
+
 /*********************************************************************
 *
 * Global data
 */
-    static xSemaphoreHandle xQueueMutex;
+static xSemaphoreHandle xQueueMutex;
 static xSemaphoreHandle xSemaTxDone;
 
 /*********************************************************************
@@ -81,12 +81,12 @@ and delay function. Default time unit (tick), normally is
 
 int GUI_X_GetTime(void)
 {
-  return ((int) xTaskGetTickCount());
+    return ((int)xTaskGetTickCount());
 }
 
 void GUI_X_Delay(int ms)
 {
-  vTaskDelay( ms );
+    vTaskDelay(ms);
 }
 
 /*********************************************************************
@@ -99,9 +99,9 @@ void GUI_X_Delay(int ms)
 * If not required, leave this routine blank.
 */
 
-void GUI_X_Init(void) {
+void GUI_X_Init(void)
+{
 }
-
 
 /*********************************************************************
 *
@@ -133,46 +133,45 @@ void GUI_X_ExecIdle(void) {}
 
 /* Init OS */
 void GUI_X_InitOS(void)
-{ 
-  /* Create Mutex lock */
-  xQueueMutex = xSemaphoreCreateMutex();
-  configASSERT (xQueueMutex != NULL);
-  
-  /* Queue Semaphore */ 
-  vSemaphoreCreateBinary( xSemaTxDone );
-  configASSERT ( xSemaTxDone != NULL );
+{
+    /* Create Mutex lock */
+    xQueueMutex = xSemaphoreCreateMutex();
+    configASSERT(xQueueMutex != NULL);
+
+    /* Queue Semaphore */
+    vSemaphoreCreateBinary(xSemaTxDone);
+    configASSERT(xSemaTxDone != NULL);
 }
 
 void GUI_X_Unlock(void)
-{ 
-  xSemaphoreGive( xQueueMutex ); 
+{
+    xSemaphoreGive(xQueueMutex);
 }
 
 void GUI_X_Lock(void)
 {
-  if(xQueueMutex == NULL)
-  {
-    GUI_X_InitOS();
-  }
-  
-  xSemaphoreTake( xQueueMutex, portMAX_DELAY );
+    if(xQueueMutex == NULL) {
+        GUI_X_InitOS();
+    }
+
+    xSemaphoreTake(xQueueMutex, portMAX_DELAY);
 }
 
 /* Get Task handle */
-U32 GUI_X_GetTaskId(void) 
-{ 
-  return ((U32) xTaskGetCurrentTaskHandle());
+U32 GUI_X_GetTaskId(void)
+{
+    return ((U32)xTaskGetCurrentTaskHandle());
 }
 
-void GUI_X_WaitEvent (void) 
+void GUI_X_WaitEvent(void)
 {
-  while( xSemaphoreTake(xSemaTxDone, portMAX_DELAY ) != pdTRUE );
+    while(xSemaphoreTake(xSemaTxDone, portMAX_DELAY) != pdTRUE)
+        ;
 }
 
-
-void GUI_X_SignalEvent (void) 
+void GUI_X_SignalEvent(void)
 {
-  xSemaphoreGive( xSemaTxDone );
+    xSemaphoreGive(xSemaTxDone);
 }
 
 /*********************************************************************
@@ -189,8 +188,8 @@ functions automatically)
 
 */
 
-void GUI_X_Log (const char *s) { }
-void GUI_X_Warn (const char *s) { }
-void GUI_X_ErrorOut(const char *s) { }
+void GUI_X_Log(const char* s) {}
+void GUI_X_Warn(const char* s) {}
+void GUI_X_ErrorOut(const char* s) {}
 
 /*************************** End of file ****************************/

@@ -7,7 +7,7 @@ extern "C" {
 
 #define DISPLAY_TIMEOUT_BUTTON 15
 #define LOW_BAT_TIMEOUT 900
-#define SLEEP_TIMEOUT_DEVICE (30 * 60)   // min
+#define SLEEP_TIMEOUT_DEVICE (30 * 60)    // min
 #define TIMEOUT_HOLD_BUTTON_WKUP 10
 
 #define TEXT_POSITION_X 38
@@ -24,12 +24,11 @@ extern "C" {
 
 #define DisplayDisable() SSD1306_Disable()
 
-typedef enum
-{
-   SHOT = 0,
-   SOUND,
-   RESET_COUNT_SHOT,
-   SHUTDOWN,
+typedef enum {
+    SHOT = 0,
+    SOUND,
+    RESET_COUNT_SHOT,
+    SHUTDOWN,
 } tSTEP_DISPLAY;
 
 void vDisplayTask(void* pvParameters);

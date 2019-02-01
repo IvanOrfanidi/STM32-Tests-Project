@@ -60,7 +60,7 @@ Purpose     : Private header file for sprites
 *
 **********************************************************************
 */
-#define SPRITE_LOCK_H(h) (GUI_SPRITE_OBJ *)GUI_LOCK_H(h)
+#define SPRITE_LOCK_H(h) (GUI_SPRITE_OBJ*)GUI_LOCK_H(h)
 
 /*********************************************************************
 *
@@ -72,16 +72,15 @@ Purpose     : Private header file for sprites
 // The sprite object
 //
 typedef struct {
-  GUI_DEVICE                   * pDevice;
-  GUI_RECT                       Rect;
-  GUI_HMEM                       hColors;
-  U16                            Flags;
-  const GUI_BITMAP GUI_UNI_PTR * pBM;
-  void (* pCB)(GUI_HSPRITE hSprite, int Cmd); // Callback routine for animated sprites
-  GUI_HMEM                       hContext;
+    GUI_DEVICE* pDevice;
+    GUI_RECT Rect;
+    GUI_HMEM hColors;
+    U16 Flags;
+    const GUI_BITMAP GUI_UNI_PTR* pBM;
+    void (*pCB)(GUI_HSPRITE hSprite, int Cmd);    // Callback routine for animated sprites
+    GUI_HMEM hContext;
 } GUI_SPRITE_OBJ;
 
-
-#endif // GUI_SPRITE_PRIVATE_H
+#endif    // GUI_SPRITE_PRIVATE_H
 
 /*************************** End of file ****************************/

@@ -27,30 +27,28 @@
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __USB_PWR_H
-#   define __USB_PWR_H
+#define __USB_PWR_H
 
 /* Includes ------------------------------------------------------------------*/
 /* Exported types ------------------------------------------------------------*/
-typedef enum _RESUME_STATE
-{
-   RESUME_EXTERNAL,
-   RESUME_INTERNAL,
-   RESUME_LATER,
-   RESUME_WAIT,
-   RESUME_START,
-   RESUME_ON,
-   RESUME_OFF,
-   RESUME_ESOF
+typedef enum _RESUME_STATE {
+    RESUME_EXTERNAL,
+    RESUME_INTERNAL,
+    RESUME_LATER,
+    RESUME_WAIT,
+    RESUME_START,
+    RESUME_ON,
+    RESUME_OFF,
+    RESUME_ESOF
 } RESUME_STATE;
 
-typedef enum _DEVICE_STATE
-{
-   UNCONNECTED = 0,
-   ATTACHED = 1,
-   POWERED = 2,
-   SUSPENDED = 3,
-   ADDRESSED = 4,
-   CONFIGURED = 5
+typedef enum _DEVICE_STATE {
+    UNCONNECTED = 0,
+    ATTACHED = 1,
+    POWERED = 2,
+    SUSPENDED = 3,
+    ADDRESSED = 4,
+    CONFIGURED = 5
 } DEVICE_STATE;
 
 /* Exported constants --------------------------------------------------------*/

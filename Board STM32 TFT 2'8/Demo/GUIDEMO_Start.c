@@ -57,7 +57,6 @@ Purpose     : GUIDEMO initialization
   ******************************************************************************
   */
 
-
 #include "GUIDEMO.h"
 
 /*********************************************************************
@@ -65,11 +64,11 @@ Purpose     : GUIDEMO initialization
 *       MainTask
 */
 void MainTask(void);
-void MainTask(void) {
-  WM_SetCreateFlags(WM_CF_MEMDEV);
-  GUI_Init();
-  GUIDEMO_Main();
+void MainTask(void)
+{
+    WM_SetCreateFlags(WM_CF_MEMDEV);
+    GUI_Init();
+    GUIDEMO_Main();
 }
 
 /*************************** End of file ****************************/
-

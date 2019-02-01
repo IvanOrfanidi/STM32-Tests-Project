@@ -7,16 +7,16 @@ extern "C" {
 #endif
 
 /* Axelerometr Config */
-#define ACCEL_THRESACT (uint8_t)(8000 / 62.5)   //Установка порога Толчка
-#define ACCEL_THRESHOLD (uint8_t)(8000 / 62.5)   //Установка порога Толчка
-#define ACCEL_DURATION (uint8_t)(10000 / 625)   //Установка лимита времени для Толчка
-#define ACCEL_LATENT (uint8_t)(10 / 1.25)   //Установка задержки для Толчка
-#define ACCEL_WINDOWS (uint8_t)(60 / 1.25)   //Установка временного окна для Второго Толчка
-#define ACCEL_TIME_INACTIVITY 30   //Установка времени Неактивности
+#define ACCEL_THRESACT (uint8_t)(8000 / 62.5)     //Установка порога Толчка
+#define ACCEL_THRESHOLD (uint8_t)(8000 / 62.5)    //Установка порога Толчка
+#define ACCEL_DURATION (uint8_t)(10000 / 625)     //Установка лимита времени для Толчка
+#define ACCEL_LATENT (uint8_t)(10 / 1.25)         //Установка задержки для Толчка
+#define ACCEL_WINDOWS (uint8_t)(60 / 1.25)        //Установка временного окна для Второго Толчка
+#define ACCEL_TIME_INACTIVITY 30                  //Установка времени Неактивности
 
 //#define USE_ACCEL_LOW_PWR
 #ifdef USE_ACCEL_LOW_PWR
-#   define _ACCEL_LOW_POWER_MODE_ 1
+#define _ACCEL_LOW_POWER_MODE_ 1
 #endif
 
 #define NUM_AXIS 3
@@ -60,10 +60,10 @@ extern "C" {
 
 typedef __packed struct
 {
-   int16_t sValueAxisX;
-   int16_t sValueAxisY;
-   int16_t sValueAxisZ;
-   uint8_t ucInterrupt;
+    int16_t sValueAxisX;
+    int16_t sValueAxisY;
+    int16_t sValueAxisZ;
+    uint8_t ucInterrupt;
 } TAccel_Data;
 
 void vAccelTask(void* pvParameters);

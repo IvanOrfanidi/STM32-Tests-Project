@@ -24,8 +24,8 @@
 /* Includes ------------------------------------------------------------------*/
 #include "includes.h"
 #include "usb_istr.h"
-xTaskHandle CurrentTaskHandle;   // ID текущего процесса(Debug)
-char* pNameCurrentTask;   //Имя текущего процесса(Debug)
+xTaskHandle CurrentTaskHandle;    // ID текущего процесса(Debug)
+char* pNameCurrentTask;           //Имя текущего процесса(Debug)
 
 /** @addtogroup STM32F10x_StdPeriph_Template
  * @{
@@ -50,16 +50,14 @@ char* pNameCurrentTask;   //Имя текущего процесса(Debug)
  */
 void NMI_Handler(void)
 {
-   // Сбросим флаг системы контроля HSE
-   if (RCC->CIR & RCC_CIR_CSSF)
-   {
-      RCC->CIR |= RCC_CIR_CSSC;
-      // SetSysClockHSI();
-   }
+    // Сбросим флаг системы контроля HSE
+    if(RCC->CIR & RCC_CIR_CSSF) {
+        RCC->CIR |= RCC_CIR_CSSC;
+        // SetSysClockHSI();
+    }
 
-   while (1)
-   {
-   }
+    while(1) {
+    }
 }
 
 /**
@@ -70,14 +68,13 @@ void NMI_Handler(void)
 void HardFault_Handler(void)
 {
 #ifdef FREERTOS_CONFIG_H
-   CurrentTaskHandle = xTaskGetCurrentTaskHandle();
-   pNameCurrentTask = pcTaskGetTaskName(CurrentTaskHandle);
+    CurrentTaskHandle = xTaskGetCurrentTaskHandle();
+    pNameCurrentTask = pcTaskGetTaskName(CurrentTaskHandle);
 #endif
 
-   /* Go to infinite loop when Hard Fault exception occurs */
-   while (1)
-   {
-   }
+    /* Go to infinite loop when Hard Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -87,10 +84,9 @@ void HardFault_Handler(void)
  */
 void MemManage_Handler(void)
 {
-   /* Go to infinite loop when Memory Manage exception occurs */
-   while (1)
-   {
-   }
+    /* Go to infinite loop when Memory Manage exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -100,10 +96,9 @@ void MemManage_Handler(void)
  */
 void BusFault_Handler(void)
 {
-   /* Go to infinite loop when Bus Fault exception occurs */
-   while (1)
-   {
-   }
+    /* Go to infinite loop when Bus Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -113,10 +108,9 @@ void BusFault_Handler(void)
  */
 void UsageFault_Handler(void)
 {
-   /* Go to infinite loop when Usage Fault exception occurs */
-   while (1)
-   {
-   }
+    /* Go to infinite loop when Usage Fault exception occurs */
+    while(1) {
+    }
 }
 
 #ifndef FREERTOS_CONFIG_H
@@ -150,12 +144,12 @@ void DebugMon_Handler(void)
  *******************************************************************************/
 void USB_LP_CAN1_RX0_IRQHandler(void)
 {
-   USB_Istr();
+    USB_Istr();
 }
 
 void USB_HP_IRQHandler(void)
 {
-   USB_Istr();
+    USB_Istr();
 }
 
 /*******************************************************************************
@@ -167,7 +161,7 @@ void USB_HP_IRQHandler(void)
  *******************************************************************************/
 void USBWakeUp_IRQHandler(void)
 {
-   EXTI_ClearITPendingBit(EXTI_Line18);
+    EXTI_ClearITPendingBit(EXTI_Line18);
 }
 /********************************/
 
@@ -184,17 +178,16 @@ void PendSV_Handler(void)
 
 /* Прерывание отладочного интерфейса */
 #ifndef DBG_UART
-#   error "No init debug UART!"
+#error "No init debug UART!"
 #else
-#   if (DBG_UART == 1)
+#if(DBG_UART == 1)
 void USART1_IRQHandler(void)
 {
-   if (USART_GetITStatus(UART_DBG_INTRERFACE, USART_IT_TXE) != RESET)
-   {
-      USART_ClearFlag(UART_DBG_INTRERFACE, USART_FLAG_TC);
-      UART_Debug_TxCpltCallback();
-   }
+    if(USART_GetITStatus(UART_DBG_INTRERFACE, USART_IT_TXE) != RESET) {
+        USART_ClearFlag(UART_DBG_INTRERFACE, USART_FLAG_TC);
+        UART_Debug_TxCpltCallback();
+    }
 }
-#   endif
+#endif
 #endif
 /******************* (C) COPYRIGHT 2011 STMicroelectronics *****END OF FILE****/

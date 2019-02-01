@@ -59,7 +59,7 @@ Purpose     : Message box interface
 #if GUI_WINSUPPORT
 
 #if defined(__cplusplus)
-extern "C" {     /* Make sure we have C-declarations in C++ programs */
+extern "C" { /* Make sure we have C-declarations in C++ programs */
 #endif
 
 /*********************************************************************
@@ -84,10 +84,10 @@ extern "C" {     /* Make sure we have C-declarations in C++ programs */
 *       CHOOSECOLOR_PROPS
 */
 typedef struct {
-  unsigned  aBorder[2];
-  unsigned  aSpace[2];
-  unsigned  aButtonSize[2];
-  GUI_COLOR aColor[2];
+    unsigned aBorder[2];
+    unsigned aSpace[2];
+    unsigned aButtonSize[2];
+    GUI_COLOR aColor[2];
 } CHOOSECOLOR_PROPS;
 
 /*********************************************************************
@@ -95,14 +95,14 @@ typedef struct {
 *       CHOOSECOLOR_CONTEXT
 */
 typedef struct {
-  U32               LastColor;
-  const GUI_COLOR * pColor;
-  unsigned          NumColors;
-  unsigned          NumColorsPerLine;
-  int               SelOld;
-  int               Sel;
-  WM_HWIN           hParent;
-  CHOOSECOLOR_PROPS Props;
+    U32 LastColor;
+    const GUI_COLOR* pColor;
+    unsigned NumColors;
+    unsigned NumColorsPerLine;
+    int SelOld;
+    int Sel;
+    WM_HWIN hParent;
+    CHOOSECOLOR_PROPS Props;
 } CHOOSECOLOR_CONTEXT;
 
 /*********************************************************************
@@ -111,24 +111,24 @@ typedef struct {
 *
 **********************************************************************
 */
-WM_HWIN CHOOSECOLOR_Create(WM_HWIN           hParent,
-                           int               xPos,
-                           int               yPos,
-                           int               xSize,
-                           int               ySize,
-                           const GUI_COLOR * pColor,
-                           unsigned          NumColors,
-                           unsigned          NumColorsPerLine,
-                           int               Sel,
-                           const char      * sCaption,
-                           int               Flags);
+WM_HWIN CHOOSECOLOR_Create(WM_HWIN hParent,
+    int xPos,
+    int yPos,
+    int xSize,
+    int ySize,
+    const GUI_COLOR* pColor,
+    unsigned NumColors,
+    unsigned NumColorsPerLine,
+    int Sel,
+    const char* sCaption,
+    int Flags);
 
-int  CHOOSECOLOR_GetSel(WM_HWIN hObj);
+int CHOOSECOLOR_GetSel(WM_HWIN hObj);
 void CHOOSECOLOR_SetSel(WM_HWIN hObj, int Sel);
 
-void CHOOSECOLOR_SetDefaultColor     (unsigned Index, GUI_COLOR Color);
-void CHOOSECOLOR_SetDefaultSpace     (unsigned Index, unsigned Space);
-void CHOOSECOLOR_SetDefaultBorder    (unsigned Index, unsigned Border);
+void CHOOSECOLOR_SetDefaultColor(unsigned Index, GUI_COLOR Color);
+void CHOOSECOLOR_SetDefaultSpace(unsigned Index, unsigned Space);
+void CHOOSECOLOR_SetDefaultBorder(unsigned Index, unsigned Border);
 void CHOOSECOLOR_SetDefaultButtonSize(unsigned Index, unsigned ButtonSize);
 
 /*********************************************************************
@@ -138,10 +138,10 @@ void CHOOSECOLOR_SetDefaultButtonSize(unsigned Index, unsigned ButtonSize);
 * Do not call it directly ! It is only to be used from within an
 * overwritten callback.
 */
-void CHOOSECOLOR_Callback(WM_MESSAGE * pMsg);
+void CHOOSECOLOR_Callback(WM_MESSAGE* pMsg);
 
 #if defined(__cplusplus)
-  }
+}
 #endif
 
 #endif /* GUI_WINSUPPORT */

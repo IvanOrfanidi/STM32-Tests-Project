@@ -5,13 +5,13 @@
 #define ADC1_DR_Address ((uint32_t)0x4001244C)
 
 #ifndef ADC_CALIBRATION
-#   define ADC_CALIBRATION 1
+#define ADC_CALIBRATION 1
 #endif
 
 typedef struct
 {
-   uint16_t usWkupPinValue;
-   uint16_t usBatMeasValue;
+    uint16_t usWkupPinValue;
+    uint16_t usBatMeasValue;
 } ADCmeasCFG;
 
 void ADC_Configuration(void);

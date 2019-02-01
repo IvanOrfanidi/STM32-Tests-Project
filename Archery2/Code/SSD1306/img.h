@@ -10,10 +10,10 @@ extern "C" {
 
 typedef __packed struct
 {
-   uint8_t ImgHeight; /*!< Image height in pixels */
-   uint8_t ImgWidth; /*!< Image width in pixels */
+    uint8_t ImgHeight; /*!< Image height in pixels */
+    uint8_t ImgWidth;  /*!< Image width in pixels */
 
-   const char* pData; /*!< Pointer to data font data array */
+    const char* pData; /*!< Pointer to data font data array */
 } ImgDef_t;
 
 extern const char* ptrArcheryWel[];

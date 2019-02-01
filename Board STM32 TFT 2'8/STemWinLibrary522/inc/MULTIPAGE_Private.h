@@ -66,10 +66,10 @@ Purpose     : Private MULTIPAGE include
 *
 **********************************************************************
 */
-#define MULTIPAGE_STATE_ENABLED     (1 << 0)
-#define MULTIPAGE_STATE_SCROLLMODE  WIDGET_STATE_USER0
+#define MULTIPAGE_STATE_ENABLED (1 << 0)
+#define MULTIPAGE_STATE_SCROLLMODE WIDGET_STATE_USER0
 
-#define MULTIPAGE_NUMCOLORS         2
+#define MULTIPAGE_NUMCOLORS 2
 
 /*********************************************************************
 *
@@ -81,28 +81,28 @@ Purpose     : Private MULTIPAGE include
 // MULTIPAGE_PAGE
 //
 typedef struct {
-  WM_HWIN hWin;
-  U8      Status;
-  char    acText;
+    WM_HWIN hWin;
+    U8 Status;
+    char acText;
 } MULTIPAGE_PAGE;
 
 //
 // MULTIPAGE_SKIN_PRIVATE
 //
 typedef struct {
-  WIDGET_DRAW_ITEM_FUNC * pfDrawSkin;
+    WIDGET_DRAW_ITEM_FUNC* pfDrawSkin;
 } MULTIPAGE_SKIN_PRIVATE;
 
 //
 // MULTIPAGE_PROPS
 //
 typedef struct {
-  const GUI_FONT GUI_UNI_PTR  * pFont;
-  unsigned                      Align;
-  GUI_COLOR                     aBkColor[MULTIPAGE_NUMCOLORS];
-  GUI_COLOR                     aTextColor[MULTIPAGE_NUMCOLORS];
-  MULTIPAGE_SKIN_PRIVATE        SkinPrivate;
-  int                        (* pfGetTouchedPage)(MULTIPAGE_Handle hObj, int x, int y);
+    const GUI_FONT GUI_UNI_PTR* pFont;
+    unsigned Align;
+    GUI_COLOR aBkColor[MULTIPAGE_NUMCOLORS];
+    GUI_COLOR aTextColor[MULTIPAGE_NUMCOLORS];
+    MULTIPAGE_SKIN_PRIVATE SkinPrivate;
+    int (*pfGetTouchedPage)(MULTIPAGE_Handle hObj, int x, int y);
 } MULTIPAGE_PROPS;
 
 //
@@ -111,18 +111,18 @@ typedef struct {
 typedef struct MULTIPAGE_Obj MULTIPAGE_Obj;
 
 struct MULTIPAGE_Obj {
-  WIDGET                 Widget;
-  void                (* pfDrawTextItem)(MULTIPAGE_Obj * pObj, const char * pText, unsigned Index, const GUI_RECT * pRect, int x0, int xSize, int ColorIndex);
-  WM_HWIN                hClient;
-  GUI_ARRAY              hPageArray;
-  unsigned               Selection;
-  int                    ScrollState;
-  MULTIPAGE_PROPS        Props;
-  WIDGET_SKIN const    * pWidgetSkin;
-  MULTIPAGE_SKIN_PROPS   SkinProps;
-  #if GUI_DEBUG_LEVEL > 1
+    WIDGET Widget;
+    void (*pfDrawTextItem)(MULTIPAGE_Obj* pObj, const char* pText, unsigned Index, const GUI_RECT* pRect, int x0, int xSize, int ColorIndex);
+    WM_HWIN hClient;
+    GUI_ARRAY hPageArray;
+    unsigned Selection;
+    int ScrollState;
+    MULTIPAGE_PROPS Props;
+    WIDGET_SKIN const* pWidgetSkin;
+    MULTIPAGE_SKIN_PROPS SkinProps;
+#if GUI_DEBUG_LEVEL > 1
     U32 DebugId;
-  #endif  
+#endif
 };
 
 /*********************************************************************
@@ -132,16 +132,16 @@ struct MULTIPAGE_Obj {
 **********************************************************************
 */
 #if GUI_DEBUG_LEVEL >= GUI_DEBUG_LEVEL_CHECK_ALL
-  #define MULTIPAGE_INIT_ID(p) (p->DebugId = MULTIPAGE_ID)
+#define MULTIPAGE_INIT_ID(p) (p->DebugId = MULTIPAGE_ID)
 #else
-  #define MULTIPAGE_INIT_ID(p)
+#define MULTIPAGE_INIT_ID(p)
 #endif
 
 #if GUI_DEBUG_LEVEL >= GUI_DEBUG_LEVEL_CHECK_ALL
-  MULTIPAGE_Obj * MULTIPAGE_LockH(MULTIPAGE_Handle h);
-  #define MULTIPAGE_LOCK_H(h)   MULTIPAGE_LockH(h)
+MULTIPAGE_Obj* MULTIPAGE_LockH(MULTIPAGE_Handle h);
+#define MULTIPAGE_LOCK_H(h) MULTIPAGE_LockH(h)
 #else
-  #define MULTIPAGE_LOCK_H(h)   (MULTIPAGE_Obj *)GUI_LOCK_H(h)
+#define MULTIPAGE_LOCK_H(h) (MULTIPAGE_Obj*)GUI_LOCK_H(h)
 #endif
 
 /*********************************************************************
@@ -150,13 +150,13 @@ struct MULTIPAGE_Obj {
 *
 **********************************************************************
 */
-extern GUI_COLOR           MULTIPAGE__aEffectColor[2];
-extern MULTIPAGE_PROPS     MULTIPAGE__DefaultProps;
+extern GUI_COLOR MULTIPAGE__aEffectColor[2];
+extern MULTIPAGE_PROPS MULTIPAGE__DefaultProps;
 
-extern const WIDGET_SKIN   MULTIPAGE__SkinClassic;
-extern       WIDGET_SKIN   MULTIPAGE__Skin;
+extern const WIDGET_SKIN MULTIPAGE__SkinClassic;
+extern WIDGET_SKIN MULTIPAGE__Skin;
 
-extern WIDGET_SKIN const * MULTIPAGE__pSkinDefault;
+extern WIDGET_SKIN const* MULTIPAGE__pSkinDefault;
 
 /*********************************************************************
 *
@@ -165,12 +165,12 @@ extern WIDGET_SKIN const * MULTIPAGE__pSkinDefault;
 **********************************************************************
 */
 void MULTIPAGE__DeleteScrollbar(MULTIPAGE_Handle hObj);
-void MULTIPAGE__CalcBorderRect (MULTIPAGE_Obj * pObj, GUI_RECT * pRect);
-void MULTIPAGE__CalcClientRect (MULTIPAGE_Handle hObj, GUI_RECT * pRect);
-void MULTIPAGE__DrawTextItemH  (MULTIPAGE_Obj * pObj, const char * pText, unsigned Index, const GUI_RECT * pRect, int x0, int w, int ColorIndex);
-int  MULTIPAGE__GetPagePos     (MULTIPAGE_Handle hObj, unsigned Index);
-int  MULTIPAGE__GetPageSize    (MULTIPAGE_Handle hObj, unsigned Index);
-void MULTIPAGE__GetTextRect    (MULTIPAGE_Handle hObj, GUI_RECT * pRect);
+void MULTIPAGE__CalcBorderRect(MULTIPAGE_Obj* pObj, GUI_RECT* pRect);
+void MULTIPAGE__CalcClientRect(MULTIPAGE_Handle hObj, GUI_RECT* pRect);
+void MULTIPAGE__DrawTextItemH(MULTIPAGE_Obj* pObj, const char* pText, unsigned Index, const GUI_RECT* pRect, int x0, int w, int ColorIndex);
+int MULTIPAGE__GetPagePos(MULTIPAGE_Handle hObj, unsigned Index);
+int MULTIPAGE__GetPageSize(MULTIPAGE_Handle hObj, unsigned Index);
+void MULTIPAGE__GetTextRect(MULTIPAGE_Handle hObj, GUI_RECT* pRect);
 void MULTIPAGE__UpdatePositions(MULTIPAGE_Handle hObj);
 
 /*********************************************************************
@@ -181,7 +181,7 @@ void MULTIPAGE__UpdatePositions(MULTIPAGE_Handle hObj);
 */
 int MULTIPAGE_SKIN__GetTouchedPage(MULTIPAGE_Handle hObj, int TouchX, int TouchY);
 
-#endif  // GUI_WINSUPPORT
-#endif  // MULTIPAGE_PRIVATE_H
+#endif    // GUI_WINSUPPORT
+#endif    // MULTIPAGE_PRIVATE_H
 
 /*************************** End of file ****************************/

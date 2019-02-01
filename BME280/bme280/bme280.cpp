@@ -13,14 +13,12 @@
  ******************************************************************************
  */
 
-
 /* Includes ------------------------------------------------------------------*/
 #include "bme280.hpp"
 #include "stm32f10x_rcc.h"
 #include "stm32f10x_gpio.h"
 #include "board.hpp"
 #include <math.h>
-
 
 /**
  * @brief Static instances of a class
@@ -29,7 +27,6 @@ Bme* Bme::Bme280[Bme::BME280_MAX_COUNT];
 
 /// Natural logarithm
 static inline double ln(double x);
-
 
 /**
  * @brief Сonstructor
@@ -41,11 +38,11 @@ Bme::Bme(I2C_TypeDef* i2c, uint32_t clock, const Params_t* const params)
     port.GPIO_Speed = GPIO_Speed_50MHz;
 
     I2C_InitTypeDef init;
-    init.I2C_Mode = I2C_Mode_I2C;   // I2Cx mode is I2Cx
-    init.I2C_DutyCycle = I2C_DutyCycle_2;   // I2Cx fast mode duty cycle (WTF is this?)
-    init.I2C_OwnAddress1 = 1;   // This device address (7-bit or 10-bit)
-    init.I2C_Ack = I2C_Ack_Enable;   // Acknowledgment enable
-    init.I2C_AcknowledgedAddress = I2C_AcknowledgedAddress_7bit;   // choose 7-bit address for acknowledgment
+    init.I2C_Mode = I2C_Mode_I2C;                                   // I2Cx mode is I2Cx
+    init.I2C_DutyCycle = I2C_DutyCycle_2;                           // I2Cx fast mode duty cycle (WTF is this?)
+    init.I2C_OwnAddress1 = 1;                                       // This device address (7-bit or 10-bit)
+    init.I2C_Ack = I2C_Ack_Enable;                                  // Acknowledgment enable
+    init.I2C_AcknowledgedAddress = I2C_AcknowledgedAddress_7bit;    // choose 7-bit address for acknowledgment
     init.I2C_ClockSpeed = clock;
 
     I2Cx = nullptr;
@@ -61,7 +58,7 @@ Bme::Bme(I2C_TypeDef* i2c, uint32_t clock, const Params_t* const params)
         port.GPIO_Pin = I2C1_SDA_PIN | I2C1_SCL_PIN;
 
         /* Enable I2Cx clock */
-        RCC_APB1PeriphClockCmd(I2C1_CLOCK, ENABLE);   // Enable I2Cx clock
+        RCC_APB1PeriphClockCmd(I2C1_CLOCK, ENABLE);    // Enable I2Cx clock
         RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO, ENABLE);
     }
     else if(i2c == I2C2) {
@@ -75,7 +72,7 @@ Bme::Bme(I2C_TypeDef* i2c, uint32_t clock, const Params_t* const params)
         port.GPIO_Pin = I2C2_SDA_PIN | I2C2_SCL_PIN;
 
         /* Enable I2Cx clock */
-        RCC_APB1PeriphClockCmd(I2C2_CLOCK, ENABLE);   // Enable I2Cx clock
+        RCC_APB1PeriphClockCmd(I2C2_CLOCK, ENABLE);    // Enable I2Cx clock
         RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO, ENABLE);
     }
     else {
@@ -92,9 +89,9 @@ Bme::Bme(I2C_TypeDef* i2c, uint32_t clock, const Params_t* const params)
     Address = BME280_ADDR;
 
     /* Init I2Cx */
-    I2C_DeInit(I2Cx);        // De Init
-    I2C_Cmd(I2Cx, ENABLE);   // Enable I2Cx
-    I2C_Init(I2Cx, &init);   // Configure I2Cx
+    I2C_DeInit(I2Cx);         // De Init
+    I2C_Cmd(I2Cx, ENABLE);    // Enable I2Cx
+    I2C_Init(I2Cx, &init);    // Configure I2Cx
 
     int timeout = TIMEOUT;
     while(I2C_GetFlagStatus(I2Cx, I2C_FLAG_BUSY)) {
@@ -128,7 +125,6 @@ Bme::Bme(I2C_TypeDef* i2c, uint32_t clock, const Params_t* const params)
     }
 }
 
-
 /**
  * @brief Destructor
  */
@@ -142,14 +138,13 @@ Bme::~Bme()
         if(Bme280[BME1] == nullptr) {
             return;
         }
-        
+
         Bme280[BME1] = nullptr;
         port.GPIO_Pin = I2C1_SDA_PIN | I2C1_SCL_PIN;
-        
-        }
-        else if(I2Cx == I2C2) {
-            if(Bme280[BME2] == nullptr) {
-                return;
+    }
+    else if(I2Cx == I2C2) {
+        if(Bme280[BME2] == nullptr) {
+            return;
         }
         Bme280[BME2] = nullptr;
         port.GPIO_Pin = I2C2_SDA_PIN | I2C2_SCL_PIN;
@@ -159,35 +154,33 @@ Bme::~Bme()
     }
 
     GPIO_Init(I2C1_GPIO_PORT, &port);
-    I2C_DeInit(I2Cx);   // De Init
+    I2C_DeInit(I2Cx);    // De Init
 }
-
 
 /**
  * @brief Reset the I2C bus
  */
 void Bme::ResetI2C()
 {
-    I2C_DeInit(I2Cx);   // De Init
+    I2C_DeInit(I2Cx);    // De Init
 
     I2C_InitTypeDef init;
-    init.I2C_Mode = I2C_Mode_I2C;   // I2Cx mode is I2Cx
-    init.I2C_DutyCycle = I2C_DutyCycle_2;   // I2Cx fast mode duty cycle (WTF is this?)
-    init.I2C_OwnAddress1 = 1;   // This device address (7-bit or 10-bit)
-    init.I2C_Ack = I2C_Ack_Enable;   // Acknowledgment enable
-    init.I2C_AcknowledgedAddress = I2C_AcknowledgedAddress_7bit;   // choose 7-bit address for acknowledgment
+    init.I2C_Mode = I2C_Mode_I2C;                                   // I2Cx mode is I2Cx
+    init.I2C_DutyCycle = I2C_DutyCycle_2;                           // I2Cx fast mode duty cycle (WTF is this?)
+    init.I2C_OwnAddress1 = 1;                                       // This device address (7-bit or 10-bit)
+    init.I2C_Ack = I2C_Ack_Enable;                                  // Acknowledgment enable
+    init.I2C_AcknowledgedAddress = I2C_AcknowledgedAddress_7bit;    // choose 7-bit address for acknowledgment
     init.I2C_ClockSpeed = Clock;
 
-    I2C_Init(I2Cx, &init);   // Configure I2Cx
+    I2C_Init(I2Cx, &init);    // Configure I2Cx
 }
-
 
 /**
  * @brief Will perform the same sequence as power on reset
  */
 void Bme::Reset()
 {
-    WriteReg(BME280_SOFT_RESET_REG, 0xB6);   // Do software reset
+    WriteReg(BME280_SOFT_RESET_REG, 0xB6);    // Do software reset
     int timeout = TIMEOUT;
     while(timeout--) {
         const uint8_t status = ReadReg(BME280_STATUS);
@@ -197,7 +190,6 @@ void Bme::Reset()
     }
 }
 
-
 /**
  * @brief Read calibration of coefficients
  */
@@ -205,8 +197,8 @@ bool Bme::ReadCalibration()
 {
     Reset();
 
-    I2C_AcknowledgeConfig(I2Cx, ENABLE);   // Enable I2Cx acknowledge
-    I2C_GenerateSTART(I2Cx, ENABLE);   // Send START condition
+    I2C_AcknowledgeConfig(I2Cx, ENABLE);    // Enable I2Cx acknowledge
+    I2C_GenerateSTART(I2Cx, ENABLE);        // Send START condition
     int timeout = TIMEOUT;
     while(!I2C_CheckEvent(I2Cx, I2C_EVENT_MASTER_MODE_SELECT)) {
         timeout--;
@@ -215,16 +207,16 @@ bool Bme::ReadCalibration()
         }
     }
 
-    I2C_Send7bitAddress(I2Cx, Address, I2C_Direction_Transmitter);   // Send slave address
+    I2C_Send7bitAddress(I2Cx, Address, I2C_Direction_Transmitter);    // Send slave address
     timeout = TIMEOUT;
-    while(!I2C_CheckEvent(I2Cx, I2C_EVENT_MASTER_TRANSMITTER_MODE_SELECTED)) {   // Wait for EV6
+    while(!I2C_CheckEvent(I2Cx, I2C_EVENT_MASTER_TRANSMITTER_MODE_SELECTED)) {    // Wait for EV6
         timeout--;
         if(!(timeout)) {
             return false;
         }
     }
 
-    I2C_SendData(I2Cx, BME280_PROM_START_ADDR);   // Send calibration first register address
+    I2C_SendData(I2Cx, BME280_PROM_START_ADDR);    // Send calibration first register address
     timeout = TIMEOUT;
     while(!I2C_CheckEvent(I2Cx, I2C_EVENT_MASTER_BYTE_TRANSMITTED)) {
         timeout--;
@@ -233,16 +225,16 @@ bool Bme::ReadCalibration()
         }
     }
 
-    I2C_GenerateSTART(I2Cx, ENABLE);   // Send repeated START condition (aka Re-START)
+    I2C_GenerateSTART(I2Cx, ENABLE);    // Send repeated START condition (aka Re-START)
     timeout = TIMEOUT;
-    while(!I2C_CheckEvent(I2Cx, I2C_EVENT_MASTER_MODE_SELECT)) {   // Wait for EV5
+    while(!I2C_CheckEvent(I2Cx, I2C_EVENT_MASTER_MODE_SELECT)) {    // Wait for EV5
         timeout--;
         if(!(timeout)) {
             return false;
         }
     }
 
-    I2C_Send7bitAddress(I2Cx, Address, I2C_Direction_Receiver);   // Send slave address for READ
+    I2C_Send7bitAddress(I2Cx, Address, I2C_Direction_Receiver);    // Send slave address for READ
     timeout = TIMEOUT;
     while(!I2C_CheckEvent(I2Cx, I2C_EVENT_MASTER_RECEIVER_MODE_SELECTED)) {
         timeout--;
@@ -252,8 +244,7 @@ bool Bme::ReadCalibration()
     }
 
     uint8_t buf[BME280_PROM_DATA_LEN];
-    for(size_t i = 0; i < BME280_PROM_DATA_LEN; i++)
-    {
+    for(size_t i = 0; i < BME280_PROM_DATA_LEN; i++) {
         timeout = TIMEOUT;
         while(!I2C_CheckEvent(I2Cx, I2C_EVENT_MASTER_BYTE_RECEIVED)) {
             timeout--;
@@ -261,7 +252,7 @@ bool Bme::ReadCalibration()
                 return false;
             }
         }
-        buf[i] = I2C_ReceiveData(I2Cx);   // Receive byte
+        buf[i] = I2C_ReceiveData(I2Cx);    // Receive byte
     }
 
     I2C_AcknowledgeConfig(I2Cx, DISABLE);    // Disable I2Cx acknowledgment
@@ -286,17 +277,17 @@ bool Bme::ReadCalibration()
 
     /* Humidity */
     Calibration.H1 = ReadReg(BME280_HUM_CALIB_H1);
-    
+
     Calibration.H2 = (int16_t)(ReadReg(BME280_HUM_CALIB_H2_MSB) << 8 | ReadReg(BME280_HUM_CALIB_H2_LSB));
     Calibration.H3 = ReadReg(BME280_HUM_CALIB_H3);
-    
+
     const uint16_t h4 = ReadReg(BME280_HUM_CALIB_H4_MSB) << 8 | ReadReg(BME280_HUM_CALIB_H4_LSB);
     const uint16_t h5 = ReadReg(BME280_HUM_CALIB_H5_MSB) << 8 | ReadReg(BME280_HUM_CALIB_H5_LSB);
     Calibration.H4 = (int16_t)((h4 & 0x00FF) << 4 | (h4 & 0x0F00) >> 8);
     Calibration.H5 = (int16_t)(h5 >> 4);
-    
+
     Calibration.H6 = (int8_t)ReadReg(BME280_HUM_CALIB_H6);
-   
+
     /* */
     const uint8_t config = (Params.Standby << 5) | (Params.Filter << 2);
     WriteReg(BME280_CONFIG, config);
@@ -306,7 +297,7 @@ bool Bme::ReadCalibration()
 
     /* */
     if(Params.Mode == BME280_MODE_FORCED) {
-        Params.Mode = BME280_MODE_SLEEP;   // initial mode for forced is sleep
+        Params.Mode = BME280_MODE_SLEEP;    // initial mode for forced is sleep
     }
 
     const uint8_t ctrl = (Params.OversamplingTemperature << 5) | (Params.OversamplingPressure << 2) | (Params.Mode);
@@ -325,7 +316,6 @@ bool Bme::CreateClass() const
     return (I2Cx != nullptr);
 }
 
-
 /**
  * @brief For given air pressure and sea level air pressure returns the altitude 
  *  in meters i.e. altimeter function
@@ -335,27 +325,25 @@ bool Bme::CreateClass() const
  */
 int Bme::GetAltitude(uint32_t qfe, uint32_t qnh) const
 {
-    const double height = (1.0 - pow((double)qfe/(double)qnh, 1.0/5.25588)) / 2.25577e-5 * 100.0;
+    const double height = (1.0 - pow((double)qfe / (double)qnh, 1.0 / 5.25588)) / 2.25577e-5 * 100.0;
     return (int)(height / 100);
 }
-
 
 /**
  * @brief Natural logarithm
  */
 static inline double ln(double x)
 {
-    const double y = (x-1) / (x+1);
+    const double y = (x - 1) / (x + 1);
     const double y2 = y * y;
     double r = 0;
-    
-    for (int i = 33; i > 0; i -= 2) {
+
+    for(int i = 33; i > 0; i -= 2) {
         r = 1.0 / i + y2 * r;
     }
-    
+
     return (2 * y * r);
 }
-
 
 /**
  * @brief For given temperature and relative humidity returns the dew point 
@@ -370,10 +358,9 @@ float Bme::GetDewpoint(float hum, float temp) const
     const double x = 243.5 * (((17.67 * temp) / (243.5 + temp)) + ln(hum));
     const double y = 17.67 - (((17.67 * temp) / (243.5 + temp)) + ln(hum));
     const double dewpoint = x / y;
-    
+
     return dewpoint;
 }
-
 
 /**
  * @brief Fast integer Pa -> mmHg conversion (Pascals to millimeters of mercury)
@@ -382,9 +369,8 @@ float Bme::GetDewpoint(float hum, float temp) const
  */
 uint16_t Bme::Pa2mmHg(uint32_t ppa) const
 {
-   return ((ppa * 75) / 10000);
+    return ((ppa * 75) / 10000);
 }
-
 
 /**
  * @brief For given altitude converts the air pressure to sea level air pressure.
@@ -396,10 +382,9 @@ double Bme::Qfe2Qnh(uint32_t qfe, int32_t alt) const
 {
     // pow(a,b) - возведение  а в степень b
     const double height = pow((double)(1.0 - 2.25577e-5 * alt), (double)(-5.25588));
-    
+
     return ((double)qfe * height);
 }
-
 
 /**
  * @brief Returns the QNH pressure(давление на уровне моря в точке измерения)
@@ -414,12 +399,11 @@ bool Bme::GetQnhPressure(uint32_t* const ppa, int32_t alt)
     if(ReadRawPressure(&raw_pres)) {
         const double pressure = Qfe2Qnh(CalcPressure(raw_pres), alt);
         *ppa = (uint32_t)pressure;
-        
+
         return true;
     }
     return false;
 }
-
 
 /**
  * @brief Returns the QFE pressure(давление измеренное в точке измерения)
@@ -433,12 +417,11 @@ bool Bme::GetQfePressure(uint32_t* const ppa)
     if(ReadRawPressure(&raw_pres)) {
         const uint32_t pressure = CalcPressure(raw_pres);
         *ppa = pressure;
-        
+
         return true;
     }
     return false;
 }
-
 
 /**
  * @brief Returns the real humidity.
@@ -452,13 +435,12 @@ bool Bme::GetHumidity(float* const humidity)
     if(ReadRawHumidity(&raw_hum)) {
         const float cal_hum = CalcHumidity(raw_hum);
         *humidity = cal_hum / 1024;
-        
+
         return true;
     }
-    
+
     return false;
 }
-
 
 /**
  * @brief Get fine temperature
@@ -470,12 +452,14 @@ int32_t Bme::GetFineTemperature()
     ReadRawTemperature(&raw_temp);
     const int32_t var1 = ((((raw_temp >> 3) - ((int32_t)Calibration.T1 << 1))) * (int32_t)Calibration.T2) >> 11;
 
-    const int32_t var2 = (((((raw_temp >> 4) - (int32_t)Calibration.T1) * 
-                     ((raw_temp >> 4) - (int32_t)Calibration.T1)) >> 12) * (int32_t)Calibration.T3) >> 14;
+    const int32_t var2 = (((((raw_temp >> 4) - (int32_t)Calibration.T1) *
+                               ((raw_temp >> 4) - (int32_t)Calibration.T1)) >>
+                              12) *
+                             (int32_t)Calibration.T3) >>
+                         14;
 
     return (var1 + var2);
 }
-
 
 /**
  * @brief Returns the real temperature.
@@ -494,7 +478,6 @@ bool Bme::GetTemperature(float* const temperature)
     return false;
 }
 
-
 /**
  * @brief Returns the RAW humidity.
  * @param [out] raw_hum - the RAW humidity
@@ -505,15 +488,14 @@ bool Bme::ReadRawHumidity(uint32_t* raw_hum)
 {
     const uint8_t hum_msb = ReadReg(BME280_HUM_MSB);
     const uint8_t hum_lsb = ReadReg(BME280_HUM_LSB);
-    
+
     if((hum_msb == 0x80) && (hum_lsb == 0x00)) {
         return false;
     }
-    
+
     *raw_hum = (uint32_t)((hum_msb << 8) | (hum_lsb));
     return true;
 }
-
 
 /**
  * @brief Returns the RAW pressure.
@@ -535,7 +517,6 @@ bool Bme::ReadRawPressure(int32_t* raw_pres)
     return true;
 }
 
-
 /**
  * @brief Returns the RAW temperature.
  * @param [out] raw_temp - the RAW temperature
@@ -556,7 +537,6 @@ bool Bme::ReadRawTemperature(int32_t* raw_temp)
     return true;
 }
 
-
 /**
  * @brief Calculating humidity
  * @param [in] raw_hum - raw humidity
@@ -566,18 +546,12 @@ uint32_t Bme::CalcHumidity(uint32_t raw_hum)
 {
     const int32_t fine_temp = GetFineTemperature();
 
-    int32_t v_x1 = fine_temp - (int32_t) 76800;
-    v_x1 = ((((raw_hum << 14) - ((int32_t) Calibration.H4 << 20)
-                - ((int32_t) Calibration.H5 * v_x1)) + (int32_t) 16384) >> 15)
-                * (((((((v_x1 * (int32_t) Calibration.H6) >> 10)
-                * (((v_x1 * (int32_t) Calibration.H3) >> 11)
-                + (int32_t) 32768)) >> 10) + (int32_t) 2097152)
-                * (int32_t) Calibration.H2 + 8192) >> 14);
-    
-    v_x1 = v_x1 - (((((v_x1 >> 15) * (v_x1 >> 15)) >> 7) * (int32_t) Calibration.H1) >> 4);
-    return (v_x1 >> 12);
-}      
+    int32_t v_x1 = fine_temp - (int32_t)76800;
+    v_x1 = ((((raw_hum << 14) - ((int32_t)Calibration.H4 << 20) - ((int32_t)Calibration.H5 * v_x1)) + (int32_t)16384) >> 15) * (((((((v_x1 * (int32_t)Calibration.H6) >> 10) * (((v_x1 * (int32_t)Calibration.H3) >> 11) + (int32_t)32768)) >> 10) + (int32_t)2097152) * (int32_t)Calibration.H2 + 8192) >> 14);
 
+    v_x1 = v_x1 - (((((v_x1 >> 15) * (v_x1 >> 15)) >> 7) * (int32_t)Calibration.H1) >> 4);
+    return (v_x1 >> 12);
+}
 
 /**
  * @brief Calculating pressure
@@ -592,23 +566,21 @@ uint32_t Bme::CalcPressure(int32_t raw_pres)
     int64_t var2 = var1 * var1 * (int64_t)Calibration.P6;
     var2 = var2 + ((var1 * (int64_t)Calibration.P5) << 17);
     var2 = var2 + (((int64_t)Calibration.P4) << 35);
-    var1 = ((var1 * var1 * (int64_t)Calibration.P3) >> 8)
-            + ((var1 * (int64_t)Calibration.P2) << 12);
+    var1 = ((var1 * var1 * (int64_t)Calibration.P3) >> 8) + ((var1 * (int64_t)Calibration.P2) << 12);
     var1 = (((((int64_t)1) << 47) + var1)) * ((int64_t)Calibration.P1) >> 33;
 
-    if (var1 == 0) {
-        return 0;  // avoid exception caused by division by zero
+    if(var1 == 0) {
+        return 0;    // avoid exception caused by division by zero
     }
 
     int64_t pres = 1048576 - raw_pres;
     pres = (((pres << 31) - var2) * 3125) / var1;
-    var1 = ((int64_t) Calibration.P9 * (pres >> 13) * (pres >> 13)) >> 25;
-    var2 = ((int64_t) Calibration.P8 * pres) >> 19;
+    var1 = ((int64_t)Calibration.P9 * (pres >> 13) * (pres >> 13)) >> 25;
+    var2 = ((int64_t)Calibration.P8 * pres) >> 19;
 
-    pres = ((pres + var1 + var2) >> 8) + ((int64_t) Calibration.P7 << 4);
+    pres = ((pres + var1 + var2) >> 8) + ((int64_t)Calibration.P7 << 4);
     return (pres / 256);
 }
-
 
 /**
  * @brief Calculating temperature
@@ -619,13 +591,15 @@ int32_t Bme::CalcTemperature(int32_t raw_temp) const
 {
     const int32_t var1 = ((((raw_temp >> 3) - ((int32_t)Calibration.T1 << 1))) * (int32_t)Calibration.T2) >> 11;
 
-    const int32_t var2 = (((((raw_temp >> 4) - (int32_t)Calibration.T1) * 
-                     ((raw_temp >> 4) - (int32_t)Calibration.T1)) >> 12) * (int32_t)Calibration.T3) >> 14;
+    const int32_t var2 = (((((raw_temp >> 4) - (int32_t)Calibration.T1) *
+                               ((raw_temp >> 4) - (int32_t)Calibration.T1)) >>
+                              12) *
+                             (int32_t)Calibration.T3) >>
+                         14;
 
     int32_t fine_temp = var1 + var2;
     return ((fine_temp * 5 + 128) >> 8);
 }
-
 
 /**
  * @brief Write command
@@ -644,8 +618,8 @@ uint8_t Bme::WriteReg(uint8_t reg, uint8_t value)
             return 0;
         }
     }
-   
-    I2C_Send7bitAddress(I2Cx, Address, I2C_Direction_Transmitter);   // Send slave address
+
+    I2C_Send7bitAddress(I2Cx, Address, I2C_Direction_Transmitter);    // Send slave address
     timeout = TIMEOUT;
     while(!I2C_CheckEvent(I2Cx, I2C_EVENT_MASTER_TRANSMITTER_MODE_SELECTED)) {
         timeout--;
@@ -653,8 +627,8 @@ uint8_t Bme::WriteReg(uint8_t reg, uint8_t value)
             return 0;
         }
     }
-   
-    I2C_SendData(I2Cx, reg);   // Send register address
+
+    I2C_SendData(I2Cx, reg);    // Send register address
     timeout = TIMEOUT;
     while(!I2C_CheckEvent(I2Cx, I2C_EVENT_MASTER_BYTE_TRANSMITTED)) {
         timeout--;
@@ -662,11 +636,11 @@ uint8_t Bme::WriteReg(uint8_t reg, uint8_t value)
             return 0;
         }
     }
-   
-    I2C_SendData(I2Cx, value);   // Send register value
+
+    I2C_SendData(I2Cx, value);    // Send register value
     timeout = TIMEOUT;
     while(!I2C_CheckEvent(I2Cx, I2C_EVENT_MASTER_BYTE_TRANSMITTED)) {
-    timeout--;
+        timeout--;
         if(!(timeout)) {
             return 0;
         }
@@ -674,7 +648,6 @@ uint8_t Bme::WriteReg(uint8_t reg, uint8_t value)
     I2C_GenerateSTOP(I2Cx, ENABLE);
     return value;
 }
-
 
 /**
  * @brief Read register
@@ -687,13 +660,13 @@ uint8_t Bme::ReadReg(uint8_t reg)
     I2C_GenerateSTART(I2Cx, ENABLE);
     timeout = TIMEOUT;
     while(!I2C_CheckEvent(I2Cx, I2C_EVENT_MASTER_MODE_SELECT)) {
-    timeout--;
+        timeout--;
         if(!(timeout)) {
             return 0;
         }
     }
 
-    I2C_Send7bitAddress(I2Cx, Address, I2C_Direction_Transmitter);   // Send slave address
+    I2C_Send7bitAddress(I2Cx, Address, I2C_Direction_Transmitter);    // Send slave address
     timeout = TIMEOUT;
     while(!I2C_CheckEvent(I2Cx, I2C_EVENT_MASTER_TRANSMITTER_MODE_SELECTED)) {
         timeout--;
@@ -702,7 +675,7 @@ uint8_t Bme::ReadReg(uint8_t reg)
         }
     }
 
-    I2C_SendData(I2Cx, reg);   // Send register address
+    I2C_SendData(I2Cx, reg);    // Send register address
     timeout = TIMEOUT;
     while(!I2C_CheckEvent(I2Cx, I2C_EVENT_MASTER_BYTE_TRANSMITTED)) {
         timeout--;
@@ -711,7 +684,7 @@ uint8_t Bme::ReadReg(uint8_t reg)
         }
     }
 
-    I2C_GenerateSTART(I2Cx, ENABLE);   // Send repeated START condition (aka Re-START)
+    I2C_GenerateSTART(I2Cx, ENABLE);    // Send repeated START condition (aka Re-START)
     timeout = TIMEOUT;
     while(!I2C_CheckEvent(I2Cx, I2C_EVENT_MASTER_MODE_SELECT)) {
         timeout--;
@@ -720,7 +693,7 @@ uint8_t Bme::ReadReg(uint8_t reg)
         }
     }
 
-    I2C_Send7bitAddress(I2Cx, Address, I2C_Direction_Receiver);   // Send slave address for READ
+    I2C_Send7bitAddress(I2Cx, Address, I2C_Direction_Receiver);    // Send slave address for READ
     timeout = TIMEOUT;
     while(!I2C_CheckEvent(I2Cx, I2C_EVENT_MASTER_RECEIVER_MODE_SELECTED)) {
         timeout--;
@@ -736,8 +709,8 @@ uint8_t Bme::ReadReg(uint8_t reg)
         }
     }
 
-    const uint8_t value = I2C_ReceiveData(I2Cx);   // Receive
-    I2C_AcknowledgeConfig(I2Cx, DISABLE);   // Disable I2Cx acknowledgment
-    I2C_GenerateSTOP(I2Cx, ENABLE);   // Send STOP condition
+    const uint8_t value = I2C_ReceiveData(I2Cx);    // Receive
+    I2C_AcknowledgeConfig(I2Cx, DISABLE);           // Disable I2Cx acknowledgment
+    I2C_GenerateSTOP(I2Cx, ENABLE);                 // Send STOP condition
     return value;
 }

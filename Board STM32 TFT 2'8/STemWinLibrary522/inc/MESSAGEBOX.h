@@ -59,10 +59,10 @@ Purpose     : Message box interface
 #if GUI_WINSUPPORT
 
 #if defined(__cplusplus)
-extern "C" {     /* Make sure we have C-declarations in C++ programs */
+extern "C" { /* Make sure we have C-declarations in C++ programs */
 #endif
 
-WM_HWIN MESSAGEBOX_Create(const char * sMessage, const char * sCaption, int Flags);
+WM_HWIN MESSAGEBOX_Create(const char* sMessage, const char* sCaption, int Flags);
 
 /*********************************************************************
 *
@@ -71,10 +71,10 @@ WM_HWIN MESSAGEBOX_Create(const char * sMessage, const char * sCaption, int Flag
 * Do not call it directly ! It is only to be used from within an
 * overwritten callback.
 */
-void MESSAGEBOX_Callback(WM_MESSAGE * pMsg);
+void MESSAGEBOX_Callback(WM_MESSAGE* pMsg);
 
 #if defined(__cplusplus)
-  }
+}
 #endif
 
 #endif /* GUI_WINSUPPORT */

@@ -62,9 +62,9 @@ Purpose     : Private header file for GUI_BMP... functions
 *
 **********************************************************************
 */
-#define BI_RGB       0
-#define BI_RLE8      1
-#define BI_RLE4      2
+#define BI_RGB 0
+#define BI_RLE8 1
+#define BI_RLE4 2
 #define BI_BITFIELDS 3
 
 /*********************************************************************
@@ -77,16 +77,16 @@ Purpose     : Private header file for GUI_BMP... functions
 // Default parameter structure for reading data from memory
 //
 typedef struct {
-  const U8 * pFileData;
+    const U8* pFileData;
 } GUI_BMP_PARAM;
 
 //
 // Context structure for getting stdio input
 //
 typedef struct {
-  GUI_GET_DATA_FUNC * pfGetData; // Function pointer
-  U32                 Off;       // Data pointer
-  void              * pParam;    // Parameter pointer passed to function
+    GUI_GET_DATA_FUNC* pfGetData;    // Function pointer
+    U32 Off;                         // Data pointer
+    void* pParam;                    // Parameter pointer passed to function
 } GUI_BMP_CONTEXT;
 
 //
@@ -94,18 +94,18 @@ typedef struct {
 // functions _DrawLine_RGB() and _DrawLine_ARGB() (in GUI_BMP_EnableAlpha.c).
 //
 typedef struct {
-  const U8            * pSrc;           // Pointer to data
-  I32                   xSrc;           // Used to read data
-  int                   ySrc;           // Used to read data
-  I32                   xSize;
-  U32                   BytesPerPixel;
-  tLCDDEV_Color2Index * pfColor2Index;
-  tLCDDEV_Index2Color * pfIndex2Color;  // Used to manage bitfield conversion
-  LCD_API_NEXT_PIXEL  * pNextPixel_API;
-  int                   x0;             // Used to draw data
-  int                   y0;             // Used to draw data
-  int                   x1;             // Used to draw data
-  int                   y1;             // Used to draw data
+    const U8* pSrc;    // Pointer to data
+    I32 xSrc;          // Used to read data
+    int ySrc;          // Used to read data
+    I32 xSize;
+    U32 BytesPerPixel;
+    tLCDDEV_Color2Index* pfColor2Index;
+    tLCDDEV_Index2Color* pfIndex2Color;    // Used to manage bitfield conversion
+    LCD_API_NEXT_PIXEL* pNextPixel_API;
+    int x0;    // Used to draw data
+    int y0;    // Used to draw data
+    int x1;    // Used to draw data
+    int y1;    // Used to draw data
 } GUI_DRAWLINE_INFO;
 
 /*********************************************************************
@@ -114,10 +114,10 @@ typedef struct {
 *
 **********************************************************************
 */
-int GUI_BMP__GetData    (void * p, const U8 ** ppData, unsigned NumBytesReq, U32 Off);
-int GUI_BMP__Init       (GUI_BMP_CONTEXT * pContext, I32 * pWidth, I32 * pHeight, U16 * pBitCount, int * pNumColors, int * pCompression);
-int GUI_BMP__ReadData   (GUI_BMP_CONTEXT * pContext, int NumBytes, const U8 ** ppData, unsigned StartOfFile);
-int GUI_BMP__ReadPalette(GUI_BMP_CONTEXT * pContext, int NumColors);
+int GUI_BMP__GetData(void* p, const U8** ppData, unsigned NumBytesReq, U32 Off);
+int GUI_BMP__Init(GUI_BMP_CONTEXT* pContext, I32* pWidth, I32* pHeight, U16* pBitCount, int* pNumColors, int* pCompression);
+int GUI_BMP__ReadData(GUI_BMP_CONTEXT* pContext, int NumBytes, const U8** ppData, unsigned StartOfFile);
+int GUI_BMP__ReadPalette(GUI_BMP_CONTEXT* pContext, int NumColors);
 
 #endif /* GUI_BMP_PRIVATE_H */
 

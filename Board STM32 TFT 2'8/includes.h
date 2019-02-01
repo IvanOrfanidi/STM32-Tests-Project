@@ -3,50 +3,47 @@
 #define __INCLUDES_H
 
 // Полезные макросы для уточнения намерений в коде
-#define PUBLIC  __IO
+#define PUBLIC __IO
 #define PRIVATE static
 #define FORWARD static
 #define _EXTERN extern
 
 // Правило одного определения
 #ifdef __ALLOCATE_NOW__
-  #define GLOBAL    PUBLIC
-  #define _EQU(x)	=(x)
+#define GLOBAL PUBLIC
+#define _EQU(x) = (x)
 #else
-  #define GLOBAL    _EXTERN
-  #define _EQU(x)
+#define GLOBAL _EXTERN
+#define _EQU(x)
 #endif
 
 // В описании функции могут быть определены дополнительные коды ошибок (#define)
-#define OK              0
-#define FAIL            -1
+#define OK 0
+#define FAIL -1
 
 // Стандартные макросы:
-#define BIT(bit)          (1UL << (bit))
+#define BIT(bit) (1UL << (bit))
 
-#define SETBIT(Val,bit)   ((Val) |= BIT(bit))
-#define CLRBIT(Val,bit)   ((Val) &= ~BIT(bit))
-#define XORBIT(Val,bit)   ((Val) ^= BIT(bit))
-#define TSTBIT(Val,bit)   ((Val) & BIT(bit))
+#define SETBIT(Val, bit) ((Val) |= BIT(bit))
+#define CLRBIT(Val, bit) ((Val) &= ~BIT(bit))
+#define XORBIT(Val, bit) ((Val) ^= BIT(bit))
+#define TSTBIT(Val, bit) ((Val)&BIT(bit))
 
-
-#define SLEEP_MS_10000  10000
-#define SLEEP_MS_5000   5000
-#define SLEEP_MS_4000   4000
-#define SLEEP_MS_3000   3000
-#define SLEEP_MS_2500   2500
-#define SLEEP_MS_2000   2000
-#define SLEEP_MS_1000   1000
-#define SLEEP_MS_500    500
-#define SLEEP_MS_250    250
-#define SLEEP_MS_200    200
-#define SLEEP_MS_100    100
-#define SLEEP_MS_50     50
-#define SLEEP_MS_10     10
-#define SLEEP_MS_5      5
-#define SLEEP_MS_1      1
-
-
+#define SLEEP_MS_10000 10000
+#define SLEEP_MS_5000 5000
+#define SLEEP_MS_4000 4000
+#define SLEEP_MS_3000 3000
+#define SLEEP_MS_2500 2500
+#define SLEEP_MS_2000 2000
+#define SLEEP_MS_1000 1000
+#define SLEEP_MS_500 500
+#define SLEEP_MS_250 250
+#define SLEEP_MS_200 200
+#define SLEEP_MS_100 100
+#define SLEEP_MS_50 50
+#define SLEEP_MS_10 10
+#define SLEEP_MS_5 5
+#define SLEEP_MS_1 1
 
 #include <stdio.h>
 #include <string.h>
@@ -72,7 +69,6 @@
 #include "calendar.h"
 //#include "uart.h"
 
-
 // SD-Card //
 #include "SDCard\sdcard.h"
 #include "fatfs\integer.h"
@@ -80,32 +76,28 @@
 #include "fatfs\diskio.h"
 #include "sdcard_general.h"
 
-
-
 // LCD //
 #include "lcd_general.h"
 #include "fsmc_sram.h"
 #include "lcd_dis24.h"
 #include "ili9320.h"
 
-#include  "..\uCGUIConfig\LCDConf.h"
+#include "..\uCGUIConfig\LCDConf.h"
 
-typedef  __packed struct{
-  char strTemperatur[6];
-  float dTemperatur;
-  _Bool bDataValid;
+typedef __packed struct {
+    char strTemperatur[6];
+    float dTemperatur;
+    _Bool bDataValid;
 } tTEMPERATUR_DATA;
 
-
-GLOBAL xQueueHandle xQueueOnewireDataToSdcard; // Очередь данных о температуре.
-
+GLOBAL xQueueHandle xQueueOnewireDataToSdcard;    // Очередь данных о температуре.
 
 // semaphore and mutex
 GLOBAL xSemaphoreHandle mGPS_DATA_ARRIVAL;
 //**********************//
 
-GLOBAL  xTaskHandle CurrentTaskHandle;  //ID текущего процесса(Debug)
-GLOBAL  char *pNameCurrentTask;          //Имя текущего процесса(Debug)
+GLOBAL xTaskHandle CurrentTaskHandle;    //ID текущего процесса(Debug)
+GLOBAL char* pNameCurrentTask;           //Имя текущего процесса(Debug)
 
 /*
 // buffer

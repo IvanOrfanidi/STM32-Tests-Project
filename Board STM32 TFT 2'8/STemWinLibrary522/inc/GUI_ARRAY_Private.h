@@ -66,8 +66,8 @@ Purpose     : Private array handling routines, should be used only
 **********************************************************************
 */
 typedef struct {
-  U16 NumItems;
-  WM_HMEM haHandle;   /* Handle to buffer holding handles */
+    U16 NumItems;
+    WM_HMEM haHandle; /* Handle to buffer holding handles */
 } GUI_ARRAY_OBJ;
 
 /*********************************************************************
@@ -76,12 +76,11 @@ typedef struct {
 *
 **********************************************************************
 */
-WM_HMEM GUI_ARRAY__GethItem      (const GUI_ARRAY_OBJ * pThis, unsigned int Index);
-void  * GUI_ARRAY__GetpItem      (const GUI_ARRAY_OBJ * pThis, unsigned int Index);
-void  * GUI_ARRAY__GetpItemLocked(const GUI_ARRAY_OBJ * pThis, unsigned int Index);
-int     GUI_ARRAY__SethItem      (      GUI_ARRAY_OBJ * pThis, unsigned int Index, WM_HMEM hItem);
+WM_HMEM GUI_ARRAY__GethItem(const GUI_ARRAY_OBJ* pThis, unsigned int Index);
+void* GUI_ARRAY__GetpItem(const GUI_ARRAY_OBJ* pThis, unsigned int Index);
+void* GUI_ARRAY__GetpItemLocked(const GUI_ARRAY_OBJ* pThis, unsigned int Index);
+int GUI_ARRAY__SethItem(GUI_ARRAY_OBJ* pThis, unsigned int Index, WM_HMEM hItem);
 
 #endif /* GUI_WINSUPPORT */
 
 #endif /* GUI_ARRAY_PRIVATE_H */
-

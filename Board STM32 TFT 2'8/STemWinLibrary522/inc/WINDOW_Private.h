@@ -67,5 +67,5 @@ Purpose     : WINDOW private header file
 
 extern GUI_COLOR WINDOW__DefaultBkColor;
 
-#endif   /* GUI_WINSUPPORT */
-#endif   /* WINDOW_PRIVATE_H */
+#endif /* GUI_WINSUPPORT */
+#endif /* WINDOW_PRIVATE_H */

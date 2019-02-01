@@ -57,10 +57,9 @@ Purpose     : shows Cursor-API
   ******************************************************************************
   */
 
-
 #include "GUIDEMO.h"
 
-#if (SHOW_GUIDEMO_CURSOR && GUI_SUPPORT_CURSOR && GUI_SUPPORT_TOUCH)
+#if(SHOW_GUIDEMO_CURSOR && GUI_SUPPORT_CURSOR && GUI_SUPPORT_TOUCH)
 
 /*********************************************************************
 *
@@ -69,10 +68,10 @@ Purpose     : shows Cursor-API
 **********************************************************************
 */
 
-#define countof(Obj) (sizeof(Obj)/sizeof(Obj[0]))
+#define countof(Obj) (sizeof(Obj) / sizeof(Obj[0]))
 
-#define NUM_CURSORS   3
-#define XMAX         28
+#define NUM_CURSORS 3
+#define XMAX 28
 
 /*********************************************************************
 *
@@ -82,13 +81,13 @@ Purpose     : shows Cursor-API
 */
 
 typedef struct {
-  const GUI_CURSOR* pCursor;
-  char              Size;
+    const GUI_CURSOR* pCursor;
+    char Size;
 } CURSOR_INFO;
 
 typedef struct {
-  const CURSOR_INFO aCursor[NUM_CURSORS];
-  const char*       pType;
+    const CURSOR_INFO aCursor[NUM_CURSORS];
+    const char* pType;
 } CURSORTYPE_INFO;
 
 /*********************************************************************
@@ -99,48 +98,59 @@ typedef struct {
 */
 
 static const CURSORTYPE_INFO _CursorArrow = {
-  &GUI_CursorArrowS, 'S',
-  &GUI_CursorArrowM, 'M',
-  #if (NUM_CURSORS == 3)
-    &GUI_CursorArrowL, 'L',
+    &GUI_CursorArrowS,
+    'S',
+    &GUI_CursorArrowM,
+    'M',
+#if(NUM_CURSORS == 3)
+    &GUI_CursorArrowL,
+    'L',
     "arrow cursors"
-  #else
+#else
     "arrow\ncursors"
-  #endif
+#endif
 };
 
-
 static const CURSORTYPE_INFO _CursorArrowI = {
-  &GUI_CursorArrowSI, 'S',
-  &GUI_CursorArrowMI, 'M',
-  #if (NUM_CURSORS == 3)
-    &GUI_CursorArrowLI, 'L',
+    &GUI_CursorArrowSI,
+    'S',
+    &GUI_CursorArrowMI,
+    'M',
+#if(NUM_CURSORS == 3)
+    &GUI_CursorArrowLI,
+    'L',
     "inverted arrow cursors"
-  #else
+#else
     "inverted\narrow cursors"
-  #endif
+#endif
 };
 
 static const CURSORTYPE_INFO _CursorCross = {
-  &GUI_CursorCrossS, 'S',
-  &GUI_CursorCrossM, 'M',
-  #if (NUM_CURSORS == 3)
-    &GUI_CursorCrossL, 'L',
+    &GUI_CursorCrossS,
+    'S',
+    &GUI_CursorCrossM,
+    'M',
+#if(NUM_CURSORS == 3)
+    &GUI_CursorCrossL,
+    'L',
     "cross cursors"
-  #else
+#else
     "cross\ncursors"
-  #endif
+#endif
 };
 
 static const CURSORTYPE_INFO _CursorCrossI = {
-  &GUI_CursorCrossSI, 'S',
-  &GUI_CursorCrossMI, 'M',
-  #if (NUM_CURSORS == 3)
-    &GUI_CursorCrossLI, 'L',
+    &GUI_CursorCrossSI,
+    'S',
+    &GUI_CursorCrossMI,
+    'M',
+#if(NUM_CURSORS == 3)
+    &GUI_CursorCrossLI,
+    'L',
     "inverted cross cursors"
-  #else
+#else
     "inverted\ncross cursors"
-  #endif
+#endif
 };
 
 /*********************************************************************
@@ -153,61 +163,63 @@ static const CURSORTYPE_INFO _CursorCrossI = {
 *
 *       _ShowCursorType
 */
-static void _ShowCursorType(const CURSORTYPE_INFO* pCursorType, int x0, int y0) {
-  const GUI_CURSOR * pCursor;
-  char Char;
-  int i, x, y;
-  int yMax = 0;
-  int yHot = 0;
+static void _ShowCursorType(const CURSORTYPE_INFO* pCursorType, int x0, int y0)
+{
+    const GUI_CURSOR* pCursor;
+    char Char;
+    int i, x, y;
+    int yMax = 0;
+    int yHot = 0;
 
-  //
-  // Calculate height and width of biggest cursor
-  //
-  for (i = 0; i < NUM_CURSORS; i++) {
-    pCursor = pCursorType->aCursor[i].pCursor;
-    if (pCursor->pBitmap->YSize > yMax) {
-      yMax = pCursor->pBitmap->YSize;
-      yHot = pCursor->yHot;
+    //
+    // Calculate height and width of biggest cursor
+    //
+    for(i = 0; i < NUM_CURSORS; i++) {
+        pCursor = pCursorType->aCursor[i].pCursor;
+        if(pCursor->pBitmap->YSize > yMax) {
+            yMax = pCursor->pBitmap->YSize;
+            yHot = pCursor->yHot;
+        }
     }
-  }
-  GUI_SetFont(&GUI_FontRounded16);
-  #if (NUM_CURSORS != 3)
+    GUI_SetFont(&GUI_FontRounded16);
+#if(NUM_CURSORS != 3)
     GUI_SetLBorder(x0);
-  #endif
-  GUI_DispStringAt(pCursorType->pType, x0, y0);
-  y0 += GUI_GetFontDistY() + 1;
-  GUI_SetFont(&GUI_Font13B_ASCII);
-  for (i = 0; i < NUM_CURSORS; i++) {
-    pCursor = pCursorType->aCursor[i].pCursor;
-    Char    = pCursorType->aCursor[i].Size;
-    y = y0 + yHot - pCursor->yHot;
-    x = ((pCursor->pBitmap->XSize - GUI_GetCharDistX(Char)) >> 1);
-    GUI_DrawBitmap(pCursor->pBitmap, x0 + XMAX * i + 5,     y);
-    GUI_DispCharAt(Char,             x0 + XMAX * i + 5 + x, y0 + yMax + 2);
-  }
+#endif
+    GUI_DispStringAt(pCursorType->pType, x0, y0);
+    y0 += GUI_GetFontDistY() + 1;
+    GUI_SetFont(&GUI_Font13B_ASCII);
+    for(i = 0; i < NUM_CURSORS; i++) {
+        pCursor = pCursorType->aCursor[i].pCursor;
+        Char = pCursorType->aCursor[i].Size;
+        y = y0 + yHot - pCursor->yHot;
+        x = ((pCursor->pBitmap->XSize - GUI_GetCharDistX(Char)) >> 1);
+        GUI_DrawBitmap(pCursor->pBitmap, x0 + XMAX * i + 5, y);
+        GUI_DispCharAt(Char, x0 + XMAX * i + 5 + x, y0 + yMax + 2);
+    }
 }
 
 /*********************************************************************
 *
 *       _DispCursor
 */
-static void _DispCursor(void) {
-  int y0, dx, dy, xSize;
+static void _DispCursor(void)
+{
+    int y0, dx, dy, xSize;
 
-  xSize = LCD_GetXSize();
-  GUI_SetTextMode(GUI_TM_TRANS);
-  GUI_SetFont(&GUI_FontRounded22);
-  GUI_DispStringHCenterAt("Available cursors", xSize >> 1, 12);
-  //
-  // Display the cursors
-  //
-  y0 = 68;
-  dx = (int)(xSize / 2.5);
-  dy = 75;
-  _ShowCursorType(&_CursorArrow,    5, y0);
-  _ShowCursorType(&_CursorCross,    5, y0 + dy);
-  _ShowCursorType(&_CursorArrowI,  dx, y0);
-  _ShowCursorType(&_CursorCrossI,  dx, y0 + dy);
+    xSize = LCD_GetXSize();
+    GUI_SetTextMode(GUI_TM_TRANS);
+    GUI_SetFont(&GUI_FontRounded22);
+    GUI_DispStringHCenterAt("Available cursors", xSize >> 1, 12);
+    //
+    // Display the cursors
+    //
+    y0 = 68;
+    dx = (int)(xSize / 2.5);
+    dy = 75;
+    _ShowCursorType(&_CursorArrow, 5, y0);
+    _ShowCursorType(&_CursorCross, 5, y0 + dy);
+    _ShowCursorType(&_CursorArrowI, dx, y0);
+    _ShowCursorType(&_CursorCrossI, dx, y0 + dy);
 }
 
 /*********************************************************************
@@ -220,17 +232,18 @@ static void _DispCursor(void) {
 *
 *       GUIDEMO_Cursor
 */
-void GUIDEMO_Cursor(void) {
-  GUIDEMO_ShowIntro("Cursor",
-                    "STemWin supports\n"
-                    "software cursor");
-  GUIDEMO_DrawBk(1);
-  GUI_CURSOR_Hide();
-  _DispCursor();
-  GUIDEMO_Wait(4000);
-  GUI_CURSOR_Show();
-  GUI_CURSOR_SetPosition(0,0);
-  GUI_CURSOR_Select(&GUI_CursorArrowM);
+void GUIDEMO_Cursor(void)
+{
+    GUIDEMO_ShowIntro("Cursor",
+        "STemWin supports\n"
+        "software cursor");
+    GUIDEMO_DrawBk(1);
+    GUI_CURSOR_Hide();
+    _DispCursor();
+    GUIDEMO_Wait(4000);
+    GUI_CURSOR_Show();
+    GUI_CURSOR_SetPosition(0, 0);
+    GUI_CURSOR_Select(&GUI_CursorArrowM);
 }
 
 #else

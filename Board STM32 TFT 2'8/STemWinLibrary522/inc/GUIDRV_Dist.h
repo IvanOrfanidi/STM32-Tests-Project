@@ -55,7 +55,7 @@ Purpose     : Interface definition for GUIDRV_Dist driver
 #define GUIDRV_DIST_H
 
 #if defined(__cplusplus)
-extern "C" {     /* Make sure we have C-declarations in C++ programs */
+extern "C" { /* Make sure we have C-declarations in C++ programs */
 #endif
 
 /*********************************************************************
@@ -72,11 +72,11 @@ extern const GUI_DEVICE_API GUIDRV_Dist_API;
 //
 #if defined(WIN32) && !defined(LCD_SIMCONTROLLER)
 
-  #define GUIDRV_DIST &GUIDRV_Win_API
+#define GUIDRV_DIST &GUIDRV_Win_API
 
 #else
 
-  #define GUIDRV_DIST &GUIDRV_Dist_API
+#define GUIDRV_DIST &GUIDRV_Dist_API
 
 #endif
 
@@ -86,11 +86,11 @@ extern const GUI_DEVICE_API GUIDRV_Dist_API;
 */
 #if defined(WIN32) && !defined(LCD_SIMCONTROLLER)
 
-  #define GUIDRV_Dist_AddDriver(pDevice, pDriver, pRect)
+#define GUIDRV_Dist_AddDriver(pDevice, pDriver, pRect)
 
 #else
 
-  void GUIDRV_Dist_AddDriver(GUI_DEVICE * pDevice, GUI_DEVICE * pDriver, GUI_RECT * pRect);
+void GUIDRV_Dist_AddDriver(GUI_DEVICE* pDevice, GUI_DEVICE* pDriver, GUI_RECT* pRect);
 
 #endif
 

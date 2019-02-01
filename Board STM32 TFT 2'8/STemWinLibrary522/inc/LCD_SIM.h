@@ -65,8 +65,8 @@ Purpose     : Declares LCD interface functions
 #define LCDSIM_MAX_DISPLAYS GUI_NUM_LAYERS
 
 #define GUI_TRANSMODE_PIXELALPHA 0
-#define GUI_TRANSMODE_CHROMA     1
-#define GUI_TRANSMODE_ZERO       2
+#define GUI_TRANSMODE_CHROMA 1
+#define GUI_TRANSMODE_ZERO 2
 
 /************************************************************
 *
@@ -75,17 +75,17 @@ Purpose     : Declares LCD interface functions
 *************************************************************
 */
 
-void  LCDSIM_PreInit(void);
+void LCDSIM_PreInit(void);
 char* LCDSIM_Init(void);
-void  LCDSIM_Exit(void);
-int   LCDSIM_GetMouseState(LCD_tMouseState *pState);
-void  LCDSIM_SetMouseState(int x, int y, int KeyStat, int LayerIndex);
-void  LCDSIM_CheckMouseState(int LayerIndex);
-int   LCDSIM_SaveBMP   (const char * sFileName);
-int   LCDSIM_SaveBMPEx (const char * sFileName, int x0, int y0, int xSize, int ySize);
-int   LCDSIM_SaveSBMP  (const char * sFileName);
-int   LCDSIM_SaveSBMPEx(const char * sFileName, int x0, int y0, int xSize, int ySize);
-void  LCDSIM_SetRGBOrder(unsigned RGBOrder);
+void LCDSIM_Exit(void);
+int LCDSIM_GetMouseState(LCD_tMouseState* pState);
+void LCDSIM_SetMouseState(int x, int y, int KeyStat, int LayerIndex);
+void LCDSIM_CheckMouseState(int LayerIndex);
+int LCDSIM_SaveBMP(const char* sFileName);
+int LCDSIM_SaveBMPEx(const char* sFileName, int x0, int y0, int xSize, int ySize);
+int LCDSIM_SaveSBMP(const char* sFileName);
+int LCDSIM_SaveSBMPEx(const char* sFileName, int x0, int y0, int xSize, int ySize);
+void LCDSIM_SetRGBOrder(unsigned RGBOrder);
 
 /************************************************************
 *
@@ -95,23 +95,23 @@ void  LCDSIM_SetRGBOrder(unsigned RGBOrder);
 */
 
 void LCDSIM_FillRect(int x0, int y0, int x1, int y1, int Index, int LayerIndex);
-int  LCDSIM_GetModifyCnt(int LayerIndex);
-int  LCDSIM_GetModifyCntInfo(int LayerIndex);
-int  LCDSIM_GetPixelColor(int x, int y, int LayerIndex);
-int  LCDSIM_GetPixelIndex(int x, int y, int LayerIndex);
-int  LCDSIM_Index2Color(int Index, int LayerIndex);
-int  LCDSIM_RLUT_GetPixelIndex(int x, int y, int LayerIndex);
+int LCDSIM_GetModifyCnt(int LayerIndex);
+int LCDSIM_GetModifyCntInfo(int LayerIndex);
+int LCDSIM_GetPixelColor(int x, int y, int LayerIndex);
+int LCDSIM_GetPixelIndex(int x, int y, int LayerIndex);
+int LCDSIM_Index2Color(int Index, int LayerIndex);
+int LCDSIM_RLUT_GetPixelIndex(int x, int y, int LayerIndex);
 void LCDSIM_RLUT_SetPixelIndex(int x, int y, int Index, int LayerIndex);
 void LCDSIM_SetLUTEntry(U8 Pos, LCD_COLOR color, int LayerIndex);
 void LCDSIM_SetPixelIndex(int x, int y, int Index, int LayerIndex);
 void LCDSIM_SetPixelColor(int x, int y, LCD_COLOR PixelColor, int LayerIndex);
 void LCDSIM_SetSubPixel(int x, int y, U8 Value, int LayerIndex);
 void LCDSIM_SetPixelPhys(int x, int y, int Index, int LayerIndex);
-int  LCDSIM_GetPixelPhys(int xPhys, int yPhys, int LayerIndex);
+int LCDSIM_GetPixelPhys(int xPhys, int yPhys, int LayerIndex);
 void LCDSIM_FillRectPhys(int x0Phys, int y0Phys, int x1Phys, int y1Phys, int Index, int LayerIndex);
 void LCDSIM_SetOrg(int x, int y, int LayerIndex);
 void LCDSIM_SetAlpha(int Alpha, int LayerIndex);
-int  LCDSIM_GetAlpha(int LayerIndex);
+int LCDSIM_GetAlpha(int LayerIndex);
 void LCDSIM_SetLayerPos(int xPos, int yPos, int LayerIndex);
 void LCDSIM_SetLayerVis(int OnOff, int LayerIndex);
 void LCDSIM_SetSize(int LayerIndex, int xSize, int ySize);
@@ -129,15 +129,15 @@ void LCDSIM_CopyBuffer(int LayerIndex, int IndexSrc, int IndexDst);
 */
 void SIM_GUI_SetCompositeSize(int xSize, int ySize);
 void SIM_GUI_SetCompositeColor(U32 Color);
-U32  SIM_GUI_GetCompositeColor(void);
+U32 SIM_GUI_GetCompositeColor(void);
 void SIM_GUI_SetLCDPos(int xPos, int yPos);
-int  SIM_GUI_SetTransColor(int Color);
-int  SIM_GUI_SetLCDColorBlack (unsigned int Index, int Color);
-int  SIM_GUI_SetLCDColorWhite (unsigned int Index, int Color);
+int SIM_GUI_SetTransColor(int Color);
+int SIM_GUI_SetLCDColorBlack(unsigned int Index, int Color);
+int SIM_GUI_SetLCDColorWhite(unsigned int Index, int Color);
 void SIM_GUI_SetMag(int MagX, int MagY);
-int  SIM_GUI_GetMagX(void);
-int  SIM_GUI_GetMagY(void);
-int  SIM_GUI_GetForwardRButton(void);
+int SIM_GUI_GetMagX(void);
+int SIM_GUI_GetMagY(void);
+int SIM_GUI_GetForwardRButton(void);
 void SIM_GUI_SetForwardRButton(int OnOff);
 void SIM_GUI_SetTransMode(int LayerIndex, int TransMode);
 void SIM_GUI_SetChroma(int LayerIndex, unsigned long ChromaMin, unsigned long ChromaMax);
@@ -150,7 +150,7 @@ void SIM_GUI_SetAccellerator(int Accellerator);
 *
 *********************************************************************
 */
-void SIM_X_Config(void);   /* Allow init before application starts ... Use it to set LCD offset etc */
+void SIM_X_Config(void); /* Allow init before application starts ... Use it to set LCD offset etc */
 
 /********************************************************************
 *
@@ -158,13 +158,12 @@ void SIM_X_Config(void);   /* Allow init before application starts ... Use it to
 *
 *********************************************************************
 */
-void SIM_GUI_Delay (int ms);
+void SIM_GUI_Delay(int ms);
 void SIM_GUI_ExecIdle(void);
-int  SIM_GUI_GetTime(void);
-int  SIM_GUI_GetKey(void);
-int  SIM_GUI_WaitKey(void);
+int SIM_GUI_GetTime(void);
+int SIM_GUI_GetKey(void);
+int SIM_GUI_WaitKey(void);
 void SIM_GUI_StoreKey(int);
-
 
 /********************************************************************
 *
@@ -172,21 +171,21 @@ void SIM_GUI_StoreKey(int);
 *
 *********************************************************************
 */
-void SIM_GUI_Log(const char *s);
-void SIM_GUI_Log1(const char *s, int p0);
-void SIM_GUI_Log2(const char *s, int p0, int p1);
-void SIM_GUI_Log3(const char *s, int p0, int p1, int p2);
-void SIM_GUI_Log4(const char *s, int p0, int p1, int p2,int p3);
-void SIM_GUI_Warn(const char *s);
-void SIM_GUI_Warn1(const char *s, int p0);
-void SIM_GUI_Warn2(const char *s, int p0, int p1);
-void SIM_GUI_Warn3(const char *s, int p0, int p1, int p2);
-void SIM_GUI_Warn4(const char *s, int p0, int p1, int p2, int p3);
-void SIM_GUI_ErrorOut(const char *s);
-void SIM_GUI_ErrorOut1(const char *s, int p0);
-void SIM_GUI_ErrorOut2(const char *s, int p0, int p1);
-void SIM_GUI_ErrorOut3(const char *s, int p0, int p1, int p2);
-void SIM_GUI_ErrorOut4(const char *s, int p0, int p1, int p2, int p3);
+void SIM_GUI_Log(const char* s);
+void SIM_GUI_Log1(const char* s, int p0);
+void SIM_GUI_Log2(const char* s, int p0, int p1);
+void SIM_GUI_Log3(const char* s, int p0, int p1, int p2);
+void SIM_GUI_Log4(const char* s, int p0, int p1, int p2, int p3);
+void SIM_GUI_Warn(const char* s);
+void SIM_GUI_Warn1(const char* s, int p0);
+void SIM_GUI_Warn2(const char* s, int p0, int p1);
+void SIM_GUI_Warn3(const char* s, int p0, int p1, int p2);
+void SIM_GUI_Warn4(const char* s, int p0, int p1, int p2, int p3);
+void SIM_GUI_ErrorOut(const char* s);
+void SIM_GUI_ErrorOut1(const char* s, int p0);
+void SIM_GUI_ErrorOut2(const char* s, int p0, int p1);
+void SIM_GUI_ErrorOut3(const char* s, int p0, int p1, int p2);
+void SIM_GUI_ErrorOut4(const char* s, int p0, int p1, int p2, int p3);
 void SIM_GUI_EnableMessageBoxOnError(int Status);
 
 /********************************************************************
@@ -195,7 +194,7 @@ void SIM_GUI_EnableMessageBoxOnError(int Status);
 *
 *********************************************************************
 */
-const char *SIM_GUI_GetCmdLine(void);
+const char* SIM_GUI_GetCmdLine(void);
 
 /********************************************************************
 *
@@ -203,7 +202,7 @@ const char *SIM_GUI_GetCmdLine(void);
 *
 *********************************************************************
 */
-void SIM_GUI_CreateTask(char * pName, void * pFunc);
+void SIM_GUI_CreateTask(char* pName, void* pFunc);
 void SIM_GUI_Start(void);
 unsigned long SIM_GUI_GetTaskID(void);
 void SIM_GUI_Lock(void);
@@ -211,7 +210,3 @@ void SIM_GUI_Unlock(void);
 void SIM_GUI_InitOS(void);
 
 #endif /* LCD_H */
-
-
-
-

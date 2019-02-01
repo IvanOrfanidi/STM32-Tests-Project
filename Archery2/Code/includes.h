@@ -9,18 +9,18 @@
 
 // ѕравило одного определени€
 #ifdef __ALLOCATE_NOW__
-#   define GLOBAL PUBLIC
-#   define _EQU(x) = (x)
+#define GLOBAL PUBLIC
+#define _EQU(x) = (x)
 #else
-#   define GLOBAL _EXTERN
-#   define _EQU(x)
+#define GLOBAL _EXTERN
+#define _EQU(x)
 #endif
 
-#define loop(__a) for (int i = 0; i < __a; i++)
+#define loop(__a) for(int i = 0; i < __a; i++)
 #define swap(__a, __b) \
-   __a ^= __b; \
-   __b ^= __a; \
-   __a ^= __b
+    __a ^= __b; \
+    __b ^= __a; \
+    __a ^= __b
 
 /* Standart functions */
 #include <stdio.h>
@@ -77,9 +77,9 @@
 
 GLOBAL QueueHandle_t xBuzQueue;
 
-GLOBAL xSemaphoreHandle sBinSemDbg _EQU(NULL);   // ћьютекс распредел€ющий вывод сообщений в отладочный интерфейс
+GLOBAL xSemaphoreHandle sBinSemDbg _EQU(NULL);    // ћьютекс распредел€ющий вывод сообщений в отладочный интерфейс
 GLOBAL xSemaphoreHandle sBinSemReservDbgBuf
-   _EQU(NULL);   // ћьютекс обозначающий, что есть не выгруженные данные в отладочный интерфейс
+    _EQU(NULL);    // ћьютекс обозначающий, что есть не выгруженные данные в отладочный интерфейс
 
 GLOBAL xSemaphoreHandle sBinSemAccelInterrupt _EQU(NULL);
 

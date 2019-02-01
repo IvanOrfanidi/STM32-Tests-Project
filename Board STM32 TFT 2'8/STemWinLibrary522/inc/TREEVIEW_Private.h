@@ -66,11 +66,11 @@ Purpose     : TREEVIEW private header file
 **********************************************************************
 */
 #define TREEVIEW_ITEM_STATE_EXPANDED (1 << 1)
-#define TREEVIEW_ITEM_STATE_ISLAST   (1 << 2)
+#define TREEVIEW_ITEM_STATE_ISLAST (1 << 2)
 
-#define TREEVIEW_STATE_HASLINES      (1 << 0)
+#define TREEVIEW_STATE_HASLINES (1 << 0)
 
-#define TREEVIEW_COLORS_BK   0
+#define TREEVIEW_COLORS_BK 0
 #define TREEVIEW_COLORS_TEXT 1
 #define TREEVIEW_COLORS_LINE 2
 
@@ -81,57 +81,57 @@ Purpose     : TREEVIEW private header file
 **********************************************************************
 */
 typedef struct {
-  const GUI_BITMAP GUI_UNI_PTR * apBm[3]; /* Closed, Open, Leaf */
+    const GUI_BITMAP GUI_UNI_PTR* apBm[3]; /* Closed, Open, Leaf */
 } TREEVIEW_ITEM_DATA;
 
 typedef struct {
-  WM_HMEM              hParent; /* Handle to treeview object */
-  TREEVIEW_ITEM_Handle hNext;
-  TREEVIEW_ITEM_Handle hPrev;
-  U32                  UserData;
-  WM_HMEM              hData;  /* Handle of TREEVIEW_ITEM_DATA structure */
-  U16                  xSize;
-  U16                  ySize;
-  U16                  Flags;
-  U16                  Connectors;
-  U8                   Level;  /* 0...15 */
-  char                 acText[1];
+    WM_HMEM hParent; /* Handle to treeview object */
+    TREEVIEW_ITEM_Handle hNext;
+    TREEVIEW_ITEM_Handle hPrev;
+    U32 UserData;
+    WM_HMEM hData; /* Handle of TREEVIEW_ITEM_DATA structure */
+    U16 xSize;
+    U16 ySize;
+    U16 Flags;
+    U16 Connectors;
+    U8 Level; /* 0...15 */
+    char acText[1];
 } TREEVIEW_ITEM_OBJ;
 
 typedef struct {
-  const GUI_FONT GUI_UNI_PTR * pFont;
-  GUI_COLOR aBkColor[3];
-  GUI_COLOR aTextColor[3];
-  GUI_COLOR aLineColor[3];
-  GUI_COLOR FocusColor;
-  const GUI_BITMAP GUI_UNI_PTR * apBm[5]; /* Closed, Open, Leaf, Plus, Minus */
-  int Indent;
-  int TextIndent;
-  int MinItemHeight;
+    const GUI_FONT GUI_UNI_PTR* pFont;
+    GUI_COLOR aBkColor[3];
+    GUI_COLOR aTextColor[3];
+    GUI_COLOR aLineColor[3];
+    GUI_COLOR FocusColor;
+    const GUI_BITMAP GUI_UNI_PTR* apBm[5]; /* Closed, Open, Leaf, Plus, Minus */
+    int Indent;
+    int TextIndent;
+    int MinItemHeight;
 } TREEVIEW_PROPS;
 
 typedef struct {
-  WIDGET                  Widget;
-  WIDGET_DRAW_ITEM_FUNC * pfDrawItem;
-  WM_SCROLL_STATE         ScrollStateV;
-  WM_SCROLL_STATE         ScrollStateH;
-  TREEVIEW_PROPS          Props;
-  U16                     Flags;
-  TREEVIEW_ITEM_Handle    hFirst;
-  TREEVIEW_ITEM_Handle    hLast;
-  TREEVIEW_ITEM_Handle    hSel;
-  GUI_TIMER_HANDLE        hTimer;
-  /* Cache variables */
-  int NumItems;
-  int NumVisItems;
-  int xSizeItems;     /* xSize in pixel used for all visible items */
-  int ySizeItems;     /* ySize in pixel used for all visible items */
-  I16 xOffPM, yOffPM; /* x/y offset of PM bitmap */
-  U16 xOverlapHLine;
-  /* Type check in debug version */
-  #if GUI_DEBUG_LEVEL >= GUI_DEBUG_LEVEL_CHECK_ALL
+    WIDGET Widget;
+    WIDGET_DRAW_ITEM_FUNC* pfDrawItem;
+    WM_SCROLL_STATE ScrollStateV;
+    WM_SCROLL_STATE ScrollStateH;
+    TREEVIEW_PROPS Props;
+    U16 Flags;
+    TREEVIEW_ITEM_Handle hFirst;
+    TREEVIEW_ITEM_Handle hLast;
+    TREEVIEW_ITEM_Handle hSel;
+    GUI_TIMER_HANDLE hTimer;
+    /* Cache variables */
+    int NumItems;
+    int NumVisItems;
+    int xSizeItems;     /* xSize in pixel used for all visible items */
+    int ySizeItems;     /* ySize in pixel used for all visible items */
+    I16 xOffPM, yOffPM; /* x/y offset of PM bitmap */
+    U16 xOverlapHLine;
+/* Type check in debug version */
+#if GUI_DEBUG_LEVEL >= GUI_DEBUG_LEVEL_CHECK_ALL
     U32 DebugId;
-  #endif  
+#endif
 } TREEVIEW_OBJ;
 
 /*********************************************************************
@@ -141,16 +141,16 @@ typedef struct {
 **********************************************************************
 */
 #if GUI_DEBUG_LEVEL >= GUI_DEBUG_LEVEL_CHECK_ALL
-  #define TREEVIEW_INIT_ID(p) p->DebugId = TREEVIEW_ID
+#define TREEVIEW_INIT_ID(p) p->DebugId = TREEVIEW_ID
 #else
-  #define TREEVIEW_INIT_ID(p)
+#define TREEVIEW_INIT_ID(p)
 #endif
 
 #if GUI_DEBUG_LEVEL >= GUI_DEBUG_LEVEL_CHECK_ALL
-  TREEVIEW_OBJ * TREEVIEW_LockH(TREEVIEW_Handle h);
-  #define TREEVIEW_LOCK_H(h)   TREEVIEW_LockH(h)
+TREEVIEW_OBJ* TREEVIEW_LockH(TREEVIEW_Handle h);
+#define TREEVIEW_LOCK_H(h) TREEVIEW_LockH(h)
 #else
-  #define TREEVIEW_LOCK_H(h)   (TREEVIEW_OBJ *)GUI_LOCK_H(h)
+#define TREEVIEW_LOCK_H(h) (TREEVIEW_OBJ*)GUI_LOCK_H(h)
 #endif
 
 /*********************************************************************
@@ -166,7 +166,7 @@ extern GUI_CONST_STORAGE GUI_BITMAP TREEVIEW__bmLeaf;
 extern GUI_CONST_STORAGE GUI_BITMAP TREEVIEW__bmPlus;
 extern GUI_CONST_STORAGE GUI_BITMAP TREEVIEW__bmMinus;
 
-#endif   /* GUI_WINSUPPORT */
-#endif   /* TREEVIEW_H */
+#endif /* GUI_WINSUPPORT */
+#endif /* TREEVIEW_H */
 
 /*************************** End of file ****************************/

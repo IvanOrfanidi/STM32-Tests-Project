@@ -75,38 +75,38 @@ Purpose     : DROPDOWN private header file
 **********************************************************************
 */
 typedef struct {
-  WIDGET_DRAW_ITEM_FUNC * pfDrawSkin;
+    WIDGET_DRAW_ITEM_FUNC* pfDrawSkin;
 } DROPDOWN_SKIN_PRIVATE;
 
 typedef struct {
-  const GUI_FONT GUI_UNI_PTR * pFont;
-  GUI_COLOR aBackColor[3];
-  GUI_COLOR aTextColor[3];
-  GUI_COLOR aColor[2];
-  GUI_COLOR aScrollbarColor[3];
-  DROPDOWN_SKIN_PRIVATE SkinPrivate;
-  I16       TextBorderSize;
-  I16       Align;
+    const GUI_FONT GUI_UNI_PTR* pFont;
+    GUI_COLOR aBackColor[3];
+    GUI_COLOR aTextColor[3];
+    GUI_COLOR aColor[2];
+    GUI_COLOR aScrollbarColor[3];
+    DROPDOWN_SKIN_PRIVATE SkinPrivate;
+    I16 TextBorderSize;
+    I16 Align;
 } DROPDOWN_PROPS;
 
 typedef struct {
-  WIDGET  Widget;
-  I16     Sel;                        /* current selection */
-  I16     ySizeEx;                    /* Drop down size */
-  I16     TextHeight;
-  GUI_ARRAY Handles;
-  WM_SCROLL_STATE ScrollState;
-  DROPDOWN_PROPS Props;
-  WIDGET_SKIN const * pWidgetSkin;
-  WM_HWIN hListWin;
-  U8      Flags;
-  U16     ItemSpacing;
-  U8      ScrollbarWidth;
-  char  IsPressed;
-  WM_HMEM hDisabled;
-  #if GUI_DEBUG_LEVEL >1
+    WIDGET Widget;
+    I16 Sel;     /* current selection */
+    I16 ySizeEx; /* Drop down size */
+    I16 TextHeight;
+    GUI_ARRAY Handles;
+    WM_SCROLL_STATE ScrollState;
+    DROPDOWN_PROPS Props;
+    WIDGET_SKIN const* pWidgetSkin;
+    WM_HWIN hListWin;
+    U8 Flags;
+    U16 ItemSpacing;
+    U8 ScrollbarWidth;
+    char IsPressed;
+    WM_HMEM hDisabled;
+#if GUI_DEBUG_LEVEL > 1
     U32 DebugId;
-  #endif  
+#endif
 } DROPDOWN_Obj;
 
 /*********************************************************************
@@ -116,16 +116,16 @@ typedef struct {
 **********************************************************************
 */
 #if GUI_DEBUG_LEVEL >= GUI_DEBUG_LEVEL_CHECK_ALL
-  #define DROPDOWN_INIT_ID(p) p->DebugId = DROPDOWN_ID
+#define DROPDOWN_INIT_ID(p) p->DebugId = DROPDOWN_ID
 #else
-  #define DROPDOWN_INIT_ID(p)
+#define DROPDOWN_INIT_ID(p)
 #endif
 
 #if GUI_DEBUG_LEVEL >= GUI_DEBUG_LEVEL_CHECK_ALL
-  DROPDOWN_Obj * DROPDOWN_LockH(DROPDOWN_Handle h);
-  #define DROPDOWN_LOCK_H(h)   DROPDOWN_LockH(h)
+DROPDOWN_Obj* DROPDOWN_LockH(DROPDOWN_Handle h);
+#define DROPDOWN_LOCK_H(h) DROPDOWN_LockH(h)
 #else
-  #define DROPDOWN_LOCK_H(h)   (DROPDOWN_Obj *)GUI_LOCK_H(h)
+#define DROPDOWN_LOCK_H(h) (DROPDOWN_Obj*)GUI_LOCK_H(h)
 #endif
 
 /*********************************************************************
@@ -138,9 +138,9 @@ typedef struct {
 extern DROPDOWN_PROPS DROPDOWN__DefaultProps;
 
 extern const WIDGET_SKIN DROPDOWN__SkinClassic;
-extern       WIDGET_SKIN DROPDOWN__Skin;
+extern WIDGET_SKIN DROPDOWN__Skin;
 
-extern WIDGET_SKIN const * DROPDOWN__pSkinDefault;
+extern WIDGET_SKIN const* DROPDOWN__pSkinDefault;
 
 /*********************************************************************
 *
@@ -150,8 +150,8 @@ extern WIDGET_SKIN const * DROPDOWN__pSkinDefault;
 */
 
 void DROPDOWN__AdjustHeight(DROPDOWN_Handle hObj);
-int  DROPDOWN__GetNumItems (DROPDOWN_Obj * pObj);
-const char * DROPDOWN__GetpItemLocked(DROPDOWN_Handle hObj, int Index);
+int DROPDOWN__GetNumItems(DROPDOWN_Obj* pObj);
+const char* DROPDOWN__GetpItemLocked(DROPDOWN_Handle hObj, int Index);
 
 #endif /* GUI_WINSUPPORT */
 #endif /* DROPDOWN_PRIVATE_H */

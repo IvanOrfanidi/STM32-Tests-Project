@@ -57,7 +57,7 @@ Purpose     : Private declarations for GUIDRV_DCache driver
 #include "GUIDRV_DCache.h"
 
 #if defined(__cplusplus)
-extern "C" {     /* Make sure we have C-declarations in C++ programs */
+extern "C" { /* Make sure we have C-declarations in C++ programs */
 #endif
 
 /*********************************************************************
@@ -71,59 +71,60 @@ extern "C" {     /* Make sure we have C-declarations in C++ programs */
 *       DRIVER_CONTEXT
 */
 typedef struct {
-  //
-  // Data
-  //
-  int xSize, ySize;       // Display size
-  int vxSize, vySize;     // Virtual display size
-  int BitsPerPixelDriver;
-  int BitsPerPixel;
-  int NumColors;
-  LCD_PIXELINDEX IndexMask;
-  U32 MemSize;
-  GUI_RECT rDirty;
-  const GUI_DEVICE_API * pMemdev_API;
-  //
-  // Cache mamagement
-  //
-  void     (* pfFlush        )(GUI_DEVICE * pDevice);
-  void     (* pfSendCacheRect)(GUI_DEVICE * pDevice, int x0, int y0, int x1, int y1);
-  //
-  // Setting the rectangle to be filled up within the real driver
-  //
-  void     (* pfSetRect      )(GUI_DEVICE * pDevice, int x0, int y0, int x1, int y1, int OnOff);
-  //
-  // Mode dependent drawing functions
-  //
-  void     (* pfDrawBitmap   )(GUI_DEVICE * pDevice, int x0, int y0, int xsize, int ysize, int _BitsPerPixel, int BytesPerLine, const U8 GUI_UNI_PTR * pData, int Diff, const LCD_PIXELINDEX * pTrans);
-  void     (* pfFillRect     )(GUI_DEVICE * pDevice, int x0, int y0, int x1, int y1);
-  unsigned (* pfGetPixelIndex)(GUI_DEVICE * pDevice, int x, int y);
-  void     (* pfSetPixelIndex)(GUI_DEVICE * pDevice, int x, int y, int ColorIndex);
-  //
-  // Request information
-  //
-  I32      (* pfGetDevProp   )(GUI_DEVICE * pDevice, int Index);
-  //
-  // Initialization
-  //
-  void     (* pfInit)         (GUI_DEVICE * pDevice);
-  //
-  // Conversion array from cache to real display driver
-  //
-  LCD_PIXELINDEX * pConvert;
-  LCD_PIXELINDEX * pIndex;
-  //
-  // Cache
-  //
-  U8 * pVRAM;
-  U8 * pVRAM_Lock;
-  int CacheLocked;
-  int CacheStat;
-  int CacheDirty;
-  //
-  // The driver which is used for the actual drawing operations
-  //
-  GUI_DEVICE * pDriver;
+    //
+    // Data
+    //
+    int xSize, ySize;      // Display size
+    int vxSize, vySize;    // Virtual display size
+    int BitsPerPixelDriver;
+    int BitsPerPixel;
+    int NumColors;
+    LCD_PIXELINDEX IndexMask;
+    U32 MemSize;
+    GUI_RECT rDirty;
+    const GUI_DEVICE_API* pMemdev_API;
+    //
+    // Cache mamagement
+    //
+    void (*pfFlush)(GUI_DEVICE* pDevice);
+    void (*pfSendCacheRect)(GUI_DEVICE* pDevice, int x0, int y0, int x1, int y1);
+    //
+    // Setting the rectangle to be filled up within the real driver
+    //
+    void (*pfSetRect)(GUI_DEVICE* pDevice, int x0, int y0, int x1, int y1, int OnOff);
+    //
+    // Mode dependent drawing functions
+    //
+    void (*pfDrawBitmap)(GUI_DEVICE* pDevice, int x0, int y0, int xsize, int ysize, int _BitsPerPixel, int BytesPerLine, const U8 GUI_UNI_PTR* pData, int Diff, const LCD_PIXELINDEX* pTrans);
+    void (*pfFillRect)(GUI_DEVICE* pDevice, int x0, int y0, int x1, int y1);
+    unsigned (*pfGetPixelIndex)(GUI_DEVICE* pDevice, int x, int y);
+    void (*pfSetPixelIndex)(GUI_DEVICE* pDevice, int x, int y, int ColorIndex);
+    //
+    // Request information
+    //
+    I32 (*pfGetDevProp)
+    (GUI_DEVICE* pDevice, int Index);
+    //
+    // Initialization
+    //
+    void (*pfInit)(GUI_DEVICE* pDevice);
+    //
+    // Conversion array from cache to real display driver
+    //
+    LCD_PIXELINDEX* pConvert;
+    LCD_PIXELINDEX* pIndex;
+    //
+    // Cache
+    //
+    U8* pVRAM;
+    U8* pVRAM_Lock;
+    int CacheLocked;
+    int CacheStat;
+    int CacheDirty;
+    //
+    // The driver which is used for the actual drawing operations
+    //
+    GUI_DEVICE* pDriver;
 } DRIVER_CONTEXT;
 
 /*********************************************************************
@@ -132,9 +133,9 @@ typedef struct {
 *
 **********************************************************************
 */
-void GUIDRV_DCache__AddDirtyRect  (DRIVER_CONTEXT * pContext, int x0, int y0, int x1, int y1);
-void GUIDRV_DCache__ClearDirtyRect(DRIVER_CONTEXT * pContext);
-void GUIDRV_DCache__InitOnce      (GUI_DEVICE * pDevice);
+void GUIDRV_DCache__AddDirtyRect(DRIVER_CONTEXT* pContext, int x0, int y0, int x1, int y1);
+void GUIDRV_DCache__ClearDirtyRect(DRIVER_CONTEXT* pContext);
+void GUIDRV_DCache__InitOnce(GUI_DEVICE* pDevice);
 
 #if defined(__cplusplus)
 }
@@ -143,4 +144,3 @@ void GUIDRV_DCache__InitOnce      (GUI_DEVICE * pDevice);
 #endif /* GUIDRV_DCACHE_PRIVATE_H */
 
 /*************************** End of file ****************************/
-

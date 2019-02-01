@@ -77,38 +77,38 @@ Purpose     : Private LISTWHEEL include
 */
 
 typedef struct {
-  void * pData;
-  char acText[1];
+    void* pData;
+    char acText[1];
 } LISTWHEEL_ITEM;
 
 typedef struct {
-  const GUI_FONT GUI_UNI_PTR * pFont;
-  GUI_COLOR aBackColor[2];
-  GUI_COLOR aTextColor[2];
-  I16 Align;
+    const GUI_FONT GUI_UNI_PTR* pFont;
+    GUI_COLOR aBackColor[2];
+    GUI_COLOR aTextColor[2];
+    I16 Align;
 } LISTWHEEL_PROPS;
 
 typedef struct {
-  WIDGET Widget;
-  GUI_ARRAY ItemArray;
-  WIDGET_DRAW_ITEM_FUNC * pfOwnerDraw;
-  LISTWHEEL_PROPS Props;
-  #if GUI_DEBUG_LEVEL > 1
+    WIDGET Widget;
+    GUI_ARRAY ItemArray;
+    WIDGET_DRAW_ITEM_FUNC* pfOwnerDraw;
+    LISTWHEEL_PROPS Props;
+#if GUI_DEBUG_LEVEL > 1
     U32 DebugId;
-  #endif
-  WM_HMEM hTimer;
-  unsigned LBorder;
-  unsigned RBorder;
-  unsigned LineHeight;
-  int Sel;
-  GUI_TIMER_TIME TimeTouched;   // Time stamp of last touch event
-  int Pos;           // Current position in pixels
-  int Velocity;      // Motion in pixels
-  int SnapPosition;  // Snap position in pixels
-  int TouchPos;      // Y-position of last touch event
-  int ySizeData;     // Data size in pixels
-  int Destination;   // Destination position in pixels
-  unsigned TimerPeriod; // Period of timer events
+#endif
+    WM_HMEM hTimer;
+    unsigned LBorder;
+    unsigned RBorder;
+    unsigned LineHeight;
+    int Sel;
+    GUI_TIMER_TIME TimeTouched;    // Time stamp of last touch event
+    int Pos;                       // Current position in pixels
+    int Velocity;                  // Motion in pixels
+    int SnapPosition;              // Snap position in pixels
+    int TouchPos;                  // Y-position of last touch event
+    int ySizeData;                 // Data size in pixels
+    int Destination;               // Destination position in pixels
+    unsigned TimerPeriod;          // Period of timer events
 } LISTWHEEL_OBJ;
 
 /*********************************************************************
@@ -118,16 +118,16 @@ typedef struct {
 **********************************************************************
 */
 #if GUI_DEBUG_LEVEL >= GUI_DEBUG_LEVEL_CHECK_ALL
-  #define LISTWHEEL_INIT_ID(p) p->DebugId = LISTWHEEL_ID
+#define LISTWHEEL_INIT_ID(p) p->DebugId = LISTWHEEL_ID
 #else
-  #define LISTWHEEL_INIT_ID(p)
+#define LISTWHEEL_INIT_ID(p)
 #endif
 
 #if GUI_DEBUG_LEVEL >= GUI_DEBUG_LEVEL_CHECK_ALL
-  LISTWHEEL_OBJ * LISTWHEEL_LockH(LISTWHEEL_Handle h);
-  #define LISTWHEEL_LOCK_H(h)   LISTWHEEL_LockH(h)
+LISTWHEEL_OBJ* LISTWHEEL_LockH(LISTWHEEL_Handle h);
+#define LISTWHEEL_LOCK_H(h) LISTWHEEL_LockH(h)
 #else
-  #define LISTWHEEL_LOCK_H(h)   (LISTWHEEL_OBJ *)GUI_LOCK_H(h)
+#define LISTWHEEL_LOCK_H(h) (LISTWHEEL_OBJ*)GUI_LOCK_H(h)
 #endif
 
 /*********************************************************************
@@ -144,12 +144,12 @@ extern LISTWHEEL_PROPS LISTWHEEL_DefaultProps;
 *
 **********************************************************************
 */
-const char * LISTWHEEL__GetpStringLocked(LISTWHEEL_Handle hObj, int Index, LISTWHEEL_ITEM ** ppItem);
+const char* LISTWHEEL__GetpStringLocked(LISTWHEEL_Handle hObj, int Index, LISTWHEEL_ITEM** ppItem);
 
 #endif /* GUI_WINSUPPORT */
 
-#else                            /* Avoid problems with empty object modules */
-  void LISTWHEEL_C(void) {}
+#else /* Avoid problems with empty object modules */
+void LISTWHEEL_C(void) {}
 #endif
 
 /*************************** End of file ****************************/
