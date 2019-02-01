@@ -40,7 +40,7 @@
 
 // Define NULL
 #ifndef NULL
-#   define NULL (void*)0
+#define NULL (void*)0
 #endif
 
 // Globals
@@ -60,131 +60,117 @@ void TransmitPacket(void);
 /*-----------------------------------------------------------------------------------*/
 void uIPMain(void* pvParameters)
 {
-   u8_t i, arptimer;
-   uip_eth_hdr* BUF = (uip_eth_hdr*)uip_buf;
+    u8_t i, arptimer;
+    uip_eth_hdr* BUF = (uip_eth_hdr*)uip_buf;
 
-   u32 size;
-   /* Initialize the uIP TCP/IP stack. */
-   uip_init();
+    u32 size;
+    /* Initialize the uIP TCP/IP stack. */
+    uip_init();
 
-   /* Initialize the HTTP server. */
-   httpd_init();
+    /* Initialize the HTTP server. */
+    httpd_init();
 
-   arptimer = 0;
+    arptimer = 0;
 
-   while (1)
-   {
-      /* Let the tapdev network device driver read an entire IP packet
+    while(1) {
+        /* Let the tapdev network device driver read an entire IP packet
          into the uip_buf. If it must wait for more than 0.5 seconds, it
          will return with the return value 0. If so, we know that it is
          time to call upon the uip_periodic(). Otherwise, the tapdev has
          received an IP packet that is to be processed by uIP. */
 
-      size = ETH_HandleRxPkt(uip_buf);
+        size = ETH_HandleRxPkt(uip_buf);
 
-      if (size > 0)
-      {
-         uip_len = size;
-      }
+        if(size > 0) {
+            uip_len = size;
+        }
 
-      if (uip_len <= 0x0)
-      {
-         for (i = 0; i < UIP_CONNS; i++)
-         {
-            uip_periodic(i);
+        if(uip_len <= 0x0) {
+            for(i = 0; i < UIP_CONNS; i++) {
+                uip_periodic(i);
 
-            /* If the above function invocation resulted in data that
+                /* If the above function invocation resulted in data that
        should be sent out on the network, the global variable
        uip_len is set to a value > 0. */
 
-            if (uip_len > 0)
-            {
-               uip_arp_out();
-               TransmitPacket();
+                if(uip_len > 0) {
+                    uip_arp_out();
+                    TransmitPacket();
+                }
             }
-         }
 
 #if UIP_UDP
-         for (i = 0; i < UIP_UDP_CONNS; i++)
-         {
-            uip_udp_periodic(i);
-            /* If the above function invocation resulted in data that
+            for(i = 0; i < UIP_UDP_CONNS; i++) {
+                uip_udp_periodic(i);
+                /* If the above function invocation resulted in data that
                should be sent out on the network, the global variable
                uip_len is set to a value > 0. */
-            if (uip_len > 0)
-            {
-               uip_arp_out();
-               TransmitPacket();
+                if(uip_len > 0) {
+                    uip_arp_out();
+                    TransmitPacket();
+                }
             }
-         }
 #endif /* UIP_UDP */
 
-         /* Call the ARP timer function every 10 seconds. */
-         if (++arptimer == 20)
-         {
-            uip_arp_timer();
-            arptimer = 0;
-         }
-      }
+            /* Call the ARP timer function every 10 seconds. */
+            if(++arptimer == 20) {
+                uip_arp_timer();
+                arptimer = 0;
+            }
+        }
 
-      else
-      {
-         if (BUF->type == htons(UIP_ETHTYPE_IP))   // PING
-         {
-            uip_arp_ipin();
-            uip_input();
+        else {
+            if(BUF->type == htons(UIP_ETHTYPE_IP))    // PING
+            {
+                uip_arp_ipin();
+                uip_input();
 
-            /* If the above function invocation resulted in data that
+                /* If the above function invocation resulted in data that
          should be sent out on the network, the global variable
          uip_len is set to a value > 0. */
-            if (uip_len > 0)
-            {
-               uip_arp_out();
-               TransmitPacket();
+                if(uip_len > 0) {
+                    uip_arp_out();
+                    TransmitPacket();
+                }
             }
-         }
-         else if (BUF->type == htons(UIP_ETHTYPE_ARP))
-         {
-            uip_arp_arpin();
+            else if(BUF->type == htons(UIP_ETHTYPE_ARP)) {
+                uip_arp_arpin();
 
-            /* If the above function invocation resulted in data that
+                /* If the above function invocation resulted in data that
                should be sent out on the network, the global variable
                uip_len is set to a value > 0. */
-            if (uip_len > 0)
-            {
-               TransmitPacket();
+                if(uip_len > 0) {
+                    TransmitPacket();
+                }
             }
-         }
-      }
-   }
+        }
+    }
 }
 
 /*-----------------------------------------------------------------------------------*/
 
 void TransmitPacket(void)
 {
-   int i;
-   u8 data[1500];
+    int i;
+    u8 data[1500];
 
-   // Copy the header portion part
-   for (i = 0; i < (UIP_LLH_LEN + 40); ++i)
-   {
-      data[i] = uip_buf[i];
-   }
+    // Copy the header portion part
+    for(i = 0; i < (UIP_LLH_LEN + 40); ++i) {
+        data[i] = uip_buf[i];
+    }
 
-   // Copy the data portion part
-   for (; i < uip_len; ++i)
-   {
-      data[i] = uip_appdata[i - UIP_LLH_LEN - 40];
-   }
+    // Copy the data portion part
+    for(; i < uip_len; ++i) {
+        data[i] = uip_appdata[i - UIP_LLH_LEN - 40];
+    }
 
-   ETH_HandleTxPkt(data, uip_len);
+    ETH_HandleTxPkt(data, uip_len);
 }
 
 /*-----------------------------------------------------------------------------------*/
 void uip_log(char* m)
 {
-   // printf("uIP log message: %s\n", m);
+    // printf("uIP log message: %s\n", m);
 }
 
 void udp_appcall(void)

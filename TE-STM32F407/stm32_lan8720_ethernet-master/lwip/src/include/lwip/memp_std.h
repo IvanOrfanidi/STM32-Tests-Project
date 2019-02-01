@@ -12,17 +12,17 @@
 #ifndef LWIP_MALLOC_MEMPOOL
 /* This treats "malloc pools" just like any other pool.
    The pools are a little bigger to provide 'size' as the amount of user data. */
-#   define LWIP_MALLOC_MEMPOOL(num, size) \
-      LWIP_MEMPOOL(POOL_##size, num, (size + sizeof(struct memp_malloc_helper)), "MALLOC_" #size)
-#   define LWIP_MALLOC_MEMPOOL_START
-#   define LWIP_MALLOC_MEMPOOL_END
+#define LWIP_MALLOC_MEMPOOL(num, size) \
+    LWIP_MEMPOOL(POOL_##size, num, (size + sizeof(struct memp_malloc_helper)), "MALLOC_" #size)
+#define LWIP_MALLOC_MEMPOOL_START
+#define LWIP_MALLOC_MEMPOOL_END
 #endif /* LWIP_MALLOC_MEMPOOL */
 
 #ifndef LWIP_PBUF_MEMPOOL
 /* This treats "pbuf pools" just like any other pool.
  * Allocates buffers for a pbuf struct AND a payload size */
-#   define LWIP_PBUF_MEMPOOL(name, num, payload, desc) \
-      LWIP_MEMPOOL(name, num, (MEMP_ALIGN_SIZE(sizeof(struct pbuf)) + MEMP_ALIGN_SIZE(payload)), desc)
+#define LWIP_PBUF_MEMPOOL(name, num, payload, desc) \
+    LWIP_MEMPOOL(name, num, (MEMP_ALIGN_SIZE(sizeof(struct pbuf)) + MEMP_ALIGN_SIZE(payload)), desc)
 #endif /* LWIP_PBUF_MEMPOOL */
 
 /*
@@ -59,9 +59,9 @@ LWIP_MEMPOOL(NETCONN, MEMP_NUM_NETCONN, sizeof(struct netconn), "NETCONN")
 
 #if NO_SYS == 0
 LWIP_MEMPOOL(TCPIP_MSG_API, MEMP_NUM_TCPIP_MSG_API, sizeof(struct tcpip_msg), "TCPIP_MSG_API")
-#   if !LWIP_TCPIP_CORE_LOCKING_INPUT
+#if !LWIP_TCPIP_CORE_LOCKING_INPUT
 LWIP_MEMPOOL(TCPIP_MSG_INPKT, MEMP_NUM_TCPIP_MSG_INPKT, sizeof(struct tcpip_msg), "TCPIP_MSG_INPKT")
-#   endif /* !LWIP_TCPIP_CORE_LOCKING_INPUT */
+#endif /* !LWIP_TCPIP_CORE_LOCKING_INPUT */
 #endif /* NO_SYS==0 */
 
 #if LWIP_ARP && ARP_QUEUEING
@@ -72,7 +72,7 @@ LWIP_MEMPOOL(ARP_QUEUE, MEMP_NUM_ARP_QUEUE, sizeof(struct etharp_q_entry), "ARP_
 LWIP_MEMPOOL(IGMP_GROUP, MEMP_NUM_IGMP_GROUP, sizeof(struct igmp_group), "IGMP_GROUP")
 #endif /* LWIP_IGMP */
 
-#if (!NO_SYS || (NO_SYS && !NO_SYS_NO_TIMERS)) /* LWIP_TIMERS */
+#if(!NO_SYS || (NO_SYS && !NO_SYS_NO_TIMERS)) /* LWIP_TIMERS */
 LWIP_MEMPOOL(SYS_TIMEOUT, MEMP_NUM_SYS_TIMEOUT, sizeof(struct sys_timeo), "SYS_TIMEOUT")
 #endif /* LWIP_TIMERS */
 
@@ -108,7 +108,7 @@ LWIP_PBUF_MEMPOOL(PBUF_POOL, PBUF_POOL_SIZE, PBUF_POOL_BUFSIZE, "PBUF_POOL")
  * since the default is to NOT look for lwippools.h
  */
 #if MEMP_USE_CUSTOM_POOLS
-#   include "lwippools.h"
+#include "lwippools.h"
 #endif /* MEMP_USE_CUSTOM_POOLS */
 
 /*

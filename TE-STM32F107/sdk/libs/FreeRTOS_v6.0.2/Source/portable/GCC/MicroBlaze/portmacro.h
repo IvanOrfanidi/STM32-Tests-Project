@@ -77,12 +77,12 @@ extern "C" {
 #define portSTACK_TYPE unsigned portLONG
 #define portBASE_TYPE portLONG
 
-#if (configUSE_16_BIT_TICKS == 1)
+#if(configUSE_16_BIT_TICKS == 1)
 typedef unsigned portSHORT portTickType;
-#   define portMAX_DELAY (portTickType)0xffff
+#define portMAX_DELAY (portTickType)0xffff
 #else
 typedef unsigned portLONG portTickType;
-#   define portMAX_DELAY (portTickType)0xffffffff
+#define portMAX_DELAY (portTickType)0xffffffff
 #endif
 /*-----------------------------------------------------------*/
 
@@ -97,25 +97,24 @@ void microblaze_enable_interrupts(void);
 void vPortEnterCritical(void);
 void vPortExitCritical(void);
 #define portENTER_CRITICAL() \
-   { \
-      extern unsigned portBASE_TYPE uxCriticalNesting; \
-      microblaze_disable_interrupts(); \
-      uxCriticalNesting++; \
-   }
+    { \
+        extern unsigned portBASE_TYPE uxCriticalNesting; \
+        microblaze_disable_interrupts(); \
+        uxCriticalNesting++; \
+    }
 
 #define portEXIT_CRITICAL() \
-   { \
-      extern unsigned portBASE_TYPE uxCriticalNesting; \
-      /* Interrupts are disabled, so we can */ \
-      /* access the variable directly. */ \
-      uxCriticalNesting--; \
-      if (uxCriticalNesting == 0) \
-      { \
-         /* The nesting has unwound and we 				\ \ \
+    { \
+        extern unsigned portBASE_TYPE uxCriticalNesting; \
+        /* Interrupts are disabled, so we can */ \
+        /* access the variable directly. */ \
+        uxCriticalNesting--; \
+        if(uxCriticalNesting == 0) { \
+            /* The nesting has unwound and we 				\ \ \
          can enable interrupts again. */ \
-         portENABLE_INTERRUPTS(); \
-      } \
-   }
+            portENABLE_INTERRUPTS(); \
+        } \
+    }
 
 /*-----------------------------------------------------------*/
 

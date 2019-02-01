@@ -42,35 +42,35 @@
 #if defined(__CC_ARM) /*------------------RealView Compiler -----------------*/
 /* ARM armcc specific functions */
 
-#   if (__ARMCC_VERSION < 400677)
-#      error "Please use ARM Compiler Toolchain V4.0.677 or later!"
-#   endif
+#if(__ARMCC_VERSION < 400677)
+#error "Please use ARM Compiler Toolchain V4.0.677 or later!"
+#endif
 
 /** \brief  No Operation
 
     No Operation does nothing. This instruction can be used for code alignment purposes.
  */
-#   define __NOP __nop
+#define __NOP __nop
 
 /** \brief  Wait For Interrupt
 
     Wait For Interrupt is a hint instruction that suspends execution
     until one of a number of events occurs.
  */
-#   define __WFI __wfi
+#define __WFI __wfi
 
 /** \brief  Wait For Event
 
     Wait For Event is a hint instruction that permits the processor to enter
     a low-power state until one of a number of events occurs.
  */
-#   define __WFE __wfe
+#define __WFE __wfe
 
 /** \brief  Send Event
 
     Send Event is a hint instruction. It causes an event to be signaled to the CPU.
  */
-#   define __SEV __sev
+#define __SEV __sev
 
 /** \brief  Instruction Synchronization Barrier
 
@@ -78,21 +78,21 @@
     so that all instructions following the ISB are fetched from cache or
     memory, after the instruction has been completed.
  */
-#   define __ISB() __isb(0xF)
+#define __ISB() __isb(0xF)
 
 /** \brief  Data Synchronization Barrier
 
     This function acts as a special kind of Data Memory Barrier.
     It completes when all explicit memory accesses before this instruction complete.
  */
-#   define __DSB() __dsb(0xF)
+#define __DSB() __dsb(0xF)
 
 /** \brief  Data Memory Barrier
 
     This function ensures the apparent order of the explicit memory operations before
     and after the instruction, without ensuring their completion.
  */
-#   define __DMB() __dmb(0xF)
+#define __DMB() __dmb(0xF)
 
 /** \brief  Reverse byte order (32 bit)
 
@@ -101,7 +101,7 @@
     \param [in]    value  Value to reverse
     \return               Reversed value
  */
-#   define __REV __rev
+#define __REV __rev
 
 /** \brief  Reverse byte order (16 bit)
 
@@ -112,7 +112,7 @@
  */
 static __INLINE __ASM uint32_t __REV16(uint32_t value)
 {
-   rev16 r0, r0 bx lr
+    rev16 r0, r0 bx lr
 }
 
 /** \brief  Reverse byte order in signed short value
@@ -124,10 +124,10 @@ static __INLINE __ASM uint32_t __REV16(uint32_t value)
  */
 static __INLINE __ASM int32_t __REVSH(int32_t value)
 {
-   revsh r0, r0 bx lr
+    revsh r0, r0 bx lr
 }
 
-#   if (__CORTEX_M >= 0x03)
+#if(__CORTEX_M >= 0x03)
 
 /** \brief  Reverse bit order of value
 
@@ -136,7 +136,7 @@ static __INLINE __ASM int32_t __REVSH(int32_t value)
     \param [in]    value  Value to reverse
     \return               Reversed value
  */
-#      define __RBIT __rbit
+#define __RBIT __rbit
 
 /** \brief  LDR Exclusive (8 bit)
 
@@ -145,7 +145,7 @@ static __INLINE __ASM int32_t __REVSH(int32_t value)
     \param [in]    ptr  Pointer to data
     \return             value of type uint8_t at (*ptr)
  */
-#      define __LDREXB(ptr) ((uint8_t)__ldrex(ptr))
+#define __LDREXB(ptr) ((uint8_t)__ldrex(ptr))
 
 /** \brief  LDR Exclusive (16 bit)
 
@@ -154,7 +154,7 @@ static __INLINE __ASM int32_t __REVSH(int32_t value)
     \param [in]    ptr  Pointer to data
     \return        value of type uint16_t at (*ptr)
  */
-#      define __LDREXH(ptr) ((uint16_t)__ldrex(ptr))
+#define __LDREXH(ptr) ((uint16_t)__ldrex(ptr))
 
 /** \brief  LDR Exclusive (32 bit)
 
@@ -163,7 +163,7 @@ static __INLINE __ASM int32_t __REVSH(int32_t value)
     \param [in]    ptr  Pointer to data
     \return        value of type uint32_t at (*ptr)
  */
-#      define __LDREXW(ptr) ((uint32_t)__ldrex(ptr))
+#define __LDREXW(ptr) ((uint32_t)__ldrex(ptr))
 
 /** \brief  STR Exclusive (8 bit)
 
@@ -174,7 +174,7 @@ static __INLINE __ASM int32_t __REVSH(int32_t value)
     \return          0  Function succeeded
     \return          1  Function failed
  */
-#      define __STREXB(value, ptr) __strex(value, ptr)
+#define __STREXB(value, ptr) __strex(value, ptr)
 
 /** \brief  STR Exclusive (16 bit)
 
@@ -185,7 +185,7 @@ static __INLINE __ASM int32_t __REVSH(int32_t value)
     \return          0  Function succeeded
     \return          1  Function failed
  */
-#      define __STREXH(value, ptr) __strex(value, ptr)
+#define __STREXH(value, ptr) __strex(value, ptr)
 
 /** \brief  STR Exclusive (32 bit)
 
@@ -196,14 +196,14 @@ static __INLINE __ASM int32_t __REVSH(int32_t value)
     \return          0  Function succeeded
     \return          1  Function failed
  */
-#      define __STREXW(value, ptr) __strex(value, ptr)
+#define __STREXW(value, ptr) __strex(value, ptr)
 
 /** \brief  Remove the exclusive lock
 
     This function removes the exclusive lock which is created by LDREX.
 
  */
-#      define __CLREX __clrex
+#define __CLREX __clrex
 
 /** \brief  Signed Saturate
 
@@ -213,7 +213,7 @@ static __INLINE __ASM int32_t __REVSH(int32_t value)
     \param [in]    sat  Bit position to saturate to (1..32)
     \return             Saturated value
  */
-#      define __SSAT __ssat
+#define __SSAT __ssat
 
 /** \brief  Unsigned Saturate
 
@@ -223,7 +223,7 @@ static __INLINE __ASM int32_t __REVSH(int32_t value)
     \param [in]    sat  Bit position to saturate to (0..31)
     \return             Saturated value
  */
-#      define __USAT __usat
+#define __USAT __usat
 
 /** \brief  Count leading zeros
 
@@ -232,14 +232,14 @@ static __INLINE __ASM int32_t __REVSH(int32_t value)
     \param [in]  value  Value to count the leading zeros
     \return             number of leading zeros in value
  */
-#      define __CLZ __clz
+#define __CLZ __clz
 
-#   endif /* (__CORTEX_M >= 0x03) */
+#endif /* (__CORTEX_M >= 0x03) */
 
 #elif defined(__ICCARM__) /*------------------ ICC Compiler -------------------*/
 /* IAR iccarm specific functions */
 
-#   include <cmsis_iar.h>
+#include <cmsis_iar.h>
 
 #elif defined(__GNUC__) /*------------------ GNU Compiler ---------------------*/
 /* GNU gcc specific functions */
@@ -250,7 +250,7 @@ static __INLINE __ASM int32_t __REVSH(int32_t value)
  */
 __attribute__((always_inline)) static __INLINE void __NOP(void)
 {
-   __ASM volatile("nop");
+    __ASM volatile("nop");
 }
 
 /** \brief  Wait For Interrupt
@@ -260,7 +260,7 @@ __attribute__((always_inline)) static __INLINE void __NOP(void)
  */
 __attribute__((always_inline)) static __INLINE void __WFI(void)
 {
-   __ASM volatile("wfi");
+    __ASM volatile("wfi");
 }
 
 /** \brief  Wait For Event
@@ -270,7 +270,7 @@ __attribute__((always_inline)) static __INLINE void __WFI(void)
  */
 __attribute__((always_inline)) static __INLINE void __WFE(void)
 {
-   __ASM volatile("wfe");
+    __ASM volatile("wfe");
 }
 
 /** \brief  Send Event
@@ -279,7 +279,7 @@ __attribute__((always_inline)) static __INLINE void __WFE(void)
  */
 __attribute__((always_inline)) static __INLINE void __SEV(void)
 {
-   __ASM volatile("sev");
+    __ASM volatile("sev");
 }
 
 /** \brief  Instruction Synchronization Barrier
@@ -290,7 +290,7 @@ __attribute__((always_inline)) static __INLINE void __SEV(void)
  */
 __attribute__((always_inline)) static __INLINE void __ISB(void)
 {
-   __ASM volatile("isb");
+    __ASM volatile("isb");
 }
 
 /** \brief  Data Synchronization Barrier
@@ -300,7 +300,7 @@ __attribute__((always_inline)) static __INLINE void __ISB(void)
  */
 __attribute__((always_inline)) static __INLINE void __DSB(void)
 {
-   __ASM volatile("dsb");
+    __ASM volatile("dsb");
 }
 
 /** \brief  Data Memory Barrier
@@ -310,7 +310,7 @@ __attribute__((always_inline)) static __INLINE void __DSB(void)
  */
 __attribute__((always_inline)) static __INLINE void __DMB(void)
 {
-   __ASM volatile("dmb");
+    __ASM volatile("dmb");
 }
 
 /** \brief  Reverse byte order (32 bit)
@@ -322,10 +322,12 @@ __attribute__((always_inline)) static __INLINE void __DMB(void)
  */
 __attribute__((always_inline)) static __INLINE uint32_t __REV(uint32_t value)
 {
-   uint32_t result;
+    uint32_t result;
 
-   __ASM volatile("rev %0, %1" : "=r"(result) : "r"(value));
-   return (result);
+    __ASM volatile("rev %0, %1"
+                   : "=r"(result)
+                   : "r"(value));
+    return (result);
 }
 
 /** \brief  Reverse byte order (16 bit)
@@ -337,10 +339,12 @@ __attribute__((always_inline)) static __INLINE uint32_t __REV(uint32_t value)
  */
 __attribute__((always_inline)) static __INLINE uint32_t __REV16(uint32_t value)
 {
-   uint32_t result;
+    uint32_t result;
 
-   __ASM volatile("rev16 %0, %1" : "=r"(result) : "r"(value));
-   return (result);
+    __ASM volatile("rev16 %0, %1"
+                   : "=r"(result)
+                   : "r"(value));
+    return (result);
 }
 
 /** \brief  Reverse byte order in signed short value
@@ -352,13 +356,15 @@ __attribute__((always_inline)) static __INLINE uint32_t __REV16(uint32_t value)
  */
 __attribute__((always_inline)) static __INLINE int32_t __REVSH(int32_t value)
 {
-   uint32_t result;
+    uint32_t result;
 
-   __ASM volatile("revsh %0, %1" : "=r"(result) : "r"(value));
-   return (result);
+    __ASM volatile("revsh %0, %1"
+                   : "=r"(result)
+                   : "r"(value));
+    return (result);
 }
 
-#   if (__CORTEX_M >= 0x03)
+#if(__CORTEX_M >= 0x03)
 
 /** \brief  Reverse bit order of value
 
@@ -369,10 +375,12 @@ __attribute__((always_inline)) static __INLINE int32_t __REVSH(int32_t value)
  */
 __attribute__((always_inline)) static __INLINE uint32_t __RBIT(uint32_t value)
 {
-   uint32_t result;
+    uint32_t result;
 
-   __ASM volatile("rbit %0, %1" : "=r"(result) : "r"(value));
-   return (result);
+    __ASM volatile("rbit %0, %1"
+                   : "=r"(result)
+                   : "r"(value));
+    return (result);
 }
 
 /** \brief  LDR Exclusive (8 bit)
@@ -384,10 +392,12 @@ __attribute__((always_inline)) static __INLINE uint32_t __RBIT(uint32_t value)
  */
 __attribute__((always_inline)) static __INLINE uint8_t __LDREXB(volatile uint8_t* addr)
 {
-   uint8_t result;
+    uint8_t result;
 
-   __ASM volatile("ldrexb %0, [%1]" : "=r"(result) : "r"(addr));
-   return (result);
+    __ASM volatile("ldrexb %0, [%1]"
+                   : "=r"(result)
+                   : "r"(addr));
+    return (result);
 }
 
 /** \brief  LDR Exclusive (16 bit)
@@ -399,10 +409,12 @@ __attribute__((always_inline)) static __INLINE uint8_t __LDREXB(volatile uint8_t
  */
 __attribute__((always_inline)) static __INLINE uint16_t __LDREXH(volatile uint16_t* addr)
 {
-   uint16_t result;
+    uint16_t result;
 
-   __ASM volatile("ldrexh %0, [%1]" : "=r"(result) : "r"(addr));
-   return (result);
+    __ASM volatile("ldrexh %0, [%1]"
+                   : "=r"(result)
+                   : "r"(addr));
+    return (result);
 }
 
 /** \brief  LDR Exclusive (32 bit)
@@ -414,10 +426,12 @@ __attribute__((always_inline)) static __INLINE uint16_t __LDREXH(volatile uint16
  */
 __attribute__((always_inline)) static __INLINE uint32_t __LDREXW(volatile uint32_t* addr)
 {
-   uint32_t result;
+    uint32_t result;
 
-   __ASM volatile("ldrex %0, [%1]" : "=r"(result) : "r"(addr));
-   return (result);
+    __ASM volatile("ldrex %0, [%1]"
+                   : "=r"(result)
+                   : "r"(addr));
+    return (result);
 }
 
 /** \brief  STR Exclusive (8 bit)
@@ -431,10 +445,12 @@ __attribute__((always_inline)) static __INLINE uint32_t __LDREXW(volatile uint32
  */
 __attribute__((always_inline)) static __INLINE uint32_t __STREXB(uint8_t value, volatile uint8_t* addr)
 {
-   uint32_t result;
+    uint32_t result;
 
-   __ASM volatile("strexb %0, %2, [%1]" : "=r"(result) : "r"(addr), "r"(value));
-   return (result);
+    __ASM volatile("strexb %0, %2, [%1]"
+                   : "=r"(result)
+                   : "r"(addr), "r"(value));
+    return (result);
 }
 
 /** \brief  STR Exclusive (16 bit)
@@ -448,10 +464,12 @@ __attribute__((always_inline)) static __INLINE uint32_t __STREXB(uint8_t value, 
  */
 __attribute__((always_inline)) static __INLINE uint32_t __STREXH(uint16_t value, volatile uint16_t* addr)
 {
-   uint32_t result;
+    uint32_t result;
 
-   __ASM volatile("strexh %0, %2, [%1]" : "=r"(result) : "r"(addr), "r"(value));
-   return (result);
+    __ASM volatile("strexh %0, %2, [%1]"
+                   : "=r"(result)
+                   : "r"(addr), "r"(value));
+    return (result);
 }
 
 /** \brief  STR Exclusive (32 bit)
@@ -465,10 +483,12 @@ __attribute__((always_inline)) static __INLINE uint32_t __STREXH(uint16_t value,
  */
 __attribute__((always_inline)) static __INLINE uint32_t __STREXW(uint32_t value, volatile uint32_t* addr)
 {
-   uint32_t result;
+    uint32_t result;
 
-   __ASM volatile("strex %0, %2, [%1]" : "=r"(result) : "r"(addr), "r"(value));
-   return (result);
+    __ASM volatile("strex %0, %2, [%1]"
+                   : "=r"(result)
+                   : "r"(addr), "r"(value));
+    return (result);
 }
 
 /** \brief  Remove the exclusive lock
@@ -478,7 +498,7 @@ __attribute__((always_inline)) static __INLINE uint32_t __STREXW(uint32_t value,
  */
 __attribute__((always_inline)) static __INLINE void __CLREX(void)
 {
-   __ASM volatile("clrex");
+    __ASM volatile("clrex");
 }
 
 /** \brief  Signed Saturate
@@ -489,12 +509,14 @@ __attribute__((always_inline)) static __INLINE void __CLREX(void)
     \param [in]    sat  Bit position to saturate to (1..32)
     \return             Saturated value
  */
-#      define __SSAT(ARG1, ARG2) \
-         ({ \
-            uint32_t __RES, __ARG1 = (ARG1); \
-            __ASM("ssat %0, %1, %2" : "=r"(__RES) : "I"(ARG2), "r"(__ARG1)); \
-            __RES; \
-         })
+#define __SSAT(ARG1, ARG2) \
+    ({ \
+        uint32_t __RES, __ARG1 = (ARG1); \
+        __ASM("ssat %0, %1, %2" \
+              : "=r"(__RES) \
+              : "I"(ARG2), "r"(__ARG1)); \
+        __RES; \
+    })
 
 /** \brief  Unsigned Saturate
 
@@ -504,12 +526,14 @@ __attribute__((always_inline)) static __INLINE void __CLREX(void)
     \param [in]    sat  Bit position to saturate to (0..31)
     \return             Saturated value
  */
-#      define __USAT(ARG1, ARG2) \
-         ({ \
-            uint32_t __RES, __ARG1 = (ARG1); \
-            __ASM("usat %0, %1, %2" : "=r"(__RES) : "I"(ARG2), "r"(__ARG1)); \
-            __RES; \
-         })
+#define __USAT(ARG1, ARG2) \
+    ({ \
+        uint32_t __RES, __ARG1 = (ARG1); \
+        __ASM("usat %0, %1, %2" \
+              : "=r"(__RES) \
+              : "I"(ARG2), "r"(__ARG1)); \
+        __RES; \
+    })
 
 /** \brief  Count leading zeros
 
@@ -520,13 +544,15 @@ __attribute__((always_inline)) static __INLINE void __CLREX(void)
  */
 __attribute__((always_inline)) static __INLINE uint8_t __CLZ(uint32_t value)
 {
-   uint8_t result;
+    uint8_t result;
 
-   __ASM volatile("clz %0, %1" : "=r"(result) : "r"(value));
-   return (result);
+    __ASM volatile("clz %0, %1"
+                   : "=r"(result)
+                   : "r"(value));
+    return (result);
 }
 
-#   endif /* (__CORTEX_M >= 0x03) */
+#endif /* (__CORTEX_M >= 0x03) */
 
 #elif defined(__TASKING__) /*------------------ TASKING Compiler --------------*/
 /* TASKING carm specific functions */

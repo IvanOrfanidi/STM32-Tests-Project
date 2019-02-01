@@ -27,18 +27,18 @@
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __USB_TYPE_H
-#   define __USB_TYPE_H
+#define __USB_TYPE_H
 
 /* Includes ------------------------------------------------------------------*/
-#   include "usb_conf.h"
+#include "usb_conf.h"
 
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/
-#   ifndef NULL
-#      define NULL ((void*)0)
-#   endif
+#ifndef NULL
+#define NULL ((void*)0)
+#endif
 
-#   if !defined(__STM32F10x_H) && !defined(__STM32L1XX_H)
+#if !defined(__STM32F10x_H) && !defined(__STM32L1XX_H)
 
 typedef signed long s32;
 typedef signed short s16;
@@ -52,42 +52,38 @@ typedef unsigned long u32;
 typedef unsigned short u16;
 typedef unsigned char u8;
 
-typedef unsigned long const uc32; /* Read Only */
+typedef unsigned long const uc32;  /* Read Only */
 typedef unsigned short const uc16; /* Read Only */
-typedef unsigned char const uc8; /* Read Only */
+typedef unsigned char const uc8;   /* Read Only */
 
 typedef volatile unsigned long vu32;
 typedef volatile unsigned short vu16;
 typedef volatile unsigned char vu8;
 
-typedef volatile unsigned long const vuc32; /* Read Only */
+typedef volatile unsigned long const vuc32;  /* Read Only */
 typedef volatile unsigned short const vuc16; /* Read Only */
-typedef volatile unsigned char const vuc8; /* Read Only */
+typedef volatile unsigned char const vuc8;   /* Read Only */
 
-typedef enum
-{
-   RESET = 0,
-   SET = !RESET
+typedef enum {
+    RESET = 0,
+    SET = !RESET
 } FlagStatus,
-   ITStatus;
+    ITStatus;
 
-typedef enum
-{
-   DISABLE = 0,
-   ENABLE = !DISABLE
+typedef enum {
+    DISABLE = 0,
+    ENABLE = !DISABLE
 } FunctionalState;
 
-typedef enum
-{
-   ERROR = 0,
-   SUCCESS = !ERROR
+typedef enum {
+    ERROR = 0,
+    SUCCESS = !ERROR
 } ErrorStatus;
-#   endif /* __STM32F10x_H && __STM32L1XX_H */
+#endif /* __STM32F10x_H && __STM32L1XX_H */
 
-typedef enum
-{
-   FALSE = 0,
-   TRUE = !FALSE
+typedef enum {
+    FALSE = 0,
+    TRUE = !FALSE
 } bool;
 
 /* Exported macro ------------------------------------------------------------*/

@@ -51,10 +51,9 @@
 /**
  * An open file in the read-only file system.
  */
-struct fs_file
-{
-   char* data; /**< The actual file data. */
-   int len; /**< The length of the file data. */
+struct fs_file {
+    char* data; /**< The actual file data. */
+    int len;    /**< The length of the file data. */
 };
 
 /**
@@ -68,9 +67,9 @@ struct fs_file
 int fs_open(const char* name, struct fs_file* file);
 
 #ifdef FS_STATISTICS
-#   if FS_STATISTICS == 1
+#if FS_STATISTICS == 1
 u16_t fs_count(char* name);
-#   endif /* FS_STATISTICS */
+#endif /* FS_STATISTICS */
 #endif /* FS_STATISTICS */
 
 /**

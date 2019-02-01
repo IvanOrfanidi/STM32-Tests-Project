@@ -28,14 +28,14 @@
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __STM32429I_DISCO_SDRAM_H
-#   define __STM32429I_DISCO_SDRAM_H
+#define __STM32429I_DISCO_SDRAM_H
 
-#   ifdef __cplusplus
+#ifdef __cplusplus
 extern "C" {
-#   endif
+#endif
 
 /* Includes ------------------------------------------------------------------*/
-#   include "stm32f4xx.h"
+#include "stm32f4xx.h"
 
 /** @addtogroup Utilities
  * @{
@@ -60,30 +60,30 @@ extern "C" {
 /**
  * @brief  FMC SDRAM Bank address
  */
-#   define SDRAM_BANK_ADDR ((uint32_t)0xD0000000)
+#define SDRAM_BANK_ADDR ((uint32_t)0xD0000000)
 
 /**
  * @brief  FMC SDRAM Memory Width
  */
 /* #define SDRAM_MEMORY_WIDTH   FMC_SDMemory_Width_8b  */
-#   define SDRAM_MEMORY_WIDTH FMC_SDMemory_Width_16b
+#define SDRAM_MEMORY_WIDTH FMC_SDMemory_Width_16b
 
 /**
  * @brief  FMC SDRAM CAS Latency
  */
 /* #define SDRAM_CAS_LATENCY   FMC_CAS_Latency_2  */
-#   define SDRAM_CAS_LATENCY FMC_CAS_Latency_3
+#define SDRAM_CAS_LATENCY FMC_CAS_Latency_3
 
 /**
  * @brief  FMC SDRAM Memory clock period
  */
-#   define SDCLOCK_PERIOD FMC_SDClock_Period_2 /* Default configuration used with LCD */
+#define SDCLOCK_PERIOD FMC_SDClock_Period_2 /* Default configuration used with LCD */
 /* #define SDCLOCK_PERIOD    FMC_SDClock_Period_3 */
 
 /**
  * @brief  FMC SDRAM Memory Read Burst feature
  */
-#   define SDRAM_READBURST FMC_Read_Burst_Disable /* Default configuration used with LCD */
+#define SDRAM_READBURST FMC_Read_Burst_Disable /* Default configuration used with LCD */
 /* #define SDRAM_READBURST    FMC_Read_Burst_Enable  */
 
 /**
@@ -99,28 +99,28 @@ extern "C" {
 
 /* #define USE_Delay */
 
-#   ifdef USE_Delay
-#      define __Delay \
-         Delay /*  User can provide more timing precise __Delay function \ \
+#ifdef USE_Delay
+#define __Delay \
+    Delay /*  User can provide more timing precise __Delay function \ \
                   (with 10ms time base), using SysTick for example */
-#   else
-#      define __Delay delay /*  Default __Delay function with less precise timing */
-#   endif
+#else
+#define __Delay delay /*  Default __Delay function with less precise timing */
+#endif
 
 /**
  * @brief  FMC SDRAM Mode definition register defines
  */
-#   define SDRAM_MODEREG_BURST_LENGTH_1 ((uint16_t)0x0000)
-#   define SDRAM_MODEREG_BURST_LENGTH_2 ((uint16_t)0x0001)
-#   define SDRAM_MODEREG_BURST_LENGTH_4 ((uint16_t)0x0002)
-#   define SDRAM_MODEREG_BURST_LENGTH_8 ((uint16_t)0x0004)
-#   define SDRAM_MODEREG_BURST_TYPE_SEQUENTIAL ((uint16_t)0x0000)
-#   define SDRAM_MODEREG_BURST_TYPE_INTERLEAVED ((uint16_t)0x0008)
-#   define SDRAM_MODEREG_CAS_LATENCY_2 ((uint16_t)0x0020)
-#   define SDRAM_MODEREG_CAS_LATENCY_3 ((uint16_t)0x0030)
-#   define SDRAM_MODEREG_OPERATING_MODE_STANDARD ((uint16_t)0x0000)
-#   define SDRAM_MODEREG_WRITEBURST_MODE_PROGRAMMED ((uint16_t)0x0000)
-#   define SDRAM_MODEREG_WRITEBURST_MODE_SINGLE ((uint16_t)0x0200)
+#define SDRAM_MODEREG_BURST_LENGTH_1 ((uint16_t)0x0000)
+#define SDRAM_MODEREG_BURST_LENGTH_2 ((uint16_t)0x0001)
+#define SDRAM_MODEREG_BURST_LENGTH_4 ((uint16_t)0x0002)
+#define SDRAM_MODEREG_BURST_LENGTH_8 ((uint16_t)0x0004)
+#define SDRAM_MODEREG_BURST_TYPE_SEQUENTIAL ((uint16_t)0x0000)
+#define SDRAM_MODEREG_BURST_TYPE_INTERLEAVED ((uint16_t)0x0008)
+#define SDRAM_MODEREG_CAS_LATENCY_2 ((uint16_t)0x0020)
+#define SDRAM_MODEREG_CAS_LATENCY_3 ((uint16_t)0x0030)
+#define SDRAM_MODEREG_OPERATING_MODE_STANDARD ((uint16_t)0x0000)
+#define SDRAM_MODEREG_WRITEBURST_MODE_PROGRAMMED ((uint16_t)0x0000)
+#define SDRAM_MODEREG_WRITEBURST_MODE_SINGLE ((uint16_t)0x0200)
 
 /**
  * @}
@@ -135,9 +135,9 @@ void SDRAM_InitSequence(void);
 void SDRAM_WriteBuffer(uint32_t* pBuffer, uint32_t uwWriteAddress, uint32_t uwBufferSize);
 void SDRAM_ReadBuffer(uint32_t* pBuffer, uint32_t uwReadAddress, uint32_t uwBufferSize);
 
-#   ifdef __cplusplus
+#ifdef __cplusplus
 }
-#   endif
+#endif
 
 #endif /* __STM32429I_DISCO_SDRAM_H */
 

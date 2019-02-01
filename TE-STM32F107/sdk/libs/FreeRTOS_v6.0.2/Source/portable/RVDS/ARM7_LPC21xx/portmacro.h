@@ -52,11 +52,11 @@
 */
 
 #ifndef PORTMACRO_H
-#   define PORTMACRO_H
+#define PORTMACRO_H
 
-#   ifdef __cplusplus
+#ifdef __cplusplus
 extern "C" {
-#   endif
+#endif
 
 /*-----------------------------------------------------------
  * Port specific definitions.
@@ -69,27 +69,27 @@ extern "C" {
  */
 
 /* Type definitions. */
-#   define portCHAR char
-#   define portFLOAT float
-#   define portDOUBLE double
-#   define portLONG long
-#   define portSHORT short
-#   define portSTACK_TYPE unsigned portLONG
-#   define portBASE_TYPE portLONG
+#define portCHAR char
+#define portFLOAT float
+#define portDOUBLE double
+#define portLONG long
+#define portSHORT short
+#define portSTACK_TYPE unsigned portLONG
+#define portBASE_TYPE portLONG
 
-#   if (configUSE_16_BIT_TICKS == 1)
+#if(configUSE_16_BIT_TICKS == 1)
 typedef unsigned portSHORT portTickType;
-#      define portMAX_DELAY (portTickType)0xffff
-#   else
+#define portMAX_DELAY (portTickType)0xffff
+#else
 typedef unsigned portLONG portTickType;
-#      define portMAX_DELAY (portTickType)0xffffffff
-#   endif
+#define portMAX_DELAY (portTickType)0xffffffff
+#endif
 /*-----------------------------------------------------------*/
 
 /* Hardware specifics. */
-#   define portSTACK_GROWTH (-1)
-#   define portTICK_RATE_MS ((portTickType)1000 / configTICK_RATE_HZ)
-#   define portBYTE_ALIGNMENT 8
+#define portSTACK_GROWTH (-1)
+#define portTICK_RATE_MS ((portTickType)1000 / configTICK_RATE_HZ)
+#define portBYTE_ALIGNMENT 8
 /*-----------------------------------------------------------*/
 
 /* Task utilities. */
@@ -103,18 +103,17 @@ typedef unsigned portLONG portTickType;
 /* vTaskSwitchContext() as the context has already been */
 /* saved. */
 
-#   define portEXIT_SWITCHING_ISR(SwitchRequired) \
-      { \
-         extern void vTaskSwitchContext(void); \
+#define portEXIT_SWITCHING_ISR(SwitchRequired) \
+    { \
+        extern void vTaskSwitchContext(void); \
 \
-         if (SwitchRequired) \
-         { \
+        if(SwitchRequired) { \
             vTaskSwitchContext(); \
-         } \
-      }
+        } \
+    }
 
 extern void vPortYield(void);
-#   define portYIELD() vPortYield()
+#define portYIELD() vPortYield()
 
 /* Critical section management. */
 
@@ -126,8 +125,8 @@ extern void vPortYield(void);
  * take care of that for us.
  *******************************************************************
  */
-#   define portDISABLE_INTERRUPTS() __disable_irq()
-#   define portENABLE_INTERRUPTS() __enable_irq()
+#define portDISABLE_INTERRUPTS() __disable_irq()
+#define portENABLE_INTERRUPTS() __enable_irq()
 
 /*-----------------------------------------------------------
  * Critical section control
@@ -142,22 +141,22 @@ extern void vPortYield(void);
 extern void vPortEnterCritical(void);
 extern void vPortExitCritical(void);
 
-#   define portENTER_CRITICAL() vPortEnterCritical();
-#   define portEXIT_CRITICAL() vPortExitCritical();
+#define portENTER_CRITICAL() vPortEnterCritical();
+#define portEXIT_CRITICAL() vPortExitCritical();
 /*-----------------------------------------------------------*/
 
 /* Compiler specifics. */
-#   define inline
-#   define register
-#   define portNOP() __asm { NOP }
+#define inline
+#define register
+#define portNOP() __asm { NOP }
 /*-----------------------------------------------------------*/
 
 /* Task function macros as described on the FreeRTOS.org WEB site. */
-#   define portTASK_FUNCTION_PROTO(vFunction, pvParameters) void vFunction(void* pvParameters)
-#   define portTASK_FUNCTION(vFunction, pvParameters) void vFunction(void* pvParameters)
+#define portTASK_FUNCTION_PROTO(vFunction, pvParameters) void vFunction(void* pvParameters)
+#define portTASK_FUNCTION(vFunction, pvParameters) void vFunction(void* pvParameters)
 
-#   ifdef __cplusplus
+#ifdef __cplusplus
 }
-#   endif
+#endif
 
 #endif /* PORTMACRO_H */

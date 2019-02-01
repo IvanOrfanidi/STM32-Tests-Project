@@ -27,7 +27,7 @@
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __USB_SIL_H
-#   define __USB_SIL_H
+#define __USB_SIL_H
 
 /* Includes ------------------------------------------------------------------*/
 /* Exported types ------------------------------------------------------------*/

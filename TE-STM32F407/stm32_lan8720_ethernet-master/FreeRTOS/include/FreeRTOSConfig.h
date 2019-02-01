@@ -85,7 +85,7 @@
 /* Use a guard to ensure the following few definitions are'nt included in
 assembly files that include this header file. */
 #ifndef __IASMARM__
-#   include <stdint.h>
+#include <stdint.h>
 extern uint32_t SystemCoreClock;
 #endif
 
@@ -134,9 +134,9 @@ to exclude the API function. */
 
 /* Use the system definition, if there is one */
 #ifdef __NVIC_PRIO_BITS
-#   define configPRIO_BITS __NVIC_PRIO_BITS
+#define configPRIO_BITS __NVIC_PRIO_BITS
 #else
-#   define configPRIO_BITS 4 /* 15 priority levels */
+#define configPRIO_BITS 4 /* 15 priority levels */
 #endif
 
 #define configLIBRARY_LOWEST_INTERRUPT_PRIORITY 0xf
@@ -150,12 +150,11 @@ See http://www.FreeRTOS.org/RTOS-Cortex-M3-M4.html. */
 #define configMAX_SYSCALL_INTERRUPT_PRIORITY (configLIBRARY_MAX_SYSCALL_INTERRUPT_PRIORITY << (8 - configPRIO_BITS))
 
 #define configASSERT(x) \
-   if ((x) == 0) \
-   { \
-      taskDISABLE_INTERRUPTS(); \
-      for (;;) \
-         ; \
-   }
+    if((x) == 0) { \
+        taskDISABLE_INTERRUPTS(); \
+        for(;;) \
+            ; \
+    }
 
 #define vPortSVCHandler SVC_Handler
 #define xPortPendSVHandler PendSV_Handler

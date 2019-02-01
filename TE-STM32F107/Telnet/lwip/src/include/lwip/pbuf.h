@@ -47,20 +47,18 @@ extern "C" {
 #define PBUF_TRANSPORT_HLEN 20
 #define PBUF_IP_HLEN 20
 
-typedef enum
-{
-   PBUF_TRANSPORT,
-   PBUF_IP,
-   PBUF_LINK,
-   PBUF_RAW
+typedef enum {
+    PBUF_TRANSPORT,
+    PBUF_IP,
+    PBUF_LINK,
+    PBUF_RAW
 } pbuf_layer;
 
-typedef enum
-{
-   PBUF_RAM, /* pbuf data is stored in RAM */
-   PBUF_ROM, /* pbuf data is stored in ROM */
-   PBUF_REF, /* pbuf comes from the pbuf pool */
-   PBUF_POOL /* pbuf payload refers to RAM */
+typedef enum {
+    PBUF_RAM, /* pbuf data is stored in RAM */
+    PBUF_ROM, /* pbuf data is stored in ROM */
+    PBUF_REF, /* pbuf comes from the pbuf pool */
+    PBUF_POOL /* pbuf payload refers to RAM */
 } pbuf_type;
 
 /** indicates this packet's data should be immediately passed to the application */
@@ -77,38 +75,37 @@ typedef enum
 /** indicates this pbuf includes a TCP FIN flag */
 #define PBUF_FLAG_TCP_FIN 0x20U
 
-struct pbuf
-{
-   /** next pbuf in singly linked pbuf chain */
-   struct pbuf* next;
+struct pbuf {
+    /** next pbuf in singly linked pbuf chain */
+    struct pbuf* next;
 
-   /** pointer to the actual data in the buffer */
-   void* payload;
+    /** pointer to the actual data in the buffer */
+    void* payload;
 
-   /**
+    /**
     * total length of this buffer and all next buffers in chain
     * belonging to the same packet.
     *
     * For non-queue packet chains this is the invariant:
     * p->tot_len == p->len + (p->next? p->next->tot_len: 0)
     */
-   u16_t tot_len;
+    u16_t tot_len;
 
-   /** length of this buffer */
-   u16_t len;
+    /** length of this buffer */
+    u16_t len;
 
-   /** pbuf_type as u8_t instead of enum to save space */
-   u8_t /*pbuf_type*/ type;
+    /** pbuf_type as u8_t instead of enum to save space */
+    u8_t /*pbuf_type*/ type;
 
-   /** misc flags */
-   u8_t flags;
+    /** misc flags */
+    u8_t flags;
 
-   /**
+    /**
     * the reference count always equals the number of pointers
     * that refer to this pbuf. This can be pointers from an application,
     * the stack itself, or pbuf->next pointers from a chain.
     */
-   u16_t ref;
+    u16_t ref;
 };
 
 #if LWIP_SUPPORT_CUSTOM_PBUF
@@ -116,37 +113,34 @@ struct pbuf
 typedef void (*pbuf_free_custom_fn)(struct pbuf* p);
 
 /** A custom pbuf: like a pbuf, but following a function pointer to free it. */
-struct pbuf_custom
-{
-   /** The actual pbuf */
-   struct pbuf pbuf;
-   /** This function is called when pbuf_free deallocates this pbuf(_custom) */
-   pbuf_free_custom_fn custom_free_function;
+struct pbuf_custom {
+    /** The actual pbuf */
+    struct pbuf pbuf;
+    /** This function is called when pbuf_free deallocates this pbuf(_custom) */
+    pbuf_free_custom_fn custom_free_function;
 };
 #endif /* LWIP_SUPPORT_CUSTOM_PBUF */
 
 #if LWIP_TCP && TCP_QUEUE_OOSEQ
 /** Define this to 0 to prevent freeing ooseq pbufs when the PBUF_POOL is empty */
-#   ifndef PBUF_POOL_FREE_OOSEQ
-#      define PBUF_POOL_FREE_OOSEQ 1
-#   endif /* PBUF_POOL_FREE_OOSEQ */
-#   if NO_SYS && PBUF_POOL_FREE_OOSEQ
+#ifndef PBUF_POOL_FREE_OOSEQ
+#define PBUF_POOL_FREE_OOSEQ 1
+#endif /* PBUF_POOL_FREE_OOSEQ */
+#if NO_SYS && PBUF_POOL_FREE_OOSEQ
 extern volatile u8_t pbuf_free_ooseq_pending;
 void pbuf_free_ooseq();
 /** When not using sys_check_timeouts(), call PBUF_CHECK_FREE_OOSEQ()
     at regular intervals from main level to check if ooseq pbufs need to be
     freed! */
-#      define PBUF_CHECK_FREE_OOSEQ() \
-         do \
-         { \
-            if (pbuf_free_ooseq_pending) \
-            { \
-               /* pbuf_alloc() reported PBUF_POOL to be empty -> try to free some \ \ \
+#define PBUF_CHECK_FREE_OOSEQ() \
+    do { \
+        if(pbuf_free_ooseq_pending) { \
+            /* pbuf_alloc() reported PBUF_POOL to be empty -> try to free some \ \ \
                   ooseq queued pbufs now */ \
-               pbuf_free_ooseq(); \
-            } \
-         } while (0)
-#   endif /* NO_SYS && PBUF_POOL_FREE_OOSEQ*/
+            pbuf_free_ooseq(); \
+        } \
+    } while(0)
+#endif /* NO_SYS && PBUF_POOL_FREE_OOSEQ*/
 #endif /* LWIP_TCP && TCP_QUEUE_OOSEQ */
 
 /* Initializes the pbuf module. This call is empty for now, but may not be in future. */
@@ -155,11 +149,11 @@ void pbuf_free_ooseq();
 struct pbuf* pbuf_alloc(pbuf_layer l, u16_t length, pbuf_type type);
 #if LWIP_SUPPORT_CUSTOM_PBUF
 struct pbuf* pbuf_alloced_custom(pbuf_layer l,
-                                 u16_t length,
-                                 pbuf_type type,
-                                 struct pbuf_custom* p,
-                                 void* payload_mem,
-                                 u16_t payload_mem_len);
+    u16_t length,
+    pbuf_type type,
+    struct pbuf_custom* p,
+    void* payload_mem,
+    u16_t payload_mem_len);
 #endif /* LWIP_SUPPORT_CUSTOM_PBUF */
 void pbuf_realloc(struct pbuf* p, u16_t size);
 u8_t pbuf_header(struct pbuf* p, s16_t header_size);

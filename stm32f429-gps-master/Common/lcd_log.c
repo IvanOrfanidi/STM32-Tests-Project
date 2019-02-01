@@ -121,10 +121,10 @@ static void LCD_LOG_UpdateDisplay(void);
 
 void LCD_LOG_Init(void)
 {
-   /* Deinit LCD cache */
-   LCD_LOG_DeInit();
-   /* Clear the LCD */
-   LCD_Clear(Black);
+    /* Deinit LCD cache */
+    LCD_LOG_DeInit();
+    /* Clear the LCD */
+    LCD_Clear(Black);
 }
 
 /**
@@ -134,19 +134,19 @@ void LCD_LOG_Init(void)
  */
 void LCD_LOG_DeInit(void)
 {
-   LCD_LineColor = LCD_LOG_DEFAULT_COLOR;
-   LCD_CacheBuffer_xptr = 0;
-   LCD_CacheBuffer_yptr_top = 0;
-   LCD_CacheBuffer_yptr_bottom = 0;
+    LCD_LineColor = LCD_LOG_DEFAULT_COLOR;
+    LCD_CacheBuffer_xptr = 0;
+    LCD_CacheBuffer_yptr_top = 0;
+    LCD_CacheBuffer_yptr_bottom = 0;
 
-   LCD_CacheBuffer_yptr_top_bak = 0;
-   LCD_CacheBuffer_yptr_bottom_bak = 0;
+    LCD_CacheBuffer_yptr_top_bak = 0;
+    LCD_CacheBuffer_yptr_bottom_bak = 0;
 
-   LCD_CacheBuffer_yptr_invert = ENABLE;
-   LCD_ScrollActive = DISABLE;
-   LCD_Lock = DISABLE;
-   LCD_Scrolled = DISABLE;
-   LCD_ScrollBackStep = 0;
+    LCD_CacheBuffer_yptr_invert = ENABLE;
+    LCD_ScrollActive = DISABLE;
+    LCD_Lock = DISABLE;
+    LCD_Scrolled = DISABLE;
+    LCD_ScrollBackStep = 0;
 }
 
 /**
@@ -156,47 +156,44 @@ void LCD_LOG_DeInit(void)
  */
 void LCD_LOG_SetHeader(uint8_t* Title)
 {
-   sFONT* cFont;
-   uint32_t size = 0, idx;
-   uint8_t* ptr = Title;
-   uint8_t tmp[27];
+    sFONT* cFont;
+    uint32_t size = 0, idx;
+    uint8_t* ptr = Title;
+    uint8_t tmp[27];
 
-   /* center the header */
-   while (*ptr++)
-      size++;
+    /* center the header */
+    while(*ptr++)
+        size++;
 
-   /* truncate extra text */
-   if (size > 26)
-   {
-      size = 26;
-   }
+    /* truncate extra text */
+    if(size > 26) {
+        size = 26;
+    }
 
-   for (idx = 0; idx < 27; idx++)
-   {
-      tmp[idx] = ' ';
-   }
+    for(idx = 0; idx < 27; idx++) {
+        tmp[idx] = ' ';
+    }
 
-   for (idx = 0; idx < size; idx++)
-   {
-      tmp[idx + (27 - size) / 2] = Title[idx];
-   }
+    for(idx = 0; idx < size; idx++) {
+        tmp[idx + (27 - size) / 2] = Title[idx];
+    }
 
-   /* Clear the LCD */
-   LCD_Clear(Black);
+    /* Clear the LCD */
+    LCD_Clear(Black);
 
-   /* Set the LCD Font */
-   LCD_SetFont(&Font12x12);
+    /* Set the LCD Font */
+    LCD_SetFont(&Font12x12);
 
-   cFont = LCD_GetFont();
-   /* Set the LCD Text Color */
-   LCD_SetTextColor(White);
-   LCD_SetBackColor(Blue);
-   LCD_ClearLine(0);
-   LCD_DisplayStringLine(cFont->Height, tmp);
-   LCD_ClearLine(2 * cFont->Height);
+    cFont = LCD_GetFont();
+    /* Set the LCD Text Color */
+    LCD_SetTextColor(White);
+    LCD_SetBackColor(Blue);
+    LCD_ClearLine(0);
+    LCD_DisplayStringLine(cFont->Height, tmp);
+    LCD_ClearLine(2 * cFont->Height);
 
-   LCD_SetBackColor(Black);
-   LCD_SetFont(&Font8x12);
+    LCD_SetBackColor(Black);
+    LCD_SetFont(&Font8x12);
 }
 
 /**
@@ -206,20 +203,19 @@ void LCD_LOG_SetHeader(uint8_t* Title)
  */
 void LCD_LOG_SetFooter(uint8_t* Status)
 {
-   sFONT* cFont;
-   uint8_t tmp[40], i;
-   LCD_SetBackColor(Blue);
-   cFont = LCD_GetFont();
+    sFONT* cFont;
+    uint8_t tmp[40], i;
+    LCD_SetBackColor(Blue);
+    cFont = LCD_GetFont();
 
-   for (i = 0; i < (320 / cFont->Width) - 1; i++)
-   {
-      tmp[i] = ' ';
-   }
+    for(i = 0; i < (320 / cFont->Width) - 1; i++) {
+        tmp[i] = ' ';
+    }
 
-   tmp[(320 / cFont->Width) - 1] = 0;
-   LCD_DisplayStringLine(LCD_PIXEL_HEIGHT - cFont->Height, tmp);
-   LCD_DisplayStringLine(LCD_PIXEL_HEIGHT - cFont->Height, Status);
-   LCD_SetBackColor(Black);
+    tmp[(320 / cFont->Width) - 1] = 0;
+    LCD_DisplayStringLine(LCD_PIXEL_HEIGHT - cFont->Height, tmp);
+    LCD_DisplayStringLine(LCD_PIXEL_HEIGHT - cFont->Height, Status);
+    LCD_SetBackColor(Black);
 }
 
 /**
@@ -229,15 +225,14 @@ void LCD_LOG_SetFooter(uint8_t* Status)
  */
 void LCD_LOG_ClearTextZone(void)
 {
-   uint8_t i = 0;
-   sFONT* cFont = LCD_GetFont();
+    uint8_t i = 0;
+    sFONT* cFont = LCD_GetFont();
 
-   for (i = 0; i < YWINDOW_SIZE; i++)
-   {
-      LCD_ClearLine((i + YWINDOW_MIN) * cFont->Height);
-   }
+    for(i = 0; i < YWINDOW_SIZE; i++) {
+        LCD_ClearLine((i + YWINDOW_MIN) * cFont->Height);
+    }
 
-   LCD_LOG_DeInit();
+    LCD_LOG_DeInit();
 }
 
 /**
@@ -248,69 +243,58 @@ void LCD_LOG_ClearTextZone(void)
  */
 PUTCHAR_PROTOTYPE
 {
-   sFONT* cFont = LCD_GetFont();
-   uint32_t idx;
+    sFONT* cFont = LCD_GetFont();
+    uint32_t idx;
 
-   if (LCD_Lock == DISABLE)
-   {
-      if ((LCD_ScrollActive == ENABLE) || (LCD_ScrollActive == ENABLE))
-      {
-         LCD_CacheBuffer_yptr_bottom = LCD_CacheBuffer_yptr_bottom_bak;
-         LCD_CacheBuffer_yptr_top = LCD_CacheBuffer_yptr_top_bak;
-         LCD_ScrollActive = DISABLE;
-         LCD_Scrolled = DISABLE;
-         LCD_ScrollBackStep = 0;
-      }
+    if(LCD_Lock == DISABLE) {
+        if((LCD_ScrollActive == ENABLE) || (LCD_ScrollActive == ENABLE)) {
+            LCD_CacheBuffer_yptr_bottom = LCD_CacheBuffer_yptr_bottom_bak;
+            LCD_CacheBuffer_yptr_top = LCD_CacheBuffer_yptr_top_bak;
+            LCD_ScrollActive = DISABLE;
+            LCD_Scrolled = DISABLE;
+            LCD_ScrollBackStep = 0;
+        }
 
-      if ((LCD_CacheBuffer_xptr < LCD_PIXEL_WIDTH / cFont->Width) && (ch != '\n'))
-      {
-         LCD_CacheBuffer[LCD_CacheBuffer_yptr_bottom].line[LCD_CacheBuffer_xptr++] = (uint16_t)ch;
-      }
-      else
-      {
-         if (LCD_CacheBuffer_yptr_top >= LCD_CacheBuffer_yptr_bottom)
-         {
-            if (LCD_CacheBuffer_yptr_invert == DISABLE)
-            {
-               LCD_CacheBuffer_yptr_top++;
-
-               if (LCD_CacheBuffer_yptr_top == LCD_CACHE_DEPTH)
-               {
-                  LCD_CacheBuffer_yptr_top = 0;
-               }
-            }
-            else
-            {
-               LCD_CacheBuffer_yptr_invert = DISABLE;
-            }
-         }
-
-         for (idx = LCD_CacheBuffer_xptr; idx < LCD_PIXEL_WIDTH / cFont->Width; idx++)
-         {
-            LCD_CacheBuffer[LCD_CacheBuffer_yptr_bottom].line[LCD_CacheBuffer_xptr++] = ' ';
-         }
-         LCD_CacheBuffer[LCD_CacheBuffer_yptr_bottom].color = LCD_LineColor;
-
-         LCD_CacheBuffer_xptr = 0;
-
-         LCD_LOG_UpdateDisplay();
-
-         LCD_CacheBuffer_yptr_bottom++;
-
-         if (LCD_CacheBuffer_yptr_bottom == LCD_CACHE_DEPTH)
-         {
-            LCD_CacheBuffer_yptr_bottom = 0;
-            LCD_CacheBuffer_yptr_top = 1;
-            LCD_CacheBuffer_yptr_invert = ENABLE;
-         }
-
-         if (ch != '\n')
-         {
+        if((LCD_CacheBuffer_xptr < LCD_PIXEL_WIDTH / cFont->Width) && (ch != '\n')) {
             LCD_CacheBuffer[LCD_CacheBuffer_yptr_bottom].line[LCD_CacheBuffer_xptr++] = (uint16_t)ch;
-         }
-      }
-   }
-   return ch;
+        }
+        else {
+            if(LCD_CacheBuffer_yptr_top >= LCD_CacheBuffer_yptr_bottom) {
+                if(LCD_CacheBuffer_yptr_invert == DISABLE) {
+                    LCD_CacheBuffer_yptr_top++;
+
+                    if(LCD_CacheBuffer_yptr_top == LCD_CACHE_DEPTH) {
+                        LCD_CacheBuffer_yptr_top = 0;
+                    }
+                }
+                else {
+                    LCD_CacheBuffer_yptr_invert = DISABLE;
+                }
+            }
+
+            for(idx = LCD_CacheBuffer_xptr; idx < LCD_PIXEL_WIDTH / cFont->Width; idx++) {
+                LCD_CacheBuffer[LCD_CacheBuffer_yptr_bottom].line[LCD_CacheBuffer_xptr++] = ' ';
+            }
+            LCD_CacheBuffer[LCD_CacheBuffer_yptr_bottom].color = LCD_LineColor;
+
+            LCD_CacheBuffer_xptr = 0;
+
+            LCD_LOG_UpdateDisplay();
+
+            LCD_CacheBuffer_yptr_bottom++;
+
+            if(LCD_CacheBuffer_yptr_bottom == LCD_CACHE_DEPTH) {
+                LCD_CacheBuffer_yptr_bottom = 0;
+                LCD_CacheBuffer_yptr_top = 1;
+                LCD_CacheBuffer_yptr_invert = ENABLE;
+            }
+
+            if(ch != '\n') {
+                LCD_CacheBuffer[LCD_CacheBuffer_yptr_bottom].line[LCD_CacheBuffer_xptr++] = (uint16_t)ch;
+            }
+        }
+    }
+    return ch;
 }
 
 /**
@@ -320,40 +304,35 @@ PUTCHAR_PROTOTYPE
  */
 static void LCD_LOG_UpdateDisplay(void)
 {
-   uint8_t cnt = 0;
-   uint16_t length = 0;
-   uint16_t ptr = 0, index = 0;
+    uint8_t cnt = 0;
+    uint16_t length = 0;
+    uint16_t ptr = 0, index = 0;
 
-   sFONT* cFont = LCD_GetFont();
+    sFONT* cFont = LCD_GetFont();
 
-   if ((LCD_CacheBuffer_yptr_bottom < (YWINDOW_SIZE - 1)) && (LCD_CacheBuffer_yptr_bottom >= LCD_CacheBuffer_yptr_top))
-   {
-      LCD_SetTextColor(LCD_CacheBuffer[cnt + LCD_CacheBuffer_yptr_bottom].color);
-      LCD_DisplayStringLine((YWINDOW_MIN + LCD_CacheBuffer_yptr_bottom) * cFont->Height,
-                            (uint8_t*)(LCD_CacheBuffer[cnt + LCD_CacheBuffer_yptr_bottom].line));
-   }
-   else
-   {
-      if (LCD_CacheBuffer_yptr_bottom < LCD_CacheBuffer_yptr_top)
-      {
-         /* Virtual length for rolling */
-         length = LCD_CACHE_DEPTH + LCD_CacheBuffer_yptr_bottom;
-      }
-      else
-      {
-         length = LCD_CacheBuffer_yptr_bottom;
-      }
+    if((LCD_CacheBuffer_yptr_bottom < (YWINDOW_SIZE - 1)) && (LCD_CacheBuffer_yptr_bottom >= LCD_CacheBuffer_yptr_top)) {
+        LCD_SetTextColor(LCD_CacheBuffer[cnt + LCD_CacheBuffer_yptr_bottom].color);
+        LCD_DisplayStringLine((YWINDOW_MIN + LCD_CacheBuffer_yptr_bottom) * cFont->Height,
+            (uint8_t*)(LCD_CacheBuffer[cnt + LCD_CacheBuffer_yptr_bottom].line));
+    }
+    else {
+        if(LCD_CacheBuffer_yptr_bottom < LCD_CacheBuffer_yptr_top) {
+            /* Virtual length for rolling */
+            length = LCD_CACHE_DEPTH + LCD_CacheBuffer_yptr_bottom;
+        }
+        else {
+            length = LCD_CacheBuffer_yptr_bottom;
+        }
 
-      ptr = length - YWINDOW_SIZE + 1;
+        ptr = length - YWINDOW_SIZE + 1;
 
-      for (cnt = 0; cnt < YWINDOW_SIZE; cnt++)
-      {
-         index = (cnt + ptr) % LCD_CACHE_DEPTH;
+        for(cnt = 0; cnt < YWINDOW_SIZE; cnt++) {
+            index = (cnt + ptr) % LCD_CACHE_DEPTH;
 
-         LCD_SetTextColor(LCD_CacheBuffer[index].color);
-         LCD_DisplayStringLine((cnt + YWINDOW_MIN) * cFont->Height, (uint8_t*)(LCD_CacheBuffer[index].line));
-      }
-   }
+            LCD_SetTextColor(LCD_CacheBuffer[index].color);
+            LCD_DisplayStringLine((cnt + YWINDOW_MIN) * cFont->Height, (uint8_t*)(LCD_CacheBuffer[index].line));
+        }
+    }
 }
 
 #ifdef LCD_SCROLL_ENABLED
@@ -364,61 +343,51 @@ static void LCD_LOG_UpdateDisplay(void)
  */
 ErrorStatus LCD_LOG_ScrollBack(void)
 {
-   if (LCD_ScrollActive == DISABLE)
-   {
-      LCD_CacheBuffer_yptr_bottom_bak = LCD_CacheBuffer_yptr_bottom;
-      LCD_CacheBuffer_yptr_top_bak = LCD_CacheBuffer_yptr_top;
+    if(LCD_ScrollActive == DISABLE) {
+        LCD_CacheBuffer_yptr_bottom_bak = LCD_CacheBuffer_yptr_bottom;
+        LCD_CacheBuffer_yptr_top_bak = LCD_CacheBuffer_yptr_top;
 
-      if (LCD_CacheBuffer_yptr_bottom > LCD_CacheBuffer_yptr_top)
-      {
-         if ((LCD_CacheBuffer_yptr_bottom - LCD_CacheBuffer_yptr_top) <= YWINDOW_SIZE)
-         {
-            LCD_Lock = DISABLE;
-            return ERROR;
-         }
-      }
-      LCD_ScrollActive = ENABLE;
+        if(LCD_CacheBuffer_yptr_bottom > LCD_CacheBuffer_yptr_top) {
+            if((LCD_CacheBuffer_yptr_bottom - LCD_CacheBuffer_yptr_top) <= YWINDOW_SIZE) {
+                LCD_Lock = DISABLE;
+                return ERROR;
+            }
+        }
+        LCD_ScrollActive = ENABLE;
 
-      if ((LCD_CacheBuffer_yptr_bottom > LCD_CacheBuffer_yptr_top) && (LCD_Scrolled == DISABLE))
-      {
-         LCD_CacheBuffer_yptr_bottom--;
-         LCD_Scrolled = ENABLE;
-      }
-   }
+        if((LCD_CacheBuffer_yptr_bottom > LCD_CacheBuffer_yptr_top) && (LCD_Scrolled == DISABLE)) {
+            LCD_CacheBuffer_yptr_bottom--;
+            LCD_Scrolled = ENABLE;
+        }
+    }
 
-   if (LCD_ScrollActive == ENABLE)
-   {
-      LCD_Lock = ENABLE;
+    if(LCD_ScrollActive == ENABLE) {
+        LCD_Lock = ENABLE;
 
-      if (LCD_CacheBuffer_yptr_bottom > LCD_CacheBuffer_yptr_top)
-      {
-         if ((LCD_CacheBuffer_yptr_bottom - LCD_CacheBuffer_yptr_top) < YWINDOW_SIZE)
-         {
-            LCD_Lock = DISABLE;
-            return ERROR;
-         }
+        if(LCD_CacheBuffer_yptr_bottom > LCD_CacheBuffer_yptr_top) {
+            if((LCD_CacheBuffer_yptr_bottom - LCD_CacheBuffer_yptr_top) < YWINDOW_SIZE) {
+                LCD_Lock = DISABLE;
+                return ERROR;
+            }
 
-         LCD_CacheBuffer_yptr_bottom--;
-      }
-      else if (LCD_CacheBuffer_yptr_bottom <= LCD_CacheBuffer_yptr_top)
-      {
-         if ((LCD_CACHE_DEPTH - LCD_CacheBuffer_yptr_top + LCD_CacheBuffer_yptr_bottom) < YWINDOW_SIZE)
-         {
-            LCD_Lock = DISABLE;
-            return ERROR;
-         }
-         LCD_CacheBuffer_yptr_bottom--;
+            LCD_CacheBuffer_yptr_bottom--;
+        }
+        else if(LCD_CacheBuffer_yptr_bottom <= LCD_CacheBuffer_yptr_top) {
+            if((LCD_CACHE_DEPTH - LCD_CacheBuffer_yptr_top + LCD_CacheBuffer_yptr_bottom) < YWINDOW_SIZE) {
+                LCD_Lock = DISABLE;
+                return ERROR;
+            }
+            LCD_CacheBuffer_yptr_bottom--;
 
-         if (LCD_CacheBuffer_yptr_bottom == 0xFFFF)
-         {
-            LCD_CacheBuffer_yptr_bottom = LCD_CACHE_DEPTH - 2;
-         }
-      }
-      LCD_ScrollBackStep++;
-      LCD_LOG_UpdateDisplay();
-      LCD_Lock = DISABLE;
-   }
-   return SUCCESS;
+            if(LCD_CacheBuffer_yptr_bottom == 0xFFFF) {
+                LCD_CacheBuffer_yptr_bottom = LCD_CACHE_DEPTH - 2;
+            }
+        }
+        LCD_ScrollBackStep++;
+        LCD_LOG_UpdateDisplay();
+        LCD_Lock = DISABLE;
+    }
+    return SUCCESS;
 }
 
 /**
@@ -428,50 +397,43 @@ ErrorStatus LCD_LOG_ScrollBack(void)
  */
 ErrorStatus LCD_LOG_ScrollForward(void)
 {
-   if (LCD_ScrollBackStep != 0)
-   {
-      if (LCD_ScrollActive == DISABLE)
-      {
-         LCD_CacheBuffer_yptr_bottom_bak = LCD_CacheBuffer_yptr_bottom;
-         LCD_CacheBuffer_yptr_top_bak = LCD_CacheBuffer_yptr_top;
+    if(LCD_ScrollBackStep != 0) {
+        if(LCD_ScrollActive == DISABLE) {
+            LCD_CacheBuffer_yptr_bottom_bak = LCD_CacheBuffer_yptr_bottom;
+            LCD_CacheBuffer_yptr_top_bak = LCD_CacheBuffer_yptr_top;
 
-         if (LCD_CacheBuffer_yptr_bottom > LCD_CacheBuffer_yptr_top)
-         {
-            if ((LCD_CacheBuffer_yptr_bottom - LCD_CacheBuffer_yptr_top) <= YWINDOW_SIZE)
-            {
-               LCD_Lock = DISABLE;
-               return ERROR;
+            if(LCD_CacheBuffer_yptr_bottom > LCD_CacheBuffer_yptr_top) {
+                if((LCD_CacheBuffer_yptr_bottom - LCD_CacheBuffer_yptr_top) <= YWINDOW_SIZE) {
+                    LCD_Lock = DISABLE;
+                    return ERROR;
+                }
             }
-         }
-         LCD_ScrollActive = ENABLE;
+            LCD_ScrollActive = ENABLE;
 
-         if ((LCD_CacheBuffer_yptr_bottom > LCD_CacheBuffer_yptr_top) && (LCD_Scrolled == DISABLE))
-         {
-            LCD_CacheBuffer_yptr_bottom--;
-            LCD_Scrolled = ENABLE;
-         }
-      }
+            if((LCD_CacheBuffer_yptr_bottom > LCD_CacheBuffer_yptr_top) && (LCD_Scrolled == DISABLE)) {
+                LCD_CacheBuffer_yptr_bottom--;
+                LCD_Scrolled = ENABLE;
+            }
+        }
 
-      if (LCD_ScrollActive == ENABLE)
-      {
-         LCD_Lock = ENABLE;
-         LCD_ScrollBackStep--;
+        if(LCD_ScrollActive == ENABLE) {
+            LCD_Lock = ENABLE;
+            LCD_ScrollBackStep--;
 
-         if (++LCD_CacheBuffer_yptr_bottom == LCD_CACHE_DEPTH)
-         {
-            LCD_CacheBuffer_yptr_bottom = 0;
-         }
+            if(++LCD_CacheBuffer_yptr_bottom == LCD_CACHE_DEPTH) {
+                LCD_CacheBuffer_yptr_bottom = 0;
+            }
 
-         LCD_LOG_UpdateDisplay();
-         LCD_Lock = DISABLE;
-      }
-      return SUCCESS;
-   }
-   else   // LCD_ScrollBackStep == 0
-   {
-      LCD_Lock = DISABLE;
-      return ERROR;
-   }
+            LCD_LOG_UpdateDisplay();
+            LCD_Lock = DISABLE;
+        }
+        return SUCCESS;
+    }
+    else    // LCD_ScrollBackStep == 0
+    {
+        LCD_Lock = DISABLE;
+        return ERROR;
+    }
 }
 #endif /* LCD_SCROLL_ENABLED */
 

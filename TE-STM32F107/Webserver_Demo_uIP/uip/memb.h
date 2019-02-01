@@ -25,14 +25,13 @@
  *
  */
 #define MEMB(name, size, num) \
-   static char memb_mem[(size + 1) * num]; \
-   static struct memb_blocks name = { size, num, memb_mem }
+    static char memb_mem[(size + 1) * num]; \
+    static struct memb_blocks name = { size, num, memb_mem }
 
-struct memb_blocks
-{
-   unsigned short size;
-   unsigned short num;
-   char* mem;
+struct memb_blocks {
+    unsigned short size;
+    unsigned short num;
+    char* mem;
 };
 
 void memb_init(struct memb_blocks* m);

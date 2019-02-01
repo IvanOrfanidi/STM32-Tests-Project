@@ -77,12 +77,12 @@ extern "C" {
 #define portSTACK_TYPE unsigned portLONG
 #define portBASE_TYPE long
 
-#if (configUSE_16_BIT_TICKS == 1)
+#if(configUSE_16_BIT_TICKS == 1)
 typedef unsigned portSHORT portTickType;
-#   define portMAX_DELAY (portTickType)0xffff
+#define portMAX_DELAY (portTickType)0xffff
 #else
 typedef unsigned portLONG portTickType;
-#   define portMAX_DELAY (portTickType)0xffffffff
+#define portMAX_DELAY (portTickType)0xffffffff
 #endif
 /*-----------------------------------------------------------*/
 
@@ -98,8 +98,8 @@ extern void vPortYieldFromISR(void);
 #define portYIELD() vPortYieldFromISR()
 
 #define portEND_SWITCHING_ISR(xSwitchRequired) \
-   if (xSwitchRequired) \
-   vPortYieldFromISR()
+    if(xSwitchRequired) \
+    vPortYieldFromISR()
 /*-----------------------------------------------------------*/
 
 /* Critical section management. */
@@ -114,11 +114,11 @@ extern void vPortClearInterruptMask(void);
 #define portENTER_CRITICAL() vPortEnterCritical()
 #define portEXIT_CRITICAL() vPortExitCritical()
 #define portSET_INTERRUPT_MASK_FROM_ISR() \
-   0; \
-   vPortSetInterruptMask()
+    0; \
+    vPortSetInterruptMask()
 #define portCLEAR_INTERRUPT_MASK_FROM_ISR(x) \
-   vPortClearInterruptMask(); \
-   (void)x
+    vPortClearInterruptMask(); \
+    (void)x
 
 /*-----------------------------------------------------------*/
 

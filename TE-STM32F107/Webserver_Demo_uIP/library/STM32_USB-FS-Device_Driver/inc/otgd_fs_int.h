@@ -27,7 +27,7 @@
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __USB_INT_H
-#   define __USB_INT_H
+#define __USB_INT_H
 
 /* Includes ------------------------------------------------------------------*/
 /* Exported types ------------------------------------------------------------*/
@@ -35,7 +35,7 @@
 /* Exported macro ------------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */
 
-#   ifdef STM32F10X_CL
+#ifdef STM32F10X_CL
 
 /* Interrupt Handlers functions */
 uint32_t OTGD_FS_Handle_Sof_ISR(void);
@@ -55,7 +55,7 @@ uint32_t OTGD_FS_Handle_IncomplIsoIn_ISR(void);
 uint32_t OTGD_FS_Handle_IncomplIsoOut_ISR(void);
 uint32_t OTGD_FS_Handle_Wakeup_ISR(void);
 
-#   endif /* STM32F10X_CL */
+#endif /* STM32F10X_CL */
 
 /* External variables --------------------------------------------------------*/
 

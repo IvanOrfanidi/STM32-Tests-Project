@@ -28,14 +28,14 @@
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __STM32F4xx_PWR_H
-#   define __STM32F4xx_PWR_H
+#define __STM32F4xx_PWR_H
 
-#   ifdef __cplusplus
+#ifdef __cplusplus
 extern "C" {
-#   endif
+#endif
 
 /* Includes ------------------------------------------------------------------*/
-#   include "stm32f4xx.h"
+#include "stm32f4xx.h"
 
 /** @addtogroup STM32F4xx_StdPeriph_Driver
  * @{
@@ -55,19 +55,19 @@ extern "C" {
 /** @defgroup PWR_PVD_detection_level
  * @{
  */
-#   define PWR_PVDLevel_0 PWR_CR_PLS_LEV0
-#   define PWR_PVDLevel_1 PWR_CR_PLS_LEV1
-#   define PWR_PVDLevel_2 PWR_CR_PLS_LEV2
-#   define PWR_PVDLevel_3 PWR_CR_PLS_LEV3
-#   define PWR_PVDLevel_4 PWR_CR_PLS_LEV4
-#   define PWR_PVDLevel_5 PWR_CR_PLS_LEV5
-#   define PWR_PVDLevel_6 PWR_CR_PLS_LEV6
-#   define PWR_PVDLevel_7 PWR_CR_PLS_LEV7
+#define PWR_PVDLevel_0 PWR_CR_PLS_LEV0
+#define PWR_PVDLevel_1 PWR_CR_PLS_LEV1
+#define PWR_PVDLevel_2 PWR_CR_PLS_LEV2
+#define PWR_PVDLevel_3 PWR_CR_PLS_LEV3
+#define PWR_PVDLevel_4 PWR_CR_PLS_LEV4
+#define PWR_PVDLevel_5 PWR_CR_PLS_LEV5
+#define PWR_PVDLevel_6 PWR_CR_PLS_LEV6
+#define PWR_PVDLevel_7 PWR_CR_PLS_LEV7
 
-#   define IS_PWR_PVD_LEVEL(LEVEL) \
-      (((LEVEL) == PWR_PVDLevel_0) || ((LEVEL) == PWR_PVDLevel_1) || ((LEVEL) == PWR_PVDLevel_2) || \
-       ((LEVEL) == PWR_PVDLevel_3) || ((LEVEL) == PWR_PVDLevel_4) || ((LEVEL) == PWR_PVDLevel_5) || \
-       ((LEVEL) == PWR_PVDLevel_6) || ((LEVEL) == PWR_PVDLevel_7))
+#define IS_PWR_PVD_LEVEL(LEVEL) \
+    (((LEVEL) == PWR_PVDLevel_0) || ((LEVEL) == PWR_PVDLevel_1) || ((LEVEL) == PWR_PVDLevel_2) || \
+        ((LEVEL) == PWR_PVDLevel_3) || ((LEVEL) == PWR_PVDLevel_4) || ((LEVEL) == PWR_PVDLevel_5) || \
+        ((LEVEL) == PWR_PVDLevel_6) || ((LEVEL) == PWR_PVDLevel_7))
 /**
  * @}
  */
@@ -75,28 +75,28 @@ extern "C" {
 /** @defgroup PWR_Regulator_state_in_STOP_mode
  * @{
  */
-#   define PWR_MainRegulator_ON ((uint32_t)0x00000000)
-#   define PWR_LowPowerRegulator_ON PWR_CR_LPDS
+#define PWR_MainRegulator_ON ((uint32_t)0x00000000)
+#define PWR_LowPowerRegulator_ON PWR_CR_LPDS
 
 /* --- PWR_Legacy ---*/
-#   define PWR_Regulator_ON PWR_MainRegulator_ON
-#   define PWR_Regulator_LowPower PWR_LowPowerRegulator_ON
+#define PWR_Regulator_ON PWR_MainRegulator_ON
+#define PWR_Regulator_LowPower PWR_LowPowerRegulator_ON
 
-#   if defined(STM32F429X)
-#      define PWR_MainRegulator_LowVoltage PWR_CR_MRLVDS
-#      define PWR_LowPowerRegulator_LowVoltage ((uint32_t)(PWR_CR_LPLVDS | PWR_CR_LPDS))
-#   endif /* STM32F429X */
+#if defined(STM32F429X)
+#define PWR_MainRegulator_LowVoltage PWR_CR_MRLVDS
+#define PWR_LowPowerRegulator_LowVoltage ((uint32_t)(PWR_CR_LPLVDS | PWR_CR_LPDS))
+#endif /* STM32F429X */
 
-#   if defined(STM32F429X)
-#      define IS_PWR_REGULATOR(REGULATOR) \
-         (((REGULATOR) == PWR_MainRegulator_ON) || ((REGULATOR) == PWR_MainRegulator_LowVoltage) || \
-          ((REGULATOR) == PWR_LowPowerRegulator_ON) || ((REGULATOR) == PWR_LowPowerRegulator_LowVoltage))
-#   endif /* STM32F429X */
+#if defined(STM32F429X)
+#define IS_PWR_REGULATOR(REGULATOR) \
+    (((REGULATOR) == PWR_MainRegulator_ON) || ((REGULATOR) == PWR_MainRegulator_LowVoltage) || \
+        ((REGULATOR) == PWR_LowPowerRegulator_ON) || ((REGULATOR) == PWR_LowPowerRegulator_LowVoltage))
+#endif /* STM32F429X */
 
-#   if defined(STM32F40XX) || defined(STM32F427X)
-#      define IS_PWR_REGULATOR(REGULATOR) \
-         (((REGULATOR) == PWR_MainRegulator_ON) || ((REGULATOR) == PWR_LowPowerRegulator_ON))
-#   endif /* STM32F40XX or STM32F427X */
+#if defined(STM32F40XX) || defined(STM32F427X)
+#define IS_PWR_REGULATOR(REGULATOR) \
+    (((REGULATOR) == PWR_MainRegulator_ON) || ((REGULATOR) == PWR_LowPowerRegulator_ON))
+#endif /* STM32F40XX or STM32F427X */
 /**
  * @}
  */
@@ -104,9 +104,9 @@ extern "C" {
 /** @defgroup PWR_STOP_mode_entry
  * @{
  */
-#   define PWR_STOPEntry_WFI ((uint8_t)0x01)
-#   define PWR_STOPEntry_WFE ((uint8_t)0x02)
-#   define IS_PWR_STOP_ENTRY(ENTRY) (((ENTRY) == PWR_STOPEntry_WFI) || ((ENTRY) == PWR_STOPEntry_WFE))
+#define PWR_STOPEntry_WFI ((uint8_t)0x01)
+#define PWR_STOPEntry_WFE ((uint8_t)0x02)
+#define IS_PWR_STOP_ENTRY(ENTRY) (((ENTRY) == PWR_STOPEntry_WFI) || ((ENTRY) == PWR_STOPEntry_WFE))
 /**
  * @}
  */
@@ -114,12 +114,12 @@ extern "C" {
 /** @defgroup PWR_Regulator_Voltage_Scale
  * @{
  */
-#   define PWR_Regulator_Voltage_Scale1 ((uint32_t)0x0000C000)
-#   define PWR_Regulator_Voltage_Scale2 ((uint32_t)0x00008000)
-#   define PWR_Regulator_Voltage_Scale3 ((uint32_t)0x00004000)
-#   define IS_PWR_REGULATOR_VOLTAGE(VOLTAGE) \
-      (((VOLTAGE) == PWR_Regulator_Voltage_Scale1) || ((VOLTAGE) == PWR_Regulator_Voltage_Scale2) || \
-       ((VOLTAGE) == PWR_Regulator_Voltage_Scale3))
+#define PWR_Regulator_Voltage_Scale1 ((uint32_t)0x0000C000)
+#define PWR_Regulator_Voltage_Scale2 ((uint32_t)0x00008000)
+#define PWR_Regulator_Voltage_Scale3 ((uint32_t)0x00004000)
+#define IS_PWR_REGULATOR_VOLTAGE(VOLTAGE) \
+    (((VOLTAGE) == PWR_Regulator_Voltage_Scale1) || ((VOLTAGE) == PWR_Regulator_Voltage_Scale2) || \
+        ((VOLTAGE) == PWR_Regulator_Voltage_Scale3))
 /**
  * @}
  */
@@ -127,41 +127,41 @@ extern "C" {
 /** @defgroup PWR_Flag
  * @{
  */
-#   define PWR_FLAG_WU PWR_CSR_WUF
-#   define PWR_FLAG_SB PWR_CSR_SBF
-#   define PWR_FLAG_PVDO PWR_CSR_PVDO
-#   define PWR_FLAG_BRR PWR_CSR_BRR
-#   define PWR_FLAG_VOSRDY PWR_CSR_VOSRDY
+#define PWR_FLAG_WU PWR_CSR_WUF
+#define PWR_FLAG_SB PWR_CSR_SBF
+#define PWR_FLAG_PVDO PWR_CSR_PVDO
+#define PWR_FLAG_BRR PWR_CSR_BRR
+#define PWR_FLAG_VOSRDY PWR_CSR_VOSRDY
 
-#   if defined(STM32F429X)
-#      define PWR_FLAG_ODRDY PWR_CSR_ODRDY
-#      define PWR_FLAG_ODSWRDY PWR_CSR_ODSWRDY
-#      define PWR_FLAG_UDRDY PWR_CSR_UDSWRDY
-#   endif /* STM32F429X */
+#if defined(STM32F429X)
+#define PWR_FLAG_ODRDY PWR_CSR_ODRDY
+#define PWR_FLAG_ODSWRDY PWR_CSR_ODSWRDY
+#define PWR_FLAG_UDRDY PWR_CSR_UDSWRDY
+#endif /* STM32F429X */
 
 /* --- FLAG Legacy ---*/
-#   define PWR_FLAG_REGRDY PWR_FLAG_VOSRDY
+#define PWR_FLAG_REGRDY PWR_FLAG_VOSRDY
 
-#   if defined(STM32F429X)
-#      define IS_PWR_GET_FLAG(FLAG) \
-         (((FLAG) == PWR_FLAG_WU) || ((FLAG) == PWR_FLAG_SB) || ((FLAG) == PWR_FLAG_PVDO) || \
-          ((FLAG) == PWR_FLAG_BRR) || ((FLAG) == PWR_FLAG_VOSRDY) || ((FLAG) == PWR_FLAG_ODRDY) || \
-          ((FLAG) == PWR_FLAG_ODSWRDY) || ((FLAG) == PWR_FLAG_UDRDY))
-#   endif /* STM32F429X */
+#if defined(STM32F429X)
+#define IS_PWR_GET_FLAG(FLAG) \
+    (((FLAG) == PWR_FLAG_WU) || ((FLAG) == PWR_FLAG_SB) || ((FLAG) == PWR_FLAG_PVDO) || \
+        ((FLAG) == PWR_FLAG_BRR) || ((FLAG) == PWR_FLAG_VOSRDY) || ((FLAG) == PWR_FLAG_ODRDY) || \
+        ((FLAG) == PWR_FLAG_ODSWRDY) || ((FLAG) == PWR_FLAG_UDRDY))
+#endif /* STM32F429X */
 
-#   if defined(STM32F40XX) || defined(STM32F427X)
-#      define IS_PWR_GET_FLAG(FLAG) \
-         (((FLAG) == PWR_FLAG_WU) || ((FLAG) == PWR_FLAG_SB) || ((FLAG) == PWR_FLAG_PVDO) || \
-          ((FLAG) == PWR_FLAG_BRR) || ((FLAG) == PWR_FLAG_VOSRDY))
-#   endif /*STM32F40XX or STM32F427X */
+#if defined(STM32F40XX) || defined(STM32F427X)
+#define IS_PWR_GET_FLAG(FLAG) \
+    (((FLAG) == PWR_FLAG_WU) || ((FLAG) == PWR_FLAG_SB) || ((FLAG) == PWR_FLAG_PVDO) || \
+        ((FLAG) == PWR_FLAG_BRR) || ((FLAG) == PWR_FLAG_VOSRDY))
+#endif /*STM32F40XX or STM32F427X */
 
-#   if defined(STM32F429X)
-#      define IS_PWR_CLEAR_FLAG(FLAG) (((FLAG) == PWR_FLAG_WU) || ((FLAG) == PWR_FLAG_SB) || ((FLAG) == PWR_FLAG_UDRDY))
-#   endif /* STM32F429X */
+#if defined(STM32F429X)
+#define IS_PWR_CLEAR_FLAG(FLAG) (((FLAG) == PWR_FLAG_WU) || ((FLAG) == PWR_FLAG_SB) || ((FLAG) == PWR_FLAG_UDRDY))
+#endif /* STM32F429X */
 
-#   if defined(STM32F40XX) || defined(STM32F427X)
-#      define IS_PWR_CLEAR_FLAG(FLAG) (((FLAG) == PWR_FLAG_WU) || ((FLAG) == PWR_FLAG_SB))
-#   endif /*STM32F40XX or STM32F427X */
+#if defined(STM32F40XX) || defined(STM32F427X)
+#define IS_PWR_CLEAR_FLAG(FLAG) (((FLAG) == PWR_FLAG_WU) || ((FLAG) == PWR_FLAG_SB))
+#endif /*STM32F40XX or STM32F427X */
 /**
  * @}
  */
@@ -189,11 +189,11 @@ void PWR_WakeUpPinCmd(FunctionalState NewState);
 /* Main and Backup Regulators configuration functions *************************/
 void PWR_BackupRegulatorCmd(FunctionalState NewState);
 void PWR_MainRegulatorModeConfig(uint32_t PWR_Regulator_Voltage);
-#   if defined(STM32F429X)
+#if defined(STM32F429X)
 void PWR_OverDriveCmd(FunctionalState NewState);
 void PWR_OverDriveSWCmd(FunctionalState NewState);
 void PWR_UnderDriveCmd(FunctionalState NewState);
-#   endif /* STM32F429X */
+#endif /* STM32F429X */
 
 /* FLASH Power Down configuration functions ***********************************/
 void PWR_FlashPowerDownCmd(FunctionalState NewState);
@@ -206,9 +206,9 @@ void PWR_EnterSTANDBYMode(void);
 FlagStatus PWR_GetFlagStatus(uint32_t PWR_FLAG);
 void PWR_ClearFlag(uint32_t PWR_FLAG);
 
-#   ifdef __cplusplus
+#ifdef __cplusplus
 }
-#   endif
+#endif
 
 #endif /* __STM32F4xx_PWR_H */
 

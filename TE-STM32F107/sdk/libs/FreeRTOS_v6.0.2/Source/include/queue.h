@@ -52,23 +52,23 @@
 */
 
 #ifndef INC_FREERTOS_H
-#   error "#include FreeRTOS.h" must appear in source files before "#include queue.h"
+#error "#include FreeRTOS.h" must appear in source files before "#include queue.h"
 #endif
 
 #ifndef QUEUE_H
-#   define QUEUE_H
+#define QUEUE_H
 
-#   ifdef __cplusplus
+#ifdef __cplusplus
 extern "C" {
-#   endif
+#endif
 
-#   include "mpu_wrappers.h"
+#include "mpu_wrappers.h"
 
 typedef void* xQueueHandle;
 
 /* For internal use only. */
-#   define queueSEND_TO_BACK (0)
-#   define queueSEND_TO_FRONT (1)
+#define queueSEND_TO_BACK (0)
+#define queueSEND_TO_FRONT (1)
 
 /**
  * queue. h
@@ -208,8 +208,8 @@ xQueueHandle xQueueCreate(unsigned portBASE_TYPE uxQueueLength, unsigned portBAS
  * \defgroup xQueueSend xQueueSend
  * \ingroup QueueManagement
  */
-#   define xQueueSendToFront(xQueue, pvItemToQueue, xTicksToWait) \
-      xQueueGenericSend(xQueue, pvItemToQueue, xTicksToWait, queueSEND_TO_FRONT)
+#define xQueueSendToFront(xQueue, pvItemToQueue, xTicksToWait) \
+    xQueueGenericSend(xQueue, pvItemToQueue, xTicksToWait, queueSEND_TO_FRONT)
 
 /**
  * queue. h
@@ -291,8 +291,8 @@ xQueueHandle xQueueCreate(unsigned portBASE_TYPE uxQueueLength, unsigned portBAS
  * \defgroup xQueueSend xQueueSend
  * \ingroup QueueManagement
  */
-#   define xQueueSendToBack(xQueue, pvItemToQueue, xTicksToWait) \
-      xQueueGenericSend(xQueue, pvItemToQueue, xTicksToWait, queueSEND_TO_BACK)
+#define xQueueSendToBack(xQueue, pvItemToQueue, xTicksToWait) \
+    xQueueGenericSend(xQueue, pvItemToQueue, xTicksToWait, queueSEND_TO_BACK)
 
 /**
  * queue. h
@@ -376,8 +376,8 @@ xQueueHandle xQueueCreate(unsigned portBASE_TYPE uxQueueLength, unsigned portBAS
  * \defgroup xQueueSend xQueueSend
  * \ingroup QueueManagement
  */
-#   define xQueueSend(xQueue, pvItemToQueue, xTicksToWait) \
-      xQueueGenericSend(xQueue, pvItemToQueue, xTicksToWait, queueSEND_TO_BACK)
+#define xQueueSend(xQueue, pvItemToQueue, xTicksToWait) \
+    xQueueGenericSend(xQueue, pvItemToQueue, xTicksToWait, queueSEND_TO_BACK)
 
 /**
  * queue. h
@@ -465,9 +465,9 @@ xQueueHandle xQueueCreate(unsigned portBASE_TYPE uxQueueLength, unsigned portBAS
  * \ingroup QueueManagement
  */
 signed portBASE_TYPE xQueueGenericSend(xQueueHandle xQueue,
-                                       const void* const pvItemToQueue,
-                                       portTickType xTicksToWait,
-                                       portBASE_TYPE xCopyPosition);
+    const void* const pvItemToQueue,
+    portTickType xTicksToWait,
+    portBASE_TYPE xCopyPosition);
 
 /**
  * queue. h
@@ -561,7 +561,7 @@ signed portBASE_TYPE xQueueGenericSend(xQueueHandle xQueue,
  * \defgroup xQueueReceive xQueueReceive
  * \ingroup QueueManagement
  */
-#   define xQueuePeek(xQueue, pvBuffer, xTicksToWait) xQueueGenericReceive(xQueue, pvBuffer, xTicksToWait, pdTRUE)
+#define xQueuePeek(xQueue, pvBuffer, xTicksToWait) xQueueGenericReceive(xQueue, pvBuffer, xTicksToWait, pdTRUE)
 
 /**
  * queue. h
@@ -654,7 +654,7 @@ signed portBASE_TYPE xQueueGenericSend(xQueueHandle xQueue,
  * \defgroup xQueueReceive xQueueReceive
  * \ingroup QueueManagement
  */
-#   define xQueueReceive(xQueue, pvBuffer, xTicksToWait) xQueueGenericReceive(xQueue, pvBuffer, xTicksToWait, pdFALSE)
+#define xQueueReceive(xQueue, pvBuffer, xTicksToWait) xQueueGenericReceive(xQueue, pvBuffer, xTicksToWait, pdFALSE)
 
 /**
  * queue. h
@@ -753,9 +753,9 @@ signed portBASE_TYPE xQueueGenericSend(xQueueHandle xQueue,
  * \ingroup QueueManagement
  */
 signed portBASE_TYPE xQueueGenericReceive(xQueueHandle xQueue,
-                                          void* const pvBuffer,
-                                          portTickType xTicksToWait,
-                                          portBASE_TYPE xJustPeek);
+    void* const pvBuffer,
+    portTickType xTicksToWait,
+    portBASE_TYPE xJustPeek);
 
 /**
  * queue. h
@@ -854,8 +854,8 @@ void vQueueDelete(xQueueHandle xQueue);
  * \defgroup xQueueSendFromISR xQueueSendFromISR
  * \ingroup QueueManagement
  */
-#   define xQueueSendToFrontFromISR(pxQueue, pvItemToQueue, pxHigherPriorityTaskWoken) \
-      xQueueGenericSendFromISR(pxQueue, pvItemToQueue, pxHigherPriorityTaskWoken, queueSEND_TO_FRONT)
+#define xQueueSendToFrontFromISR(pxQueue, pvItemToQueue, pxHigherPriorityTaskWoken) \
+    xQueueGenericSendFromISR(pxQueue, pvItemToQueue, pxHigherPriorityTaskWoken, queueSEND_TO_FRONT)
 
 /**
  * queue. h
@@ -925,8 +925,8 @@ void vQueueDelete(xQueueHandle xQueue);
  * \defgroup xQueueSendFromISR xQueueSendFromISR
  * \ingroup QueueManagement
  */
-#   define xQueueSendToBackFromISR(pxQueue, pvItemToQueue, pxHigherPriorityTaskWoken) \
-      xQueueGenericSendFromISR(pxQueue, pvItemToQueue, pxHigherPriorityTaskWoken, queueSEND_TO_BACK)
+#define xQueueSendToBackFromISR(pxQueue, pvItemToQueue, pxHigherPriorityTaskWoken) \
+    xQueueGenericSendFromISR(pxQueue, pvItemToQueue, pxHigherPriorityTaskWoken, queueSEND_TO_BACK)
 
 /**
  * queue. h
@@ -1000,8 +1000,8 @@ void vQueueDelete(xQueueHandle xQueue);
  * \defgroup xQueueSendFromISR xQueueSendFromISR
  * \ingroup QueueManagement
  */
-#   define xQueueSendFromISR(pxQueue, pvItemToQueue, pxHigherPriorityTaskWoken) \
-      xQueueGenericSendFromISR(pxQueue, pvItemToQueue, pxHigherPriorityTaskWoken, queueSEND_TO_BACK)
+#define xQueueSendFromISR(pxQueue, pvItemToQueue, pxHigherPriorityTaskWoken) \
+    xQueueGenericSendFromISR(pxQueue, pvItemToQueue, pxHigherPriorityTaskWoken, queueSEND_TO_BACK)
 
 /**
  * queue. h
@@ -1080,9 +1080,9 @@ void vQueueDelete(xQueueHandle xQueue);
  * \ingroup QueueManagement
  */
 signed portBASE_TYPE xQueueGenericSendFromISR(xQueueHandle pxQueue,
-                                              const void* const pvItemToQueue,
-                                              signed portBASE_TYPE* pxHigherPriorityTaskWoken,
-                                              portBASE_TYPE xCopyPosition);
+    const void* const pvItemToQueue,
+    signed portBASE_TYPE* pxHigherPriorityTaskWoken,
+    portBASE_TYPE xCopyPosition);
 
 /**
  * queue. h
@@ -1172,8 +1172,8 @@ signed portBASE_TYPE xQueueGenericSendFromISR(xQueueHandle pxQueue,
  * \ingroup QueueManagement
  */
 signed portBASE_TYPE xQueueReceiveFromISR(xQueueHandle pxQueue,
-                                          void* const pvBuffer,
-                                          signed portBASE_TYPE* pxTaskWoken);
+    void* const pvBuffer,
+    signed portBASE_TYPE* pxTaskWoken);
 
 /*
  * Utilities to query queue that are safe to use from an ISR.  These utilities
@@ -1198,20 +1198,20 @@ unsigned portBASE_TYPE uxQueueMessagesWaitingFromISR(const xQueueHandle pxQueue)
  * sacrifices execution speed to ensure better interrupt responsiveness.
  */
 signed portBASE_TYPE xQueueAltGenericSend(xQueueHandle pxQueue,
-                                          const void* const pvItemToQueue,
-                                          portTickType xTicksToWait,
-                                          portBASE_TYPE xCopyPosition);
+    const void* const pvItemToQueue,
+    portTickType xTicksToWait,
+    portBASE_TYPE xCopyPosition);
 signed portBASE_TYPE xQueueAltGenericReceive(xQueueHandle pxQueue,
-                                             void* const pvBuffer,
-                                             portTickType xTicksToWait,
-                                             portBASE_TYPE xJustPeeking);
-#   define xQueueAltSendToFront(xQueue, pvItemToQueue, xTicksToWait) \
-      xQueueAltGenericSend(xQueue, pvItemToQueue, xTicksToWait, queueSEND_TO_FRONT)
-#   define xQueueAltSendToBack(xQueue, pvItemToQueue, xTicksToWait) \
-      xQueueAltGenericSend(xQueue, pvItemToQueue, xTicksToWait, queueSEND_TO_BACK)
-#   define xQueueAltReceive(xQueue, pvBuffer, xTicksToWait) \
-      xQueueAltGenericReceive(xQueue, pvBuffer, xTicksToWait, pdFALSE)
-#   define xQueueAltPeek(xQueue, pvBuffer, xTicksToWait) xQueueAltGenericReceive(xQueue, pvBuffer, xTicksToWait, pdTRUE)
+    void* const pvBuffer,
+    portTickType xTicksToWait,
+    portBASE_TYPE xJustPeeking);
+#define xQueueAltSendToFront(xQueue, pvItemToQueue, xTicksToWait) \
+    xQueueAltGenericSend(xQueue, pvItemToQueue, xTicksToWait, queueSEND_TO_FRONT)
+#define xQueueAltSendToBack(xQueue, pvItemToQueue, xTicksToWait) \
+    xQueueAltGenericSend(xQueue, pvItemToQueue, xTicksToWait, queueSEND_TO_BACK)
+#define xQueueAltReceive(xQueue, pvBuffer, xTicksToWait) \
+    xQueueAltGenericReceive(xQueue, pvBuffer, xTicksToWait, pdFALSE)
+#define xQueueAltPeek(xQueue, pvBuffer, xTicksToWait) xQueueAltGenericReceive(xQueue, pvBuffer, xTicksToWait, pdTRUE)
 
 /*
  * The functions defined above are for passing data to and from tasks.  The
@@ -1223,8 +1223,8 @@ signed portBASE_TYPE xQueueAltGenericReceive(xQueueHandle pxQueue,
  * wrappers defined within croutine.h.
  */
 signed portBASE_TYPE xQueueCRSendFromISR(xQueueHandle pxQueue,
-                                         const void* pvItemToQueue,
-                                         signed portBASE_TYPE xCoRoutinePreviouslyWoken);
+    const void* pvItemToQueue,
+    signed portBASE_TYPE xCoRoutinePreviouslyWoken);
 signed portBASE_TYPE xQueueCRReceiveFromISR(xQueueHandle pxQueue, void* pvBuffer, signed portBASE_TYPE* pxTaskWoken);
 signed portBASE_TYPE xQueueCRSend(xQueueHandle pxQueue, const void* pvItemToQueue, portTickType xTicksToWait);
 signed portBASE_TYPE xQueueCRReceive(xQueueHandle pxQueue, void* pvBuffer, portTickType xTicksToWait);
@@ -1263,12 +1263,12 @@ portBASE_TYPE xQueueGiveMutexRecursive(xQueueHandle xMutex);
  * @param pcName The name to be associated with the handle.  This is the
  * name that the kernel aware debugger will display.
  */
-#   if configQUEUE_REGISTRY_SIZE > 0
+#if configQUEUE_REGISTRY_SIZE > 0
 void vQueueAddToRegistry(xQueueHandle xQueue, signed char* pcName);
-#   endif
+#endif
 
-#   ifdef __cplusplus
+#ifdef __cplusplus
 }
-#   endif
+#endif
 
 #endif /* QUEUE_H */

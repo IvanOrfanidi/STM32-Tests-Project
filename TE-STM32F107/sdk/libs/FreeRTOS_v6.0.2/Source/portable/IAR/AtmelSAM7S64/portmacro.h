@@ -77,12 +77,12 @@ extern "C" {
 #define portSTACK_TYPE unsigned portLONG
 #define portBASE_TYPE portLONG
 
-#if (configUSE_16_BIT_TICKS == 1)
+#if(configUSE_16_BIT_TICKS == 1)
 typedef unsigned portSHORT portTickType;
-#   define portMAX_DELAY (portTickType)0xffff
+#define portMAX_DELAY (portTickType)0xffff
 #else
 typedef unsigned portLONG portTickType;
-#   define portMAX_DELAY (portTickType)0xffffffff
+#define portMAX_DELAY (portTickType)0xffffffff
 #endif
 /*-----------------------------------------------------------*/
 
@@ -108,14 +108,13 @@ __arm __interwork void vPortExitCritical(void);
 
 /* Task utilities. */
 #define portEND_SWITCHING_ISR(xSwitchRequired) \
-   { \
-      extern void vTaskSwitchContext(void); \
+    { \
+        extern void vTaskSwitchContext(void); \
 \
-      if (xSwitchRequired) \
-      { \
-         vTaskSwitchContext(); \
-      } \
-   }
+        if(xSwitchRequired) { \
+            vTaskSwitchContext(); \
+        } \
+    }
 /*-----------------------------------------------------------*/
 
 /* Task function macros as described on the FreeRTOS.org WEB site. */

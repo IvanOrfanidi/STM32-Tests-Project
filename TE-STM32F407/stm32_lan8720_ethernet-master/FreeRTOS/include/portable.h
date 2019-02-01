@@ -91,31 +91,31 @@ did not result in a portmacro.h header file being included - and it should be
 included here.  In this case the path to the correct portmacro.h header file
 must be set in the compiler's include path. */
 #ifndef portENTER_CRITICAL
-#   include "portmacro.h"
+#include "portmacro.h"
 #endif
 
 #if portBYTE_ALIGNMENT == 8
-#   define portBYTE_ALIGNMENT_MASK (0x0007U)
+#define portBYTE_ALIGNMENT_MASK (0x0007U)
 #endif
 
 #if portBYTE_ALIGNMENT == 4
-#   define portBYTE_ALIGNMENT_MASK (0x0003)
+#define portBYTE_ALIGNMENT_MASK (0x0003)
 #endif
 
 #if portBYTE_ALIGNMENT == 2
-#   define portBYTE_ALIGNMENT_MASK (0x0001)
+#define portBYTE_ALIGNMENT_MASK (0x0001)
 #endif
 
 #if portBYTE_ALIGNMENT == 1
-#   define portBYTE_ALIGNMENT_MASK (0x0000)
+#define portBYTE_ALIGNMENT_MASK (0x0000)
 #endif
 
 #ifndef portBYTE_ALIGNMENT_MASK
-#   error "Invalid portBYTE_ALIGNMENT definition"
+#error "Invalid portBYTE_ALIGNMENT definition"
 #endif
 
 #ifndef portNUM_CONFIGURABLE_REGIONS
-#   define portNUM_CONFIGURABLE_REGIONS 1
+#define portNUM_CONFIGURABLE_REGIONS 1
 #endif
 
 #ifdef __cplusplus
@@ -130,22 +130,21 @@ extern "C" {
  * the order that the port expects to find them.
  *
  */
-#if (portUSING_MPU_WRAPPERS == 1)
+#if(portUSING_MPU_WRAPPERS == 1)
 StackType_t* pxPortInitialiseStack(StackType_t* pxTopOfStack,
-                                   TaskFunction_t pxCode,
-                                   void* pvParameters,
-                                   BaseType_t xRunPrivileged) PRIVILEGED_FUNCTION;
+    TaskFunction_t pxCode,
+    void* pvParameters,
+    BaseType_t xRunPrivileged) PRIVILEGED_FUNCTION;
 #else
 StackType_t* pxPortInitialiseStack(StackType_t* pxTopOfStack,
-                                   TaskFunction_t pxCode,
-                                   void* pvParameters) PRIVILEGED_FUNCTION;
+    TaskFunction_t pxCode,
+    void* pvParameters) PRIVILEGED_FUNCTION;
 #endif
 
 /* Used by heap_5.c. */
-typedef struct HeapRegion
-{
-   uint8_t* pucStartAddress;
-   size_t xSizeInBytes;
+typedef struct HeapRegion {
+    uint8_t* pucStartAddress;
+    size_t xSizeInBytes;
 } HeapRegion_t;
 
 /*
@@ -190,12 +189,12 @@ void vPortEndScheduler(void) PRIVILEGED_FUNCTION;
  * Fills the xMPUSettings structure with the memory region information
  * contained in xRegions.
  */
-#if (portUSING_MPU_WRAPPERS == 1)
+#if(portUSING_MPU_WRAPPERS == 1)
 struct xMEMORY_REGION;
 void vPortStoreTaskMPUSettings(xMPU_SETTINGS* xMPUSettings,
-                               const struct xMEMORY_REGION* const xRegions,
-                               StackType_t* pxBottomOfStack,
-                               uint16_t usStackDepth) PRIVILEGED_FUNCTION;
+    const struct xMEMORY_REGION* const xRegions,
+    StackType_t* pxBottomOfStack,
+    uint16_t usStackDepth) PRIVILEGED_FUNCTION;
 #endif
 
 #ifdef __cplusplus

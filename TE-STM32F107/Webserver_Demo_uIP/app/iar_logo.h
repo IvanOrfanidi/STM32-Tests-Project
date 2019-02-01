@@ -18,8 +18,8 @@
 #include "arm_comm.h"
 
 #ifndef __IAR_LOGO_H
-#   define __IAR_LOGO_H
+#define __IAR_LOGO_H
 
 extern Bmp_t IAR_Logo;
 
-#endif   // __IAR_LOGO_H
+#endif    // __IAR_LOGO_H

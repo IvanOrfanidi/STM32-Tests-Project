@@ -28,14 +28,14 @@
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __STM32F4xx_WWDG_H
-#   define __STM32F4xx_WWDG_H
+#define __STM32F4xx_WWDG_H
 
-#   ifdef __cplusplus
+#ifdef __cplusplus
 extern "C" {
-#   endif
+#endif
 
 /* Includes ------------------------------------------------------------------*/
-#   include "stm32f4xx.h"
+#include "stm32f4xx.h"
 
 /** @addtogroup STM32F4xx_StdPeriph_Driver
  * @{
@@ -56,15 +56,15 @@ extern "C" {
  * @{
  */
 
-#   define WWDG_Prescaler_1 ((uint32_t)0x00000000)
-#   define WWDG_Prescaler_2 ((uint32_t)0x00000080)
-#   define WWDG_Prescaler_4 ((uint32_t)0x00000100)
-#   define WWDG_Prescaler_8 ((uint32_t)0x00000180)
-#   define IS_WWDG_PRESCALER(PRESCALER) \
-      (((PRESCALER) == WWDG_Prescaler_1) || ((PRESCALER) == WWDG_Prescaler_2) || ((PRESCALER) == WWDG_Prescaler_4) || \
-       ((PRESCALER) == WWDG_Prescaler_8))
-#   define IS_WWDG_WINDOW_VALUE(VALUE) ((VALUE) <= 0x7F)
-#   define IS_WWDG_COUNTER(COUNTER) (((COUNTER) >= 0x40) && ((COUNTER) <= 0x7F))
+#define WWDG_Prescaler_1 ((uint32_t)0x00000000)
+#define WWDG_Prescaler_2 ((uint32_t)0x00000080)
+#define WWDG_Prescaler_4 ((uint32_t)0x00000100)
+#define WWDG_Prescaler_8 ((uint32_t)0x00000180)
+#define IS_WWDG_PRESCALER(PRESCALER) \
+    (((PRESCALER) == WWDG_Prescaler_1) || ((PRESCALER) == WWDG_Prescaler_2) || ((PRESCALER) == WWDG_Prescaler_4) || \
+        ((PRESCALER) == WWDG_Prescaler_8))
+#define IS_WWDG_WINDOW_VALUE(VALUE) ((VALUE) <= 0x7F)
+#define IS_WWDG_COUNTER(COUNTER) (((COUNTER) >= 0x40) && ((COUNTER) <= 0x7F))
 
 /**
  * @}
@@ -93,9 +93,9 @@ void WWDG_Enable(uint8_t Counter);
 FlagStatus WWDG_GetFlagStatus(void);
 void WWDG_ClearFlag(void);
 
-#   ifdef __cplusplus
+#ifdef __cplusplus
 }
-#   endif
+#endif
 
 #endif /* __STM32F4xx_WWDG_H */
 

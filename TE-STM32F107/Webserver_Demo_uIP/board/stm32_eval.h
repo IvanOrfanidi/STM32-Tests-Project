@@ -20,14 +20,14 @@
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __STM32_EVAL_H
-#   define __STM32_EVAL_H
+#define __STM32_EVAL_H
 
-#   ifdef __cplusplus
+#ifdef __cplusplus
 extern "C" {
-#   endif
+#endif
 
 /* Includes ------------------------------------------------------------------*/
-#   include "stm32f10x.h"
+#include "stm32f10x.h"
 
 /** @addtogroup Utilities
  * @{
@@ -50,62 +50,59 @@ extern "C" {
 /** @addtogroup STM3210E_EVAL_LED
  * @{
  */
-#   define LEDn 4
-#   define LED1_GPIO_PORT GPIOB
-#   define LED1_GPIO_CLK RCC_APB2Periph_GPIOB
-#   define LED1_GPIO_PIN GPIO_Pin_9
+#define LEDn 4
+#define LED1_GPIO_PORT GPIOB
+#define LED1_GPIO_CLK RCC_APB2Periph_GPIOB
+#define LED1_GPIO_PIN GPIO_Pin_9
 
-#   define LED2_GPIO_PORT GPIOC
-#   define LED2_GPIO_CLK RCC_APB2Periph_GPIOC
-#   define LED2_GPIO_PIN GPIO_Pin_8
+#define LED2_GPIO_PORT GPIOC
+#define LED2_GPIO_CLK RCC_APB2Periph_GPIOC
+#define LED2_GPIO_PIN GPIO_Pin_8
 
-#   define LED3_GPIO_PORT GPIOA
-#   define LED3_GPIO_CLK RCC_APB2Periph_GPIOA
-#   define LED3_GPIO_PIN GPIO_Pin_9
+#define LED3_GPIO_PORT GPIOA
+#define LED3_GPIO_CLK RCC_APB2Periph_GPIOA
+#define LED3_GPIO_PIN GPIO_Pin_9
 
 /** @addtogroup STM3210E_EVAL_COM
  * @{
  */
-#   define COMn 2
+#define COMn 2
 
 /**
  * @brief Definition for COM port1, connected to USART1
  */
-#   define EVAL_COM1 USART2
-#   define EVAL_COM1_GPIO GPIOD
-#   define EVAL_COM1_CLK RCC_APB1Periph_USART2
-#   define EVAL_COM1_GPIO_CLK RCC_APB2Periph_GPIOD
-#   define EVAL_COM1_RxPin GPIO_Pin_6
-#   define EVAL_COM1_TxPin GPIO_Pin_5
+#define EVAL_COM1 USART2
+#define EVAL_COM1_GPIO GPIOD
+#define EVAL_COM1_CLK RCC_APB1Periph_USART2
+#define EVAL_COM1_GPIO_CLK RCC_APB2Periph_GPIOD
+#define EVAL_COM1_RxPin GPIO_Pin_6
+#define EVAL_COM1_TxPin GPIO_Pin_5
 
 /**
  * @brief Definition for COM port2, connected to USART2
  */
-#   define EVAL_COM2 USART3
-#   define EVAL_COM2_GPIO GPIOD
-#   define EVAL_COM2_CLK RCC_APB1Periph_USART3
-#   define EVAL_COM2_GPIO_CLK RCC_APB2Periph_GPIOD
-#   define EVAL_COM2_RxPin GPIO_Pin_9
-#   define EVAL_COM2_TxPin GPIO_Pin_8
+#define EVAL_COM2 USART3
+#define EVAL_COM2_GPIO GPIOD
+#define EVAL_COM2_CLK RCC_APB1Periph_USART3
+#define EVAL_COM2_GPIO_CLK RCC_APB2Periph_GPIOD
+#define EVAL_COM2_RxPin GPIO_Pin_9
+#define EVAL_COM2_TxPin GPIO_Pin_8
 
-typedef enum
-{
-   LED1 = 0,
-   LED2 = 1,
-   LED3 = 2,
-   LED4 = 3
+typedef enum {
+    LED1 = 0,
+    LED2 = 1,
+    LED3 = 2,
+    LED4 = 3
 } Led_TypeDef;
 
-typedef enum
-{
-   Mode_GPIO = 0,
-   Mode_EXTI = 1
+typedef enum {
+    Mode_GPIO = 0,
+    Mode_EXTI = 1
 } Button_Mode_TypeDef;
 
-typedef enum
-{
-   COM1 = 0,
-   COM2 = 1
+typedef enum {
+    COM1 = 0,
+    COM2 = 1
 } COM_TypeDef;
 
 /**
@@ -128,9 +125,9 @@ void STM_EVAL_LEDOff(Led_TypeDef Led);
 void STM_EVAL_LEDToggle(Led_TypeDef Led);
 void STM_EVAL_COMInit(COM_TypeDef COM, USART_InitTypeDef* USART_InitStruct);
 
-#   ifdef __cplusplus
+#ifdef __cplusplus
 }
-#   endif
+#endif
 
 #endif /* __STM32_EVAL_H */
 /**

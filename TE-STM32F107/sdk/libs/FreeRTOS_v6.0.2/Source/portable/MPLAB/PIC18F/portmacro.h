@@ -73,12 +73,12 @@
 #define portSTACK_TYPE unsigned char
 #define portBASE_TYPE char
 
-#if (configUSE_16_BIT_TICKS == 1)
+#if(configUSE_16_BIT_TICKS == 1)
 typedef unsigned portSHORT portTickType;
-#   define portMAX_DELAY (portTickType)0xffff
+#define portMAX_DELAY (portTickType)0xffff
 #else
 typedef unsigned portLONG portTickType;
-#   define portMAX_DELAY (portTickType)0xffffffff
+#define portMAX_DELAY (portTickType)0xffffffff
 #endif
 /*-----------------------------------------------------------*/
 
@@ -95,18 +95,18 @@ typedef unsigned portLONG portTickType;
 
 /* Push the INTCON register onto the stack, then disable interrupts. */
 #define portENTER_CRITICAL() \
-   POSTINC1 = INTCON; \
-   INTCONbits.GIEH = 0;
+    POSTINC1 = INTCON; \
+    INTCONbits.GIEH = 0;
 
 /* Retrieve the INTCON register from the stack, and enable interrupts
 if they were saved as being enabled.  Don't modify any other bits
 within the INTCON register as these may have lagitimately have been
 modified within the critical region. */
 #define portEXIT_CRITICAL() \
-   _asm MOVF POSTDEC1, 1, 0 _endasm if (INDF1 & portGLOBAL_INT_ENABLE_BIT) \
-   { \
-      portENABLE_INTERRUPTS(); \
-   }
+    _asm MOVF POSTDEC1, 1, 0 _endasm if(INDF1 & portGLOBAL_INT_ENABLE_BIT) \
+    { \
+        portENABLE_INTERRUPTS(); \
+    }
 /*-----------------------------------------------------------*/
 
 /* Task utilities. */
@@ -121,7 +121,7 @@ extern void vPortYield(void);
 
 /* Required by the kernel aware debugger. */
 #ifdef __DEBUG
-#   define portREMOVE_STATIC_QUALIFIER
+#define portREMOVE_STATIC_QUALIFIER
 #endif
 
 #define portNOP() _asm NOP _endasm

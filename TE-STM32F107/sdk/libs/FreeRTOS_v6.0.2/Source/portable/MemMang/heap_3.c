@@ -78,36 +78,34 @@ task.h is included from an application file. */
 
 void* pvPortMalloc(size_t xWantedSize)
 {
-   void* pvReturn;
+    void* pvReturn;
 
-   vTaskSuspendAll();
-   {
-      pvReturn = malloc(xWantedSize);
-   }
-   xTaskResumeAll();
+    vTaskSuspendAll();
+    {
+        pvReturn = malloc(xWantedSize);
+    }
+    xTaskResumeAll();
 
-#if (configUSE_MALLOC_FAILED_HOOK == 1)
-   {
-      if (pvReturn == NULL)
-      {
-         extern void vApplicationMallocFailedHook(void);
-         vApplicationMallocFailedHook();
-      }
-   }
+#if(configUSE_MALLOC_FAILED_HOOK == 1)
+    {
+        if(pvReturn == NULL) {
+            extern void vApplicationMallocFailedHook(void);
+            vApplicationMallocFailedHook();
+        }
+    }
 #endif
 
-   return pvReturn;
+    return pvReturn;
 }
 /*-----------------------------------------------------------*/
 
 void vPortFree(void* pv)
 {
-   if (pv)
-   {
-      vTaskSuspendAll();
-      {
-         free(pv);
-      }
-      xTaskResumeAll();
-   }
+    if(pv) {
+        vTaskSuspendAll();
+        {
+            free(pv);
+        }
+        xTaskResumeAll();
+    }
 }

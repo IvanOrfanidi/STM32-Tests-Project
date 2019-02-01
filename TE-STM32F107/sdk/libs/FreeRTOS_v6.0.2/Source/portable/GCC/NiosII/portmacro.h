@@ -79,12 +79,12 @@ extern "C" {
 #define portSTACK_TYPE unsigned portLONG
 #define portBASE_TYPE long
 
-#if (configUSE_16_BIT_TICKS == 1)
+#if(configUSE_16_BIT_TICKS == 1)
 typedef unsigned portSHORT portTickType;
-#   define portMAX_DELAY (portTickType)0xffff
+#define portMAX_DELAY (portTickType)0xffff
 #else
 typedef unsigned portLONG portTickType;
-#   define portMAX_DELAY (portTickType)0xffffffff
+#define portMAX_DELAY (portTickType)0xffffffff
 #endif
 /*-----------------------------------------------------------*/
 
@@ -99,8 +99,8 @@ typedef unsigned portLONG portTickType;
 extern void vTaskSwitchContext(void);
 #define portYIELD() asm volatile("trap");
 #define portEND_SWITCHING_ISR(xSwitchRequired) \
-   if (xSwitchRequired) \
-   vTaskSwitchContext()
+    if(xSwitchRequired) \
+    vTaskSwitchContext()
 
 /* Include the port_asm.S file where the Context saving/restoring is defined. */
 __asm__("\n\t.globl	save_context");

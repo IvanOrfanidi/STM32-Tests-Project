@@ -41,9 +41,8 @@ extern "C" {
 #endif
 
 /** For compatibility with BSD code */
-struct in_addr
-{
-   u32_t s_addr;
+struct in_addr {
+    u32_t s_addr;
 };
 
 /** 255.255.255.255 */
@@ -78,9 +77,9 @@ struct in_addr
 #define IN_CLASSC_MAX IP_CLASSC_MAX
 
 #define IN_CLASSD(d) IP_CLASSD(d)
-#define IN_CLASSD_NET IP_CLASSD_NET /* These ones aren't really */
+#define IN_CLASSD_NET IP_CLASSD_NET       /* These ones aren't really */
 #define IN_CLASSD_NSHIFT IP_CLASSD_NSHIFT /*   net and host fields, but */
-#define IN_CLASSD_HOST IP_CLASSD_HOST /*   routing needn't know. */
+#define IN_CLASSD_HOST IP_CLASSD_HOST     /*   routing needn't know. */
 #define IN_CLASSD_MAX IP_CLASSD_MAX
 
 #define IN_MULTICAST(a) IP_MULTICAST(a)
@@ -94,7 +93,7 @@ struct in_addr
 #define inet_addr_to_ipaddr(target_ipaddr, source_inaddr) (ip4_addr_set_u32(target_ipaddr, (source_inaddr)->s_addr))
 /* ATTENTION: the next define only works because both s_addr and ip_addr_t are an u32_t effectively! */
 #define inet_addr_to_ipaddr_p(target_ipaddr_p, source_inaddr) \
-   ((target_ipaddr_p) = (ip_addr_t*)&((source_inaddr)->s_addr))
+    ((target_ipaddr_p) = (ip_addr_t*)&((source_inaddr)->s_addr))
 
 /* directly map this to the lwip internal functions */
 #define inet_addr(cp) ipaddr_addr(cp)

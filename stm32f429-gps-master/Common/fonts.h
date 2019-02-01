@@ -27,14 +27,14 @@
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __FONTS_H
-#   define __FONTS_H
+#define __FONTS_H
 
-#   ifdef __cplusplus
+#ifdef __cplusplus
 extern "C" {
-#   endif
+#endif
 
 /* Includes ------------------------------------------------------------------*/
-#   include <stdint.h>
+#include <stdint.h>
 
 /** @addtogroup Utilities
  * @{
@@ -55,11 +55,10 @@ extern "C" {
 /** @defgroup FONTS_Exported_Types
  * @{
  */
-typedef struct _tFont
-{
-   const uint16_t* table;
-   uint16_t Width;
-   uint16_t Height;
+typedef struct _tFont {
+    const uint16_t* table;
+    uint16_t Width;
+    uint16_t Height;
 
 } sFONT;
 
@@ -75,7 +74,7 @@ extern sFONT Font8x8;
 /** @defgroup FONTS_Exported_Constants
  * @{
  */
-#   define LINE(x) ((x) * (((sFONT*)LCD_GetFont())->Height))
+#define LINE(x) ((x) * (((sFONT*)LCD_GetFont())->Height))
 
 /**
  * @}
@@ -95,9 +94,9 @@ extern sFONT Font8x8;
  * @}
  */
 
-#   ifdef __cplusplus
+#ifdef __cplusplus
 }
-#   endif
+#endif
 
 #endif /* __FONTS_H */
 

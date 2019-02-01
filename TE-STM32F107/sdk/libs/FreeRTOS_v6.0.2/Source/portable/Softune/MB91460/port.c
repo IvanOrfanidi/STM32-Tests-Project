@@ -74,25 +74,25 @@ Store R14 - R8 ST MDH, @-R15;
 Store MDH ST MDL, @-R15;
 Store MDL
 
-   ANDCCR #0xDF;
+    ANDCCR #0xDF;
 Switch back to system stack LD @R15 +, R0;
 Store PC to R0 ORCCR #0x20;
 Switch to user stack ST R0, @-R15;
 Store PC to User stack
 
-   ANDCCR #0xDF;
+    ANDCCR #0xDF;
 Switch back to system stack LD @R15 +, R0;
 Store PS to R0 ORCCR #0x20;
 Switch to user stack ST R0, @-R15;
 Store PS to User stack
 
-   LDI #_pxCurrentTCB,
-   R0;
+    LDI #_pxCurrentTCB,
+    R0;
 Get pxCurrentTCB address LD @R0, R0;
 Get the pxCurrentTCB->pxTopOfStack address ST R15, @R0;
 Store USP to pxCurrentTCB->pxTopOfStack
 
-   ANDCCR #0xDF;Switch back to system stack for the rest of tick ISR
+    ANDCCR #0xDF;Switch back to system stack for the rest of tick ISR
 #endm
 
 #macro RestoreContext
@@ -102,30 +102,30 @@ Get the pxCurrentTCB->pxTopOfStack address ORCCR #0x20;
 Switch to user stack LD @R0, R15;
 Restore USP from pxCurrentTCB->pxTopOfStack
 
-      LD @R15 +
-   , R0;
+        LD @R15 +
+    , R0;
 Store PS to R0 ANDCCR #0xDF;
 Switch to system stack ST R0, @-R15;
 Store PS to system stack
 
-   ORCCR #0x20;
+    ORCCR #0x20;
 Switch to user stack LD @R15 +, R0;
 Store PC to R0 ANDCCR #0xDF;
 Switch to system stack ST R0, @-R15;
 Store PC to system stack
 
-   ORCCR #0x20;
+    ORCCR #0x20;
 Switch back to retrieve the remaining context
 
-      LD @R15 +
-   , MDL;
+        LD @R15 +
+    , MDL;
 Restore MDL LD @R15 +, MDH;
 Restore MDH LDM1(R14, R13, R12, R11, R10, R9, R8);
 Restore R14 - R8 LDM0(R7, R6, R5, R4, R3, R2, R1, R0);
 Restore R7 - R0 LD @R15 +, RP;
 Restore RP
 
-   ANDCCR #0xDF;Switch back to system stack for the rest of tick ISR
+    ANDCCR #0xDF;Switch back to system stack for the rest of tick ISR
 #endm
 #pragma endasm
 
@@ -145,120 +145,120 @@ static void prvSetupTimerInterrupt( void );
  */
 portSTACK_TYPE* pxPortInitialiseStack(portSTACK_TYPE* pxTopOfStack, pdTASK_CODE pxCode, void* pvParameters)
 {
-   /* Place a few bytes of known values on the bottom of the stack.
+    /* Place a few bytes of known values on the bottom of the stack.
    This is just useful for debugging. */
 
-   *pxTopOfStack = 0x11111111;
-   pxTopOfStack--;
-   *pxTopOfStack = 0x22222222;
-   pxTopOfStack--;
-   *pxTopOfStack = 0x33333333;
-   pxTopOfStack--;
+    *pxTopOfStack = 0x11111111;
+    pxTopOfStack--;
+    *pxTopOfStack = 0x22222222;
+    pxTopOfStack--;
+    *pxTopOfStack = 0x33333333;
+    pxTopOfStack--;
 
-   /* This is a redundant push to the stack, it may be required if
+    /* This is a redundant push to the stack, it may be required if
    in some implementations of the compiler the parameter to the task
    is passed on to the stack rather than in R4 register. */
-   *pxTopOfStack = (portSTACK_TYPE)(pvParameters);
-   pxTopOfStack--;
+    *pxTopOfStack = (portSTACK_TYPE)(pvParameters);
+    pxTopOfStack--;
 
-   *pxTopOfStack = (portSTACK_TYPE)0x00000000; /* RP */
-   pxTopOfStack--;
-   *pxTopOfStack = (portSTACK_TYPE)0x00007777; /* R7 */
-   pxTopOfStack--;
-   *pxTopOfStack = (portSTACK_TYPE)0x00006666; /* R6 */
-   pxTopOfStack--;
-   *pxTopOfStack = (portSTACK_TYPE)0x00005555; /* R5 */
-   pxTopOfStack--;
+    *pxTopOfStack = (portSTACK_TYPE)0x00000000; /* RP */
+    pxTopOfStack--;
+    *pxTopOfStack = (portSTACK_TYPE)0x00007777; /* R7 */
+    pxTopOfStack--;
+    *pxTopOfStack = (portSTACK_TYPE)0x00006666; /* R6 */
+    pxTopOfStack--;
+    *pxTopOfStack = (portSTACK_TYPE)0x00005555; /* R5 */
+    pxTopOfStack--;
 
-   /* In the current implementation of the compiler the first
+    /* In the current implementation of the compiler the first
    parameter to the task (or function) is passed via R4 parameter
    to the task, hence the pvParameters pointer is copied into the R4
    register. See compiler manual section 4.6.2 for more information. */
-   *pxTopOfStack = (portSTACK_TYPE)(pvParameters); /* R4 */
-   pxTopOfStack--;
-   *pxTopOfStack = (portSTACK_TYPE)0x00003333; /* R3 */
-   pxTopOfStack--;
-   *pxTopOfStack = (portSTACK_TYPE)0x00002222; /* R2 */
-   pxTopOfStack--;
-   *pxTopOfStack = (portSTACK_TYPE)0x00001111; /* R1 */
-   pxTopOfStack--;
-   *pxTopOfStack = (portSTACK_TYPE)0x00000001; /* R0 */
-   pxTopOfStack--;
-   *pxTopOfStack = (portSTACK_TYPE)0x0000EEEE; /* R14 */
-   pxTopOfStack--;
-   *pxTopOfStack = (portSTACK_TYPE)0x0000DDDD; /* R13 */
-   pxTopOfStack--;
-   *pxTopOfStack = (portSTACK_TYPE)0x0000CCCC; /* R12 */
-   pxTopOfStack--;
-   *pxTopOfStack = (portSTACK_TYPE)0x0000BBBB; /* R11 */
-   pxTopOfStack--;
-   *pxTopOfStack = (portSTACK_TYPE)0x0000AAAA; /* R10 */
-   pxTopOfStack--;
-   *pxTopOfStack = (portSTACK_TYPE)0x00009999; /* R9 */
-   pxTopOfStack--;
-   *pxTopOfStack = (portSTACK_TYPE)0x00008888; /* R8 */
-   pxTopOfStack--;
-   *pxTopOfStack = (portSTACK_TYPE)0x11110000; /* MDH */
-   pxTopOfStack--;
-   *pxTopOfStack = (portSTACK_TYPE)0x22220000; /* MDL */
-   pxTopOfStack--;
+    *pxTopOfStack = (portSTACK_TYPE)(pvParameters); /* R4 */
+    pxTopOfStack--;
+    *pxTopOfStack = (portSTACK_TYPE)0x00003333; /* R3 */
+    pxTopOfStack--;
+    *pxTopOfStack = (portSTACK_TYPE)0x00002222; /* R2 */
+    pxTopOfStack--;
+    *pxTopOfStack = (portSTACK_TYPE)0x00001111; /* R1 */
+    pxTopOfStack--;
+    *pxTopOfStack = (portSTACK_TYPE)0x00000001; /* R0 */
+    pxTopOfStack--;
+    *pxTopOfStack = (portSTACK_TYPE)0x0000EEEE; /* R14 */
+    pxTopOfStack--;
+    *pxTopOfStack = (portSTACK_TYPE)0x0000DDDD; /* R13 */
+    pxTopOfStack--;
+    *pxTopOfStack = (portSTACK_TYPE)0x0000CCCC; /* R12 */
+    pxTopOfStack--;
+    *pxTopOfStack = (portSTACK_TYPE)0x0000BBBB; /* R11 */
+    pxTopOfStack--;
+    *pxTopOfStack = (portSTACK_TYPE)0x0000AAAA; /* R10 */
+    pxTopOfStack--;
+    *pxTopOfStack = (portSTACK_TYPE)0x00009999; /* R9 */
+    pxTopOfStack--;
+    *pxTopOfStack = (portSTACK_TYPE)0x00008888; /* R8 */
+    pxTopOfStack--;
+    *pxTopOfStack = (portSTACK_TYPE)0x11110000; /* MDH */
+    pxTopOfStack--;
+    *pxTopOfStack = (portSTACK_TYPE)0x22220000; /* MDL */
+    pxTopOfStack--;
 
-   /* The start of the task code. */
-   *pxTopOfStack = (portSTACK_TYPE)pxCode; /* PC */
-   pxTopOfStack--;
+    /* The start of the task code. */
+    *pxTopOfStack = (portSTACK_TYPE)pxCode; /* PC */
+    pxTopOfStack--;
 
-   /* PS - User Mode, USP, ILM=31, Interrupts enabled */
-   *pxTopOfStack = (portSTACK_TYPE)0x001F0030; /* PS */
+    /* PS - User Mode, USP, ILM=31, Interrupts enabled */
+    *pxTopOfStack = (portSTACK_TYPE)0x001F0030; /* PS */
 
-   return pxTopOfStack;
+    return pxTopOfStack;
 }
 /*-----------------------------------------------------------*/
 
 portBASE_TYPE xPortStartScheduler(void)
 {
-   /* Setup the hardware to generate the tick. */
-   prvSetupTimerInterrupt();
+    /* Setup the hardware to generate the tick. */
+    prvSetupTimerInterrupt();
 
 /* Restore the context of the first task that is going to run. */
 #pragma asm
-   RestoreContext
+    RestoreContext
 #pragma endasm
 
-      /* Simulate a function call end as generated by the compiler.  We will now
+        /* Simulate a function call end as generated by the compiler.  We will now
       jump to the start of the task the context of which we have just restored. */
-      __asm(" reti ");
+        __asm(" reti ");
 
-   /* Should not get here. */
-   return pdFAIL;
+    /* Should not get here. */
+    return pdFAIL;
 }
 /*-----------------------------------------------------------*/
 
 void vPortEndScheduler(void)
 {
-   /* Not implemented - unlikely to ever be required as there is nothing to
+    /* Not implemented - unlikely to ever be required as there is nothing to
    return to. */
 }
 /*-----------------------------------------------------------*/
 
 static void prvSetupTimerInterrupt(void)
 {
-   /* The peripheral clock divided by 32 is used by the timer. */
-   const unsigned short usReloadValue = (unsigned short)(((configPER_CLOCK_HZ / configTICK_RATE_HZ) / 32UL) - 1UL);
+    /* The peripheral clock divided by 32 is used by the timer. */
+    const unsigned short usReloadValue = (unsigned short)(((configPER_CLOCK_HZ / configTICK_RATE_HZ) / 32UL) - 1UL);
 
-   /* Setup RLT0 to generate a tick interrupt. */
+    /* Setup RLT0 to generate a tick interrupt. */
 
-   TMCSR0_CNTE = 0; /* Count Disable */
-   TMCSR0_CSL = 0x2; /* CLKP/32 */
-   TMCSR0_MOD = 0; /* Software trigger */
-   TMCSR0_RELD = 1; /* Reload */
+    TMCSR0_CNTE = 0;  /* Count Disable */
+    TMCSR0_CSL = 0x2; /* CLKP/32 */
+    TMCSR0_MOD = 0;   /* Software trigger */
+    TMCSR0_RELD = 1;  /* Reload */
 
-   TMCSR0_UF = 0; /* Clear underflow flag */
-   TMRLR0 = usReloadValue;
-   TMCSR0_INTE = 1; /* Interrupt Enable */
-   TMCSR0_CNTE = 1; /* Count Enable */
-   TMCSR0_TRG = 1; /* Trigger */
+    TMCSR0_UF = 0; /* Clear underflow flag */
+    TMRLR0 = usReloadValue;
+    TMCSR0_INTE = 1; /* Interrupt Enable */
+    TMCSR0_CNTE = 1; /* Count Enable */
+    TMCSR0_TRG = 1;  /* Trigger */
 
-   PORTEN = 0x3; /* Port Enable */
+    PORTEN = 0x3; /* Port Enable */
 }
 /*-----------------------------------------------------------*/
 
@@ -270,32 +270,32 @@ static void prvSetupTimerInterrupt(void)
  * and last the context of the task which is to be resumed is restored.
  */
 
-#   pragma asm
+#pragma asm
 
 .global _ReloadTimer0_IRQHandler _ReloadTimer0_IRQHandler :
 
-   ANDCCR #0xEF;
+    ANDCCR #0xEF;
 Disable Interrupts SaveContext;
 Save context ORCCR #0x10;
 Re - enable Interrupts
 
-        LDI #0xFFFB,
-   R1 LDI #_tmcsr0, R0 AND R1, @R0;
+         LDI #0xFFFB,
+    R1 LDI #_tmcsr0, R0 AND R1, @R0;
 Clear RLT0 interrupt flag
 
-   CALL32 _vTaskIncrementTick,
-   R12;
+    CALL32 _vTaskIncrementTick,
+    R12;
 Increment Tick CALL32 _vTaskSwitchContext, R12;
 Switch context if required
 
-   ANDCCR #0xEF;
+    ANDCCR #0xEF;
 Disable Interrupts RestoreContext;
 Restore context ORCCR #0x10;
 Re - enable Interrupts
 
-        RETI
+         RETI
 
-#   pragma endasm
+#pragma endasm
 
 #else
 
@@ -306,9 +306,9 @@ Re - enable Interrupts
  */
 __interrupt void ReloadTimer0_IRQHandler(void)
 {
-   /* Clear RLT0 interrupt flag */
-   TMCSR0_UF = 0;
-   vTaskIncrementTick();
+    /* Clear RLT0 interrupt flag */
+    TMCSR0_UF = 0;
+    vTaskIncrementTick();
 }
 
 #endif
@@ -320,27 +320,27 @@ __interrupt void ReloadTimer0_IRQHandler(void)
  */
 #pragma asm
 
-           .global _vPortYieldDelayed _vPortYieldDelayed :
+             .global _vPortYieldDelayed _vPortYieldDelayed :
 
-   ANDCCR #0xEF;
+    ANDCCR #0xEF;
 Disable Interrupts SaveContext;
 Save context ORCCR #0x10;
 Re - enable Interrupts
 
-        LDI #_dicr,
-   R0 BANDL #0x0E, @R0;
+         LDI #_dicr,
+    R0 BANDL #0x0E, @R0;
 Clear Delayed interrupt flag
 
-   CALL32 _vTaskSwitchContext,
-   R12;
+    CALL32 _vTaskSwitchContext,
+    R12;
 Switch context if required
 
-   ANDCCR #0xEF;
+    ANDCCR #0xEF;
 Disable Interrupts RestoreContext;
 Restore context ORCCR #0x10;
 Re - enable Interrupts
 
-        RETI
+         RETI
 
 #pragma endasm
 /*-----------------------------------------------------------*/
@@ -352,14 +352,14 @@ Re - enable Interrupts
  */
 #pragma asm
 
-           .global _vPortYield _vPortYield :
+             .global _vPortYield _vPortYield :
 
-   SaveContext;
+    SaveContext;
 Save context CALL32 _vTaskSwitchContext, R12;
 Switch context if required RestoreContext;
 Restore context
 
-   RETI
+    RETI
 
 #pragma endasm
-   /*-----------------------------------------------------------*/
+    /*-----------------------------------------------------------*/

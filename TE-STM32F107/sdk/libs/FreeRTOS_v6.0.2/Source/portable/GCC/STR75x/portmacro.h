@@ -77,12 +77,12 @@ extern "C" {
 #define portSTACK_TYPE unsigned portLONG
 #define portBASE_TYPE portLONG
 
-#if (configUSE_16_BIT_TICKS == 1)
+#if(configUSE_16_BIT_TICKS == 1)
 typedef unsigned portSHORT portTickType;
-#   define portMAX_DELAY (portTickType)0xffff
+#define portMAX_DELAY (portTickType)0xffff
 #else
 typedef unsigned portLONG portTickType;
-#   define portMAX_DELAY (portTickType)0xffffffff
+#define portMAX_DELAY (portTickType)0xffffffff
 #endif
 /*-----------------------------------------------------------*/
 
@@ -107,24 +107,24 @@ typedef unsigned portLONG portTickType;
 extern void vPortDisableInterruptsFromThumb(void) __attribute__((naked));
 extern void vPortEnableInterruptsFromThumb(void) __attribute__((naked));
 
-#   define portDISABLE_INTERRUPTS() vPortDisableInterruptsFromThumb()
-#   define portENABLE_INTERRUPTS() vPortEnableInterruptsFromThumb()
+#define portDISABLE_INTERRUPTS() vPortDisableInterruptsFromThumb()
+#define portENABLE_INTERRUPTS() vPortEnableInterruptsFromThumb()
 
 #else
 
-#   define portDISABLE_INTERRUPTS() \
-      asm volatile("STMDB	SP!, {R0}		\n\t" /* Push R0.						*/ \
-                   "MRS	R0, CPSR		\n\t" /* Get CPSR.					*/ \
-                   "ORR	R0, R0, #0xC0	\n\t" /* Disable IRQ, FIQ.			*/ \
-                   "MSR	CPSR, R0		\n\t" /* Write back modified value.	*/ \
-                   "LDMIA	SP!, {R0}			") /* Pop R0.						*/
+#define portDISABLE_INTERRUPTS() \
+    asm volatile("STMDB	SP!, {R0}		\n\t"  /* Push R0.						*/ \
+                 "MRS	R0, CPSR		\n\t"  /* Get CPSR.					*/ \
+                 "ORR	R0, R0, #0xC0	\n\t"  /* Disable IRQ, FIQ.			*/ \
+                 "MSR	CPSR, R0		\n\t"  /* Write back modified value.	*/ \
+                 "LDMIA	SP!, {R0}			") /* Pop R0.						*/
 
-#   define portENABLE_INTERRUPTS() \
-      asm volatile("STMDB	SP!, {R0}		\n\t" /* Push R0.						*/ \
-                   "MRS	R0, CPSR		\n\t" /* Get CPSR.					*/ \
-                   "BIC	R0, R0, #0xC0	\n\t" /* Enable IRQ, FIQ.				*/ \
-                   "MSR	CPSR, R0		\n\t" /* Write back modified value.	*/ \
-                   "LDMIA	SP!, {R0}			") /* Pop R0.						*/
+#define portENABLE_INTERRUPTS() \
+    asm volatile("STMDB	SP!, {R0}		\n\t"  /* Push R0.						*/ \
+                 "MRS	R0, CPSR		\n\t"  /* Get CPSR.					*/ \
+                 "BIC	R0, R0, #0xC0	\n\t"  /* Enable IRQ, FIQ.				*/ \
+                 "MSR	CPSR, R0		\n\t"  /* Write back modified value.	*/ \
+                 "LDMIA	SP!, {R0}			") /* Pop R0.						*/
 
 #endif /* THUMB_INTERWORK */
 
@@ -137,14 +137,13 @@ extern void vPortExitCritical(void);
 
 /* Task utilities. */
 #define portEND_SWITCHING_ISR(xSwitchRequired) \
-   { \
-      extern void vTaskSwitchContext(void); \
+    { \
+        extern void vTaskSwitchContext(void); \
 \
-      if (xSwitchRequired) \
-      { \
-         vTaskSwitchContext(); \
-      } \
-   }
+        if(xSwitchRequired) { \
+            vTaskSwitchContext(); \
+        } \
+    }
 /*-----------------------------------------------------------*/
 
 /* Task function macros as described on the FreeRTOS.org WEB site. */

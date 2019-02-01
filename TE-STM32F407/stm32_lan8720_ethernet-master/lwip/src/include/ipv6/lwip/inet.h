@@ -48,14 +48,14 @@ u32_t inet_addr(const char* cp);
 s8_t inet_aton(const char* cp, struct in_addr* addr);
 
 #ifndef _MACHINE_ENDIAN_H_
-#   ifndef _NETINET_IN_H
-#      ifndef _LINUX_BYTEORDER_GENERIC_H
+#ifndef _NETINET_IN_H
+#ifndef _LINUX_BYTEORDER_GENERIC_H
 u16_t htons(u16_t n);
 u16_t ntohs(u16_t n);
 u32_t htonl(u32_t n);
 u32_t ntohl(u32_t n);
-#      endif /* _LINUX_BYTEORDER_GENERIC_H */
-#   endif /* _NETINET_IN_H */
+#endif /* _LINUX_BYTEORDER_GENERIC_H */
+#endif /* _NETINET_IN_H */
 #endif /* _MACHINE_ENDIAN_H_ */
 
 #ifdef __cplusplus

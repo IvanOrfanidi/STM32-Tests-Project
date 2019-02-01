@@ -38,15 +38,15 @@
 
 #if PPP_SUPPORT /* don't build if not configured for use in lwipopts.h */
 
-#   include "lwip/def.h"
-#   include "lwip/sio.h"
-#   include "lwip/stats.h"
-#   include "lwip/mem.h"
-#   include "lwip/netif.h"
-#   include "lwip/sys.h"
-#   include "lwip/timers.h"
+#include "lwip/def.h"
+#include "lwip/sio.h"
+#include "lwip/stats.h"
+#include "lwip/mem.h"
+#include "lwip/netif.h"
+#include "lwip/sys.h"
+#include "lwip/timers.h"
 
-#   ifndef __u_char_defined
+#ifndef __u_char_defined
 
 /* Type definitions for BSD code. */
 typedef unsigned long u_long;
@@ -54,22 +54,22 @@ typedef unsigned int u_int;
 typedef unsigned short u_short;
 typedef unsigned char u_char;
 
-#   endif
+#endif
 
 /*************************
 *** PUBLIC DEFINITIONS ***
 *************************/
 
 /* Error codes. */
-#   define PPPERR_NONE 0 /* No error. */
-#   define PPPERR_PARAM -1 /* Invalid parameter. */
-#   define PPPERR_OPEN -2 /* Unable to open PPP session. */
-#   define PPPERR_DEVICE -3 /* Invalid I/O device for PPP. */
-#   define PPPERR_ALLOC -4 /* Unable to allocate resources. */
-#   define PPPERR_USER -5 /* User interrupt. */
-#   define PPPERR_CONNECT -6 /* Connection lost. */
-#   define PPPERR_AUTHFAIL -7 /* Failed authentication challenge. */
-#   define PPPERR_PROTOCOL -8 /* Failed to meet protocol. */
+#define PPPERR_NONE 0      /* No error. */
+#define PPPERR_PARAM -1    /* Invalid parameter. */
+#define PPPERR_OPEN -2     /* Unable to open PPP session. */
+#define PPPERR_DEVICE -3   /* Invalid I/O device for PPP. */
+#define PPPERR_ALLOC -4    /* Unable to allocate resources. */
+#define PPPERR_USER -5     /* User interrupt. */
+#define PPPERR_CONNECT -6  /* Connection lost. */
+#define PPPERR_AUTHFAIL -7 /* Failed authentication challenge. */
+#define PPPERR_PROTOCOL -8 /* Failed to meet protocol. */
 
 /*
  * PPP IOCTL commands.
@@ -78,18 +78,17 @@ typedef unsigned char u_char;
  * Get the up status - 0 for down, non-zero for up.  The argument must
  * point to an int.
  */
-#   define PPPCTLG_UPSTATUS 100 /* Get the up status - 0 down else up */
-#   define PPPCTLS_ERRCODE 101 /* Set the error code */
-#   define PPPCTLG_ERRCODE 102 /* Get the error code */
-#   define PPPCTLG_FD 103 /* Get the fd associated with the ppp */
+#define PPPCTLG_UPSTATUS 100 /* Get the up status - 0 down else up */
+#define PPPCTLS_ERRCODE 101  /* Set the error code */
+#define PPPCTLG_ERRCODE 102  /* Get the error code */
+#define PPPCTLG_FD 103       /* Get the fd associated with the ppp */
 
 /************************
 *** PUBLIC DATA TYPES ***
 ************************/
 
-struct ppp_addrs
-{
-   ip_addr_t our_ipaddr, his_ipaddr, netmask, dns1, dns2;
+struct ppp_addrs {
+    ip_addr_t our_ipaddr, his_ipaddr, netmask, dns1, dns2;
 };
 
 /***********************
@@ -118,12 +117,11 @@ void pppInit(void);
  * which identifies exactly one authentication method.
  *
  */
-enum pppAuthType
-{
-   PPPAUTHTYPE_NONE,
-   PPPAUTHTYPE_ANY,
-   PPPAUTHTYPE_PAP,
-   PPPAUTHTYPE_CHAP
+enum pppAuthType {
+    PPPAUTHTYPE_NONE,
+    PPPAUTHTYPE_ANY,
+    PPPAUTHTYPE_PAP,
+    PPPAUTHTYPE_CHAP
 };
 
 void pppSetAuth(enum pppAuthType authType, const char* user, const char* passwd);
@@ -131,7 +129,7 @@ void pppSetAuth(enum pppAuthType authType, const char* user, const char* passwd)
 /* Link status callback function prototype */
 typedef void (*pppLinkStatusCB_fn)(void* ctx, int errCode, void* arg);
 
-#   if PPPOS_SUPPORT
+#if PPPOS_SUPPORT
 /*
  * Open a new PPP connection using the given serial I/O device.
  * This initializes the PPP control block but does not
@@ -140,21 +138,21 @@ typedef void (*pppLinkStatusCB_fn)(void* ctx, int errCode, void* arg);
  * an error code (negative) on failure.
  */
 int pppOverSerialOpen(sio_fd_t fd, pppLinkStatusCB_fn linkStatusCB, void* linkStatusCtx);
-#   endif /* PPPOS_SUPPORT */
+#endif /* PPPOS_SUPPORT */
 
-#   if PPPOE_SUPPORT
+#if PPPOE_SUPPORT
 /*
  * Open a new PPP Over Ethernet (PPPOE) connection.
  */
 int pppOverEthernetOpen(struct netif* ethif,
-                        const char* service_name,
-                        const char* concentrator_name,
-                        pppLinkStatusCB_fn linkStatusCB,
-                        void* linkStatusCtx);
-#   endif /* PPPOE_SUPPORT */
+    const char* service_name,
+    const char* concentrator_name,
+    pppLinkStatusCB_fn linkStatusCB,
+    void* linkStatusCtx);
+#endif /* PPPOE_SUPPORT */
 
 /* for source code compatibility */
-#   define pppOpen(fd, cb, ls) pppOverSerialOpen(fd, cb, ls)
+#define pppOpen(fd, cb, ls) pppOverSerialOpen(fd, cb, ls)
 
 /*
  * Close a PPP connection and release the descriptor.
@@ -179,23 +177,23 @@ int pppIOCtl(int pd, int cmd, void* arg);
  */
 u_short pppMTU(int pd);
 
-#   if PPPOS_SUPPORT && !PPP_INPROC_OWNTHREAD
+#if PPPOS_SUPPORT && !PPP_INPROC_OWNTHREAD
 /*
  * PPP over Serial: this is the input function to be called for received data.
  * If PPP_INPROC_OWNTHREAD==1, a seperate input thread using the blocking
  * sio_read() is used, so this is deactivated.
  */
 void pppos_input(int pd, u_char* data, int len);
-#   endif /* PPPOS_SUPPORT && !PPP_INPROC_OWNTHREAD */
+#endif /* PPPOS_SUPPORT && !PPP_INPROC_OWNTHREAD */
 
-#   if LWIP_NETIF_STATUS_CALLBACK
+#if LWIP_NETIF_STATUS_CALLBACK
 /* Set an lwIP-style status-callback for the selected PPP device */
 void ppp_set_netif_statuscallback(int pd, netif_status_callback_fn status_callback);
-#   endif /* LWIP_NETIF_STATUS_CALLBACK */
-#   if LWIP_NETIF_LINK_CALLBACK
+#endif /* LWIP_NETIF_STATUS_CALLBACK */
+#if LWIP_NETIF_LINK_CALLBACK
 /* Set an lwIP-style link-callback for the selected PPP device */
 void ppp_set_netif_linkcallback(int pd, netif_status_callback_fn link_callback);
-#   endif /* LWIP_NETIF_LINK_CALLBACK */
+#endif /* LWIP_NETIF_LINK_CALLBACK */
 
 #endif /* PPP_SUPPORT */
 

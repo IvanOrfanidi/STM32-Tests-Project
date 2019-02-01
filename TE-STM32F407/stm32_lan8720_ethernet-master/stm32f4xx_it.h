@@ -41,14 +41,14 @@
  */
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __STM32F4xx_IT_H
-#   define __STM32F4xx_IT_H
+#define __STM32F4xx_IT_H
 
-#   ifdef __cplusplus
+#ifdef __cplusplus
 extern "C" {
-#   endif
+#endif
 
 /* Includes ------------------------------------------------------------------*/
-#   include "stm32f4xx.h"
+#include "stm32f4xx.h"
 
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/
@@ -65,9 +65,9 @@ void DebugMon_Handler(void);
 void PendSV_Handler(void);
 void SysTick_Handler(void);
 
-#   ifdef __cplusplus
+#ifdef __cplusplus
 }
-#   endif
+#endif
 
 #endif /* __STM32F4xx_IT_H */
 

@@ -28,7 +28,7 @@
 #ifndef STM32F10X_CL
 
 /* Includes ------------------------------------------------------------------*/
-#   include "usb_lib.h"
+#include "usb_lib.h"
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
@@ -47,7 +47,7 @@
  *******************************************************************************/
 void SetCNTR(uint16_t wRegValue)
 {
-   _SetCNTR(wRegValue);
+    _SetCNTR(wRegValue);
 }
 
 /*******************************************************************************
@@ -59,7 +59,7 @@ void SetCNTR(uint16_t wRegValue)
  *******************************************************************************/
 uint16_t GetCNTR(void)
 {
-   return (_GetCNTR());
+    return (_GetCNTR());
 }
 
 /*******************************************************************************
@@ -71,7 +71,7 @@ uint16_t GetCNTR(void)
  *******************************************************************************/
 void SetISTR(uint16_t wRegValue)
 {
-   _SetISTR(wRegValue);
+    _SetISTR(wRegValue);
 }
 
 /*******************************************************************************
@@ -83,7 +83,7 @@ void SetISTR(uint16_t wRegValue)
  *******************************************************************************/
 uint16_t GetISTR(void)
 {
-   return (_GetISTR());
+    return (_GetISTR());
 }
 
 /*******************************************************************************
@@ -95,7 +95,7 @@ uint16_t GetISTR(void)
  *******************************************************************************/
 uint16_t GetFNR(void)
 {
-   return (_GetFNR());
+    return (_GetFNR());
 }
 
 /*******************************************************************************
@@ -107,7 +107,7 @@ uint16_t GetFNR(void)
  *******************************************************************************/
 void SetDADDR(uint16_t wRegValue)
 {
-   _SetDADDR(wRegValue);
+    _SetDADDR(wRegValue);
 }
 
 /*******************************************************************************
@@ -119,7 +119,7 @@ void SetDADDR(uint16_t wRegValue)
  *******************************************************************************/
 uint16_t GetDADDR(void)
 {
-   return (_GetDADDR());
+    return (_GetDADDR());
 }
 
 /*******************************************************************************
@@ -131,7 +131,7 @@ uint16_t GetDADDR(void)
  *******************************************************************************/
 void SetBTABLE(uint16_t wRegValue)
 {
-   _SetBTABLE(wRegValue);
+    _SetBTABLE(wRegValue);
 }
 
 /*******************************************************************************
@@ -143,7 +143,7 @@ void SetBTABLE(uint16_t wRegValue)
  *******************************************************************************/
 uint16_t GetBTABLE(void)
 {
-   return (_GetBTABLE());
+    return (_GetBTABLE());
 }
 
 /*******************************************************************************
@@ -156,7 +156,7 @@ uint16_t GetBTABLE(void)
  *******************************************************************************/
 void SetENDPOINT(uint8_t bEpNum, uint16_t wRegValue)
 {
-   _SetENDPOINT(bEpNum, wRegValue);
+    _SetENDPOINT(bEpNum, wRegValue);
 }
 
 /*******************************************************************************
@@ -168,7 +168,7 @@ void SetENDPOINT(uint8_t bEpNum, uint16_t wRegValue)
  *******************************************************************************/
 uint16_t GetENDPOINT(uint8_t bEpNum)
 {
-   return (_GetENDPOINT(bEpNum));
+    return (_GetENDPOINT(bEpNum));
 }
 
 /*******************************************************************************
@@ -181,7 +181,7 @@ uint16_t GetENDPOINT(uint8_t bEpNum)
  *******************************************************************************/
 void SetEPType(uint8_t bEpNum, uint16_t wType)
 {
-   _SetEPType(bEpNum, wType);
+    _SetEPType(bEpNum, wType);
 }
 
 /*******************************************************************************
@@ -193,7 +193,7 @@ void SetEPType(uint8_t bEpNum, uint16_t wType)
  *******************************************************************************/
 uint16_t GetEPType(uint8_t bEpNum)
 {
-   return (_GetEPType(bEpNum));
+    return (_GetEPType(bEpNum));
 }
 
 /*******************************************************************************
@@ -206,7 +206,7 @@ uint16_t GetEPType(uint8_t bEpNum)
  *******************************************************************************/
 void SetEPTxStatus(uint8_t bEpNum, uint16_t wState)
 {
-   _SetEPTxStatus(bEpNum, wState);
+    _SetEPTxStatus(bEpNum, wState);
 }
 
 /*******************************************************************************
@@ -219,7 +219,7 @@ void SetEPTxStatus(uint8_t bEpNum, uint16_t wState)
  *******************************************************************************/
 void SetEPRxStatus(uint8_t bEpNum, uint16_t wState)
 {
-   _SetEPRxStatus(bEpNum, wState);
+    _SetEPRxStatus(bEpNum, wState);
 }
 
 /*******************************************************************************
@@ -232,16 +232,14 @@ void SetEPRxStatus(uint8_t bEpNum, uint16_t wState)
  *******************************************************************************/
 void SetDouBleBuffEPStall(uint8_t bEpNum, uint8_t bDir)
 {
-   uint16_t Endpoint_DTOG_Status;
-   Endpoint_DTOG_Status = GetENDPOINT(bEpNum);
-   if (bDir == EP_DBUF_OUT)
-   { /* OUT double buffered endpoint */
-      _SetENDPOINT(bEpNum, Endpoint_DTOG_Status & ~EPRX_DTOG1);
-   }
-   else if (bDir == EP_DBUF_IN)
-   { /* IN double buffered endpoint */
-      _SetENDPOINT(bEpNum, Endpoint_DTOG_Status & ~EPTX_DTOG1);
-   }
+    uint16_t Endpoint_DTOG_Status;
+    Endpoint_DTOG_Status = GetENDPOINT(bEpNum);
+    if(bDir == EP_DBUF_OUT) { /* OUT double buffered endpoint */
+        _SetENDPOINT(bEpNum, Endpoint_DTOG_Status & ~EPRX_DTOG1);
+    }
+    else if(bDir == EP_DBUF_IN) { /* IN double buffered endpoint */
+        _SetENDPOINT(bEpNum, Endpoint_DTOG_Status & ~EPTX_DTOG1);
+    }
 }
 
 /*******************************************************************************
@@ -253,7 +251,7 @@ void SetDouBleBuffEPStall(uint8_t bEpNum, uint8_t bDir)
  *******************************************************************************/
 uint16_t GetEPTxStatus(uint8_t bEpNum)
 {
-   return (_GetEPTxStatus(bEpNum));
+    return (_GetEPTxStatus(bEpNum));
 }
 
 /*******************************************************************************
@@ -265,7 +263,7 @@ uint16_t GetEPTxStatus(uint8_t bEpNum)
  *******************************************************************************/
 uint16_t GetEPRxStatus(uint8_t bEpNum)
 {
-   return (_GetEPRxStatus(bEpNum));
+    return (_GetEPRxStatus(bEpNum));
 }
 
 /*******************************************************************************
@@ -277,7 +275,7 @@ uint16_t GetEPRxStatus(uint8_t bEpNum)
  *******************************************************************************/
 void SetEPTxValid(uint8_t bEpNum)
 {
-   _SetEPTxStatus(bEpNum, EP_TX_VALID);
+    _SetEPTxStatus(bEpNum, EP_TX_VALID);
 }
 
 /*******************************************************************************
@@ -289,7 +287,7 @@ void SetEPTxValid(uint8_t bEpNum)
  *******************************************************************************/
 void SetEPRxValid(uint8_t bEpNum)
 {
-   _SetEPRxStatus(bEpNum, EP_RX_VALID);
+    _SetEPRxStatus(bEpNum, EP_RX_VALID);
 }
 
 /*******************************************************************************
@@ -301,7 +299,7 @@ void SetEPRxValid(uint8_t bEpNum)
  *******************************************************************************/
 void SetEP_KIND(uint8_t bEpNum)
 {
-   _SetEP_KIND(bEpNum);
+    _SetEP_KIND(bEpNum);
 }
 
 /*******************************************************************************
@@ -313,7 +311,7 @@ void SetEP_KIND(uint8_t bEpNum)
  *******************************************************************************/
 void ClearEP_KIND(uint8_t bEpNum)
 {
-   _ClearEP_KIND(bEpNum);
+    _ClearEP_KIND(bEpNum);
 }
 /*******************************************************************************
  * Function Name  : Clear_Status_Out
@@ -324,7 +322,7 @@ void ClearEP_KIND(uint8_t bEpNum)
  *******************************************************************************/
 void Clear_Status_Out(uint8_t bEpNum)
 {
-   _ClearEP_KIND(bEpNum);
+    _ClearEP_KIND(bEpNum);
 }
 /*******************************************************************************
  * Function Name  : Set_Status_Out
@@ -335,7 +333,7 @@ void Clear_Status_Out(uint8_t bEpNum)
  *******************************************************************************/
 void Set_Status_Out(uint8_t bEpNum)
 {
-   _SetEP_KIND(bEpNum);
+    _SetEP_KIND(bEpNum);
 }
 /*******************************************************************************
  * Function Name  : SetEPDoubleBuff
@@ -346,7 +344,7 @@ void Set_Status_Out(uint8_t bEpNum)
  *******************************************************************************/
 void SetEPDoubleBuff(uint8_t bEpNum)
 {
-   _SetEP_KIND(bEpNum);
+    _SetEP_KIND(bEpNum);
 }
 /*******************************************************************************
  * Function Name  : ClearEPDoubleBuff
@@ -357,7 +355,7 @@ void SetEPDoubleBuff(uint8_t bEpNum)
  *******************************************************************************/
 void ClearEPDoubleBuff(uint8_t bEpNum)
 {
-   _ClearEP_KIND(bEpNum);
+    _ClearEP_KIND(bEpNum);
 }
 /*******************************************************************************
  * Function Name  : GetTxStallStatus
@@ -368,7 +366,7 @@ void ClearEPDoubleBuff(uint8_t bEpNum)
  *******************************************************************************/
 uint16_t GetTxStallStatus(uint8_t bEpNum)
 {
-   return (_GetTxStallStatus(bEpNum));
+    return (_GetTxStallStatus(bEpNum));
 }
 /*******************************************************************************
  * Function Name  : GetRxStallStatus
@@ -379,7 +377,7 @@ uint16_t GetTxStallStatus(uint8_t bEpNum)
  *******************************************************************************/
 uint16_t GetRxStallStatus(uint8_t bEpNum)
 {
-   return (_GetRxStallStatus(bEpNum));
+    return (_GetRxStallStatus(bEpNum));
 }
 /*******************************************************************************
  * Function Name  : ClearEP_CTR_RX
@@ -390,7 +388,7 @@ uint16_t GetRxStallStatus(uint8_t bEpNum)
  *******************************************************************************/
 void ClearEP_CTR_RX(uint8_t bEpNum)
 {
-   _ClearEP_CTR_RX(bEpNum);
+    _ClearEP_CTR_RX(bEpNum);
 }
 /*******************************************************************************
  * Function Name  : ClearEP_CTR_TX
@@ -401,7 +399,7 @@ void ClearEP_CTR_RX(uint8_t bEpNum)
  *******************************************************************************/
 void ClearEP_CTR_TX(uint8_t bEpNum)
 {
-   _ClearEP_CTR_TX(bEpNum);
+    _ClearEP_CTR_TX(bEpNum);
 }
 /*******************************************************************************
  * Function Name  : ToggleDTOG_RX
@@ -412,7 +410,7 @@ void ClearEP_CTR_TX(uint8_t bEpNum)
  *******************************************************************************/
 void ToggleDTOG_RX(uint8_t bEpNum)
 {
-   _ToggleDTOG_RX(bEpNum);
+    _ToggleDTOG_RX(bEpNum);
 }
 /*******************************************************************************
  * Function Name  : ToggleDTOG_TX
@@ -423,7 +421,7 @@ void ToggleDTOG_RX(uint8_t bEpNum)
  *******************************************************************************/
 void ToggleDTOG_TX(uint8_t bEpNum)
 {
-   _ToggleDTOG_TX(bEpNum);
+    _ToggleDTOG_TX(bEpNum);
 }
 /*******************************************************************************
  * Function Name  : ClearDTOG_RX.
@@ -434,7 +432,7 @@ void ToggleDTOG_TX(uint8_t bEpNum)
  *******************************************************************************/
 void ClearDTOG_RX(uint8_t bEpNum)
 {
-   _ClearDTOG_RX(bEpNum);
+    _ClearDTOG_RX(bEpNum);
 }
 /*******************************************************************************
  * Function Name  : ClearDTOG_TX.
@@ -445,7 +443,7 @@ void ClearDTOG_RX(uint8_t bEpNum)
  *******************************************************************************/
 void ClearDTOG_TX(uint8_t bEpNum)
 {
-   _ClearDTOG_TX(bEpNum);
+    _ClearDTOG_TX(bEpNum);
 }
 /*******************************************************************************
  * Function Name  : SetEPAddress
@@ -457,7 +455,7 @@ void ClearDTOG_TX(uint8_t bEpNum)
  *******************************************************************************/
 void SetEPAddress(uint8_t bEpNum, uint8_t bAddr)
 {
-   _SetEPAddress(bEpNum, bAddr);
+    _SetEPAddress(bEpNum, bAddr);
 }
 /*******************************************************************************
  * Function Name  : GetEPAddress
@@ -468,7 +466,7 @@ void SetEPAddress(uint8_t bEpNum, uint8_t bAddr)
  *******************************************************************************/
 uint8_t GetEPAddress(uint8_t bEpNum)
 {
-   return (_GetEPAddress(bEpNum));
+    return (_GetEPAddress(bEpNum));
 }
 /*******************************************************************************
  * Function Name  : SetEPTxAddr
@@ -480,7 +478,7 @@ uint8_t GetEPAddress(uint8_t bEpNum)
  *******************************************************************************/
 void SetEPTxAddr(uint8_t bEpNum, uint16_t wAddr)
 {
-   _SetEPTxAddr(bEpNum, wAddr);
+    _SetEPTxAddr(bEpNum, wAddr);
 }
 /*******************************************************************************
  * Function Name  : SetEPRxAddr
@@ -492,7 +490,7 @@ void SetEPTxAddr(uint8_t bEpNum, uint16_t wAddr)
  *******************************************************************************/
 void SetEPRxAddr(uint8_t bEpNum, uint16_t wAddr)
 {
-   _SetEPRxAddr(bEpNum, wAddr);
+    _SetEPRxAddr(bEpNum, wAddr);
 }
 /*******************************************************************************
  * Function Name  : GetEPTxAddr
@@ -503,7 +501,7 @@ void SetEPRxAddr(uint8_t bEpNum, uint16_t wAddr)
  *******************************************************************************/
 uint16_t GetEPTxAddr(uint8_t bEpNum)
 {
-   return (_GetEPTxAddr(bEpNum));
+    return (_GetEPTxAddr(bEpNum));
 }
 /*******************************************************************************
  * Function Name  : GetEPRxAddr.
@@ -514,7 +512,7 @@ uint16_t GetEPTxAddr(uint8_t bEpNum)
  *******************************************************************************/
 uint16_t GetEPRxAddr(uint8_t bEpNum)
 {
-   return (_GetEPRxAddr(bEpNum));
+    return (_GetEPRxAddr(bEpNum));
 }
 /*******************************************************************************
  * Function Name  : SetEPTxCount.
@@ -526,7 +524,7 @@ uint16_t GetEPRxAddr(uint8_t bEpNum)
  *******************************************************************************/
 void SetEPTxCount(uint8_t bEpNum, uint16_t wCount)
 {
-   _SetEPTxCount(bEpNum, wCount);
+    _SetEPTxCount(bEpNum, wCount);
 }
 /*******************************************************************************
  * Function Name  : SetEPCountRxReg.
@@ -538,7 +536,7 @@ void SetEPTxCount(uint8_t bEpNum, uint16_t wCount)
  *******************************************************************************/
 void SetEPCountRxReg(uint32_t* pdwReg, uint16_t wCount)
 {
-   _SetEPCountRxReg(dwReg, wCount);
+    _SetEPCountRxReg(dwReg, wCount);
 }
 /*******************************************************************************
  * Function Name  : SetEPRxCount
@@ -550,7 +548,7 @@ void SetEPCountRxReg(uint32_t* pdwReg, uint16_t wCount)
  *******************************************************************************/
 void SetEPRxCount(uint8_t bEpNum, uint16_t wCount)
 {
-   _SetEPRxCount(bEpNum, wCount);
+    _SetEPRxCount(bEpNum, wCount);
 }
 /*******************************************************************************
  * Function Name  : GetEPTxCount
@@ -561,7 +559,7 @@ void SetEPRxCount(uint8_t bEpNum, uint16_t wCount)
  *******************************************************************************/
 uint16_t GetEPTxCount(uint8_t bEpNum)
 {
-   return (_GetEPTxCount(bEpNum));
+    return (_GetEPTxCount(bEpNum));
 }
 /*******************************************************************************
  * Function Name  : GetEPRxCount
@@ -572,7 +570,7 @@ uint16_t GetEPTxCount(uint8_t bEpNum)
  *******************************************************************************/
 uint16_t GetEPRxCount(uint8_t bEpNum)
 {
-   return (_GetEPRxCount(bEpNum));
+    return (_GetEPRxCount(bEpNum));
 }
 /*******************************************************************************
  * Function Name  : SetEPDblBuffAddr
@@ -585,7 +583,7 @@ uint16_t GetEPRxCount(uint8_t bEpNum)
  *******************************************************************************/
 void SetEPDblBuffAddr(uint8_t bEpNum, uint16_t wBuf0Addr, uint16_t wBuf1Addr)
 {
-   _SetEPDblBuffAddr(bEpNum, wBuf0Addr, wBuf1Addr);
+    _SetEPDblBuffAddr(bEpNum, wBuf0Addr, wBuf1Addr);
 }
 /*******************************************************************************
  * Function Name  : SetEPDblBuf0Addr
@@ -597,7 +595,7 @@ void SetEPDblBuffAddr(uint8_t bEpNum, uint16_t wBuf0Addr, uint16_t wBuf1Addr)
  *******************************************************************************/
 void SetEPDblBuf0Addr(uint8_t bEpNum, uint16_t wBuf0Addr)
 {
-   _SetEPDblBuf0Addr(bEpNum, wBuf0Addr);
+    _SetEPDblBuf0Addr(bEpNum, wBuf0Addr);
 }
 /*******************************************************************************
  * Function Name  : SetEPDblBuf1Addr
@@ -609,7 +607,7 @@ void SetEPDblBuf0Addr(uint8_t bEpNum, uint16_t wBuf0Addr)
  *******************************************************************************/
 void SetEPDblBuf1Addr(uint8_t bEpNum, uint16_t wBuf1Addr)
 {
-   _SetEPDblBuf1Addr(bEpNum, wBuf1Addr);
+    _SetEPDblBuf1Addr(bEpNum, wBuf1Addr);
 }
 /*******************************************************************************
  * Function Name  : GetEPDblBuf0Addr
@@ -620,7 +618,7 @@ void SetEPDblBuf1Addr(uint8_t bEpNum, uint16_t wBuf1Addr)
  *******************************************************************************/
 uint16_t GetEPDblBuf0Addr(uint8_t bEpNum)
 {
-   return (_GetEPDblBuf0Addr(bEpNum));
+    return (_GetEPDblBuf0Addr(bEpNum));
 }
 /*******************************************************************************
  * Function Name  : GetEPDblBuf1Addr
@@ -631,7 +629,7 @@ uint16_t GetEPDblBuf0Addr(uint8_t bEpNum)
  *******************************************************************************/
 uint16_t GetEPDblBuf1Addr(uint8_t bEpNum)
 {
-   return (_GetEPDblBuf1Addr(bEpNum));
+    return (_GetEPDblBuf1Addr(bEpNum));
 }
 /*******************************************************************************
  * Function Name  : SetEPDblBuffCount
@@ -643,7 +641,7 @@ uint16_t GetEPDblBuf1Addr(uint8_t bEpNum)
  *******************************************************************************/
 void SetEPDblBuffCount(uint8_t bEpNum, uint8_t bDir, uint16_t wCount)
 {
-   _SetEPDblBuffCount(bEpNum, bDir, wCount);
+    _SetEPDblBuffCount(bEpNum, bDir, wCount);
 }
 /*******************************************************************************
  * Function Name  : SetEPDblBuf0Count
@@ -655,7 +653,7 @@ void SetEPDblBuffCount(uint8_t bEpNum, uint8_t bDir, uint16_t wCount)
  *******************************************************************************/
 void SetEPDblBuf0Count(uint8_t bEpNum, uint8_t bDir, uint16_t wCount)
 {
-   _SetEPDblBuf0Count(bEpNum, bDir, wCount);
+    _SetEPDblBuf0Count(bEpNum, bDir, wCount);
 }
 /*******************************************************************************
  * Function Name  : SetEPDblBuf1Count
@@ -667,7 +665,7 @@ void SetEPDblBuf0Count(uint8_t bEpNum, uint8_t bDir, uint16_t wCount)
  *******************************************************************************/
 void SetEPDblBuf1Count(uint8_t bEpNum, uint8_t bDir, uint16_t wCount)
 {
-   _SetEPDblBuf1Count(bEpNum, bDir, wCount);
+    _SetEPDblBuf1Count(bEpNum, bDir, wCount);
 }
 /*******************************************************************************
  * Function Name  : GetEPDblBuf0Count
@@ -679,7 +677,7 @@ void SetEPDblBuf1Count(uint8_t bEpNum, uint8_t bDir, uint16_t wCount)
  *******************************************************************************/
 uint16_t GetEPDblBuf0Count(uint8_t bEpNum)
 {
-   return (_GetEPDblBuf0Count(bEpNum));
+    return (_GetEPDblBuf0Count(bEpNum));
 }
 /*******************************************************************************
  * Function Name  : GetEPDblBuf1Count
@@ -691,7 +689,7 @@ uint16_t GetEPDblBuf0Count(uint8_t bEpNum)
  *******************************************************************************/
 uint16_t GetEPDblBuf1Count(uint8_t bEpNum)
 {
-   return (_GetEPDblBuf1Count(bEpNum));
+    return (_GetEPDblBuf1Count(bEpNum));
 }
 /*******************************************************************************
  * Function Name  : GetEPDblBufDir
@@ -703,12 +701,12 @@ uint16_t GetEPDblBuf1Count(uint8_t bEpNum)
  *******************************************************************************/
 EP_DBUF_DIR GetEPDblBufDir(uint8_t bEpNum)
 {
-   if ((uint16_t)(*_pEPRxCount(bEpNum) & 0xFC00) != 0)
-      return (EP_DBUF_OUT);
-   else if (((uint16_t)(*_pEPTxCount(bEpNum)) & 0x03FF) != 0)
-      return (EP_DBUF_IN);
-   else
-      return (EP_DBUF_ERR);
+    if((uint16_t)(*_pEPRxCount(bEpNum) & 0xFC00) != 0)
+        return (EP_DBUF_OUT);
+    else if(((uint16_t)(*_pEPTxCount(bEpNum)) & 0x03FF) != 0)
+        return (EP_DBUF_IN);
+    else
+        return (EP_DBUF_ERR);
 }
 /*******************************************************************************
 * Function Name  : FreeUserBuffer
@@ -720,14 +718,12 @@ EP_DBUF_DIR GetEPDblBufDir(uint8_t bEpNum)
 *******************************************************************************/
 void FreeUserBuffer(uint8_t bEpNum, uint8_t bDir)
 {
-   if (bDir == EP_DBUF_OUT)
-   { /* OUT double buffered endpoint */
-      _ToggleDTOG_TX(bEpNum);
-   }
-   else if (bDir == EP_DBUF_IN)
-   { /* IN double buffered endpoint */
-      _ToggleDTOG_RX(bEpNum);
-   }
+    if(bDir == EP_DBUF_OUT) { /* OUT double buffered endpoint */
+        _ToggleDTOG_TX(bEpNum);
+    }
+    else if(bDir == EP_DBUF_IN) { /* IN double buffered endpoint */
+        _ToggleDTOG_RX(bEpNum);
+    }
 }
 
 /*******************************************************************************
@@ -739,9 +735,9 @@ void FreeUserBuffer(uint8_t bEpNum, uint8_t bDir)
  *******************************************************************************/
 uint16_t ToWord(uint8_t bh, uint8_t bl)
 {
-   uint16_t wRet;
-   wRet = (uint16_t)bl | ((uint16_t)bh << 8);
-   return (wRet);
+    uint16_t wRet;
+    wRet = (uint16_t)bl | ((uint16_t)bh << 8);
+    return (wRet);
 }
 /*******************************************************************************
  * Function Name  : ByteSwap
@@ -752,11 +748,11 @@ uint16_t ToWord(uint8_t bh, uint8_t bl)
  *******************************************************************************/
 uint16_t ByteSwap(uint16_t wSwW)
 {
-   uint8_t bTemp;
-   uint16_t wRet;
-   bTemp = (uint8_t)(wSwW & 0xff);
-   wRet = (wSwW >> 8) | ((uint16_t)bTemp << 8);
-   return (wRet);
+    uint8_t bTemp;
+    uint16_t wRet;
+    bTemp = (uint8_t)(wSwW & 0xff);
+    wRet = (wSwW >> 8) | ((uint16_t)bTemp << 8);
+    return (wRet);
 }
 
 #endif /* STM32F10X_CL */

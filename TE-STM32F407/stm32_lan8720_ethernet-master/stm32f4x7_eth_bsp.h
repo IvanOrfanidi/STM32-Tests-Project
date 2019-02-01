@@ -41,15 +41,15 @@
  */
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __STM32F4x7_ETH_BSP_H
-#   define __STM32F4x7_ETH_BSP_H
+#define __STM32F4x7_ETH_BSP_H
 
-#   ifdef __cplusplus
+#ifdef __cplusplus
 extern "C" {
-#   endif
+#endif
 
 /* Includes ------------------------------------------------------------------*/
-#   include "stm32f4xx.h"
-#   include "stm32f4_discovery.h"
+#include "stm32f4xx.h"
+#include "stm32f4_discovery.h"
 //#include "stm32f4_discovery_lcd.h"
 
 /* Exported types ------------------------------------------------------------*/
@@ -60,9 +60,9 @@ extern "C" {
 /* Exported functions ------------------------------------------------------- */
 void ETH_BSP_Config(void);
 
-#   ifdef __cplusplus
+#ifdef __cplusplus
 }
-#   endif
+#endif
 
 #endif /* __STM32F4x7_ETH_BSP_H */
 

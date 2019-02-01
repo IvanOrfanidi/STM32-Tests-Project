@@ -77,12 +77,12 @@ extern "C" {
 #define portSTACK_TYPE unsigned short
 #define portBASE_TYPE short
 
-#if (configUSE_16_BIT_TICKS == 1)
+#if(configUSE_16_BIT_TICKS == 1)
 typedef unsigned portSHORT portTickType;
-#   define portMAX_DELAY (portTickType)0xffff
+#define portMAX_DELAY (portTickType)0xffff
 #else
 typedef unsigned portLONG portTickType;
-#   define portMAX_DELAY (portTickType)0xffffffff
+#define portMAX_DELAY (portTickType)0xffffffff
 #endif
 /*-----------------------------------------------------------*/
 
@@ -109,8 +109,8 @@ extern void vPortExitCritical(void);
 /* Task utilities. */
 extern void vPortYield(void);
 #define portYIELD() \
-   asm volatile("CALL _vPortYield			\n" \
-                "NOP					  ");
+    asm volatile("CALL _vPortYield			\n" \
+                 "NOP					  ");
 /*-----------------------------------------------------------*/
 
 /* Task function macros as described on the FreeRTOS.org WEB site. */
@@ -120,7 +120,7 @@ extern void vPortYield(void);
 
 /* Required by the kernel aware debugger. */
 #ifdef __DEBUG
-#   define portREMOVE_STATIC_QUALIFIER
+#define portREMOVE_STATIC_QUALIFIER
 #endif
 
 #define portNOP() asm volatile("NOP")

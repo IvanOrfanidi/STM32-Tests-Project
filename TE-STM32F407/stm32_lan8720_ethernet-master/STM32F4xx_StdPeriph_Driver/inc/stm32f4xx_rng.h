@@ -28,14 +28,14 @@
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __STM32F4xx_RNG_H
-#   define __STM32F4xx_RNG_H
+#define __STM32F4xx_RNG_H
 
-#   ifdef __cplusplus
+#ifdef __cplusplus
 extern "C" {
-#   endif
+#endif
 
 /* Includes ------------------------------------------------------------------*/
-#   include "stm32f4xx.h"
+#include "stm32f4xx.h"
 
 /** @addtogroup STM32F4xx_StdPeriph_Driver
  * @{
@@ -55,13 +55,13 @@ extern "C" {
 /** @defgroup RNG_flags_definition
  * @{
  */
-#   define RNG_FLAG_DRDY ((uint8_t)0x0001) /*!< Data ready */
-#   define RNG_FLAG_CECS ((uint8_t)0x0002) /*!< Clock error current status */
-#   define RNG_FLAG_SECS ((uint8_t)0x0004) /*!< Seed error current status */
+#define RNG_FLAG_DRDY ((uint8_t)0x0001) /*!< Data ready */
+#define RNG_FLAG_CECS ((uint8_t)0x0002) /*!< Clock error current status */
+#define RNG_FLAG_SECS ((uint8_t)0x0004) /*!< Seed error current status */
 
-#   define IS_RNG_GET_FLAG(RNG_FLAG) \
-      (((RNG_FLAG) == RNG_FLAG_DRDY) || ((RNG_FLAG) == RNG_FLAG_CECS) || ((RNG_FLAG) == RNG_FLAG_SECS))
-#   define IS_RNG_CLEAR_FLAG(RNG_FLAG) (((RNG_FLAG) == RNG_FLAG_CECS) || ((RNG_FLAG) == RNG_FLAG_SECS))
+#define IS_RNG_GET_FLAG(RNG_FLAG) \
+    (((RNG_FLAG) == RNG_FLAG_DRDY) || ((RNG_FLAG) == RNG_FLAG_CECS) || ((RNG_FLAG) == RNG_FLAG_SECS))
+#define IS_RNG_CLEAR_FLAG(RNG_FLAG) (((RNG_FLAG) == RNG_FLAG_CECS) || ((RNG_FLAG) == RNG_FLAG_SECS))
 /**
  * @}
  */
@@ -69,11 +69,11 @@ extern "C" {
 /** @defgroup RNG_interrupts_definition
  * @{
  */
-#   define RNG_IT_CEI ((uint8_t)0x20) /*!< Clock error interrupt */
-#   define RNG_IT_SEI ((uint8_t)0x40) /*!< Seed error interrupt */
+#define RNG_IT_CEI ((uint8_t)0x20) /*!< Clock error interrupt */
+#define RNG_IT_SEI ((uint8_t)0x40) /*!< Seed error interrupt */
 
-#   define IS_RNG_IT(IT) ((((IT) & (uint8_t)0x9F) == 0x00) && ((IT) != 0x00))
-#   define IS_RNG_GET_IT(RNG_IT) (((RNG_IT) == RNG_IT_CEI) || ((RNG_IT) == RNG_IT_SEI))
+#define IS_RNG_IT(IT) ((((IT) & (uint8_t)0x9F) == 0x00) && ((IT) != 0x00))
+#define IS_RNG_GET_IT(RNG_IT) (((RNG_IT) == RNG_IT_CEI) || ((RNG_IT) == RNG_IT_SEI))
 /**
  * @}
  */
@@ -101,9 +101,9 @@ void RNG_ClearFlag(uint8_t RNG_FLAG);
 ITStatus RNG_GetITStatus(uint8_t RNG_IT);
 void RNG_ClearITPendingBit(uint8_t RNG_IT);
 
-#   ifdef __cplusplus
+#ifdef __cplusplus
 }
-#   endif
+#endif
 
 #endif /*__STM32F4xx_RNG_H */
 

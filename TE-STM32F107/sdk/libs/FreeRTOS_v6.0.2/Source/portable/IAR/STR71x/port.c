@@ -103,92 +103,91 @@ void vPortPreemptiveTick(void);
  */
 portSTACK_TYPE* pxPortInitialiseStack(portSTACK_TYPE* pxTopOfStack, pdTASK_CODE pxCode, void* pvParameters)
 {
-   portSTACK_TYPE* pxOriginalTOS;
+    portSTACK_TYPE* pxOriginalTOS;
 
-   pxOriginalTOS = pxTopOfStack;
+    pxOriginalTOS = pxTopOfStack;
 
-   /* Setup the initial stack of the task.  The stack is set exactly as
+    /* Setup the initial stack of the task.  The stack is set exactly as
    expected by the portRESTORE_CONTEXT() macro. */
 
-   /* First on the stack is the return address - which in this case is the
+    /* First on the stack is the return address - which in this case is the
    start of the task.  The offset is added to make the return address appear
    as it would within an IRQ ISR. */
-   *pxTopOfStack = (portSTACK_TYPE)pxCode + portINSTRUCTION_SIZE;
-   pxTopOfStack--;
+    *pxTopOfStack = (portSTACK_TYPE)pxCode + portINSTRUCTION_SIZE;
+    pxTopOfStack--;
 
-   *pxTopOfStack = (portSTACK_TYPE)0xaaaaaaaa; /* R14 */
-   pxTopOfStack--;
-   *pxTopOfStack = (portSTACK_TYPE)pxOriginalTOS; /* Stack used when task starts goes in R13. */
-   pxTopOfStack--;
-   *pxTopOfStack = (portSTACK_TYPE)0x12121212; /* R12 */
-   pxTopOfStack--;
-   *pxTopOfStack = (portSTACK_TYPE)0x11111111; /* R11 */
-   pxTopOfStack--;
-   *pxTopOfStack = (portSTACK_TYPE)0x10101010; /* R10 */
-   pxTopOfStack--;
-   *pxTopOfStack = (portSTACK_TYPE)0x09090909; /* R9 */
-   pxTopOfStack--;
-   *pxTopOfStack = (portSTACK_TYPE)0x08080808; /* R8 */
-   pxTopOfStack--;
-   *pxTopOfStack = (portSTACK_TYPE)0x07070707; /* R7 */
-   pxTopOfStack--;
-   *pxTopOfStack = (portSTACK_TYPE)0x06060606; /* R6 */
-   pxTopOfStack--;
-   *pxTopOfStack = (portSTACK_TYPE)0x05050505; /* R5 */
-   pxTopOfStack--;
-   *pxTopOfStack = (portSTACK_TYPE)0x04040404; /* R4 */
-   pxTopOfStack--;
-   *pxTopOfStack = (portSTACK_TYPE)0x03030303; /* R3 */
-   pxTopOfStack--;
-   *pxTopOfStack = (portSTACK_TYPE)0x02020202; /* R2 */
-   pxTopOfStack--;
-   *pxTopOfStack = (portSTACK_TYPE)0x01010101; /* R1 */
-   pxTopOfStack--;
+    *pxTopOfStack = (portSTACK_TYPE)0xaaaaaaaa; /* R14 */
+    pxTopOfStack--;
+    *pxTopOfStack = (portSTACK_TYPE)pxOriginalTOS; /* Stack used when task starts goes in R13. */
+    pxTopOfStack--;
+    *pxTopOfStack = (portSTACK_TYPE)0x12121212; /* R12 */
+    pxTopOfStack--;
+    *pxTopOfStack = (portSTACK_TYPE)0x11111111; /* R11 */
+    pxTopOfStack--;
+    *pxTopOfStack = (portSTACK_TYPE)0x10101010; /* R10 */
+    pxTopOfStack--;
+    *pxTopOfStack = (portSTACK_TYPE)0x09090909; /* R9 */
+    pxTopOfStack--;
+    *pxTopOfStack = (portSTACK_TYPE)0x08080808; /* R8 */
+    pxTopOfStack--;
+    *pxTopOfStack = (portSTACK_TYPE)0x07070707; /* R7 */
+    pxTopOfStack--;
+    *pxTopOfStack = (portSTACK_TYPE)0x06060606; /* R6 */
+    pxTopOfStack--;
+    *pxTopOfStack = (portSTACK_TYPE)0x05050505; /* R5 */
+    pxTopOfStack--;
+    *pxTopOfStack = (portSTACK_TYPE)0x04040404; /* R4 */
+    pxTopOfStack--;
+    *pxTopOfStack = (portSTACK_TYPE)0x03030303; /* R3 */
+    pxTopOfStack--;
+    *pxTopOfStack = (portSTACK_TYPE)0x02020202; /* R2 */
+    pxTopOfStack--;
+    *pxTopOfStack = (portSTACK_TYPE)0x01010101; /* R1 */
+    pxTopOfStack--;
 
-   /* When the task starts is will expect to find the function parameter in
+    /* When the task starts is will expect to find the function parameter in
    R0. */
-   *pxTopOfStack = (portSTACK_TYPE)pvParameters; /* R0 */
-   pxTopOfStack--;
+    *pxTopOfStack = (portSTACK_TYPE)pvParameters; /* R0 */
+    pxTopOfStack--;
 
-   /* The status register is set for system mode, with interrupts enabled. */
-   *pxTopOfStack = (portSTACK_TYPE)portINITIAL_SPSR;
+    /* The status register is set for system mode, with interrupts enabled. */
+    *pxTopOfStack = (portSTACK_TYPE)portINITIAL_SPSR;
 
-   if (((unsigned long)pxCode & 0x01UL) != 0x00UL)
-   {
-      /* We want the task to start in thumb mode. */
-      *pxTopOfStack |= portTHUMB_MODE_BIT;
-   }
+    if(((unsigned long)pxCode & 0x01UL) != 0x00UL) {
+        /* We want the task to start in thumb mode. */
+        *pxTopOfStack |= portTHUMB_MODE_BIT;
+    }
 
-   pxTopOfStack--;
+    pxTopOfStack--;
 
-   /* Interrupt flags cannot always be stored on the stack and will
+    /* Interrupt flags cannot always be stored on the stack and will
    instead be stored in a variable, which is then saved as part of the
    tasks context. */
-   *pxTopOfStack = portNO_CRITICAL_NESTING;
+    *pxTopOfStack = portNO_CRITICAL_NESTING;
 
-   return pxTopOfStack;
+    return pxTopOfStack;
 }
 /*-----------------------------------------------------------*/
 
 portBASE_TYPE xPortStartScheduler(void)
 {
-   extern void vPortStartFirstTask(void);
+    extern void vPortStartFirstTask(void);
 
-   /* Start the timer that generates the tick ISR.  Interrupts are disabled
+    /* Start the timer that generates the tick ISR.  Interrupts are disabled
    here already. */
-   prvSetupTimerInterrupt();
+    prvSetupTimerInterrupt();
 
-   /* Start the first task. */
-   vPortStartFirstTask();
+    /* Start the first task. */
+    vPortStartFirstTask();
 
-   /* Should not get here! */
-   return 0;
+    /* Should not get here! */
+    return 0;
 }
 /*-----------------------------------------------------------*/
 
 void vPortEndScheduler(void)
 {
-   /* It is unlikely that the ARM port will require this function as there
+    /* It is unlikely that the ARM port will require this function as there
    is nothing to return to.  */
 }
 /*-----------------------------------------------------------*/
@@ -197,14 +196,14 @@ void vPortEndScheduler(void)
 simply increment the system tick. */
 __arm __irq void vPortNonPreemptiveTick(void)
 {
-   /* Increment the tick count - which may wake some tasks but as the
+    /* Increment the tick count - which may wake some tasks but as the
    preemptive scheduler is not being used any woken task is not given
    processor time no matter what its priority. */
-   vTaskIncrementTick();
+    vTaskIncrementTick();
 
-   /* Clear the interrupt in the watchdog and EIC. */
-   WDG->SR = 0x0000;
-   portCLEAR_EIC();
+    /* Clear the interrupt in the watchdog and EIC. */
+    WDG->SR = 0x0000;
+    portCLEAR_EIC();
 }
 /*-----------------------------------------------------------*/
 
@@ -212,64 +211,62 @@ __arm __irq void vPortNonPreemptiveTick(void)
 keyword. */
 void vPortPreemptiveTick(void)
 {
-   /* Increment the tick counter. */
-   vTaskIncrementTick();
+    /* Increment the tick counter. */
+    vTaskIncrementTick();
 
-   /* The new tick value might unblock a task.  Ensure the highest task that
+    /* The new tick value might unblock a task.  Ensure the highest task that
    is ready to execute is the task that will execute when the tick ISR
    exits. */
-   vTaskSwitchContext();
+    vTaskSwitchContext();
 
-   /* Clear the interrupt in the watchdog and EIC. */
-   WDG->SR = 0x0000;
-   portCLEAR_EIC();
+    /* Clear the interrupt in the watchdog and EIC. */
+    WDG->SR = 0x0000;
+    portCLEAR_EIC();
 }
 /*-----------------------------------------------------------*/
 
 static void prvSetupTimerInterrupt(void)
 {
-   /* Set the watchdog up to generate a periodic tick. */
-   WDG_ECITConfig(DISABLE);
-   WDG_CntOnOffConfig(DISABLE);
-   WDG_PeriodValueConfig(portMICROS_PER_SECOND / configTICK_RATE_HZ);
+    /* Set the watchdog up to generate a periodic tick. */
+    WDG_ECITConfig(DISABLE);
+    WDG_CntOnOffConfig(DISABLE);
+    WDG_PeriodValueConfig(portMICROS_PER_SECOND / configTICK_RATE_HZ);
 
-   /* Setup the tick interrupt in the EIC. */
-   EIC_IRQChannelPriorityConfig(WDG_IRQChannel, 1);
-   EIC_IRQChannelConfig(WDG_IRQChannel, ENABLE);
-   EIC_IRQConfig(ENABLE);
-   WDG_ECITConfig(ENABLE);
+    /* Setup the tick interrupt in the EIC. */
+    EIC_IRQChannelPriorityConfig(WDG_IRQChannel, 1);
+    EIC_IRQChannelConfig(WDG_IRQChannel, ENABLE);
+    EIC_IRQConfig(ENABLE);
+    WDG_ECITConfig(ENABLE);
 
-   /* Start the timer - interrupts are actually disabled at this point so
+    /* Start the timer - interrupts are actually disabled at this point so
    it is safe to do this here. */
-   WDG_CntOnOffConfig(ENABLE);
+    WDG_CntOnOffConfig(ENABLE);
 }
 /*-----------------------------------------------------------*/
 
 __arm __interwork void vPortEnterCritical(void)
 {
-   /* Disable interrupts first! */
-   __disable_interrupt();
+    /* Disable interrupts first! */
+    __disable_interrupt();
 
-   /* Now interrupts are disabled ulCriticalNesting can be accessed
+    /* Now interrupts are disabled ulCriticalNesting can be accessed
    directly.  Increment ulCriticalNesting to keep a count of how many times
    portENTER_CRITICAL() has been called. */
-   ulCriticalNesting++;
+    ulCriticalNesting++;
 }
 /*-----------------------------------------------------------*/
 
 __arm __interwork void vPortExitCritical(void)
 {
-   if (ulCriticalNesting > portNO_CRITICAL_NESTING)
-   {
-      /* Decrement the nesting count as we are leaving a critical section. */
-      ulCriticalNesting--;
+    if(ulCriticalNesting > portNO_CRITICAL_NESTING) {
+        /* Decrement the nesting count as we are leaving a critical section. */
+        ulCriticalNesting--;
 
-      /* If the nesting level has reached zero then interrupts should be
+        /* If the nesting level has reached zero then interrupts should be
       re-enabled. */
-      if (ulCriticalNesting == portNO_CRITICAL_NESTING)
-      {
-         __enable_interrupt();
-      }
-   }
+        if(ulCriticalNesting == portNO_CRITICAL_NESTING) {
+            __enable_interrupt();
+        }
+    }
 }
 /*-----------------------------------------------------------*/

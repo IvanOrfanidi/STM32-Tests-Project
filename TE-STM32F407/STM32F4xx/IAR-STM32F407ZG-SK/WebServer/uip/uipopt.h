@@ -131,53 +131,53 @@ typedef unsigned short uip_stats_t;
 #define UIP_PINGADDRCONF 0
 
 #define UIP_IPADDR0 \
-   192 /**< The first octet of the IP address of \ \
+    192 /**< The first octet of the IP address of \ \
 this uIP node, if UIP_FIXEDADDR is \ \
 1. \hideinitializer */
 #define UIP_IPADDR1 \
-   168 /**< The second octet of the IP address of \ \
+    168 /**< The second octet of the IP address of \ \
 this uIP node, if UIP_FIXEDADDR is \ \
 1. \hideinitializer */
 #define UIP_IPADDR2 \
-   0 /**< The third octet of the IP address of \ \
+    0 /**< The third octet of the IP address of \ \
 this uIP node, if UIP_FIXEDADDR is \ \
 1. \hideinitializer */
 #define UIP_IPADDR3 \
-   200 /**< The fourth octet of the IP address of \ \
+    200 /**< The fourth octet of the IP address of \ \
 this uIP node, if UIP_FIXEDADDR is \ \
 1. \hideinitializer */
 
 #define UIP_NETMASK0 \
-   255 /**< The first octet of the netmask of \ \
+    255 /**< The first octet of the netmask of \ \
 this uIP node, if UIP_FIXEDADDR is \ \
 1. \hideinitializer */
 #define UIP_NETMASK1 \
-   255 /**< The second octet of the netmask of \ \
+    255 /**< The second octet of the netmask of \ \
 this uIP node, if UIP_FIXEDADDR is \ \
 1. \hideinitializer */
 #define UIP_NETMASK2 \
-   255 /**< The third octet of the netmask of \ \
+    255 /**< The third octet of the netmask of \ \
 this uIP node, if UIP_FIXEDADDR is \ \
 1. \hideinitializer */
 #define UIP_NETMASK3 \
-   0 /**< The fourth octet of the netmask of \ \
+    0 /**< The fourth octet of the netmask of \ \
 this uIP node, if UIP_FIXEDADDR is \ \
 1. \hideinitializer */
 
 #define UIP_DRIPADDR0 \
-   192 /**< The first octet of the IP address of \ \
+    192 /**< The first octet of the IP address of \ \
 the default router, if UIP_FIXEDADDR is \ \
 1. \hideinitializer */
 #define UIP_DRIPADDR1 \
-   168 /**< The second octet of the IP address of \ \
+    168 /**< The second octet of the IP address of \ \
 the default router, if UIP_FIXEDADDR is \ \
 1. \hideinitializer */
 #define UIP_DRIPADDR2 \
-   0 /**< The third octet of the IP address of \ \
+    0 /**< The third octet of the IP address of \ \
 the default router, if UIP_FIXEDADDR is \ \
 1. \hideinitializer */
 #define UIP_DRIPADDR3 \
-   1 /**< The fourth octet of the IP address of \ \
+    1 /**< The fourth octet of the IP address of \ \
 the default router, if UIP_FIXEDADDR is \ \
 1. \hideinitializer */
 
@@ -193,27 +193,27 @@ the default router, if UIP_FIXEDADDR is \ \
 #define UIP_FIXEDETHADDR 1
 
 #define UIP_ETHADDR0 \
-   0x00 /**< The first octet of the Ethernet \ \
+    0x00 /**< The first octet of the Ethernet \ \
 address if UIP_FIXEDETHADDR is \ \
 1. \hideinitializer */
 #define UIP_ETHADDR1 \
-   0x02 /**< The second octet of the Ethernet \ \
+    0x02 /**< The second octet of the Ethernet \ \
 address if UIP_FIXEDETHADDR is \ \
 1. \hideinitializer */
 #define UIP_ETHADDR2 \
-   0x04 /**< The third octet of the Ethernet \ \
+    0x04 /**< The third octet of the Ethernet \ \
 address if UIP_FIXEDETHADDR is \ \
 1. \hideinitializer */
 #define UIP_ETHADDR3 \
-   0x08 /**< The fourth octet of the Ethernet \ \
+    0x08 /**< The fourth octet of the Ethernet \ \
 address if UIP_FIXEDETHADDR is \ \
 1. \hideinitializer */
 #define UIP_ETHADDR4 \
-   0x0A /**< The fifth octet of the Ethernet \ \
+    0x0A /**< The fifth octet of the Ethernet \ \
 address if UIP_FIXEDETHADDR is \ \
 1. \hideinitializer */
 #define UIP_ETHADDR5 \
-   0x0D /**< The sixth octet of the Ethernet \ \
+    0x0D /**< The sixth octet of the Ethernet \ \
 address if UIP_FIXEDETHADDR is \ \
 1. \hideinitializer */
 
@@ -494,10 +494,10 @@ void uip_log(char* msg);
  * reflect the CPU architecture on which uIP is to be run.
  */
 #ifndef LITTLE_ENDIAN
-#   define LITTLE_ENDIAN 3412
+#define LITTLE_ENDIAN 3412
 #endif /* LITTLE_ENDIAN */
 #ifndef BIG_ENDIAN
-#   define BIG_ENDIAN 1234
+#define BIG_ENDIAN 1234
 #endif /* BIGE_ENDIAN */
 
 /**
@@ -509,7 +509,7 @@ void uip_log(char* msg);
  * \hideinitializer
  */
 #ifndef BYTE_ORDER
-#   define BYTE_ORDER LITTLE_ENDIAN
+#define BYTE_ORDER LITTLE_ENDIAN
 #endif /* BYTE_ORDER */
 
 /** @} */

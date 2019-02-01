@@ -53,21 +53,20 @@ void httpd_appcall(void);
    must return void and take no arguments (i.e., C type "void
    appfunc(void)"). */
 #ifndef UIP_APPCALL
-#   define UIP_APPCALL httpd_appcall
+#define UIP_APPCALL httpd_appcall
 #endif
 
-struct httpd_state
-{
-   u8_t state;
-   u16_t count;
-   char* dataptr;
-   char* script;
+struct httpd_state {
+    u8_t state;
+    u16_t count;
+    char* dataptr;
+    char* script;
 };
 
 /* UIP_APPSTATE_SIZE: The size of the application-specific state
    stored in the uip_conn structure. */
 #ifndef UIP_APPSTATE_SIZE
-#   define UIP_APPSTATE_SIZE (sizeof(struct httpd_state))
+#define UIP_APPSTATE_SIZE (sizeof(struct httpd_state))
 #endif
 
 #define FS_STATISTICS 1

@@ -60,7 +60,7 @@
 /*------------------------------------------------------------------------------*/
 void memb_init(struct memb_blocks* m)
 {
-   memset(m->mem, (m->size + 1) * m->num, 0);
+    memset(m->mem, (m->size + 1) * m->num, 0);
 }
 /*------------------------------------------------------------------------------*/
 /**
@@ -71,26 +71,24 @@ void memb_init(struct memb_blocks* m)
 /*------------------------------------------------------------------------------*/
 char* memb_alloc(struct memb_blocks* m)
 {
-   int i;
-   char* ptr;
+    int i;
+    char* ptr;
 
-   ptr = m->mem;
-   for (i = 0; i < m->num; ++i)
-   {
-      if (*ptr == 0)
-      {
-         /* If this block was unused, we increase the reference count to
+    ptr = m->mem;
+    for(i = 0; i < m->num; ++i) {
+        if(*ptr == 0) {
+            /* If this block was unused, we increase the reference count to
        indicate that it now is used and return a pointer to the
        first byte following the reference counter. */
-         ++*ptr;
-         return ptr + 1;
-      }
-      ptr += m->size + 1;
-   }
+            ++*ptr;
+            return ptr + 1;
+        }
+        ptr += m->size + 1;
+    }
 
-   /* No free block was found, so we return NULL to indicate failure to
+    /* No free block was found, so we return NULL to indicate failure to
       allocate block. */
-   return NULL;
+    return NULL;
 }
 /*------------------------------------------------------------------------------*/
 /**
@@ -108,23 +106,21 @@ char* memb_alloc(struct memb_blocks* m)
 /*------------------------------------------------------------------------------*/
 char memb_free(struct memb_blocks* m, char* ptr)
 {
-   int i;
-   char* ptr2;
+    int i;
+    char* ptr2;
 
-   /* Walk through the list of blocks and try to find the block to
+    /* Walk through the list of blocks and try to find the block to
       which the pointer "ptr" points to. */
-   ptr2 = m->mem;
-   for (i = 0; i < m->num; ++i)
-   {
-      if (ptr2 == ptr - 1)
-      {
-         /* We've found to block to which "ptr" points so we decrease the
+    ptr2 = m->mem;
+    for(i = 0; i < m->num; ++i) {
+        if(ptr2 == ptr - 1) {
+            /* We've found to block to which "ptr" points so we decrease the
        reference count and return the new value of it. */
-         return --*ptr2;
-      }
-      ptr2 += m->size + 1;
-   }
-   return -1;
+            return --*ptr2;
+        }
+        ptr2 += m->size + 1;
+    }
+    return -1;
 }
 /*------------------------------------------------------------------------------*/
 /**
@@ -142,6 +138,6 @@ char memb_free(struct memb_blocks* m, char* ptr)
 /*------------------------------------------------------------------------------*/
 char memb_ref(struct memb_blocks* m, char* ptr)
 {
-   return ++*(ptr - 1);
+    return ++*(ptr - 1);
 }
 /*------------------------------------------------------------------------------*/

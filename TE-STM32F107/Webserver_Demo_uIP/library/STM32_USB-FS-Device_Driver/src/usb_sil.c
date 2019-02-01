@@ -48,21 +48,21 @@ uint32_t USB_SIL_Init(void)
 {
 #ifndef STM32F10X_CL
 
-   /* USB interrupts initialization */
-   /* clear pending interrupts */
-   _SetISTR(0);
-   wInterrupt_Mask = IMR_MSK;
-   /* set interrupts mask */
-   _SetCNTR(wInterrupt_Mask);
+    /* USB interrupts initialization */
+    /* clear pending interrupts */
+    _SetISTR(0);
+    wInterrupt_Mask = IMR_MSK;
+    /* set interrupts mask */
+    _SetCNTR(wInterrupt_Mask);
 
 #else
 
-   /* Perform OTG Device initialization procedure (including EP0 init) */
-   OTG_DEV_Init();
+    /* Perform OTG Device initialization procedure (including EP0 init) */
+    OTG_DEV_Init();
 
 #endif /* STM32F10X_CL */
 
-   return 0;
+    return 0;
 }
 
 /*******************************************************************************
@@ -79,20 +79,20 @@ uint32_t USB_SIL_Write(uint8_t bEpAddr, uint8_t* pBufferPointer, uint32_t wBuffe
 {
 #ifndef STM32F10X_CL
 
-   /* Use the memory interface function to write to the selected endpoint */
-   UserToPMABufferCopy(pBufferPointer, GetEPTxAddr(bEpAddr & 0x7F), wBufferSize);
+    /* Use the memory interface function to write to the selected endpoint */
+    UserToPMABufferCopy(pBufferPointer, GetEPTxAddr(bEpAddr & 0x7F), wBufferSize);
 
-   /* Update the data length in the control register */
-   SetEPTxCount((bEpAddr & 0x7F), wBufferSize);
+    /* Update the data length in the control register */
+    SetEPTxCount((bEpAddr & 0x7F), wBufferSize);
 
 #else
 
-   /* Use the PCD interface layer function to write to the selected endpoint */
-   PCD_EP_Write(bEpAddr, pBufferPointer, wBufferSize);
+    /* Use the PCD interface layer function to write to the selected endpoint */
+    PCD_EP_Write(bEpAddr, pBufferPointer, wBufferSize);
 
 #endif /* STM32F10X_CL */
 
-   return 0;
+    return 0;
 }
 
 /*******************************************************************************
@@ -106,33 +106,33 @@ uint32_t USB_SIL_Write(uint8_t bEpAddr, uint8_t* pBufferPointer, uint32_t wBuffe
  *******************************************************************************/
 uint32_t USB_SIL_Read(uint8_t bEpAddr, uint8_t* pBufferPointer)
 {
-   uint32_t DataLength = 0;
+    uint32_t DataLength = 0;
 
 #ifndef STM32F10X_CL
 
-   /* Get the number of received data on the selected Endpoint */
-   DataLength = GetEPRxCount(bEpAddr & 0x7F);
+    /* Get the number of received data on the selected Endpoint */
+    DataLength = GetEPRxCount(bEpAddr & 0x7F);
 
-   /* Use the memory interface function to write to the selected endpoint */
-   PMAToUserBufferCopy(pBufferPointer, GetEPRxAddr(bEpAddr & 0x7F), DataLength);
+    /* Use the memory interface function to write to the selected endpoint */
+    PMAToUserBufferCopy(pBufferPointer, GetEPRxAddr(bEpAddr & 0x7F), DataLength);
 
 #else
 
-   USB_OTG_EP* ep;
+    USB_OTG_EP* ep;
 
-   /* Get the structure pointer of the selected Endpoint */
-   ep = PCD_GetOutEP(bEpAddr);
+    /* Get the structure pointer of the selected Endpoint */
+    ep = PCD_GetOutEP(bEpAddr);
 
-   /* Get the number of received data */
-   DataLength = ep->xfer_len;
+    /* Get the number of received data */
+    DataLength = ep->xfer_len;
 
-   /* Use the PCD interface layer function to read the selected endpoint */
-   PCD_EP_Read(bEpAddr, pBufferPointer, DataLength);
+    /* Use the PCD interface layer function to read the selected endpoint */
+    PCD_EP_Read(bEpAddr, pBufferPointer, DataLength);
 
 #endif /* STM32F10X_CL */
 
-   /* Return the number of received data */
-   return DataLength;
+    /* Return the number of received data */
+    return DataLength;
 }
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

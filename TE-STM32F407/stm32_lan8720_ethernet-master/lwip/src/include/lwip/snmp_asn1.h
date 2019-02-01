@@ -42,37 +42,37 @@
 
 #if LWIP_SNMP
 
-#   ifdef __cplusplus
+#ifdef __cplusplus
 extern "C" {
-#   endif
+#endif
 
-#   define SNMP_ASN1_UNIV (0) /* (!0x80 | !0x40) */
-#   define SNMP_ASN1_APPLIC (0x40) /* (!0x80 |  0x40) */
-#   define SNMP_ASN1_CONTXT (0x80) /* ( 0x80 | !0x40) */
+#define SNMP_ASN1_UNIV (0)      /* (!0x80 | !0x40) */
+#define SNMP_ASN1_APPLIC (0x40) /* (!0x80 |  0x40) */
+#define SNMP_ASN1_CONTXT (0x80) /* ( 0x80 | !0x40) */
 
-#   define SNMP_ASN1_CONSTR (0x20) /* ( 0x20) */
-#   define SNMP_ASN1_PRIMIT (0) /* (!0x20) */
+#define SNMP_ASN1_CONSTR (0x20) /* ( 0x20) */
+#define SNMP_ASN1_PRIMIT (0)    /* (!0x20) */
 
 /* universal tags */
-#   define SNMP_ASN1_INTEG 2
-#   define SNMP_ASN1_OC_STR 4
-#   define SNMP_ASN1_NUL 5
-#   define SNMP_ASN1_OBJ_ID 6
-#   define SNMP_ASN1_SEQ 16
+#define SNMP_ASN1_INTEG 2
+#define SNMP_ASN1_OC_STR 4
+#define SNMP_ASN1_NUL 5
+#define SNMP_ASN1_OBJ_ID 6
+#define SNMP_ASN1_SEQ 16
 
 /* application specific (SNMP) tags */
-#   define SNMP_ASN1_IPADDR 0 /* octet string size(4) */
-#   define SNMP_ASN1_COUNTER 1 /* u32_t */
-#   define SNMP_ASN1_GAUGE 2 /* u32_t */
-#   define SNMP_ASN1_TIMETICKS 3 /* u32_t */
-#   define SNMP_ASN1_OPAQUE 4 /* octet string */
+#define SNMP_ASN1_IPADDR 0    /* octet string size(4) */
+#define SNMP_ASN1_COUNTER 1   /* u32_t */
+#define SNMP_ASN1_GAUGE 2     /* u32_t */
+#define SNMP_ASN1_TIMETICKS 3 /* u32_t */
+#define SNMP_ASN1_OPAQUE 4    /* octet string */
 
 /* context specific (SNMP) tags */
-#   define SNMP_ASN1_PDU_GET_REQ 0
-#   define SNMP_ASN1_PDU_GET_NEXT_REQ 1
-#   define SNMP_ASN1_PDU_GET_RESP 2
-#   define SNMP_ASN1_PDU_SET_REQ 3
-#   define SNMP_ASN1_PDU_TRAP 4
+#define SNMP_ASN1_PDU_GET_REQ 0
+#define SNMP_ASN1_PDU_GET_NEXT_REQ 1
+#define SNMP_ASN1_PDU_GET_RESP 2
+#define SNMP_ASN1_PDU_SET_REQ 3
+#define SNMP_ASN1_PDU_TRAP 4
 
 err_t snmp_asn1_dec_type(struct pbuf* p, u16_t ofs, u8_t* type);
 err_t snmp_asn1_dec_length(struct pbuf* p, u16_t ofs, u8_t* octets_used, u16_t* length);
@@ -92,9 +92,9 @@ err_t snmp_asn1_enc_s32t(struct pbuf* p, u16_t ofs, u16_t octets_needed, s32_t v
 err_t snmp_asn1_enc_oid(struct pbuf* p, u16_t ofs, u8_t ident_len, s32_t* ident);
 err_t snmp_asn1_enc_raw(struct pbuf* p, u16_t ofs, u16_t raw_len, u8_t* raw);
 
-#   ifdef __cplusplus
+#ifdef __cplusplus
 }
-#   endif
+#endif
 
 #endif /* LWIP_SNMP */
 

@@ -56,9 +56,8 @@
 /**
  * Representation of a 48-bit Ethernet address.
  */
-struct uip_eth_addr
-{
-   u8_t addr[6];
+struct uip_eth_addr {
+    u8_t addr[6];
 } /*_RB_ __attribute__ ((packed, aligned (1))) */;
 
 extern struct uip_eth_addr uip_ethaddr;
@@ -66,11 +65,10 @@ extern struct uip_eth_addr uip_ethaddr;
 /**
  * The Ethernet header.
  */
-typedef struct uip_eth_hdr
-{
-   struct uip_eth_addr dest;
-   struct uip_eth_addr src;
-   u16_t type;
+typedef struct uip_eth_hdr {
+    struct uip_eth_addr dest;
+    struct uip_eth_addr src;
+    u16_t type;
 } uip_eth_hdr /*_RB_ __attribute__ ((packed)) */;
 
 #define UIP_ETHTYPE_ARP 0x0806
@@ -128,11 +126,10 @@ void uip_arp_timer(void);
  * \hideinitializer
  */
 #define uip_setdraddr(addr) \
-   do \
-   { \
-      uip_arp_draddr[0] = addr[0]; \
-      uip_arp_draddr[1] = addr[1]; \
-   } while (0)
+    do { \
+        uip_arp_draddr[0] = addr[0]; \
+        uip_arp_draddr[1] = addr[1]; \
+    } while(0)
 
 /**
  * Set the netmask.
@@ -143,11 +140,10 @@ void uip_arp_timer(void);
  * \hideinitializer
  */
 #define uip_setnetmask(addr) \
-   do \
-   { \
-      uip_arp_netmask[0] = addr[0]; \
-      uip_arp_netmask[1] = addr[1]; \
-   } while (0)
+    do { \
+        uip_arp_netmask[0] = addr[0]; \
+        uip_arp_netmask[1] = addr[1]; \
+    } while(0)
 
 /**
  * Get the default router's IP address.
@@ -158,11 +154,10 @@ void uip_arp_timer(void);
  * \hideinitializer
  */
 #define uip_getdraddr(addr) \
-   do \
-   { \
-      addr[0] = uip_arp_draddr[0]; \
-      addr[1] = uip_arp_draddr[1]; \
-   } while (0)
+    do { \
+        addr[0] = uip_arp_draddr[0]; \
+        addr[1] = uip_arp_draddr[1]; \
+    } while(0)
 
 /**
  * Get the netmask.
@@ -173,11 +168,10 @@ void uip_arp_timer(void);
  * \hideinitializer
  */
 #define uip_getnetmask(addr) \
-   do \
-   { \
-      addr[0] = uip_arp_netmask[0]; \
-      addr[1] = uip_arp_netmask[1]; \
-   } while (0)
+    do { \
+        addr[0] = uip_arp_netmask[0]; \
+        addr[1] = uip_arp_netmask[1]; \
+    } while(0)
 
 /**
  * Specifiy the Ethernet MAC address.
@@ -196,15 +190,14 @@ void uip_arp_timer(void);
  * \hideinitializer
  */
 #define uip_setethaddr(eaddr) \
-   do \
-   { \
-      uip_ethaddr.addr[0] = eaddr.addr[0]; \
-      uip_ethaddr.addr[1] = eaddr.addr[1]; \
-      uip_ethaddr.addr[2] = eaddr.addr[2]; \
-      uip_ethaddr.addr[3] = eaddr.addr[3]; \
-      uip_ethaddr.addr[4] = eaddr.addr[4]; \
-      uip_ethaddr.addr[5] = eaddr.addr[5]; \
-   } while (0)
+    do { \
+        uip_ethaddr.addr[0] = eaddr.addr[0]; \
+        uip_ethaddr.addr[1] = eaddr.addr[1]; \
+        uip_ethaddr.addr[2] = eaddr.addr[2]; \
+        uip_ethaddr.addr[3] = eaddr.addr[3]; \
+        uip_ethaddr.addr[4] = eaddr.addr[4]; \
+        uip_ethaddr.addr[5] = eaddr.addr[5]; \
+    } while(0)
 
 /** @} */
 

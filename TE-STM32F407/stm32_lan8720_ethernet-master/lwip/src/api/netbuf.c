@@ -40,10 +40,10 @@
 
 #if LWIP_NETCONN /* don't build if not configured for use in lwipopts.h */
 
-#   include "lwip/netbuf.h"
-#   include "lwip/memp.h"
+#include "lwip/netbuf.h"
+#include "lwip/memp.h"
 
-#   include <string.h>
+#include <string.h>
 
 /**
  * Create (allocate) and initialize a new netbuf.
@@ -54,30 +54,28 @@
  */
 struct netbuf* netbuf_new(void)
 {
-   struct netbuf* buf;
+    struct netbuf* buf;
 
-   buf = (struct netbuf*)memp_malloc(MEMP_NETBUF);
-   if (buf != NULL)
-   {
-      buf->p = NULL;
-      buf->ptr = NULL;
-      ip_addr_set_any(&buf->addr);
-      buf->port = 0;
-#   if LWIP_NETBUF_RECVINFO || LWIP_CHECKSUM_ON_COPY
-#      if LWIP_CHECKSUM_ON_COPY
-      buf->flags = 0;
-#      endif /* LWIP_CHECKSUM_ON_COPY */
-      buf->toport_chksum = 0;
-#      if LWIP_NETBUF_RECVINFO
-      ip_addr_set_any(&buf->toaddr);
-#      endif /* LWIP_NETBUF_RECVINFO */
-#   endif /* LWIP_NETBUF_RECVINFO || LWIP_CHECKSUM_ON_COPY */
-      return buf;
-   }
-   else
-   {
-      return NULL;
-   }
+    buf = (struct netbuf*)memp_malloc(MEMP_NETBUF);
+    if(buf != NULL) {
+        buf->p = NULL;
+        buf->ptr = NULL;
+        ip_addr_set_any(&buf->addr);
+        buf->port = 0;
+#if LWIP_NETBUF_RECVINFO || LWIP_CHECKSUM_ON_COPY
+#if LWIP_CHECKSUM_ON_COPY
+        buf->flags = 0;
+#endif /* LWIP_CHECKSUM_ON_COPY */
+        buf->toport_chksum = 0;
+#if LWIP_NETBUF_RECVINFO
+        ip_addr_set_any(&buf->toaddr);
+#endif /* LWIP_NETBUF_RECVINFO */
+#endif /* LWIP_NETBUF_RECVINFO || LWIP_CHECKSUM_ON_COPY */
+        return buf;
+    }
+    else {
+        return NULL;
+    }
 }
 
 /**
@@ -87,15 +85,13 @@ struct netbuf* netbuf_new(void)
  */
 void netbuf_delete(struct netbuf* buf)
 {
-   if (buf != NULL)
-   {
-      if (buf->p != NULL)
-      {
-         pbuf_free(buf->p);
-         buf->p = buf->ptr = NULL;
-      }
-      memp_free(MEMP_NETBUF, buf);
-   }
+    if(buf != NULL) {
+        if(buf->p != NULL) {
+            pbuf_free(buf->p);
+            buf->p = buf->ptr = NULL;
+        }
+        memp_free(MEMP_NETBUF, buf);
+    }
 }
 
 /**
@@ -108,21 +104,19 @@ void netbuf_delete(struct netbuf* buf)
  */
 void* netbuf_alloc(struct netbuf* buf, u16_t size)
 {
-   LWIP_ERROR("netbuf_alloc: invalid buf", (buf != NULL), return NULL;);
+    LWIP_ERROR("netbuf_alloc: invalid buf", (buf != NULL), return NULL;);
 
-   /* Deallocate any previously allocated memory. */
-   if (buf->p != NULL)
-   {
-      pbuf_free(buf->p);
-   }
-   buf->p = pbuf_alloc(PBUF_TRANSPORT, size, PBUF_RAM);
-   if (buf->p == NULL)
-   {
-      return NULL;
-   }
-   LWIP_ASSERT("check that first pbuf can hold size", (buf->p->len >= size));
-   buf->ptr = buf->p;
-   return buf->p->payload;
+    /* Deallocate any previously allocated memory. */
+    if(buf->p != NULL) {
+        pbuf_free(buf->p);
+    }
+    buf->p = pbuf_alloc(PBUF_TRANSPORT, size, PBUF_RAM);
+    if(buf->p == NULL) {
+        return NULL;
+    }
+    LWIP_ASSERT("check that first pbuf can hold size", (buf->p->len >= size));
+    buf->ptr = buf->p;
+    return buf->p->payload;
 }
 
 /**
@@ -132,12 +126,11 @@ void* netbuf_alloc(struct netbuf* buf, u16_t size)
  */
 void netbuf_free(struct netbuf* buf)
 {
-   LWIP_ERROR("netbuf_free: invalid buf", (buf != NULL), return;);
-   if (buf->p != NULL)
-   {
-      pbuf_free(buf->p);
-   }
-   buf->p = buf->ptr = NULL;
+    LWIP_ERROR("netbuf_free: invalid buf", (buf != NULL), return;);
+    if(buf->p != NULL) {
+        pbuf_free(buf->p);
+    }
+    buf->p = buf->ptr = NULL;
 }
 
 /**
@@ -151,21 +144,19 @@ void netbuf_free(struct netbuf* buf)
  */
 err_t netbuf_ref(struct netbuf* buf, const void* dataptr, u16_t size)
 {
-   LWIP_ERROR("netbuf_ref: invalid buf", (buf != NULL), return ERR_ARG;);
-   if (buf->p != NULL)
-   {
-      pbuf_free(buf->p);
-   }
-   buf->p = pbuf_alloc(PBUF_TRANSPORT, 0, PBUF_REF);
-   if (buf->p == NULL)
-   {
-      buf->ptr = NULL;
-      return ERR_MEM;
-   }
-   buf->p->payload = (void*)dataptr;
-   buf->p->len = buf->p->tot_len = size;
-   buf->ptr = buf->p;
-   return ERR_OK;
+    LWIP_ERROR("netbuf_ref: invalid buf", (buf != NULL), return ERR_ARG;);
+    if(buf->p != NULL) {
+        pbuf_free(buf->p);
+    }
+    buf->p = pbuf_alloc(PBUF_TRANSPORT, 0, PBUF_REF);
+    if(buf->p == NULL) {
+        buf->ptr = NULL;
+        return ERR_MEM;
+    }
+    buf->p->payload = (void*)dataptr;
+    buf->p->len = buf->p->tot_len = size;
+    buf->ptr = buf->p;
+    return ERR_OK;
 }
 
 /**
@@ -176,11 +167,11 @@ err_t netbuf_ref(struct netbuf* buf, const void* dataptr, u16_t size)
  */
 void netbuf_chain(struct netbuf* head, struct netbuf* tail)
 {
-   LWIP_ERROR("netbuf_ref: invalid head", (head != NULL), return;);
-   LWIP_ERROR("netbuf_chain: invalid tail", (tail != NULL), return;);
-   pbuf_cat(head->p, tail->p);
-   head->ptr = head->p;
-   memp_free(MEMP_NETBUF, tail);
+    LWIP_ERROR("netbuf_ref: invalid head", (head != NULL), return;);
+    LWIP_ERROR("netbuf_chain: invalid tail", (tail != NULL), return;);
+    pbuf_cat(head->p, tail->p);
+    head->ptr = head->p;
+    memp_free(MEMP_NETBUF, tail);
 }
 
 /**
@@ -194,17 +185,16 @@ void netbuf_chain(struct netbuf* head, struct netbuf* tail)
  */
 err_t netbuf_data(struct netbuf* buf, void** dataptr, u16_t* len)
 {
-   LWIP_ERROR("netbuf_data: invalid buf", (buf != NULL), return ERR_ARG;);
-   LWIP_ERROR("netbuf_data: invalid dataptr", (dataptr != NULL), return ERR_ARG;);
-   LWIP_ERROR("netbuf_data: invalid len", (len != NULL), return ERR_ARG;);
+    LWIP_ERROR("netbuf_data: invalid buf", (buf != NULL), return ERR_ARG;);
+    LWIP_ERROR("netbuf_data: invalid dataptr", (dataptr != NULL), return ERR_ARG;);
+    LWIP_ERROR("netbuf_data: invalid len", (len != NULL), return ERR_ARG;);
 
-   if (buf->ptr == NULL)
-   {
-      return ERR_BUF;
-   }
-   *dataptr = buf->ptr->payload;
-   *len = buf->ptr->len;
-   return ERR_OK;
+    if(buf->ptr == NULL) {
+        return ERR_BUF;
+    }
+    *dataptr = buf->ptr->payload;
+    *len = buf->ptr->len;
+    return ERR_OK;
 }
 
 /**
@@ -219,17 +209,15 @@ err_t netbuf_data(struct netbuf* buf, void** dataptr, u16_t* len)
  */
 s8_t netbuf_next(struct netbuf* buf)
 {
-   LWIP_ERROR("netbuf_free: invalid buf", (buf != NULL), return -1;);
-   if (buf->ptr->next == NULL)
-   {
-      return -1;
-   }
-   buf->ptr = buf->ptr->next;
-   if (buf->ptr->next == NULL)
-   {
-      return 1;
-   }
-   return 0;
+    LWIP_ERROR("netbuf_free: invalid buf", (buf != NULL), return -1;);
+    if(buf->ptr->next == NULL) {
+        return -1;
+    }
+    buf->ptr = buf->ptr->next;
+    if(buf->ptr->next == NULL) {
+        return 1;
+    }
+    return 0;
 }
 
 /**
@@ -241,8 +229,8 @@ s8_t netbuf_next(struct netbuf* buf)
  */
 void netbuf_first(struct netbuf* buf)
 {
-   LWIP_ERROR("netbuf_free: invalid buf", (buf != NULL), return;);
-   buf->ptr = buf->p;
+    LWIP_ERROR("netbuf_free: invalid buf", (buf != NULL), return;);
+    buf->ptr = buf->p;
 }
 
 #endif /* LWIP_NETCONN */

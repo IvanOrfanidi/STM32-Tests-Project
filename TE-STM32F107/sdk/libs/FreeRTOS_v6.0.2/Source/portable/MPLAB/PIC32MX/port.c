@@ -100,32 +100,32 @@ void __attribute__((interrupt(ipl1), vector(_CORE_SOFTWARE_0_VECTOR))) vPortYiel
  */
 portSTACK_TYPE* pxPortInitialiseStack(portSTACK_TYPE* pxTopOfStack, pdTASK_CODE pxCode, void* pvParameters)
 {
-   *pxTopOfStack = (portSTACK_TYPE)0xDEADBEEF;
-   pxTopOfStack--;
+    *pxTopOfStack = (portSTACK_TYPE)0xDEADBEEF;
+    pxTopOfStack--;
 
-   *pxTopOfStack =
-      (portSTACK_TYPE)0x12345678; /* Word to which the stack pointer will be left pointing after context restore. */
-   pxTopOfStack--;
+    *pxTopOfStack =
+        (portSTACK_TYPE)0x12345678; /* Word to which the stack pointer will be left pointing after context restore. */
+    pxTopOfStack--;
 
-   *pxTopOfStack = (portSTACK_TYPE)_CP0_GET_CAUSE();
-   pxTopOfStack--;
+    *pxTopOfStack = (portSTACK_TYPE)_CP0_GET_CAUSE();
+    pxTopOfStack--;
 
-   *pxTopOfStack = (portSTACK_TYPE)portINITIAL_SR; /* CP0_STATUS */
-   pxTopOfStack--;
+    *pxTopOfStack = (portSTACK_TYPE)portINITIAL_SR; /* CP0_STATUS */
+    pxTopOfStack--;
 
-   *pxTopOfStack = (portSTACK_TYPE)pxCode; /* CP0_EPC */
-   pxTopOfStack--;
+    *pxTopOfStack = (portSTACK_TYPE)pxCode; /* CP0_EPC */
+    pxTopOfStack--;
 
-   *pxTopOfStack = (portSTACK_TYPE)NULL; /* ra */
-   pxTopOfStack -= 15;
+    *pxTopOfStack = (portSTACK_TYPE)NULL; /* ra */
+    pxTopOfStack -= 15;
 
-   *pxTopOfStack = (portSTACK_TYPE)pvParameters; /* Parameters to pass in */
-   pxTopOfStack -= 14;
+    *pxTopOfStack = (portSTACK_TYPE)pvParameters; /* Parameters to pass in */
+    pxTopOfStack -= 14;
 
-   *pxTopOfStack = (portSTACK_TYPE)0x00000000; /* critical nesting level - no longer used. */
-   pxTopOfStack--;
+    *pxTopOfStack = (portSTACK_TYPE)0x00000000; /* critical nesting level - no longer used. */
+    pxTopOfStack--;
 
-   return pxTopOfStack;
+    return pxTopOfStack;
 }
 /*-----------------------------------------------------------*/
 
@@ -134,78 +134,78 @@ portSTACK_TYPE* pxPortInitialiseStack(portSTACK_TYPE* pxTopOfStack, pdTASK_CODE 
  */
 void prvSetupTimerInterrupt(void)
 {
-   const unsigned long ulCompareMatch = ((configPERIPHERAL_CLOCK_HZ / portTIMER_PRESCALE) / configTICK_RATE_HZ) - 1;
+    const unsigned long ulCompareMatch = ((configPERIPHERAL_CLOCK_HZ / portTIMER_PRESCALE) / configTICK_RATE_HZ) - 1;
 
-   OpenTimer1((T1_ON | T1_PS_1_8 | T1_SOURCE_INT), ulCompareMatch);
-   ConfigIntTimer1(T1_INT_ON | configKERNEL_INTERRUPT_PRIORITY);
+    OpenTimer1((T1_ON | T1_PS_1_8 | T1_SOURCE_INT), ulCompareMatch);
+    ConfigIntTimer1(T1_INT_ON | configKERNEL_INTERRUPT_PRIORITY);
 }
 /*-----------------------------------------------------------*/
 
 void vPortEndScheduler(void)
 {
-   /* It is unlikely that the scheduler for the PIC port will get stopped
+    /* It is unlikely that the scheduler for the PIC port will get stopped
    once running.  If required disable the tick interrupt here, then return
    to xPortStartScheduler(). */
-   for (;;)
-      ;
+    for(;;)
+        ;
 }
 /*-----------------------------------------------------------*/
 
 portBASE_TYPE xPortStartScheduler(void)
 {
-   extern void vPortStartFirstTask(void);
-   extern void* pxCurrentTCB;
+    extern void vPortStartFirstTask(void);
+    extern void* pxCurrentTCB;
 
-   /* Setup the software interrupt. */
-   mConfigIntCoreSW0(CSW_INT_ON | CSW_INT_PRIOR_1 | CSW_INT_SUB_PRIOR_0);
+    /* Setup the software interrupt. */
+    mConfigIntCoreSW0(CSW_INT_ON | CSW_INT_PRIOR_1 | CSW_INT_SUB_PRIOR_0);
 
-   /* Setup the timer to generate the tick.  Interrupts will have been
+    /* Setup the timer to generate the tick.  Interrupts will have been
    disabled by the time we get here. */
-   prvSetupTimerInterrupt();
+    prvSetupTimerInterrupt();
 
-   /* Kick off the highest priority task that has been created so far.
+    /* Kick off the highest priority task that has been created so far.
    Its stack location is loaded into uxSavedTaskStackPointer. */
-   uxSavedTaskStackPointer = *(unsigned portBASE_TYPE*)pxCurrentTCB;
-   vPortStartFirstTask();
+    uxSavedTaskStackPointer = *(unsigned portBASE_TYPE*)pxCurrentTCB;
+    vPortStartFirstTask();
 
-   /* Should never get here as the tasks will now be executing. */
-   return pdFALSE;
+    /* Should never get here as the tasks will now be executing. */
+    return pdFALSE;
 }
 /*-----------------------------------------------------------*/
 
 void vPortIncrementTick(void)
 {
-   unsigned portBASE_TYPE uxSavedStatus;
+    unsigned portBASE_TYPE uxSavedStatus;
 
-   uxSavedStatus = uxPortSetInterruptMaskFromISR();
-   vTaskIncrementTick();
-   vPortClearInterruptMaskFromISR(uxSavedStatus);
+    uxSavedStatus = uxPortSetInterruptMaskFromISR();
+    vTaskIncrementTick();
+    vPortClearInterruptMaskFromISR(uxSavedStatus);
 
 /* If we are using the preemptive scheduler then we might want to select
 a different task to execute. */
 #if configUSE_PREEMPTION == 1
-   SetCoreSW0();
+    SetCoreSW0();
 #endif /* configUSE_PREEMPTION */
 
-   /* Clear timer 0 interrupt. */
-   mT1ClearIntFlag();
+    /* Clear timer 0 interrupt. */
+    mT1ClearIntFlag();
 }
 /*-----------------------------------------------------------*/
 
 unsigned portBASE_TYPE uxPortSetInterruptMaskFromISR(void)
 {
-   unsigned portBASE_TYPE uxSavedStatusRegister;
+    unsigned portBASE_TYPE uxSavedStatusRegister;
 
-   asm volatile("di");
-   uxSavedStatusRegister = _CP0_GET_STATUS() | 0x01;
-   _CP0_SET_STATUS((uxSavedStatusRegister | (configMAX_SYSCALL_INTERRUPT_PRIORITY << portIPL_SHIFT)));
+    asm volatile("di");
+    uxSavedStatusRegister = _CP0_GET_STATUS() | 0x01;
+    _CP0_SET_STATUS((uxSavedStatusRegister | (configMAX_SYSCALL_INTERRUPT_PRIORITY << portIPL_SHIFT)));
 
-   return uxSavedStatusRegister;
+    return uxSavedStatusRegister;
 }
 /*-----------------------------------------------------------*/
 
 void vPortClearInterruptMaskFromISR(unsigned portBASE_TYPE uxSavedStatusRegister)
 {
-   _CP0_SET_STATUS(uxSavedStatusRegister);
+    _CP0_SET_STATUS(uxSavedStatusRegister);
 }
 /*-----------------------------------------------------------*/

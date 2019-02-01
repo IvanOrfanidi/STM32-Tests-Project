@@ -41,24 +41,22 @@ extern "C" {
 
 /* This is the aligned version of ip_addr_t,
    used as local variable, on the stack, etc. */
-struct ip_addr
-{
-   u32_t addr;
+struct ip_addr {
+    u32_t addr;
 };
 
 /* This is the packed version of ip_addr_t,
    used in network headers that are itself packed */
 #ifdef PACK_STRUCT_USE_INCLUDES
-#   include "arch/bpstruct.h"
+#include "arch/bpstruct.h"
 #endif
 PACK_STRUCT_BEGIN
-struct ip_addr_packed
-{
-   PACK_STRUCT_FIELD(u32_t addr);
+struct ip_addr_packed {
+    PACK_STRUCT_FIELD(u32_t addr);
 } PACK_STRUCT_STRUCT;
 PACK_STRUCT_END
 #ifdef PACK_STRUCT_USE_INCLUDES
-#   include "arch/epstruct.h"
+#include "arch/epstruct.h"
 #endif
 
 /** ip_addr_t uses a struct for convenience only, so that the same defines can
@@ -71,16 +69,15 @@ typedef struct ip_addr_packed ip_addr_p_t;
  * order to support compilers that don't have structure packing.
  */
 #ifdef PACK_STRUCT_USE_INCLUDES
-#   include "arch/bpstruct.h"
+#include "arch/bpstruct.h"
 #endif
 PACK_STRUCT_BEGIN
-struct ip_addr2
-{
-   PACK_STRUCT_FIELD(u16_t addrw[2]);
+struct ip_addr2 {
+    PACK_STRUCT_FIELD(u16_t addrw[2]);
 } PACK_STRUCT_STRUCT;
 PACK_STRUCT_END
 #ifdef PACK_STRUCT_USE_INCLUDES
-#   include "arch/epstruct.h"
+#include "arch/epstruct.h"
 #endif
 
 /* Forward declaration to not include netif.h */
@@ -126,8 +123,8 @@ extern const ip_addr_t ip_addr_broadcast;
 #define IP_CLASSC_HOST (0xffffffff & ~IP_CLASSC_NET)
 
 #define IP_CLASSD(a) (((u32_t)(a)&0xf0000000UL) == 0xe0000000UL)
-#define IP_CLASSD_NET 0xf0000000 /* These ones aren't really */
-#define IP_CLASSD_NSHIFT 28 /*   net and host fields, but */
+#define IP_CLASSD_NET 0xf0000000  /* These ones aren't really */
+#define IP_CLASSD_NSHIFT 28       /*   net and host fields, but */
 #define IP_CLASSD_HOST 0x0fffffff /*   routing needn't know. */
 #define IP_MULTICAST(a) IP_CLASSD(a)
 
@@ -138,22 +135,22 @@ extern const ip_addr_t ip_addr_broadcast;
 
 #if BYTE_ORDER == BIG_ENDIAN
 /** Set an IP address given by the four byte-parts */
-#   define IP4_ADDR(ipaddr, a, b, c, d) \
-      (ipaddr)->addr = \
-         ((u32_t)((a)&0xff) << 24) | ((u32_t)((b)&0xff) << 16) | ((u32_t)((c)&0xff) << 8) | (u32_t)((d)&0xff)
+#define IP4_ADDR(ipaddr, a, b, c, d) \
+    (ipaddr)->addr = \
+        ((u32_t)((a)&0xff) << 24) | ((u32_t)((b)&0xff) << 16) | ((u32_t)((c)&0xff) << 8) | (u32_t)((d)&0xff)
 #else
 /** Set an IP address given by the four byte-parts.
     Little-endian version that prevents the use of htonl. */
-#   define IP4_ADDR(ipaddr, a, b, c, d) \
-      (ipaddr)->addr = \
-         ((u32_t)((d)&0xff) << 24) | ((u32_t)((c)&0xff) << 16) | ((u32_t)((b)&0xff) << 8) | (u32_t)((a)&0xff)
+#define IP4_ADDR(ipaddr, a, b, c, d) \
+    (ipaddr)->addr = \
+        ((u32_t)((d)&0xff) << 24) | ((u32_t)((c)&0xff) << 16) | ((u32_t)((b)&0xff) << 8) | (u32_t)((a)&0xff)
 #endif
 
 /** MEMCPY-like copying of IP addresses where addresses are known to be
  * 16-bit-aligned if the port is correctly configured (so a port could define
  * this to copying 2 u16_t's) - no NULL-pointer-checking needed. */
 #ifndef IPADDR2_COPY
-#   define IPADDR2_COPY(dest, src) SMEMCPY(dest, src, sizeof(ip_addr_t))
+#define IPADDR2_COPY(dest, src) SMEMCPY(dest, src, sizeof(ip_addr_t))
 #endif
 
 /** Copy IP address - faster than ip_addr_set: no NULL check */
@@ -201,12 +198,12 @@ u8_t ip4_addr_netmask_valid(u32_t netmask);
 #define ip_addr_islinklocal(addr1) (((addr1)->addr & PP_HTONL(0xffff0000UL)) == PP_HTONL(0xa9fe0000UL))
 
 #define ip_addr_debug_print(debug, ipaddr) \
-   LWIP_DEBUGF(debug, \
-               ("%" U16_F ".%" U16_F ".%" U16_F ".%" U16_F, \
-                ipaddr != NULL ? ip4_addr1_16(ipaddr) : 0, \
-                ipaddr != NULL ? ip4_addr2_16(ipaddr) : 0, \
-                ipaddr != NULL ? ip4_addr3_16(ipaddr) : 0, \
-                ipaddr != NULL ? ip4_addr4_16(ipaddr) : 0))
+    LWIP_DEBUGF(debug, \
+        ("%" U16_F ".%" U16_F ".%" U16_F ".%" U16_F, \
+            ipaddr != NULL ? ip4_addr1_16(ipaddr) : 0, \
+            ipaddr != NULL ? ip4_addr2_16(ipaddr) : 0, \
+            ipaddr != NULL ? ip4_addr3_16(ipaddr) : 0, \
+            ipaddr != NULL ? ip4_addr4_16(ipaddr) : 0))
 
 /* Get one byte from the 4-byte address */
 #define ip4_addr1(ipaddr) (((u8_t*)(ipaddr))[0])

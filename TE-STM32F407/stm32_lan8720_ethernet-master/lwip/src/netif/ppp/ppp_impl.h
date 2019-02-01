@@ -38,26 +38,26 @@
 
 #if PPP_SUPPORT /* don't build if not configured for use in lwipopts.h */
 
-#   include "ppp.h"
-#   include "lwip/def.h"
-#   include "lwip/sio.h"
-#   include "lwip/stats.h"
-#   include "lwip/mem.h"
-#   include "lwip/netif.h"
-#   include "lwip/sys.h"
-#   include "lwip/timers.h"
+#include "ppp.h"
+#include "lwip/def.h"
+#include "lwip/sio.h"
+#include "lwip/stats.h"
+#include "lwip/mem.h"
+#include "lwip/netif.h"
+#include "lwip/sys.h"
+#include "lwip/timers.h"
 
 /** Some defines for code we skip compared to the original pppd.
  *  These are just here to minimise the use of the ugly "#if 0". */
-#   define PPP_ADDITIONAL_CALLBACKS 0
+#define PPP_ADDITIONAL_CALLBACKS 0
 
 /** Some error checks to test for unsupported code */
-#   if CBCP_SUPPORT
-#      error "CBCP is not supported in lwIP PPP"
-#   endif
-#   if CCP_SUPPORT
-#      error "CCP is not supported in lwIP PPP"
-#   endif
+#if CBCP_SUPPORT
+#error "CBCP is not supported in lwIP PPP"
+#endif
+#if CCP_SUPPORT
+#error "CCP is not supported in lwIP PPP"
+#endif
 
 /*
  * pppd.h - PPP daemon global declarations.
@@ -105,13 +105,12 @@
  * OR MODIFICATIONS.
  */
 
-#   define TIMEOUT(f, a, t) \
-      do \
-      { \
-         sys_untimeout((f), (a)); \
-         sys_timeout((t)*1000, (f), (a)); \
-      } while (0)
-#   define UNTIMEOUT(f, a) sys_untimeout((f), (a))
+#define TIMEOUT(f, a, t) \
+    do { \
+        sys_untimeout((f), (a)); \
+        sys_timeout((t)*1000, (f), (a)); \
+    } while(0)
+#define UNTIMEOUT(f, a) sys_untimeout((f), (a))
 
 /*
  * Constants and structures defined by the internet system,
@@ -121,41 +120,41 @@
 /*
  * The basic PPP frame.
  */
-#   define PPP_HDRLEN 4 /* octets for standard ppp header */
-#   define PPP_FCSLEN 2 /* octets for FCS */
+#define PPP_HDRLEN 4 /* octets for standard ppp header */
+#define PPP_FCSLEN 2 /* octets for FCS */
 
 /*
  * Significant octet values.
  */
-#   define PPP_ALLSTATIONS 0xff /* All-Stations broadcast address */
-#   define PPP_UI 0x03 /* Unnumbered Information */
-#   define PPP_FLAG 0x7e /* Flag Sequence */
-#   define PPP_ESCAPE 0x7d /* Asynchronous Control Escape */
-#   define PPP_TRANS 0x20 /* Asynchronous transparency modifier */
+#define PPP_ALLSTATIONS 0xff /* All-Stations broadcast address */
+#define PPP_UI 0x03          /* Unnumbered Information */
+#define PPP_FLAG 0x7e        /* Flag Sequence */
+#define PPP_ESCAPE 0x7d      /* Asynchronous Control Escape */
+#define PPP_TRANS 0x20       /* Asynchronous transparency modifier */
 
 /*
  * Protocol field values.
  */
-#   define PPP_IP 0x21 /* Internet Protocol */
-#   define PPP_AT 0x29 /* AppleTalk Protocol */
-#   define PPP_VJC_COMP 0x2d /* VJ compressed TCP */
-#   define PPP_VJC_UNCOMP 0x2f /* VJ uncompressed TCP */
-#   define PPP_COMP 0xfd /* compressed packet */
-#   define PPP_IPCP 0x8021 /* IP Control Protocol */
-#   define PPP_ATCP 0x8029 /* AppleTalk Control Protocol */
-#   define PPP_CCP 0x80fd /* Compression Control Protocol */
-#   define PPP_LCP 0xc021 /* Link Control Protocol */
-#   define PPP_PAP 0xc023 /* Password Authentication Protocol */
-#   define PPP_LQR 0xc025 /* Link Quality Report protocol */
-#   define PPP_CHAP 0xc223 /* Cryptographic Handshake Auth. Protocol */
-#   define PPP_CBCP 0xc029 /* Callback Control Protocol */
+#define PPP_IP 0x21         /* Internet Protocol */
+#define PPP_AT 0x29         /* AppleTalk Protocol */
+#define PPP_VJC_COMP 0x2d   /* VJ compressed TCP */
+#define PPP_VJC_UNCOMP 0x2f /* VJ uncompressed TCP */
+#define PPP_COMP 0xfd       /* compressed packet */
+#define PPP_IPCP 0x8021     /* IP Control Protocol */
+#define PPP_ATCP 0x8029     /* AppleTalk Control Protocol */
+#define PPP_CCP 0x80fd      /* Compression Control Protocol */
+#define PPP_LCP 0xc021      /* Link Control Protocol */
+#define PPP_PAP 0xc023      /* Password Authentication Protocol */
+#define PPP_LQR 0xc025      /* Link Quality Report protocol */
+#define PPP_CHAP 0xc223     /* Cryptographic Handshake Auth. Protocol */
+#define PPP_CBCP 0xc029     /* Callback Control Protocol */
 
 /*
  * Values for FCS calculations.
  */
-#   define PPP_INITFCS 0xffff /* Initial FCS value */
-#   define PPP_GOODFCS 0xf0b8 /* Good final FCS value */
-#   define PPP_FCS(fcs, c) (((fcs) >> 8) ^ fcstab[((fcs) ^ (c)) & 0xff])
+#define PPP_INITFCS 0xffff /* Initial FCS value */
+#define PPP_GOODFCS 0xf0b8 /* Good final FCS value */
+#define PPP_FCS(fcs, c) (((fcs) >> 8) ^ fcstab[((fcs) ^ (c)) & 0xff])
 
 /*
  * Extended asyncmap - allows any character to be escaped.
@@ -165,12 +164,11 @@ typedef u_char ext_accm[32];
 /*
  * What to do with network protocol (NP) packets.
  */
-enum NPmode
-{
-   NPMODE_PASS, /* pass the packet through */
-   NPMODE_DROP, /* silently drop the packet */
-   NPMODE_ERROR, /* return an error */
-   NPMODE_QUEUE /* save it up for later. */
+enum NPmode {
+    NPMODE_PASS,  /* pass the packet through */
+    NPMODE_DROP,  /* silently drop the packet */
+    NPMODE_ERROR, /* return an error */
+    NPMODE_QUEUE  /* save it up for later. */
 };
 
 /*
@@ -179,77 +177,77 @@ enum NPmode
  * are lvalues and will already be in registers.
  * cp MUST be u_char *.
  */
-#   define GETCHAR(c, cp) \
-      { \
-         (c) = *(cp)++; \
-      }
-#   define PUTCHAR(c, cp) \
-      { \
-         *(cp)++ = (u_char)(c); \
-      }
+#define GETCHAR(c, cp) \
+    { \
+        (c) = *(cp)++; \
+    }
+#define PUTCHAR(c, cp) \
+    { \
+        *(cp)++ = (u_char)(c); \
+    }
 
-#   define GETSHORT(s, cp) \
-      { \
-         (s) = *(cp); \
-         (cp)++; \
-         (s) <<= 8; \
-         (s) |= *(cp); \
-         (cp)++; \
-      }
-#   define PUTSHORT(s, cp) \
-      { \
-         *(cp)++ = (u_char)((s) >> 8); \
-         *(cp)++ = (u_char)(s & 0xff); \
-      }
+#define GETSHORT(s, cp) \
+    { \
+        (s) = *(cp); \
+        (cp)++; \
+        (s) <<= 8; \
+        (s) |= *(cp); \
+        (cp)++; \
+    }
+#define PUTSHORT(s, cp) \
+    { \
+        *(cp)++ = (u_char)((s) >> 8); \
+        *(cp)++ = (u_char)(s & 0xff); \
+    }
 
-#   define GETLONG(l, cp) \
-      { \
-         (l) = *(cp); \
-         (cp)++; \
-         (l) <<= 8; \
-         (l) |= *(cp); \
-         (cp)++; \
-         (l) <<= 8; \
-         (l) |= *(cp); \
-         (cp)++; \
-         (l) <<= 8; \
-         (l) |= *(cp); \
-         (cp)++; \
-      }
-#   define PUTLONG(l, cp) \
-      { \
-         *(cp)++ = (u_char)((l) >> 24); \
-         *(cp)++ = (u_char)((l) >> 16); \
-         *(cp)++ = (u_char)((l) >> 8); \
-         *(cp)++ = (u_char)(l); \
-      }
+#define GETLONG(l, cp) \
+    { \
+        (l) = *(cp); \
+        (cp)++; \
+        (l) <<= 8; \
+        (l) |= *(cp); \
+        (cp)++; \
+        (l) <<= 8; \
+        (l) |= *(cp); \
+        (cp)++; \
+        (l) <<= 8; \
+        (l) |= *(cp); \
+        (cp)++; \
+    }
+#define PUTLONG(l, cp) \
+    { \
+        *(cp)++ = (u_char)((l) >> 24); \
+        *(cp)++ = (u_char)((l) >> 16); \
+        *(cp)++ = (u_char)((l) >> 8); \
+        *(cp)++ = (u_char)(l); \
+    }
 
-#   define INCPTR(n, cp) ((cp) += (n))
-#   define DECPTR(n, cp) ((cp) -= (n))
+#define INCPTR(n, cp) ((cp) += (n))
+#define DECPTR(n, cp) ((cp) -= (n))
 
-#   define BCMP(s0, s1, l) memcmp((u_char*)(s0), (u_char*)(s1), (l))
-#   define BCOPY(s, d, l) MEMCPY((d), (s), (l))
-#   define BZERO(s, n) memset(s, 0, n)
+#define BCMP(s0, s1, l) memcmp((u_char*)(s0), (u_char*)(s1), (l))
+#define BCOPY(s, d, l) MEMCPY((d), (s), (l))
+#define BZERO(s, n) memset(s, 0, n)
 
-#   if PPP_DEBUG
-#      define PRINTMSG(m, l) \
-         { \
-            m[l] = '\0'; \
-            LWIP_DEBUGF(LOG_INFO, ("Remote message: %s\n", m)); \
-         }
-#   else /* PPP_DEBUG */
-#      define PRINTMSG(m, l)
-#   endif /* PPP_DEBUG */
+#if PPP_DEBUG
+#define PRINTMSG(m, l) \
+    { \
+        m[l] = '\0'; \
+        LWIP_DEBUGF(LOG_INFO, ("Remote message: %s\n", m)); \
+    }
+#else /* PPP_DEBUG */
+#define PRINTMSG(m, l)
+#endif /* PPP_DEBUG */
 
 /*
  * MAKEHEADER - Add PPP Header fields to a packet.
  */
-#   define MAKEHEADER(p, t) \
-      { \
-         PUTCHAR(PPP_ALLSTATIONS, p); \
-         PUTCHAR(PPP_UI, p); \
-         PUTSHORT(t, p); \
-      }
+#define MAKEHEADER(p, t) \
+    { \
+        PUTCHAR(PPP_ALLSTATIONS, p); \
+        PUTCHAR(PPP_UI, p); \
+        PUTSHORT(t, p); \
+    }
 
 /************************
 *** PUBLIC DATA TYPES ***
@@ -259,68 +257,65 @@ enum NPmode
  * The following struct gives the addresses of procedures to call
  * for a particular protocol.
  */
-struct protent
-{
-   u_short protocol; /* PPP protocol number */
-   /* Initialization procedure */
-   void (*init)(int unit);
-   /* Process a received packet */
-   void (*input)(int unit, u_char* pkt, int len);
-   /* Process a received protocol-reject */
-   void (*protrej)(int unit);
-   /* Lower layer has come up */
-   void (*lowerup)(int unit);
-   /* Lower layer has gone down */
-   void (*lowerdown)(int unit);
-   /* Open the protocol */
-   void (*open)(int unit);
-   /* Close the protocol */
-   void (*close)(int unit, char* reason);
-#   if PPP_ADDITIONAL_CALLBACKS
-   /* Print a packet in readable form */
-   int (*printpkt)(u_char* pkt, int len, void (*printer)(void*, char*, ...), void* arg);
-   /* Process a received data packet */
-   void (*datainput)(int unit, u_char* pkt, int len);
-#   endif /* PPP_ADDITIONAL_CALLBACKS */
-   int enabled_flag; /* 0 if protocol is disabled */
-   char* name; /* Text name of protocol */
-#   if PPP_ADDITIONAL_CALLBACKS
-   /* Check requested options, assign defaults */
-   void (*check_options)(u_long);
-   /* Configure interface for demand-dial */
-   int (*demand_conf)(int unit);
-   /* Say whether to bring up link for this pkt */
-   int (*active_pkt)(u_char* pkt, int len);
-#   endif /* PPP_ADDITIONAL_CALLBACKS */
+struct protent {
+    u_short protocol; /* PPP protocol number */
+    /* Initialization procedure */
+    void (*init)(int unit);
+    /* Process a received packet */
+    void (*input)(int unit, u_char* pkt, int len);
+    /* Process a received protocol-reject */
+    void (*protrej)(int unit);
+    /* Lower layer has come up */
+    void (*lowerup)(int unit);
+    /* Lower layer has gone down */
+    void (*lowerdown)(int unit);
+    /* Open the protocol */
+    void (*open)(int unit);
+    /* Close the protocol */
+    void (*close)(int unit, char* reason);
+#if PPP_ADDITIONAL_CALLBACKS
+    /* Print a packet in readable form */
+    int (*printpkt)(u_char* pkt, int len, void (*printer)(void*, char*, ...), void* arg);
+    /* Process a received data packet */
+    void (*datainput)(int unit, u_char* pkt, int len);
+#endif                /* PPP_ADDITIONAL_CALLBACKS */
+    int enabled_flag; /* 0 if protocol is disabled */
+    char* name;       /* Text name of protocol */
+#if PPP_ADDITIONAL_CALLBACKS
+    /* Check requested options, assign defaults */
+    void (*check_options)(u_long);
+    /* Configure interface for demand-dial */
+    int (*demand_conf)(int unit);
+    /* Say whether to bring up link for this pkt */
+    int (*active_pkt)(u_char* pkt, int len);
+#endif /* PPP_ADDITIONAL_CALLBACKS */
 };
 
 /*
  * The following structure records the time in seconds since
  * the last NP packet was sent or received.
  */
-struct ppp_idle
-{
-   u_short xmit_idle; /* seconds since last NP packet sent */
-   u_short recv_idle; /* seconds since last NP packet received */
+struct ppp_idle {
+    u_short xmit_idle; /* seconds since last NP packet sent */
+    u_short recv_idle; /* seconds since last NP packet received */
 };
 
-struct ppp_settings
-{
-   u_int disable_defaultip : 1; /* Don't use hostname for default IP addrs */
-   u_int auth_required : 1; /* Peer is required to authenticate */
-   u_int explicit_remote : 1; /* remote_name specified with remotename opt */
-   u_int refuse_pap : 1; /* Don't wanna auth. ourselves with PAP */
-   u_int refuse_chap : 1; /* Don't wanna auth. ourselves with CHAP */
-   u_int usehostname : 1; /* Use hostname for our_name */
-   u_int usepeerdns : 1; /* Ask peer for DNS adds */
+struct ppp_settings {
+    u_int disable_defaultip : 1; /* Don't use hostname for default IP addrs */
+    u_int auth_required : 1;     /* Peer is required to authenticate */
+    u_int explicit_remote : 1;   /* remote_name specified with remotename opt */
+    u_int refuse_pap : 1;        /* Don't wanna auth. ourselves with PAP */
+    u_int refuse_chap : 1;       /* Don't wanna auth. ourselves with CHAP */
+    u_int usehostname : 1;       /* Use hostname for our_name */
+    u_int usepeerdns : 1;        /* Ask peer for DNS adds */
 
-   u_short idle_time_limit; /* Shut down link if idle for this long */
-   int maxconnect; /* Maximum connect time (seconds) */
+    u_short idle_time_limit; /* Shut down link if idle for this long */
+    int maxconnect;          /* Maximum connect time (seconds) */
 
-   char user[MAXNAMELEN + 1]; /* Username for PAP */
-   char passwd[MAXSECRETLEN + 1]; /* Password for PAP, secret for CHAP */
-   char our_name[MAXNAMELEN + 1]; /* Our name for authentication purposes */
-   char remote_name[MAXNAMELEN + 1]; /* Peer's name for authentication */
+    char user[MAXNAMELEN + 1];        /* Username for PAP */
+    char passwd[MAXSECRETLEN + 1];    /* Password for PAP, secret for CHAP */
+    char our_name[MAXNAMELEN + 1];    /* Our name for authentication purposes */
+    char remote_name[MAXNAMELEN + 1]; /* Peer's name for authentication */
 };
 
 /*****************************

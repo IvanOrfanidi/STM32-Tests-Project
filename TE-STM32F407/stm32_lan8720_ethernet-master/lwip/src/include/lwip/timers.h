@@ -40,22 +40,22 @@
 
 #if LWIP_TIMERS
 
-#   include "lwip/err.h"
-#   if !NO_SYS
-#      include "lwip/sys.h"
-#   endif
+#include "lwip/err.h"
+#if !NO_SYS
+#include "lwip/sys.h"
+#endif
 
-#   ifdef __cplusplus
+#ifdef __cplusplus
 extern "C" {
-#   endif
+#endif
 
-#   ifndef LWIP_DEBUG_TIMERNAMES
-#      ifdef LWIP_DEBUG
-#         define LWIP_DEBUG_TIMERNAMES SYS_DEBUG
-#      else /* LWIP_DEBUG */
-#         define LWIP_DEBUG_TIMERNAMES 0
-#      endif /* LWIP_DEBUG*/
-#   endif
+#ifndef LWIP_DEBUG_TIMERNAMES
+#ifdef LWIP_DEBUG
+#define LWIP_DEBUG_TIMERNAMES SYS_DEBUG
+#else /* LWIP_DEBUG */
+#define LWIP_DEBUG_TIMERNAMES 0
+#endif /* LWIP_DEBUG*/
+#endif
 
 /** Function prototype for a timeout callback function. Register such a function
  * using sys_timeout().
@@ -64,37 +64,36 @@ extern "C" {
  */
 typedef void (*sys_timeout_handler)(void* arg);
 
-struct sys_timeo
-{
-   struct sys_timeo* next;
-   u32_t time;
-   sys_timeout_handler h;
-   void* arg;
-#   if LWIP_DEBUG_TIMERNAMES
-   const char* handler_name;
-#   endif /* LWIP_DEBUG_TIMERNAMES */
+struct sys_timeo {
+    struct sys_timeo* next;
+    u32_t time;
+    sys_timeout_handler h;
+    void* arg;
+#if LWIP_DEBUG_TIMERNAMES
+    const char* handler_name;
+#endif /* LWIP_DEBUG_TIMERNAMES */
 };
 
 void sys_timeouts_init(void);
 
-#   if LWIP_DEBUG_TIMERNAMES
+#if LWIP_DEBUG_TIMERNAMES
 void sys_timeout_debug(u32_t msecs, sys_timeout_handler handler, void* arg, const char* handler_name);
-#      define sys_timeout(msecs, handler, arg) sys_timeout_debug(msecs, handler, arg, #      handler)
-#   else /* LWIP_DEBUG_TIMERNAMES */
+#define sys_timeout(msecs, handler, arg) sys_timeout_debug(msecs, handler, arg, #handler)
+#else  /* LWIP_DEBUG_TIMERNAMES */
 void sys_timeout(u32_t msecs, sys_timeout_handler handler, void* arg);
-#   endif /* LWIP_DEBUG_TIMERNAMES */
+#endif /* LWIP_DEBUG_TIMERNAMES */
 
 void sys_untimeout(sys_timeout_handler handler, void* arg);
-#   if NO_SYS
+#if NO_SYS
 void sys_check_timeouts(void);
 void sys_restart_timeouts(void);
-#   else /* NO_SYS */
+#else  /* NO_SYS */
 void sys_timeouts_mbox_fetch(sys_mbox_t* mbox, void** msg);
-#   endif /* NO_SYS */
+#endif /* NO_SYS */
 
-#   ifdef __cplusplus
+#ifdef __cplusplus
 }
-#   endif
+#endif
 
 #endif /* LWIP_TIMERS */
 #endif /* __LWIP_TIMERS_H__ */

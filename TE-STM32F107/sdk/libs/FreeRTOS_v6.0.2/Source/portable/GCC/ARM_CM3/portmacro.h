@@ -77,12 +77,12 @@ extern "C" {
 #define portSTACK_TYPE unsigned portLONG
 #define portBASE_TYPE long
 
-#if (configUSE_16_BIT_TICKS == 1)
+#if(configUSE_16_BIT_TICKS == 1)
 typedef unsigned portSHORT portTickType;
-#   define portMAX_DELAY (portTickType)0xffff
+#define portMAX_DELAY (portTickType)0xffff
 #else
 typedef unsigned portLONG portTickType;
-#   define portMAX_DELAY (portTickType)0xffffffff
+#define portMAX_DELAY (portTickType)0xffffffff
 #endif
 /*-----------------------------------------------------------*/
 
@@ -98,8 +98,8 @@ extern void vPortYieldFromISR(void);
 #define portYIELD() vPortYieldFromISR()
 
 #define portEND_SWITCHING_ISR(xSwitchRequired) \
-   if (xSwitchRequired) \
-   vPortYieldFromISR()
+    if(xSwitchRequired) \
+    vPortYieldFromISR()
 /*-----------------------------------------------------------*/
 
 /* Critical section management. */
@@ -109,25 +109,25 @@ extern void vPortYieldFromISR(void);
  * registers.  r0 is clobbered.
  */
 #define portSET_INTERRUPT_MASK() \
-   __asm volatile("	mov r0, %0								\n" \
-                  "	msr basepri, r0							\n" ::"i"(configMAX_SYSCALL_INTERRUPT_PRIORITY) \
-                  : "r0")
+    __asm volatile("	mov r0, %0								\n" \
+                   "	msr basepri, r0							\n" ::"i"(configMAX_SYSCALL_INTERRUPT_PRIORITY) \
+                   : "r0")
 
 /*
  * Set basepri back to 0 without effective other registers.
  * r0 is clobbered.
  */
 #define portCLEAR_INTERRUPT_MASK() \
-   __asm volatile("	mov r0, #0					\n" \
-                  "	msr basepri, r0				\n" :: \
-                     : "r0")
+    __asm volatile("	mov r0, #0					\n" \
+                   "	msr basepri, r0				\n" :: \
+                       : "r0")
 
 #define portSET_INTERRUPT_MASK_FROM_ISR() \
-   0; \
-   portSET_INTERRUPT_MASK()
+    0; \
+    portSET_INTERRUPT_MASK()
 #define portCLEAR_INTERRUPT_MASK_FROM_ISR(x) \
-   portCLEAR_INTERRUPT_MASK(); \
-   (void)x
+    portCLEAR_INTERRUPT_MASK(); \
+    (void)x
 
 extern void vPortEnterCritical(void);
 extern void vPortExitCritical(void);

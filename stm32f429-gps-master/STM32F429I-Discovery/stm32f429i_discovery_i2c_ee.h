@@ -28,14 +28,14 @@
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __STM32F429I_DISCOVERY_I2C_EE_H
-#   define __STM32F429I_DISCOVERY_I2C_EE_H
+#define __STM32F429I_DISCOVERY_I2C_EE_H
 
-#   ifdef __cplusplus
+#ifdef __cplusplus
 extern "C" {
-#   endif
+#endif
 
 /* Includes ------------------------------------------------------------------*/
-#   include "stm32f429i_discovery.h"
+#include "stm32f429i_discovery.h"
 
 /** @addtogroup Utilities
  * @{
@@ -73,22 +73,22 @@ extern "C" {
 // #define USE_DEFAULT_TIMEOUT_CALLBACK
 
 /* EEPROM hardware address and page size */
-#   define sEE_HW_ADDRESS 0xA0
-#   define sEE_PAGESIZE 4
+#define sEE_HW_ADDRESS 0xA0
+#define sEE_PAGESIZE 4
 
 /* Maximum Timeout values for flags and events waiting loops. These timeouts are
    not based on accurate values, they just guarantee that the application will
    not remain stuck if the I2C communication is corrupted.
    You may modify these timeout values depending on CPU frequency and application
    conditions (interrupts routines ...). */
-#   define sEE_FLAG_TIMEOUT ((uint32_t)0x1000)
-#   define sEE_LONG_TIMEOUT ((uint32_t)(10 * sEE_FLAG_TIMEOUT))
+#define sEE_FLAG_TIMEOUT ((uint32_t)0x1000)
+#define sEE_LONG_TIMEOUT ((uint32_t)(10 * sEE_FLAG_TIMEOUT))
 
 /* Maximum number of trials for sEE_WaitEepromStandbyState() function */
-#   define sEE_MAX_TRIALS_NUMBER 300
+#define sEE_MAX_TRIALS_NUMBER 300
 
-#   define sEE_OK 0
-#   define sEE_FAIL 1
+#define sEE_OK 0
+#define sEE_FAIL 1
 
 /**
  * @}
@@ -124,9 +124,9 @@ void sEE_I2C_DMA_RX_IRQHandler(void);
    and re-initialize communication or in worst case reset all the application. */
 uint32_t sEE_TIMEOUT_UserCallback(void);
 
-#   ifdef __cplusplus
+#ifdef __cplusplus
 }
-#   endif
+#endif
 
 #endif /* __STM32F429I_DISCOVERY_I2C_EE_H */
 /**

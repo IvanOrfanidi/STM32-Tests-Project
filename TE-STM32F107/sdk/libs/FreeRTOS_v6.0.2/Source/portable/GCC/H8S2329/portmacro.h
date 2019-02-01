@@ -77,12 +77,12 @@ extern "C" {
 #define portSTACK_TYPE unsigned portCHAR
 #define portBASE_TYPE char
 
-#if (configUSE_16_BIT_TICKS == 1)
+#if(configUSE_16_BIT_TICKS == 1)
 typedef unsigned portSHORT portTickType;
-#   define portMAX_DELAY (portTickType)0xffff
+#define portMAX_DELAY (portTickType)0xffff
 #else
 typedef unsigned portLONG portTickType;
-#   define portMAX_DELAY (portTickType)0xffffffff
+#define portMAX_DELAY (portTickType)0xffffffff
 #endif
 /*-----------------------------------------------------------*/
 
@@ -100,8 +100,8 @@ typedef unsigned portLONG portTickType;
 
 /* Push the CCR then disable interrupts. */
 #define portENTER_CRITICAL() \
-   asm volatile("STC	CCR, @-ER7"); \
-   portDISABLE_INTERRUPTS();
+    asm volatile("STC	CCR, @-ER7"); \
+    portDISABLE_INTERRUPTS();
 
 /* Pop the CCR to set the interrupt masking back to its previous state. */
 #define portEXIT_CRITICAL() asm volatile("LDC  @ER7+, CCR");
@@ -115,34 +115,33 @@ interrupt service routines.  These macros save and restore the stack
 pointer to the TCB. */
 
 #define portSAVE_STACK_POINTER() \
-   extern void* pxCurrentTCB; \
+    extern void* pxCurrentTCB; \
 \
-   asm volatile("MOV.L	@_pxCurrentTCB, ER5			\n\t" \
-                "MOV.L	ER7, @ER5					\n\t"); \
-   (void)pxCurrentTCB;
+    asm volatile("MOV.L	@_pxCurrentTCB, ER5			\n\t" \
+                 "MOV.L	ER7, @ER5					\n\t"); \
+    (void)pxCurrentTCB;
 
 #define portRESTORE_STACK_POINTER() \
-   extern void* pxCurrentTCB; \
+    extern void* pxCurrentTCB; \
 \
-   asm volatile("MOV.L	@_pxCurrentTCB, ER5			\n\t" \
-                "MOV.L	@ER5, ER7					\n\t"); \
-   (void)pxCurrentTCB;
+    asm volatile("MOV.L	@_pxCurrentTCB, ER5			\n\t" \
+                 "MOV.L	@ER5, ER7					\n\t"); \
+    (void)pxCurrentTCB;
 
 /*-----------------------------------------------------------*/
 
 /* Macros to allow a context switch from within an application ISR. */
 
 #define portENTER_SWITCHING_ISR() \
-   portSAVE_STACK_POINTER(); \
-   {
+    portSAVE_STACK_POINTER(); \
+    {
 #define portEXIT_SWITCHING_ISR(x) \
-   if (x) \
-   { \
-      extern void vTaskSwitchContext(void); \
-      vTaskSwitchContext(); \
-   } \
-   } \
-   portRESTORE_STACK_POINTER();
+    if(x) { \
+        extern void vTaskSwitchContext(void); \
+        vTaskSwitchContext(); \
+    } \
+    } \
+    portRESTORE_STACK_POINTER();
 /*-----------------------------------------------------------*/
 
 /* Task function macros as described on the FreeRTOS.org WEB site. */

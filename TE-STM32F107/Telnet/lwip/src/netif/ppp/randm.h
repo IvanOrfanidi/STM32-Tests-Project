@@ -57,8 +57,8 @@ void avChurnRand(char* randData, u32_t randLen);
  * such as user operations and network traffic.
  */
 #if MD5_SUPPORT
-#   define avRandomize() avChurnRand(NULL, 0)
-#else /* MD5_SUPPORT */
+#define avRandomize() avChurnRand(NULL, 0)
+#else  /* MD5_SUPPORT */
 void avRandomize(void);
 #endif /* MD5_SUPPORT */
 

@@ -84,24 +84,24 @@ extern "C" {
 #define portSTACK_TYPE unsigned portCHAR
 #define portBASE_TYPE char
 
-#if (configUSE_16_BIT_TICKS == 1)
+#if(configUSE_16_BIT_TICKS == 1)
 typedef unsigned portSHORT portTickType;
-#   define portMAX_DELAY (portTickType)0xffff
+#define portMAX_DELAY (portTickType)0xffff
 #else
 typedef unsigned portLONG portTickType;
-#   define portMAX_DELAY (portTickType)0xffffffff
+#define portMAX_DELAY (portTickType)0xffffffff
 #endif
 /*-----------------------------------------------------------*/
 
 /* Critical section management. */
 #define portENTER_CRITICAL() \
-   asm volatile("in		__tmp_reg__, __SREG__" ::); \
-   asm volatile("cli" ::); \
-   asm volatile("push	__tmp_reg__" ::)
+    asm volatile("in		__tmp_reg__, __SREG__" ::); \
+    asm volatile("cli" ::); \
+    asm volatile("push	__tmp_reg__" ::)
 
 #define portEXIT_CRITICAL() \
-   asm volatile("pop		__tmp_reg__" ::); \
-   asm volatile("out		__SREG__, __tmp_reg__" ::)
+    asm volatile("pop		__tmp_reg__" ::); \
+    asm volatile("out		__SREG__, __tmp_reg__" ::)
 
 #define portDISABLE_INTERRUPTS() asm volatile("cli" ::);
 #define portENABLE_INTERRUPTS() asm volatile("sei" ::);

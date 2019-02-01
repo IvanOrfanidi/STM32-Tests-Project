@@ -77,12 +77,12 @@ extern "C" {
 #define portSTACK_TYPE unsigned long
 #define portBASE_TYPE long
 
-#if (configUSE_16_BIT_TICKS == 1)
+#if(configUSE_16_BIT_TICKS == 1)
 typedef unsigned portSHORT portTickType;
-#   define portMAX_DELAY (portTickType)0xffff
+#define portMAX_DELAY (portTickType)0xffff
 #else
 typedef unsigned portLONG portTickType;
-#   define portMAX_DELAY (portTickType)0xffffffff
+#define portMAX_DELAY (portTickType)0xffffffff
 #endif
 /*-----------------------------------------------------------*/
 
@@ -113,9 +113,9 @@ extern void vPortClearInterruptMaskFromISR(unsigned portBASE_TYPE);
 
 /* Note this will overwrite all other bits in the force register, it is done this way for speed. */
 #define portYIELD() \
-   MCF_INTC0_INTFRCL = (1UL << configYIELD_INTERRUPT_VECTOR); \
-   portNOP(); \
-   portNOP() /* -32 as we are using the high word of the 64bit mask. */
+    MCF_INTC0_INTFRCL = (1UL << configYIELD_INTERRUPT_VECTOR); \
+    portNOP(); \
+    portNOP() /* -32 as we are using the high word of the 64bit mask. */
 
 /*-----------------------------------------------------------*/
 
@@ -125,10 +125,9 @@ extern void vPortClearInterruptMaskFromISR(unsigned portBASE_TYPE);
 /*-----------------------------------------------------------*/
 
 #define portEND_SWITCHING_ISR(xSwitchRequired) \
-   if (xSwitchRequired != pdFALSE) \
-   { \
-      portYIELD(); \
-   }
+    if(xSwitchRequired != pdFALSE) { \
+        portYIELD(); \
+    }
 
 #ifdef __cplusplus
 }

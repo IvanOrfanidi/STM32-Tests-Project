@@ -52,24 +52,24 @@
 */
 
 #ifndef INC_FREERTOS_H
-#   error "#include FreeRTOS.h" must appear in source files before "#include task.h"
+#error "#include FreeRTOS.h" must appear in source files before "#include task.h"
 #endif
 
 #ifndef TASK_H
-#   define TASK_H
+#define TASK_H
 
-#   include "portable.h"
-#   include "list.h"
+#include "portable.h"
+#include "list.h"
 
-#   ifdef __cplusplus
+#ifdef __cplusplus
 extern "C" {
-#   endif
+#endif
 
 /*-----------------------------------------------------------
  * MACROS AND DEFINITIONS
  *----------------------------------------------------------*/
 
-#   define tskKERNEL_VERSION_NUMBER "V6.0.2"
+#define tskKERNEL_VERSION_NUMBER "V6.0.2"
 
 /**
  * task. h
@@ -86,34 +86,31 @@ typedef void* xTaskHandle;
 /*
  * Used internally only.
  */
-typedef struct xTIME_OUT
-{
-   portBASE_TYPE xOverflowCount;
-   portTickType xTimeOnEntering;
+typedef struct xTIME_OUT {
+    portBASE_TYPE xOverflowCount;
+    portTickType xTimeOnEntering;
 } xTimeOutType;
 
 /*
  * Defines the memory ranges allocated to the task when an MPU is used.
  */
-typedef struct xMEMORY_REGION
-{
-   void* pvBaseAddress;
-   unsigned long ulLengthInBytes;
-   unsigned long ulParameters;
+typedef struct xMEMORY_REGION {
+    void* pvBaseAddress;
+    unsigned long ulLengthInBytes;
+    unsigned long ulParameters;
 } xMemoryRegion;
 
 /*
  * Parameters required to create an MPU protected task.
  */
-typedef struct xTASK_PARAMTERS
-{
-   pdTASK_CODE pvTaskCode;
-   const signed char* const pcName;
-   unsigned short usStackDepth;
-   void* pvParameters;
-   unsigned portBASE_TYPE uxPriority;
-   portSTACK_TYPE* puxStackBuffer;
-   xMemoryRegion xRegions[portNUM_CONFIGURABLE_REGIONS];
+typedef struct xTASK_PARAMTERS {
+    pdTASK_CODE pvTaskCode;
+    const signed char* const pcName;
+    unsigned short usStackDepth;
+    void* pvParameters;
+    unsigned portBASE_TYPE uxPriority;
+    portSTACK_TYPE* puxStackBuffer;
+    xMemoryRegion xRegions[portNUM_CONFIGURABLE_REGIONS];
 } xTaskParameters;
 
 /*
@@ -121,7 +118,7 @@ typedef struct xTASK_PARAMTERS
  *
  * \ingroup TaskUtils
  */
-#   define tskIDLE_PRIORITY ((unsigned portBASE_TYPE)0)
+#define tskIDLE_PRIORITY ((unsigned portBASE_TYPE)0)
 
 /**
  * task. h
@@ -131,7 +128,7 @@ typedef struct xTASK_PARAMTERS
  * \page taskYIELD taskYIELD
  * \ingroup SchedulerControl
  */
-#   define taskYIELD() portYIELD()
+#define taskYIELD() portYIELD()
 
 /**
  * task. h
@@ -145,7 +142,7 @@ typedef struct xTASK_PARAMTERS
  * \page taskENTER_CRITICAL taskENTER_CRITICAL
  * \ingroup SchedulerControl
  */
-#   define taskENTER_CRITICAL() portENTER_CRITICAL()
+#define taskENTER_CRITICAL() portENTER_CRITICAL()
 
 /**
  * task. h
@@ -159,7 +156,7 @@ typedef struct xTASK_PARAMTERS
  * \page taskEXIT_CRITICAL taskEXIT_CRITICAL
  * \ingroup SchedulerControl
  */
-#   define taskEXIT_CRITICAL() portEXIT_CRITICAL()
+#define taskEXIT_CRITICAL() portEXIT_CRITICAL()
 
 /**
  * task. h
@@ -169,7 +166,7 @@ typedef struct xTASK_PARAMTERS
  * \page taskDISABLE_INTERRUPTS taskDISABLE_INTERRUPTS
  * \ingroup SchedulerControl
  */
-#   define taskDISABLE_INTERRUPTS() portDISABLE_INTERRUPTS()
+#define taskDISABLE_INTERRUPTS() portDISABLE_INTERRUPTS()
 
 /**
  * task. h
@@ -179,12 +176,12 @@ typedef struct xTASK_PARAMTERS
  * \page taskENABLE_INTERRUPTS taskENABLE_INTERRUPTS
  * \ingroup SchedulerControl
  */
-#   define taskENABLE_INTERRUPTS() portENABLE_INTERRUPTS()
+#define taskENABLE_INTERRUPTS() portENABLE_INTERRUPTS()
 
 /* Definitions returned by xTaskGetSchedulerState(). */
-#   define taskSCHEDULER_NOT_STARTED 0
-#   define taskSCHEDULER_RUNNING 1
-#   define taskSCHEDULER_SUSPENDED 2
+#define taskSCHEDULER_NOT_STARTED 0
+#define taskSCHEDULER_RUNNING 1
+#define taskSCHEDULER_SUSPENDED 2
 
 /*-----------------------------------------------------------
  * TASK CREATION API
@@ -266,9 +263,9 @@ typedef struct xTASK_PARAMTERS
  * \defgroup xTaskCreate xTaskCreate
  * \ingroup Tasks
  */
-#   define xTaskCreate(pvTaskCode, pcName, usStackDepth, pvParameters, uxPriority, pxCreatedTask) \
-      xTaskGenericCreate( \
-         (pvTaskCode), (pcName), (usStackDepth), (pvParameters), (uxPriority), (pxCreatedTask), (NULL), (NULL))
+#define xTaskCreate(pvTaskCode, pcName, usStackDepth, pvParameters, uxPriority, pxCreatedTask) \
+    xTaskGenericCreate( \
+        (pvTaskCode), (pcName), (usStackDepth), (pvParameters), (uxPriority), (pxCreatedTask), (NULL), (NULL))
 
 /**
  * task. h
@@ -337,15 +334,15 @@ xTaskHandle xHandle;
  * \defgroup xTaskCreateRestricted xTaskCreateRestricted
  * \ingroup Tasks
  */
-#   define xTaskCreateRestricted(x, pxCreatedTask) \
-      xTaskGenericCreate(((x)->pvTaskCode), \
-                         ((x)->pcName), \
-                         ((x)->usStackDepth), \
-                         ((x)->pvParameters), \
-                         ((x)->uxPriority), \
-                         (pxCreatedTask), \
-                         ((x)->puxStackBuffer), \
-                         ((x)->xRegions))
+#define xTaskCreateRestricted(x, pxCreatedTask) \
+    xTaskGenericCreate(((x)->pvTaskCode), \
+        ((x)->pcName), \
+        ((x)->usStackDepth), \
+        ((x)->pvParameters), \
+        ((x)->uxPriority), \
+        (pxCreatedTask), \
+        ((x)->puxStackBuffer), \
+        ((x)->xRegions))
 
 /**
  * task. h
@@ -1228,7 +1225,7 @@ void vTaskSetTimeOutState(xTimeOutType* const pxTimeOut) PRIVILEGED_FUNCTION;
  * timeout has expired.
  */
 portBASE_TYPE xTaskCheckForTimeOut(xTimeOutType* const pxTimeOut,
-                                   portTickType* const pxTicksToWait) PRIVILEGED_FUNCTION;
+    portTickType* const pxTicksToWait) PRIVILEGED_FUNCTION;
 
 /*
  * Shortcut used by the queue implementation to prevent unnecessary call to
@@ -1259,15 +1256,15 @@ void vTaskPriorityDisinherit(xTaskHandle* const pxMutexHolder) PRIVILEGED_FUNCTI
  * xTaskCreate() and xTaskCreateRestricted() macros.
  */
 signed portBASE_TYPE xTaskGenericCreate(pdTASK_CODE pvTaskCode,
-                                        const signed char* const pcName,
-                                        unsigned short usStackDepth,
-                                        void* pvParameters,
-                                        unsigned portBASE_TYPE uxPriority,
-                                        xTaskHandle* pxCreatedTask,
-                                        portSTACK_TYPE* puxStackBuffer,
-                                        const xMemoryRegion* const xRegions) PRIVILEGED_FUNCTION;
+    const signed char* const pcName,
+    unsigned short usStackDepth,
+    void* pvParameters,
+    unsigned portBASE_TYPE uxPriority,
+    xTaskHandle* pxCreatedTask,
+    portSTACK_TYPE* puxStackBuffer,
+    const xMemoryRegion* const xRegions) PRIVILEGED_FUNCTION;
 
-#   ifdef __cplusplus
+#ifdef __cplusplus
 }
-#   endif
+#endif
 #endif /* TASK_H */

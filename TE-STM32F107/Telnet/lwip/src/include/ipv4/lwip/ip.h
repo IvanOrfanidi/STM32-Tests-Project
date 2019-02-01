@@ -59,16 +59,16 @@ extern "C" {
    to ip_output), meaning that an IP header already is constructed
    in the pbuf. This is used when TCP retransmits. */
 #ifdef IP_HDRINCL
-#   undef IP_HDRINCL
+#undef IP_HDRINCL
 #endif /* IP_HDRINCL */
 #define IP_HDRINCL NULL
 
 #if LWIP_NETIF_HWADDRHINT
-#   define IP_PCB_ADDRHINT \
-      ; \
-      u8_t addr_hint
+#define IP_PCB_ADDRHINT \
+    ; \
+    u8_t addr_hint
 #else
-#   define IP_PCB_ADDRHINT
+#define IP_PCB_ADDRHINT
 #endif /* LWIP_NETIF_HWADDRHINT */
 
 /* This is the common part of all PCB types. It needs to be at the
@@ -76,21 +76,20 @@ extern "C" {
    changes to this common part are made in one location instead of
    having to change all PCB structs. */
 #define IP_PCB \
-   /* ip addresses in network byte order */ \
-   ip_addr_t local_ip; \
-   ip_addr_t remote_ip; \
-   /* Socket options */ \
-   u8_t so_options; \
-   /* Type Of Service */ \
-   u8_t tos; \
-   /* Time To Live */ \
-   u8_t ttl /* link layer address resolution hint */ \
-      IP_PCB_ADDRHINT
+    /* ip addresses in network byte order */ \
+    ip_addr_t local_ip; \
+    ip_addr_t remote_ip; \
+    /* Socket options */ \
+    u8_t so_options; \
+    /* Type Of Service */ \
+    u8_t tos; \
+    /* Time To Live */ \
+    u8_t ttl /* link layer address resolution hint */ \
+        IP_PCB_ADDRHINT
 
-struct ip_pcb
-{
-   /* Common members of all PCB types */
-   IP_PCB;
+struct ip_pcb {
+    /* Common members of all PCB types */
+    IP_PCB;
 };
 
 /*
@@ -98,8 +97,8 @@ struct ip_pcb
  */
 /*#define SOF_DEBUG       0x01U     Unimplemented: turn on debugging info recording */
 #define SOF_ACCEPTCONN 0x02U /* socket has had listen() */
-#define SOF_REUSEADDR 0x04U /* allow local address reuse */
-#define SOF_KEEPALIVE 0x08U /* keep connections alive */
+#define SOF_REUSEADDR 0x04U  /* allow local address reuse */
+#define SOF_KEEPALIVE 0x08U  /* keep connections alive */
 /*#define SOF_DONTROUTE   0x10U     Unimplemented: just use interface addresses */
 #define SOF_BROADCAST 0x20U /* permit to send and to receive broadcast messages (see IP_SOF_BROADCAST option) */
 /*#define SOF_USELOOPBACK 0x40U     Unimplemented: bypass hardware when possible */
@@ -111,38 +110,37 @@ struct ip_pcb
 #define SOF_INHERITED (SOF_REUSEADDR | SOF_KEEPALIVE | SOF_LINGER /*|SOF_DEBUG|SOF_DONTROUTE|SOF_OOBINLINE*/)
 
 #ifdef PACK_STRUCT_USE_INCLUDES
-#   include "arch/bpstruct.h"
+#include "arch/bpstruct.h"
 #endif
 PACK_STRUCT_BEGIN
-struct ip_hdr
-{
-   /* version / header length */
-   PACK_STRUCT_FIELD(u8_t _v_hl);
-   /* type of service */
-   PACK_STRUCT_FIELD(u8_t _tos);
-   /* total length */
-   PACK_STRUCT_FIELD(u16_t _len);
-   /* identification */
-   PACK_STRUCT_FIELD(u16_t _id);
-   /* fragment offset field */
-   PACK_STRUCT_FIELD(u16_t _offset);
-#define IP_RF 0x8000U /* reserved fragment flag */
-#define IP_DF 0x4000U /* dont fragment flag */
-#define IP_MF 0x2000U /* more fragments flag */
+struct ip_hdr {
+    /* version / header length */
+    PACK_STRUCT_FIELD(u8_t _v_hl);
+    /* type of service */
+    PACK_STRUCT_FIELD(u8_t _tos);
+    /* total length */
+    PACK_STRUCT_FIELD(u16_t _len);
+    /* identification */
+    PACK_STRUCT_FIELD(u16_t _id);
+    /* fragment offset field */
+    PACK_STRUCT_FIELD(u16_t _offset);
+#define IP_RF 0x8000U      /* reserved fragment flag */
+#define IP_DF 0x4000U      /* dont fragment flag */
+#define IP_MF 0x2000U      /* more fragments flag */
 #define IP_OFFMASK 0x1fffU /* mask for fragmenting bits */
-   /* time to live */
-   PACK_STRUCT_FIELD(u8_t _ttl);
-   /* protocol*/
-   PACK_STRUCT_FIELD(u8_t _proto);
-   /* checksum */
-   PACK_STRUCT_FIELD(u16_t _chksum);
-   /* source and destination IP addresses */
-   PACK_STRUCT_FIELD(ip_addr_p_t src);
-   PACK_STRUCT_FIELD(ip_addr_p_t dest);
+    /* time to live */
+    PACK_STRUCT_FIELD(u8_t _ttl);
+    /* protocol*/
+    PACK_STRUCT_FIELD(u8_t _proto);
+    /* checksum */
+    PACK_STRUCT_FIELD(u16_t _chksum);
+    /* source and destination IP addresses */
+    PACK_STRUCT_FIELD(ip_addr_p_t src);
+    PACK_STRUCT_FIELD(ip_addr_p_t dest);
 } PACK_STRUCT_STRUCT;
 PACK_STRUCT_END
 #ifdef PACK_STRUCT_USE_INCLUDES
-#   include "arch/epstruct.h"
+#include "arch/epstruct.h"
 #endif
 
 #define IPH_V(hdr) ((hdr)->_v_hl >> 4)
@@ -178,31 +176,31 @@ struct netif* ip_route(ip_addr_t* dest);
 err_t ip_input(struct pbuf* p, struct netif* inp);
 err_t ip_output(struct pbuf* p, ip_addr_t* src, ip_addr_t* dest, u8_t ttl, u8_t tos, u8_t proto);
 err_t ip_output_if(struct pbuf* p,
-                   ip_addr_t* src,
-                   ip_addr_t* dest,
-                   u8_t ttl,
-                   u8_t tos,
-                   u8_t proto,
-                   struct netif* netif);
+    ip_addr_t* src,
+    ip_addr_t* dest,
+    u8_t ttl,
+    u8_t tos,
+    u8_t proto,
+    struct netif* netif);
 #if LWIP_NETIF_HWADDRHINT
 err_t ip_output_hinted(struct pbuf* p,
-                       ip_addr_t* src,
-                       ip_addr_t* dest,
-                       u8_t ttl,
-                       u8_t tos,
-                       u8_t proto,
-                       u8_t* addr_hint);
+    ip_addr_t* src,
+    ip_addr_t* dest,
+    u8_t ttl,
+    u8_t tos,
+    u8_t proto,
+    u8_t* addr_hint);
 #endif /* LWIP_NETIF_HWADDRHINT */
 #if IP_OPTIONS_SEND
 err_t ip_output_if_opt(struct pbuf* p,
-                       ip_addr_t* src,
-                       ip_addr_t* dest,
-                       u8_t ttl,
-                       u8_t tos,
-                       u8_t proto,
-                       struct netif* netif,
-                       void* ip_options,
-                       u16_t optlen);
+    ip_addr_t* src,
+    ip_addr_t* dest,
+    u8_t ttl,
+    u8_t tos,
+    u8_t proto,
+    struct netif* netif,
+    void* ip_options,
+    u16_t optlen);
 #endif /* IP_OPTIONS_SEND */
 /** Get the interface that received the current packet.
  * This function must only be called from a receive callback (udp_recv,
@@ -227,7 +225,7 @@ err_t ip_output_if_opt(struct pbuf* p,
 #if IP_DEBUG
 void ip_debug_print(struct pbuf* p);
 #else
-#   define ip_debug_print(p)
+#define ip_debug_print(p)
 #endif /* IP_DEBUG */
 
 #ifdef __cplusplus

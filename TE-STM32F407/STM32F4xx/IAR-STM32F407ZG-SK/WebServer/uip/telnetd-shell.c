@@ -47,134 +47,126 @@
 #include "telnetd.h"
 #include <string.h>
 
-struct ptentry
-{
-   char c;
-   void (*pfunc)(struct telnetd_state* s, char* str);
+struct ptentry {
+    char c;
+    void (*pfunc)(struct telnetd_state* s, char* str);
 };
 
 /*-----------------------------------------------------------------------------------*/
 static void parse(struct telnetd_state* s, register char* str, struct ptentry* t)
 {
-   register struct ptentry* p;
-   char* sstr;
+    register struct ptentry* p;
+    char* sstr;
 
-   sstr = str;
+    sstr = str;
 
-   /* Loop over the parse table entries in t in order to find one that
+    /* Loop over the parse table entries in t in order to find one that
       matches the first character in str. */
-   for (p = t; p->c != 0; ++p)
-   {
-      if (*str == p->c)
-      {
-         /* Skip rest of the characters up to the first space. */
-         while (*str != ' ')
-         {
-            ++str;
-         }
+    for(p = t; p->c != 0; ++p) {
+        if(*str == p->c) {
+            /* Skip rest of the characters up to the first space. */
+            while(*str != ' ') {
+                ++str;
+            }
 
-         /* Skip all spaces.*/
-         while (*str == ' ')
-         {
-            ++str;
-         }
+            /* Skip all spaces.*/
+            while(*str == ' ') {
+                ++str;
+            }
 
-         /* Call parse table entry function and return. */
-         p->pfunc(s, str);
-         return;
-      }
-   }
+            /* Call parse table entry function and return. */
+            p->pfunc(s, str);
+            return;
+        }
+    }
 
-   /* Did not find matching entry in parse table. We just call the
+    /* Did not find matching entry in parse table. We just call the
       default handler supplied by the caller and return. */
-   p->pfunc(s, str);
+    p->pfunc(s, str);
 }
 /*-----------------------------------------------------------------------------------*/
 static void exitt(struct telnetd_state* s, char* str)
 {
-   telnetd_close(s);
+    telnetd_close(s);
 }
 /*-----------------------------------------------------------------------------------*/
 static void inttostr(register char* str, unsigned int i)
 {
-   str[0] = '0' + i / 100;
-   if (str[0] == '0')
-   {
-      str[0] = ' ';
-   }
-   str[1] = '0' + (i / 10) % 10;
-   if (str[1] == '0')
-   {
-      str[1] = ' ';
-   }
-   str[2] = '0' + i % 10;
-   str[3] = ' ';
-   str[4] = 0;
+    str[0] = '0' + i / 100;
+    if(str[0] == '0') {
+        str[0] = ' ';
+    }
+    str[1] = '0' + (i / 10) % 10;
+    if(str[1] == '0') {
+        str[1] = ' ';
+    }
+    str[2] = '0' + i % 10;
+    str[3] = ' ';
+    str[4] = 0;
 }
 /*-----------------------------------------------------------------------------------*/
 static void stats(struct telnetd_state* s, char* strr)
 {
-   char str[10];
+    char str[10];
 
-   inttostr(str, uip_stat.ip.recv);
-   telnetd_output(s, "IP packets received ", str);
-   inttostr(str, uip_stat.ip.sent);
-   telnetd_output(s, "IP packets sent ", str);
-   inttostr(str, uip_stat.ip.drop);
-   telnetd_output(s, "IP packets dropped ", str);
+    inttostr(str, uip_stat.ip.recv);
+    telnetd_output(s, "IP packets received ", str);
+    inttostr(str, uip_stat.ip.sent);
+    telnetd_output(s, "IP packets sent ", str);
+    inttostr(str, uip_stat.ip.drop);
+    telnetd_output(s, "IP packets dropped ", str);
 
-   inttostr(str, uip_stat.icmp.recv);
-   telnetd_output(s, "ICMP packets received ", str);
-   inttostr(str, uip_stat.icmp.sent);
-   telnetd_output(s, "ICMP packets sent ", str);
-   inttostr(str, uip_stat.icmp.drop);
-   telnetd_output(s, "ICMP packets dropped ", str);
+    inttostr(str, uip_stat.icmp.recv);
+    telnetd_output(s, "ICMP packets received ", str);
+    inttostr(str, uip_stat.icmp.sent);
+    telnetd_output(s, "ICMP packets sent ", str);
+    inttostr(str, uip_stat.icmp.drop);
+    telnetd_output(s, "ICMP packets dropped ", str);
 
-   inttostr(str, uip_stat.tcp.recv);
-   telnetd_output(s, "TCP packets received ", str);
-   inttostr(str, uip_stat.tcp.sent);
-   telnetd_output(s, "TCP packets sent ", str);
-   inttostr(str, uip_stat.tcp.drop);
-   telnetd_output(s, "TCP packets dropped ", str);
-   inttostr(str, uip_stat.tcp.rexmit);
-   telnetd_output(s, "TCP packets retransmitted ", str);
-   inttostr(str, uip_stat.tcp.synrst);
-   telnetd_output(s, "TCP connection attempts ", str);
+    inttostr(str, uip_stat.tcp.recv);
+    telnetd_output(s, "TCP packets received ", str);
+    inttostr(str, uip_stat.tcp.sent);
+    telnetd_output(s, "TCP packets sent ", str);
+    inttostr(str, uip_stat.tcp.drop);
+    telnetd_output(s, "TCP packets dropped ", str);
+    inttostr(str, uip_stat.tcp.rexmit);
+    telnetd_output(s, "TCP packets retransmitted ", str);
+    inttostr(str, uip_stat.tcp.synrst);
+    telnetd_output(s, "TCP connection attempts ", str);
 }
 /*-----------------------------------------------------------------------------------*/
 static void help(struct telnetd_state* s, char* str)
 {
-   telnetd_output(s, "Available commands:", "");
-   telnetd_output(s, "stats - show uIP statistics", "");
-   telnetd_output(s, "exit  - exit shell", "");
-   telnetd_output(s, "?     - show this help", "");
+    telnetd_output(s, "Available commands:", "");
+    telnetd_output(s, "stats - show uIP statistics", "");
+    telnetd_output(s, "exit  - exit shell", "");
+    telnetd_output(s, "?     - show this help", "");
 }
 /*-----------------------------------------------------------------------------------*/
 static void none(struct telnetd_state* s, char* str)
 {
-   if (strlen(str) > 0)
-   {
-      telnetd_output(s, "Unknown command", "");
-   }
+    if(strlen(str) > 0) {
+        telnetd_output(s, "Unknown command", "");
+    }
 }
 /*-----------------------------------------------------------------------------------*/
 static struct ptentry configparsetab[] = { { 's', stats },
-                                           { 'e', exitt },
-                                           { '?', help },
+    { 'e', exitt },
+    { '?', help },
 
-                                           /* Default action */
-                                           { 0, none } };
+    /* Default action */
+    { 0, none } };
 /*-----------------------------------------------------------------------------------*/
 void telnetd_connected(struct telnetd_state* s)
 {
-   telnetd_output(s, "uIP command shell", "");
-   telnetd_output(s, "Type '?' for help", "");
-   telnetd_prompt(s, "uIP-0.9> ");
+    telnetd_output(s, "uIP command shell", "");
+    telnetd_output(s, "Type '?' for help", "");
+    telnetd_prompt(s, "uIP-0.9> ");
 }
 /*-----------------------------------------------------------------------------------*/
 void telnetd_input(struct telnetd_state* s, char* cmd)
 {
-   parse(s, cmd, configparsetab);
-   telnetd_prompt(s, "uIP-0.9> ");
+    parse(s, cmd, configparsetab);
+    telnetd_prompt(s, "uIP-0.9> ");
 }
 /*-----------------------------------------------------------------------------------*/

@@ -37,150 +37,146 @@
 
 #if LWIP_SOCKET /* don't build if not configured for use in lwipopts.h */
 
-#   include <stddef.h> /* for size_t */
+#include <stddef.h> /* for size_t */
 
-#   include "lwip/ip_addr.h"
-#   include "lwip/inet.h"
+#include "lwip/ip_addr.h"
+#include "lwip/inet.h"
 
-#   ifdef __cplusplus
+#ifdef __cplusplus
 extern "C" {
-#   endif
+#endif
 
 /* members are in network byte order */
-struct sockaddr_in
-{
-   u8_t sin_len;
-   u8_t sin_family;
-   u16_t sin_port;
-   struct in_addr sin_addr;
-   char sin_zero[8];
+struct sockaddr_in {
+    u8_t sin_len;
+    u8_t sin_family;
+    u16_t sin_port;
+    struct in_addr sin_addr;
+    char sin_zero[8];
 };
 
-struct sockaddr
-{
-   u8_t sa_len;
-   u8_t sa_family;
-   char sa_data[14];
+struct sockaddr {
+    u8_t sa_len;
+    u8_t sa_family;
+    char sa_data[14];
 };
 
 /* If your port already typedef's socklen_t, define SOCKLEN_T_DEFINED
    to prevent this code from redefining it. */
-#   if !defined(socklen_t) && !defined(SOCKLEN_T_DEFINED)
+#if !defined(socklen_t) && !defined(SOCKLEN_T_DEFINED)
 typedef u32_t socklen_t;
-#   endif
+#endif
 
 /* Socket protocol types (TCP/UDP/RAW) */
-#   define SOCK_STREAM 1
-#   define SOCK_DGRAM 2
-#   define SOCK_RAW 3
+#define SOCK_STREAM 1
+#define SOCK_DGRAM 2
+#define SOCK_RAW 3
 
 /*
  * Option flags per-socket. These must match the SOF_ flags in ip.h (checked in init.c)
  */
-#   define SO_DEBUG 0x0001 /* Unimplemented: turn on debugging info recording */
-#   define SO_ACCEPTCONN 0x0002 /* socket has had listen() */
-#   define SO_REUSEADDR 0x0004 /* Allow local address reuse */
-#   define SO_KEEPALIVE 0x0008 /* keep connections alive */
-#   define SO_DONTROUTE 0x0010 /* Unimplemented: just use interface addresses */
-#   define SO_BROADCAST 0x0020 /* permit to send and to receive broadcast messages (see IP_SOF_BROADCAST option) */
-#   define SO_USELOOPBACK 0x0040 /* Unimplemented: bypass hardware when possible */
-#   define SO_LINGER 0x0080 /* linger on close if data present */
-#   define SO_OOBINLINE 0x0100 /* Unimplemented: leave received OOB data in line */
-#   define SO_REUSEPORT 0x0200 /* Unimplemented: allow local address & port reuse */
+#define SO_DEBUG 0x0001       /* Unimplemented: turn on debugging info recording */
+#define SO_ACCEPTCONN 0x0002  /* socket has had listen() */
+#define SO_REUSEADDR 0x0004   /* Allow local address reuse */
+#define SO_KEEPALIVE 0x0008   /* keep connections alive */
+#define SO_DONTROUTE 0x0010   /* Unimplemented: just use interface addresses */
+#define SO_BROADCAST 0x0020   /* permit to send and to receive broadcast messages (see IP_SOF_BROADCAST option) */
+#define SO_USELOOPBACK 0x0040 /* Unimplemented: bypass hardware when possible */
+#define SO_LINGER 0x0080      /* linger on close if data present */
+#define SO_OOBINLINE 0x0100   /* Unimplemented: leave received OOB data in line */
+#define SO_REUSEPORT 0x0200   /* Unimplemented: allow local address & port reuse */
 
-#   define SO_DONTLINGER ((int)(~SO_LINGER))
+#define SO_DONTLINGER ((int)(~SO_LINGER))
 
 /*
  * Additional options, not kept in so_options.
  */
-#   define SO_SNDBUF 0x1001 /* Unimplemented: send buffer size */
-#   define SO_RCVBUF 0x1002 /* receive buffer size */
-#   define SO_SNDLOWAT 0x1003 /* Unimplemented: send low-water mark */
-#   define SO_RCVLOWAT 0x1004 /* Unimplemented: receive low-water mark */
-#   define SO_SNDTIMEO 0x1005 /* Unimplemented: send timeout */
-#   define SO_RCVTIMEO 0x1006 /* receive timeout */
-#   define SO_ERROR 0x1007 /* get error status and clear */
-#   define SO_TYPE 0x1008 /* get socket type */
-#   define SO_CONTIMEO 0x1009 /* Unimplemented: connect timeout */
-#   define SO_NO_CHECK 0x100a /* don't create UDP checksum */
+#define SO_SNDBUF 0x1001   /* Unimplemented: send buffer size */
+#define SO_RCVBUF 0x1002   /* receive buffer size */
+#define SO_SNDLOWAT 0x1003 /* Unimplemented: send low-water mark */
+#define SO_RCVLOWAT 0x1004 /* Unimplemented: receive low-water mark */
+#define SO_SNDTIMEO 0x1005 /* Unimplemented: send timeout */
+#define SO_RCVTIMEO 0x1006 /* receive timeout */
+#define SO_ERROR 0x1007    /* get error status and clear */
+#define SO_TYPE 0x1008     /* get socket type */
+#define SO_CONTIMEO 0x1009 /* Unimplemented: connect timeout */
+#define SO_NO_CHECK 0x100a /* don't create UDP checksum */
 
 /*
  * Structure used for manipulating linger option.
  */
-struct linger
-{
-   int l_onoff; /* option on/off */
-   int l_linger; /* linger time */
+struct linger {
+    int l_onoff;  /* option on/off */
+    int l_linger; /* linger time */
 };
 
 /*
  * Level number for (get/set)sockopt() to apply to socket itself.
  */
-#   define SOL_SOCKET 0xfff /* options for socket level */
+#define SOL_SOCKET 0xfff /* options for socket level */
 
-#   define AF_UNSPEC 0
-#   define AF_INET 2
-#   define PF_INET AF_INET
-#   define PF_UNSPEC AF_UNSPEC
+#define AF_UNSPEC 0
+#define AF_INET 2
+#define PF_INET AF_INET
+#define PF_UNSPEC AF_UNSPEC
 
-#   define IPPROTO_IP 0
-#   define IPPROTO_TCP 6
-#   define IPPROTO_UDP 17
-#   define IPPROTO_UDPLITE 136
+#define IPPROTO_IP 0
+#define IPPROTO_TCP 6
+#define IPPROTO_UDP 17
+#define IPPROTO_UDPLITE 136
 
 /* Flags we can use with send and recv. */
-#   define MSG_PEEK 0x01 /* Peeks at an incoming message */
-#   define MSG_WAITALL \
-      0x02 /* Unimplemented: Requests that the function block until the full amount of data requested can be returned \
+#define MSG_PEEK 0x01 /* Peeks at an incoming message */
+#define MSG_WAITALL \
+    0x02 /* Unimplemented: Requests that the function block until the full amount of data requested can be returned \
             * \ \
             */
-#   define MSG_OOB \
-      0x04 /* Unimplemented: Requests out-of-band data. The significance and semantics of out-of-band data are \ \
+#define MSG_OOB \
+    0x04                  /* Unimplemented: Requests out-of-band data. The significance and semantics of out-of-band data are \ \
               protocol-specific */
-#   define MSG_DONTWAIT 0x08 /* Nonblocking i/o for this operation only */
-#   define MSG_MORE 0x10 /* Sender will send more */
+#define MSG_DONTWAIT 0x08 /* Nonblocking i/o for this operation only */
+#define MSG_MORE 0x10     /* Sender will send more */
 
 /*
  * Options for level IPPROTO_IP
  */
-#   define IP_TOS 1
-#   define IP_TTL 2
+#define IP_TOS 1
+#define IP_TTL 2
 
-#   if LWIP_TCP
+#if LWIP_TCP
 /*
  * Options for level IPPROTO_TCP
  */
-#      define TCP_NODELAY 0x01 /* don't delay send to coalesce packets */
-#      define TCP_KEEPALIVE 0x02 /* send KEEPALIVE probes when idle for pcb->keep_idle milliseconds */
-#      define TCP_KEEPIDLE 0x03 /* set pcb->keep_idle  - Same as TCP_KEEPALIVE, but use seconds for get/setsockopt */
-#      define TCP_KEEPINTVL 0x04 /* set pcb->keep_intvl - Use seconds for get/setsockopt */
-#      define TCP_KEEPCNT 0x05 /* set pcb->keep_cnt   - Use number of probes sent for get/setsockopt */
-#   endif /* LWIP_TCP */
+#define TCP_NODELAY 0x01   /* don't delay send to coalesce packets */
+#define TCP_KEEPALIVE 0x02 /* send KEEPALIVE probes when idle for pcb->keep_idle milliseconds */
+#define TCP_KEEPIDLE 0x03  /* set pcb->keep_idle  - Same as TCP_KEEPALIVE, but use seconds for get/setsockopt */
+#define TCP_KEEPINTVL 0x04 /* set pcb->keep_intvl - Use seconds for get/setsockopt */
+#define TCP_KEEPCNT 0x05   /* set pcb->keep_cnt   - Use number of probes sent for get/setsockopt */
+#endif                     /* LWIP_TCP */
 
-#   if LWIP_UDP && LWIP_UDPLITE
+#if LWIP_UDP && LWIP_UDPLITE
 /*
  * Options for level IPPROTO_UDPLITE
  */
-#      define UDPLITE_SEND_CSCOV 0x01 /* sender checksum coverage */
-#      define UDPLITE_RECV_CSCOV 0x02 /* minimal receiver checksum coverage */
-#   endif /* LWIP_UDP && LWIP_UDPLITE*/
+#define UDPLITE_SEND_CSCOV 0x01 /* sender checksum coverage */
+#define UDPLITE_RECV_CSCOV 0x02 /* minimal receiver checksum coverage */
+#endif                          /* LWIP_UDP && LWIP_UDPLITE*/
 
-#   if LWIP_IGMP
+#if LWIP_IGMP
 /*
  * Options and types for UDP multicast traffic handling
  */
-#      define IP_ADD_MEMBERSHIP 3
-#      define IP_DROP_MEMBERSHIP 4
-#      define IP_MULTICAST_TTL 5
-#      define IP_MULTICAST_IF 6
-#      define IP_MULTICAST_LOOP 7
+#define IP_ADD_MEMBERSHIP 3
+#define IP_DROP_MEMBERSHIP 4
+#define IP_MULTICAST_TTL 5
+#define IP_MULTICAST_IF 6
+#define IP_MULTICAST_LOOP 7
 
-typedef struct ip_mreq
-{
-   struct in_addr imr_multiaddr; /* IP multicast address of group */
-   struct in_addr imr_interface; /* local IP address of interface */
+typedef struct ip_mreq {
+    struct in_addr imr_multiaddr; /* IP multicast address of group */
+    struct in_addr imr_interface; /* local IP address of interface */
 } ip_mreq;
-#   endif /* LWIP_IGMP */
+#endif /* LWIP_IGMP */
 
 /*
  * The Type of Service provides an indication of the abstract
@@ -198,13 +194,13 @@ typedef struct ip_mreq
  * performance on another.  Except for very unusual cases at most two
  * of these three indications should be set.
  */
-#   define IPTOS_TOS_MASK 0x1E
-#   define IPTOS_TOS(tos) ((tos)&IPTOS_TOS_MASK)
-#   define IPTOS_LOWDELAY 0x10
-#   define IPTOS_THROUGHPUT 0x08
-#   define IPTOS_RELIABILITY 0x04
-#   define IPTOS_LOWCOST 0x02
-#   define IPTOS_MINCOST IPTOS_LOWCOST
+#define IPTOS_TOS_MASK 0x1E
+#define IPTOS_TOS(tos) ((tos)&IPTOS_TOS_MASK)
+#define IPTOS_LOWDELAY 0x10
+#define IPTOS_THROUGHPUT 0x08
+#define IPTOS_RELIABILITY 0x04
+#define IPTOS_LOWCOST 0x02
+#define IPTOS_MINCOST IPTOS_LOWCOST
 
 /*
  * The Network Control precedence designation is intended to be used
@@ -215,16 +211,16 @@ typedef struct ip_mreq
  * a particular network, it is the responsibility of that network to
  * control the access to, and use of, those precedence designations.
  */
-#   define IPTOS_PREC_MASK 0xe0
-#   define IPTOS_PREC(tos) ((tos)&IPTOS_PREC_MASK)
-#   define IPTOS_PREC_NETCONTROL 0xe0
-#   define IPTOS_PREC_INTERNETCONTROL 0xc0
-#   define IPTOS_PREC_CRITIC_ECP 0xa0
-#   define IPTOS_PREC_FLASHOVERRIDE 0x80
-#   define IPTOS_PREC_FLASH 0x60
-#   define IPTOS_PREC_IMMEDIATE 0x40
-#   define IPTOS_PREC_PRIORITY 0x20
-#   define IPTOS_PREC_ROUTINE 0x00
+#define IPTOS_PREC_MASK 0xe0
+#define IPTOS_PREC(tos) ((tos)&IPTOS_PREC_MASK)
+#define IPTOS_PREC_NETCONTROL 0xe0
+#define IPTOS_PREC_INTERNETCONTROL 0xc0
+#define IPTOS_PREC_CRITIC_ECP 0xa0
+#define IPTOS_PREC_FLASHOVERRIDE 0x80
+#define IPTOS_PREC_FLASH 0x60
+#define IPTOS_PREC_IMMEDIATE 0x40
+#define IPTOS_PREC_PRIORITY 0x20
+#define IPTOS_PREC_ROUTINE 0x00
 
 /*
  * Commands for ioctlsocket(),  taken from the BSD file fcntl.h.
@@ -236,90 +232,88 @@ typedef struct ip_mreq
  * to encode the in/out status of the parameter; for now
  * we restrict parameters to at most 128 bytes.
  */
-#   if !defined(FIONREAD) || !defined(FIONBIO)
-#      define IOCPARM_MASK 0x7fU /* parameters must be < 128 bytes */
-#      define IOC_VOID 0x20000000UL /* no parameters */
-#      define IOC_OUT 0x40000000UL /* copy out parameters */
-#      define IOC_IN 0x80000000UL /* copy in parameters */
-#      define IOC_INOUT (IOC_IN | IOC_OUT)
+#if !defined(FIONREAD) || !defined(FIONBIO)
+#define IOCPARM_MASK 0x7fU    /* parameters must be < 128 bytes */
+#define IOC_VOID 0x20000000UL /* no parameters */
+#define IOC_OUT 0x40000000UL  /* copy out parameters */
+#define IOC_IN 0x80000000UL   /* copy in parameters */
+#define IOC_INOUT (IOC_IN | IOC_OUT)
 /* 0x20000000 distinguishes new &
    old ioctl's */
-#      define _IO(x, y) (IOC_VOID | ((x) << 8) | (y))
+#define _IO(x, y) (IOC_VOID | ((x) << 8) | (y))
 
-#      define _IOR(x, y, t) (IOC_OUT | (((long)sizeof(t) & IOCPARM_MASK) << 16) | ((x) << 8) | (y))
+#define _IOR(x, y, t) (IOC_OUT | (((long)sizeof(t) & IOCPARM_MASK) << 16) | ((x) << 8) | (y))
 
-#      define _IOW(x, y, t) (IOC_IN | (((long)sizeof(t) & IOCPARM_MASK) << 16) | ((x) << 8) | (y))
-#   endif /* !defined(FIONREAD) || !defined(FIONBIO) */
+#define _IOW(x, y, t) (IOC_IN | (((long)sizeof(t) & IOCPARM_MASK) << 16) | ((x) << 8) | (y))
+#endif /* !defined(FIONREAD) || !defined(FIONBIO) */
 
-#   ifndef FIONREAD
-#      define FIONREAD _IOR('f', 127, unsigned long) /* get # bytes to read */
-#   endif
-#   ifndef FIONBIO
-#      define FIONBIO _IOW('f', 126, unsigned long) /* set/clear non-blocking i/o */
-#   endif
+#ifndef FIONREAD
+#define FIONREAD _IOR('f', 127, unsigned long) /* get # bytes to read */
+#endif
+#ifndef FIONBIO
+#define FIONBIO _IOW('f', 126, unsigned long) /* set/clear non-blocking i/o */
+#endif
 
 /* Socket I/O Controls: unimplemented */
-#   ifndef SIOCSHIWAT
-#      define SIOCSHIWAT _IOW('s', 0, unsigned long) /* set high watermark */
-#      define SIOCGHIWAT _IOR('s', 1, unsigned long) /* get high watermark */
-#      define SIOCSLOWAT _IOW('s', 2, unsigned long) /* set low watermark */
-#      define SIOCGLOWAT _IOR('s', 3, unsigned long) /* get low watermark */
-#      define SIOCATMARK _IOR('s', 7, unsigned long) /* at oob mark? */
-#   endif
+#ifndef SIOCSHIWAT
+#define SIOCSHIWAT _IOW('s', 0, unsigned long) /* set high watermark */
+#define SIOCGHIWAT _IOR('s', 1, unsigned long) /* get high watermark */
+#define SIOCSLOWAT _IOW('s', 2, unsigned long) /* set low watermark */
+#define SIOCGLOWAT _IOR('s', 3, unsigned long) /* get low watermark */
+#define SIOCATMARK _IOR('s', 7, unsigned long) /* at oob mark? */
+#endif
 
 /* commands for fnctl */
-#   ifndef F_GETFL
-#      define F_GETFL 3
-#   endif
-#   ifndef F_SETFL
-#      define F_SETFL 4
-#   endif
+#ifndef F_GETFL
+#define F_GETFL 3
+#endif
+#ifndef F_SETFL
+#define F_SETFL 4
+#endif
 
 /* File status flags and file access modes for fnctl,
    these are bits in an int. */
-#   ifndef O_NONBLOCK
-#      define O_NONBLOCK 1 /* nonblocking I/O */
-#   endif
-#   ifndef O_NDELAY
-#      define O_NDELAY 1 /* same as O_NONBLOCK, for compatibility */
-#   endif
+#ifndef O_NONBLOCK
+#define O_NONBLOCK 1 /* nonblocking I/O */
+#endif
+#ifndef O_NDELAY
+#define O_NDELAY 1 /* same as O_NONBLOCK, for compatibility */
+#endif
 
-#   ifndef SHUT_RD
-#      define SHUT_RD 0
-#      define SHUT_WR 1
-#      define SHUT_RDWR 2
-#   endif
+#ifndef SHUT_RD
+#define SHUT_RD 0
+#define SHUT_WR 1
+#define SHUT_RDWR 2
+#endif
 
 /* FD_SET used for lwip_select */
-#   ifndef FD_SET
-#      undef FD_SETSIZE
+#ifndef FD_SET
+#undef FD_SETSIZE
 /* Make FD_SETSIZE match NUM_SOCKETS in socket.c */
-#      define FD_SETSIZE MEMP_NUM_NETCONN
-#      define FD_SET(n, p) ((p)->fd_bits[(n) / 8] |= (1 << ((n)&7)))
-#      define FD_CLR(n, p) ((p)->fd_bits[(n) / 8] &= ~(1 << ((n)&7)))
-#      define FD_ISSET(n, p) ((p)->fd_bits[(n) / 8] & (1 << ((n)&7)))
-#      define FD_ZERO(p) memset((void*)(p), 0, sizeof(*(p)))
+#define FD_SETSIZE MEMP_NUM_NETCONN
+#define FD_SET(n, p) ((p)->fd_bits[(n) / 8] |= (1 << ((n)&7)))
+#define FD_CLR(n, p) ((p)->fd_bits[(n) / 8] &= ~(1 << ((n)&7)))
+#define FD_ISSET(n, p) ((p)->fd_bits[(n) / 8] & (1 << ((n)&7)))
+#define FD_ZERO(p) memset((void*)(p), 0, sizeof(*(p)))
 
-typedef struct fd_set
-{
-   unsigned char fd_bits[(FD_SETSIZE + 7) / 8];
+typedef struct fd_set {
+    unsigned char fd_bits[(FD_SETSIZE + 7) / 8];
 } fd_set;
 
-#   endif /* FD_SET */
+#endif /* FD_SET */
 
 /** LWIP_TIMEVAL_PRIVATE: if you want to use the struct timeval provided
  * by your system, set this to 0 and include <sys/time.h> in cc.h */
-#   ifndef LWIP_TIMEVAL_PRIVATE
-#      define LWIP_TIMEVAL_PRIVATE 1
-#   endif
+#ifndef LWIP_TIMEVAL_PRIVATE
+#define LWIP_TIMEVAL_PRIVATE 1
+#endif
 
-#   if LWIP_TIMEVAL_PRIVATE
-struct timeval
-{
-   long tv_sec; /* seconds */
-   long tv_usec; /* and microseconds */
+#if LWIP_TIMEVAL_PRIVATE
+struct timeval {
+    long tv_sec;  /* seconds */
+    long tv_usec; /* and microseconds */
 };
-#   endif /* LWIP_TIMEVAL_PRIVATE */
+#endif /* LWIP_TIMEVAL_PRIVATE */
 
 void lwip_socket_init(void);
 
@@ -344,37 +338,37 @@ int lwip_select(int maxfdp1, fd_set* readset, fd_set* writeset, fd_set* exceptse
 int lwip_ioctl(int s, long cmd, void* argp);
 int lwip_fcntl(int s, int cmd, int val);
 
-#   if LWIP_COMPAT_SOCKETS
-#      define accept(a, b, c) lwip_accept(a, b, c)
-#      define bind(a, b, c) lwip_bind(a, b, c)
-#      define shutdown(a, b) lwip_shutdown(a, b)
-#      define closesocket(s) lwip_close(s)
-#      define connect(a, b, c) lwip_connect(a, b, c)
-#      define getsockname(a, b, c) lwip_getsockname(a, b, c)
-#      define getpeername(a, b, c) lwip_getpeername(a, b, c)
-#      define setsockopt(a, b, c, d, e) lwip_setsockopt(a, b, c, d, e)
-#      define getsockopt(a, b, c, d, e) lwip_getsockopt(a, b, c, d, e)
-#      define listen(a, b) lwip_listen(a, b)
-#      define recv(a, b, c, d) lwip_recv(a, b, c, d)
-#      define recvfrom(a, b, c, d, e, f) lwip_recvfrom(a, b, c, d, e, f)
-#      define send(a, b, c, d) lwip_send(a, b, c, d)
-#      define sendto(a, b, c, d, e, f) lwip_sendto(a, b, c, d, e, f)
-#      define socket(a, b, c) lwip_socket(a, b, c)
-#      define select(a, b, c, d, e) lwip_select(a, b, c, d, e)
-#      define ioctlsocket(a, b, c) lwip_ioctl(a, b, c)
+#if LWIP_COMPAT_SOCKETS
+#define accept(a, b, c) lwip_accept(a, b, c)
+#define bind(a, b, c) lwip_bind(a, b, c)
+#define shutdown(a, b) lwip_shutdown(a, b)
+#define closesocket(s) lwip_close(s)
+#define connect(a, b, c) lwip_connect(a, b, c)
+#define getsockname(a, b, c) lwip_getsockname(a, b, c)
+#define getpeername(a, b, c) lwip_getpeername(a, b, c)
+#define setsockopt(a, b, c, d, e) lwip_setsockopt(a, b, c, d, e)
+#define getsockopt(a, b, c, d, e) lwip_getsockopt(a, b, c, d, e)
+#define listen(a, b) lwip_listen(a, b)
+#define recv(a, b, c, d) lwip_recv(a, b, c, d)
+#define recvfrom(a, b, c, d, e, f) lwip_recvfrom(a, b, c, d, e, f)
+#define send(a, b, c, d) lwip_send(a, b, c, d)
+#define sendto(a, b, c, d, e, f) lwip_sendto(a, b, c, d, e, f)
+#define socket(a, b, c) lwip_socket(a, b, c)
+#define select(a, b, c, d, e) lwip_select(a, b, c, d, e)
+#define ioctlsocket(a, b, c) lwip_ioctl(a, b, c)
 
-#      if LWIP_POSIX_SOCKETS_IO_NAMES
-#         define read(a, b, c) lwip_read(a, b, c)
-#         define write(a, b, c) lwip_write(a, b, c)
-#         define close(s) lwip_close(s)
-#         define fcntl(a, b, c) lwip_fcntl(a, b, c)
-#      endif /* LWIP_POSIX_SOCKETS_IO_NAMES */
+#if LWIP_POSIX_SOCKETS_IO_NAMES
+#define read(a, b, c) lwip_read(a, b, c)
+#define write(a, b, c) lwip_write(a, b, c)
+#define close(s) lwip_close(s)
+#define fcntl(a, b, c) lwip_fcntl(a, b, c)
+#endif /* LWIP_POSIX_SOCKETS_IO_NAMES */
 
-#   endif /* LWIP_COMPAT_SOCKETS */
+#endif /* LWIP_COMPAT_SOCKETS */
 
-#   ifdef __cplusplus
+#ifdef __cplusplus
 }
-#   endif
+#endif
 
 #endif /* LWIP_SOCKET */
 

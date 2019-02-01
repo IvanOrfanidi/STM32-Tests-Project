@@ -99,17 +99,17 @@ const uint16_t COM_RX_PIN[COMn] = { EVAL_COM1_RxPin, EVAL_COM2_RxPin };
  */
 void STM_EVAL_LEDInit(Led_TypeDef Led)
 {
-   GPIO_InitTypeDef GPIO_InitStructure;
+    GPIO_InitTypeDef GPIO_InitStructure;
 
-   /* Enable the GPIO_LED Clock */
-   RCC_APB2PeriphClockCmd(GPIO_CLK[Led], ENABLE);
+    /* Enable the GPIO_LED Clock */
+    RCC_APB2PeriphClockCmd(GPIO_CLK[Led], ENABLE);
 
-   /* Configure the GPIO_LED pin */
-   GPIO_InitStructure.GPIO_Pin = GPIO_PIN[Led];
-   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
-   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    /* Configure the GPIO_LED pin */
+    GPIO_InitStructure.GPIO_Pin = GPIO_PIN[Led];
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
 
-   GPIO_Init(GPIO_PORT[Led], &GPIO_InitStructure);
+    GPIO_Init(GPIO_PORT[Led], &GPIO_InitStructure);
 }
 
 /**
@@ -124,7 +124,7 @@ void STM_EVAL_LEDInit(Led_TypeDef Led)
  */
 void STM_EVAL_LEDOn(Led_TypeDef Led)
 {
-   GPIO_PORT[Led]->BSRR = GPIO_PIN[Led];
+    GPIO_PORT[Led]->BSRR = GPIO_PIN[Led];
 }
 
 /**
@@ -139,7 +139,7 @@ void STM_EVAL_LEDOn(Led_TypeDef Led)
  */
 void STM_EVAL_LEDOff(Led_TypeDef Led)
 {
-   GPIO_PORT[Led]->BRR = GPIO_PIN[Led];
+    GPIO_PORT[Led]->BRR = GPIO_PIN[Led];
 }
 
 /**
@@ -154,7 +154,7 @@ void STM_EVAL_LEDOff(Led_TypeDef Led)
  */
 void STM_EVAL_LEDToggle(Led_TypeDef Led)
 {
-   GPIO_PORT[Led]->ODR ^= GPIO_PIN[Led];
+    GPIO_PORT[Led]->ODR ^= GPIO_PIN[Led];
 }
 
 /**
@@ -169,41 +169,39 @@ void STM_EVAL_LEDToggle(Led_TypeDef Led)
  */
 void STM_EVAL_COMInit(COM_TypeDef COM, USART_InitTypeDef* USART_InitStruct)
 {
-   GPIO_InitTypeDef GPIO_InitStructure;
+    GPIO_InitTypeDef GPIO_InitStructure;
 
-   /* Enable GPIO clock */
-   RCC_APB2PeriphClockCmd(COM_POR_CLK[COM] | RCC_APB2Periph_AFIO, ENABLE);
+    /* Enable GPIO clock */
+    RCC_APB2PeriphClockCmd(COM_POR_CLK[COM] | RCC_APB2Periph_AFIO, ENABLE);
 
-   /* Enable UART clock */
-   if (COM == COM1)
-   {
-      /* Enable the USART2 Pins Software Remapping */
-      GPIO_PinRemapConfig(GPIO_Remap_USART2, ENABLE);
-   }
-   else
-   {
-      /* Enable the USART3 Pins Software Remapping */
-      GPIO_PinRemapConfig(GPIO_FullRemap_USART3, ENABLE);
-   }
+    /* Enable UART clock */
+    if(COM == COM1) {
+        /* Enable the USART2 Pins Software Remapping */
+        GPIO_PinRemapConfig(GPIO_Remap_USART2, ENABLE);
+    }
+    else {
+        /* Enable the USART3 Pins Software Remapping */
+        GPIO_PinRemapConfig(GPIO_FullRemap_USART3, ENABLE);
+    }
 
-   RCC_APB1PeriphClockCmd(COM_USART_CLK[COM], ENABLE);
+    RCC_APB1PeriphClockCmd(COM_USART_CLK[COM], ENABLE);
 
-   /* Configure USART Tx as alternate function push-pull */
-   GPIO_InitStructure.GPIO_Pin = COM_TX_PIN[COM];
-   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
-   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-   GPIO_Init(COM_PORT[COM], &GPIO_InitStructure);
+    /* Configure USART Tx as alternate function push-pull */
+    GPIO_InitStructure.GPIO_Pin = COM_TX_PIN[COM];
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    GPIO_Init(COM_PORT[COM], &GPIO_InitStructure);
 
-   /* Configure USART Rx as input floating */
-   GPIO_InitStructure.GPIO_Pin = COM_RX_PIN[COM];
-   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
-   GPIO_Init(COM_PORT[COM], &GPIO_InitStructure);
+    /* Configure USART Rx as input floating */
+    GPIO_InitStructure.GPIO_Pin = COM_RX_PIN[COM];
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
+    GPIO_Init(COM_PORT[COM], &GPIO_InitStructure);
 
-   /* USART configuration */
-   USART_Init(COM_USART[COM], USART_InitStruct);
+    /* USART configuration */
+    USART_Init(COM_USART[COM], USART_InitStruct);
 
-   /* Enable USART */
-   USART_Cmd(COM_USART[COM], ENABLE);
+    /* Enable USART */
+    USART_Cmd(COM_USART[COM], ENABLE);
 }
 
 /**

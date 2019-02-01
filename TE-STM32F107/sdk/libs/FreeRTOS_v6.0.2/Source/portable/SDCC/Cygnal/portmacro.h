@@ -81,25 +81,25 @@ void vSerialISR(void) interrupt 4;
 #define portSTACK_TYPE unsigned portCHAR
 #define portBASE_TYPE char
 
-#if (configUSE_16_BIT_TICKS == 1)
+#if(configUSE_16_BIT_TICKS == 1)
 typedef unsigned portSHORT portTickType;
-#   define portMAX_DELAY (portTickType)0xffff
+#define portMAX_DELAY (portTickType)0xffff
 #else
 typedef unsigned portLONG portTickType;
-#   define portMAX_DELAY (portTickType)0xffffffff
+#define portMAX_DELAY (portTickType)0xffffffff
 #endif
 /*-----------------------------------------------------------*/
 
 /* Critical section management. */
 #define portENTER_CRITICAL() \
-   _asm push ACC push IE _endasm; \
-   EA = 0;
+    _asm push ACC push IE _endasm; \
+    EA = 0;
 
 #define portEXIT_CRITICAL() \
-   _asm pop ACC _endasm; \
-   ACC &= 0x80; \
-   IE |= ACC; \
-   _asm pop ACC _endasm;
+    _asm pop ACC _endasm; \
+    ACC &= 0x80; \
+    IE |= ACC; \
+    _asm pop ACC _endasm;
 
 #define portDISABLE_INTERRUPTS() EA = 0;
 #define portENABLE_INTERRUPTS() EA = 1;

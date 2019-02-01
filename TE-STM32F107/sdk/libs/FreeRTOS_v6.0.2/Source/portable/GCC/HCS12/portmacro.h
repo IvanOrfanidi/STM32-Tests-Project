@@ -77,12 +77,12 @@ extern "C" {
 #define portSTACK_TYPE unsigned portCHAR
 #define portBASE_TYPE char
 
-#if (configUSE_16_BIT_TICKS == 1)
+#if(configUSE_16_BIT_TICKS == 1)
 typedef unsigned portSHORT portTickType;
-#   define portMAX_DELAY (portTickType)0xffff
+#define portMAX_DELAY (portTickType)0xffff
 #else
 typedef unsigned portLONG portTickType;
-#   define portMAX_DELAY (portTickType)0xffffffff
+#define portMAX_DELAY (portTickType)0xffffffff
 #endif
 /*-----------------------------------------------------------*/
 
@@ -104,12 +104,12 @@ typedef unsigned portLONG portTickType;
  * directly.  Each task maintains its own nesting count.
  */
 #define portENTER_CRITICAL() \
-   { \
-      extern volatile unsigned portBASE_TYPE uxCriticalNesting; \
+    { \
+        extern volatile unsigned portBASE_TYPE uxCriticalNesting; \
 \
-      portDISABLE_INTERRUPTS(); \
-      uxCriticalNesting++; \
-   }
+        portDISABLE_INTERRUPTS(); \
+        uxCriticalNesting++; \
+    }
 
 /*
  * Interrupts are disabled so we can access the nesting count directly.  If the
@@ -117,15 +117,14 @@ typedef unsigned portLONG portTickType;
  * section and interrupts can be re-enabled.
  */
 #define portEXIT_CRITICAL() \
-   { \
-      extern volatile unsigned portBASE_TYPE uxCriticalNesting; \
+    { \
+        extern volatile unsigned portBASE_TYPE uxCriticalNesting; \
 \
-      uxCriticalNesting--; \
-      if (uxCriticalNesting == 0) \
-      { \
-         portENABLE_INTERRUPTS(); \
-      } \
-   }
+        uxCriticalNesting--; \
+        if(uxCriticalNesting == 0) { \
+            portENABLE_INTERRUPTS(); \
+        } \
+    }
 /*-----------------------------------------------------------*/
 
 /* Task utilities. */
@@ -146,9 +145,9 @@ typedef unsigned portLONG portTickType;
  * count and PPAGE register from the stack.  The remains of the
  * context are restored by the RTI instruction.
  */
-#   define portRESTORE_CONTEXT() \
-      { \
-         __asm("								\n\
+#define portRESTORE_CONTEXT() \
+    { \
+        __asm("								\n\
 		.globl pxCurrentTCB			; void *			\n\
 		.globl uxCriticalNesting		; char				\n\
 											\n\
@@ -158,16 +157,16 @@ typedef unsigned portLONG portTickType;
 		movb 1,sp+,uxCriticalNesting						\n\
 		movb 1,sp+,0x30				; PPAGE				\n\
 		"); \
-      }
+    }
 
 /*
  * By the time this macro is called the processor has already stacked the
  * registers.  Simply stack the nesting count and PPAGE value, then save
  * the task stack pointer.
  */
-#   define portSAVE_CONTEXT() \
-      { \
-         __asm("								\n\
+#define portSAVE_CONTEXT() \
+    { \
+        __asm("								\n\
 		.globl pxCurrentTCB			; void *			\n\
 		.globl uxCriticalNesting		; char				\n\
 											\n\
@@ -177,7 +176,7 @@ typedef unsigned portLONG portTickType;
 		ldx  pxCurrentTCB							\n\
 		sts  0,x				; Stack				\n\
 		"); \
-      }
+    }
 #else
 
 /*
@@ -185,9 +184,9 @@ typedef unsigned portLONG portTickType;
  * and restoring the PPAGE register.
  */
 
-#   define portRESTORE_CONTEXT() \
-      { \
-         __asm("								\n\
+#define portRESTORE_CONTEXT() \
+    { \
+        __asm("								\n\
 		.globl pxCurrentTCB			; void *			\n\
 		.globl uxCriticalNesting		; char				\n\
 											\n\
@@ -196,11 +195,11 @@ typedef unsigned portLONG portTickType;
 											\n\
 		movb 1,sp+,uxCriticalNesting						\n\
 		"); \
-      }
+    }
 
-#   define portSAVE_CONTEXT() \
-      { \
-         __asm("								\n\
+#define portSAVE_CONTEXT() \
+    { \
+        __asm("								\n\
 		.globl pxCurrentTCB			; void *			\n\
 		.globl uxCriticalNesting		; char				\n\
 											\n\
@@ -209,7 +208,7 @@ typedef unsigned portLONG portTickType;
 		ldx  pxCurrentTCB							\n\
 		sts  0,x				; Stack				\n\
 		"); \
-      }
+    }
 #endif
 
 /*
@@ -217,8 +216,8 @@ typedef unsigned portLONG portTickType;
  * useful when GCC does not generate appropriate ISR head/tail code.
  */
 #define portISR_HEAD() \
-   { \
-      __asm("									\n\
+    { \
+        __asm("									\n\
 		movw _.frame, 2,-sp							\n\
 		movw _.tmp, 2,-sp							\n\
 		movw _.z, 2,-sp								\n\
@@ -226,11 +225,11 @@ typedef unsigned portLONG portTickType;
 		;movw _.d2, 2,-sp							\n\
 		;movw _.d1, 2,-sp							\n\
 		"); \
-   }
+    }
 
 #define portISR_TAIL() \
-   { \
-      __asm("									\n\
+    { \
+        __asm("									\n\
 		movw 2,sp+, _.xy							\n\
 		movw 2,sp+, _.z								\n\
 		movw 2,sp+, _.tmp							\n\
@@ -239,7 +238,7 @@ typedef unsigned portLONG portTickType;
 		;movw 2,sp+, _.d2							\n\
 		rti									\n\
 		"); \
-   }
+    }
 
 /*
  * Utility macro to call macros above in correct order in order to perform a
@@ -249,9 +248,9 @@ typedef unsigned portLONG portTickType;
  */
 
 #define portTASK_SWITCH_FROM_ISR() \
-   portSAVE_CONTEXT(); \
-   vTaskSwitchContext(); \
-   portRESTORE_CONTEXT();
+    portSAVE_CONTEXT(); \
+    vTaskSwitchContext(); \
+    portRESTORE_CONTEXT();
 
 /* Task function macros as described on the FreeRTOS.org WEB site. */
 #define portTASK_FUNCTION_PROTO(vFunction, pvParameters) void vFunction(void* pvParameters)

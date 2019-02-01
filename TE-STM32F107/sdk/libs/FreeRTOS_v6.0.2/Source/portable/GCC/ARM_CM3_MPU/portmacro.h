@@ -77,12 +77,12 @@ extern "C" {
 #define portSTACK_TYPE unsigned portLONG
 #define portBASE_TYPE long
 
-#if (configUSE_16_BIT_TICKS == 1)
+#if(configUSE_16_BIT_TICKS == 1)
 typedef unsigned portSHORT portTickType;
-#   define portMAX_DELAY (portTickType)0xffff
+#define portMAX_DELAY (portTickType)0xffff
 #else
 typedef unsigned portLONG portTickType;
-#   define portMAX_DELAY (portTickType)0xffffffff
+#define portMAX_DELAY (portTickType)0xffffffff
 #endif
 /*-----------------------------------------------------------*/
 
@@ -107,18 +107,17 @@ typedef unsigned portLONG portTickType;
 #define portNUM_CONFIGURABLE_REGIONS ((portLAST_CONFIGURABLE_REGION - portFIRST_CONFIGURABLE_REGION) + 1)
 #define portTOTAL_NUM_REGIONS (portNUM_CONFIGURABLE_REGIONS + 1) /* Plus one to make space for the stack region. */
 
-#define portSWITCH_TO_USER_MODE() __asm volatile(" mrs r0, control \n orr r0, #1 \n msr control, r0 " ::: "r0")
+#define portSWITCH_TO_USER_MODE() __asm volatile(" mrs r0, control \n orr r0, #1 \n msr control, r0 " :: \
+                                                     : "r0")
 
-typedef struct MPU_REGION_REGISTERS
-{
-   unsigned portLONG ulRegionBaseAddress;
-   unsigned portLONG ulRegionAttribute;
+typedef struct MPU_REGION_REGISTERS {
+    unsigned portLONG ulRegionBaseAddress;
+    unsigned portLONG ulRegionAttribute;
 } xMPU_REGION_REGISTERS;
 
 /* Plus 1 to create space for the stack region. */
-typedef struct MPU_SETTINGS
-{
-   xMPU_REGION_REGISTERS xRegion[portTOTAL_NUM_REGIONS];
+typedef struct MPU_SETTINGS {
+    xMPU_REGION_REGISTERS xRegion[portTOTAL_NUM_REGIONS];
 } xMPU_SETTINGS;
 
 /* Architecture specifics. */
@@ -140,8 +139,8 @@ typedef struct MPU_SETTINGS
 #define portNVIC_INT_CTRL ((volatile unsigned portLONG*)0xe000ed04)
 #define portNVIC_PENDSVSET 0x10000000
 #define portEND_SWITCHING_ISR(xSwitchRequired) \
-   if (xSwitchRequired) \
-   *(portNVIC_INT_CTRL) = portNVIC_PENDSVSET
+    if(xSwitchRequired) \
+    *(portNVIC_INT_CTRL) = portNVIC_PENDSVSET
 /*-----------------------------------------------------------*/
 
 /* Critical section management. */
@@ -151,25 +150,25 @@ typedef struct MPU_SETTINGS
  * registers.  r0 is clobbered.
  */
 #define portSET_INTERRUPT_MASK() \
-   __asm volatile("	mov r0, %0								\n" \
-                  "	msr basepri, r0							\n" ::"i"(configMAX_SYSCALL_INTERRUPT_PRIORITY) \
-                  : "r0")
+    __asm volatile("	mov r0, %0								\n" \
+                   "	msr basepri, r0							\n" ::"i"(configMAX_SYSCALL_INTERRUPT_PRIORITY) \
+                   : "r0")
 
 /*
  * Set basepri back to 0 without effective other registers.
  * r0 is clobbered.
  */
 #define portCLEAR_INTERRUPT_MASK() \
-   __asm volatile("	mov r0, #0					\n" \
-                  "	msr basepri, r0				\n" :: \
-                     : "r0")
+    __asm volatile("	mov r0, #0					\n" \
+                   "	msr basepri, r0				\n" :: \
+                       : "r0")
 
 #define portSET_INTERRUPT_MASK_FROM_ISR() \
-   0; \
-   portSET_INTERRUPT_MASK()
+    0; \
+    portSET_INTERRUPT_MASK()
 #define portCLEAR_INTERRUPT_MASK_FROM_ISR(x) \
-   portCLEAR_INTERRUPT_MASK(); \
-   (void)x
+    portCLEAR_INTERRUPT_MASK(); \
+    (void)x
 
 extern void vPortEnterCritical(void);
 extern void vPortExitCritical(void);

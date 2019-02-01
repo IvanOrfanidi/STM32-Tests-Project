@@ -89,7 +89,7 @@
 #define NEW_U 0x01
 
 /* reserved, special-case values of above */
-#define SPECIAL_I (NEW_S | NEW_W | NEW_U) /* echoed interactive traffic */
+#define SPECIAL_I (NEW_S | NEW_W | NEW_U)         /* echoed interactive traffic */
 #define SPECIAL_D (NEW_S | NEW_A | NEW_W | NEW_U) /* unidirectional data */
 #define SPECIALS_MASK (NEW_S | NEW_A | NEW_W | NEW_U)
 
@@ -101,49 +101,45 @@
  * we saw from the conversation together with a small identifier
  * the transmit & receive ends of the line use to locate saved header.
  */
-struct cstate
-{
-   struct cstate* cs_next; /* next most recently used state (xmit only) */
-   u_short cs_hlen; /* size of hdr (receive only) */
-   u_char cs_id; /* connection # associated with this state */
-   u_char cs_filler;
-   union
-   {
-      char csu_hdr[MAX_HDR];
-      struct ip_hdr csu_ip; /* ip/tcp hdr from most recent packet */
-   } vjcs_u;
+struct cstate {
+    struct cstate* cs_next; /* next most recently used state (xmit only) */
+    u_short cs_hlen;        /* size of hdr (receive only) */
+    u_char cs_id;           /* connection # associated with this state */
+    u_char cs_filler;
+    union {
+        char csu_hdr[MAX_HDR];
+        struct ip_hdr csu_ip; /* ip/tcp hdr from most recent packet */
+    } vjcs_u;
 };
 #define cs_ip vjcs_u.csu_ip
 #define cs_hdr vjcs_u.csu_hdr
 
-struct vjstat
-{
-   unsigned long vjs_packets; /* outbound packets */
-   unsigned long vjs_compressed; /* outbound compressed packets */
-   unsigned long vjs_searches; /* searches for connection state */
-   unsigned long vjs_misses; /* times couldn't find conn. state */
-   unsigned long vjs_uncompressedin; /* inbound uncompressed packets */
-   unsigned long vjs_compressedin; /* inbound compressed packets */
-   unsigned long vjs_errorin; /* inbound unknown type packets */
-   unsigned long vjs_tossed; /* inbound packets tossed because of error */
+struct vjstat {
+    unsigned long vjs_packets;        /* outbound packets */
+    unsigned long vjs_compressed;     /* outbound compressed packets */
+    unsigned long vjs_searches;       /* searches for connection state */
+    unsigned long vjs_misses;         /* times couldn't find conn. state */
+    unsigned long vjs_uncompressedin; /* inbound uncompressed packets */
+    unsigned long vjs_compressedin;   /* inbound compressed packets */
+    unsigned long vjs_errorin;        /* inbound unknown type packets */
+    unsigned long vjs_tossed;         /* inbound packets tossed because of error */
 };
 
 /*
  * all the state data for one serial line (we need one of these per line).
  */
-struct vjcompress
-{
-   struct cstate* last_cs; /* most recently used tstate */
-   u_char last_recv; /* last rcvd conn. id */
-   u_char last_xmit; /* last sent conn. id */
-   u_short flags;
-   u_char maxSlotIndex;
-   u_char compressSlot; /* Flag indicating OK to compress slot ID. */
+struct vjcompress {
+    struct cstate* last_cs; /* most recently used tstate */
+    u_char last_recv;       /* last rcvd conn. id */
+    u_char last_xmit;       /* last sent conn. id */
+    u_short flags;
+    u_char maxSlotIndex;
+    u_char compressSlot; /* Flag indicating OK to compress slot ID. */
 #if LINK_STATS
-   struct vjstat stats;
+    struct vjstat stats;
 #endif
-   struct cstate tstate[MAX_SLOTS]; /* xmit connection states */
-   struct cstate rstate[MAX_SLOTS]; /* receive connection states */
+    struct cstate tstate[MAX_SLOTS]; /* xmit connection states */
+    struct cstate rstate[MAX_SLOTS]; /* receive connection states */
 };
 
 /* flag values */

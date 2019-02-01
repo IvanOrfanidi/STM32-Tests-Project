@@ -53,9 +53,9 @@
 
 #if PPP_SUPPORT
 
-#   include "ppp_impl.h"
-#   include "randm.h"
-#   include "magic.h"
+#include "ppp_impl.h"
+#include "randm.h"
+#include "magic.h"
 
 /*
  * magicInit - Initialize the magic number generator.
@@ -65,7 +65,7 @@
  */
 void magicInit()
 {
-   return;
+    return;
 }
 
 /*
@@ -73,7 +73,7 @@ void magicInit()
  */
 u32_t magic()
 {
-   return avRandom();
+    return avRandom();
 }
 
 #endif /* PPP_SUPPORT */

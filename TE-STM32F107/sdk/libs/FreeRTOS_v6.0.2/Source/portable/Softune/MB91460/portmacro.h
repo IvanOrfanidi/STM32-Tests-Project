@@ -79,12 +79,12 @@
 #define portSTACK_TYPE unsigned portLONG
 #define portBASE_TYPE long
 
-#if (configUSE_16_BIT_TICKS == 1)
+#if(configUSE_16_BIT_TICKS == 1)
 typedef unsigned portSHORT portTickType;
-#   define portMAX_DELAY (portTickType)0xffff
+#define portMAX_DELAY (portTickType)0xffff
 #else
 typedef unsigned portLONG portTickType;
-#   define portMAX_DELAY (portTickType)0xffffffff
+#define portMAX_DELAY (portTickType)0xffffffff
 #endif
 /*-----------------------------------------------------------*/
 
@@ -96,8 +96,8 @@ typedef unsigned portLONG portTickType;
 #define portENABLE_INTERRUPTS() __asm(" STILM #1Fh ")
 
 #define portENTER_CRITICAL() \
-   __asm(" ST PS,@-R15 "); \
-   __asm(" ANDCCR #0xef ");
+    __asm(" ST PS,@-R15 "); \
+    __asm(" ANDCCR #0xef ");
 
 #define portEXIT_CRITICAL() __asm(" LD @R15+,PS ");
 

@@ -94,13 +94,13 @@ typedef void (*TaskFunction_t)(void*);
 
 /* Macros used for basic data corruption checks. */
 #ifndef configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES
-#   define configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES 0
+#define configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES 0
 #endif
 
-#if (configUSE_16_BIT_TICKS == 1)
-#   define pdINTEGRITY_CHECK_VALUE 0x5a5a
+#if(configUSE_16_BIT_TICKS == 1)
+#define pdINTEGRITY_CHECK_VALUE 0x5a5a
 #else
-#   define pdINTEGRITY_CHECK_VALUE 0x5a5a5a5aUL
+#define pdINTEGRITY_CHECK_VALUE 0x5a5a5a5aUL
 #endif
 
 #endif /* PROJDEFS_H */

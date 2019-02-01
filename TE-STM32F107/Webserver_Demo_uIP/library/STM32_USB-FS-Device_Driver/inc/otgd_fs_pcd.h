@@ -26,49 +26,46 @@
  */
 
 #ifndef __USB_OTG_PCD_H__
-#   define __USB_OTG_PCD_H__
+#define __USB_OTG_PCD_H__
 
-#   include "otgd_fs_regs.h"
+#include "otgd_fs_regs.h"
 
-#   define MAX_EP0_SIZE 0x40
-#   define MAX_PACKET_SIZE 0x400
+#define MAX_EP0_SIZE 0x40
+#define MAX_PACKET_SIZE 0x400
 
-#   define USB_ENDPOINT_XFER_CONTROL 0
-#   define USB_ENDPOINT_XFER_ISOC 1
-#   define USB_ENDPOINT_XFER_BULK 2
-#   define USB_ENDPOINT_XFER_INT 3
-#   define USB_ENDPOINT_XFERTYPE_MASK 3
+#define USB_ENDPOINT_XFER_CONTROL 0
+#define USB_ENDPOINT_XFER_ISOC 1
+#define USB_ENDPOINT_XFER_BULK 2
+#define USB_ENDPOINT_XFER_INT 3
+#define USB_ENDPOINT_XFERTYPE_MASK 3
 
 /********************************************************************************
                               ENUMERATION TYPE
 ********************************************************************************/
-enum usb_device_speed
-{
-   USB_SPEED_UNKNOWN = 0,
-   USB_SPEED_LOW,
-   USB_SPEED_FULL,
-   USB_SPEED_HIGH
+enum usb_device_speed {
+    USB_SPEED_UNKNOWN = 0,
+    USB_SPEED_LOW,
+    USB_SPEED_FULL,
+    USB_SPEED_HIGH
 };
 /********************************************************************************
                               Data structure type
 ********************************************************************************/
-typedef struct usb_ep_descriptor
-{
-   uint8_t bLength;
-   uint8_t bDescriptorType;
-   uint8_t bEndpointAddress;
-   uint8_t bmAttributes;
-   uint16_t wMaxPacketSize;
-   uint8_t bInterval;
+typedef struct usb_ep_descriptor {
+    uint8_t bLength;
+    uint8_t bDescriptorType;
+    uint8_t bEndpointAddress;
+    uint8_t bmAttributes;
+    uint16_t wMaxPacketSize;
+    uint8_t bInterval;
 } EP_DESCRIPTOR, *PEP_DESCRIPTOR;
 /********************************************************************************
                      USBF LAYER UNION AND STRUCTURES
 ********************************************************************************/
-typedef struct USB_OTG_USBF
-{
-   USB_OTG_EP ep0;
-   USB_OTG_EP in_ep[NUM_TX_FIFOS - 1];
-   USB_OTG_EP out_ep[NUM_TX_FIFOS - 1];
+typedef struct USB_OTG_USBF {
+    USB_OTG_EP ep0;
+    USB_OTG_EP in_ep[NUM_TX_FIFOS - 1];
+    USB_OTG_EP out_ep[NUM_TX_FIFOS - 1];
 } USB_OTG_PCD_DEV, *USB_OTG_PCD_PDEV;
 /********************************************************************************
                      EXPORTED FUNCTION FROM THE USB_OTG LAYER

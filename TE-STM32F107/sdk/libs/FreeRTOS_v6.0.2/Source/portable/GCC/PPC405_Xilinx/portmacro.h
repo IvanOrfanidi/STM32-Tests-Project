@@ -79,12 +79,12 @@ extern "C" {
 #define portSTACK_TYPE unsigned portLONG
 #define portBASE_TYPE portLONG
 
-#if (configUSE_16_BIT_TICKS == 1)
+#if(configUSE_16_BIT_TICKS == 1)
 typedef unsigned portSHORT portTickType;
-#   define portMAX_DELAY (portTickType)0xffff
+#define portMAX_DELAY (portTickType)0xffff
 #else
 typedef unsigned portLONG portTickType;
-#   define portMAX_DELAY (portTickType)0xffffffff
+#define portMAX_DELAY (portTickType)0xffffffff
 #endif
 /*-----------------------------------------------------------*/
 
@@ -131,8 +131,8 @@ void vPortYield(void);
 /* Port specific interrupt handling functions. */
 void vPortSetupInterruptController(void);
 portBASE_TYPE xPortInstallInterruptHandler(unsigned portCHAR ucInterruptID,
-                                           XInterruptHandler pxHandler,
-                                           void* pvCallBackRef);
+    XInterruptHandler pxHandler,
+    void* pvCallBackRef);
 
 #ifdef __cplusplus
 }

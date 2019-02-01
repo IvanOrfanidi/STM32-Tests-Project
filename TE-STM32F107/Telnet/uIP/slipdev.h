@@ -44,9 +44,9 @@
  */
 
 #ifndef __SLIPDEV_H__
-#   define __SLIPDEV_H__
+#define __SLIPDEV_H__
 
-#   include "uip.h"
+#include "uip.h"
 
 /**
  * Put a character on the serial device.

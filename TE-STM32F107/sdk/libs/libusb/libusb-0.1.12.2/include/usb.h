@@ -10,7 +10,7 @@
  */
 
 #ifdef interface
-#   undef interface
+#undef interface
 #endif
 
 /*
@@ -68,45 +68,41 @@
 #include <pshpack1.h>
 
 /* All standard descriptors have these 2 fields in common */
-struct usb_descriptor_header
-{
-   unsigned char bLength;
-   unsigned char bDescriptorType;
+struct usb_descriptor_header {
+    unsigned char bLength;
+    unsigned char bDescriptorType;
 };
 
 /* String descriptor */
-struct usb_string_descriptor
-{
-   unsigned char bLength;
-   unsigned char bDescriptorType;
-   unsigned short wData[1];
+struct usb_string_descriptor {
+    unsigned char bLength;
+    unsigned char bDescriptorType;
+    unsigned short wData[1];
 };
 
 /* HID descriptor */
-struct usb_hid_descriptor
-{
-   unsigned char bLength;
-   unsigned char bDescriptorType;
-   unsigned short bcdHID;
-   unsigned char bCountryCode;
-   unsigned char bNumDescriptors;
+struct usb_hid_descriptor {
+    unsigned char bLength;
+    unsigned char bDescriptorType;
+    unsigned short bcdHID;
+    unsigned char bCountryCode;
+    unsigned char bNumDescriptors;
 };
 
 /* Endpoint descriptor */
 #define USB_MAXENDPOINTS 32
-struct usb_endpoint_descriptor
-{
-   unsigned char bLength;
-   unsigned char bDescriptorType;
-   unsigned char bEndpointAddress;
-   unsigned char bmAttributes;
-   unsigned short wMaxPacketSize;
-   unsigned char bInterval;
-   unsigned char bRefresh;
-   unsigned char bSynchAddress;
+struct usb_endpoint_descriptor {
+    unsigned char bLength;
+    unsigned char bDescriptorType;
+    unsigned char bEndpointAddress;
+    unsigned char bmAttributes;
+    unsigned short wMaxPacketSize;
+    unsigned char bInterval;
+    unsigned char bRefresh;
+    unsigned char bSynchAddress;
 
-   unsigned char* extra; /* Extra descriptors */
-   int extralen;
+    unsigned char* extra; /* Extra descriptors */
+    int extralen;
 };
 
 #define USB_ENDPOINT_ADDRESS_MASK 0x0f /* in bEndpointAddress */
@@ -120,78 +116,73 @@ struct usb_endpoint_descriptor
 
 /* Interface descriptor */
 #define USB_MAXINTERFACES 32
-struct usb_interface_descriptor
-{
-   unsigned char bLength;
-   unsigned char bDescriptorType;
-   unsigned char bInterfaceNumber;
-   unsigned char bAlternateSetting;
-   unsigned char bNumEndpoints;
-   unsigned char bInterfaceClass;
-   unsigned char bInterfaceSubClass;
-   unsigned char bInterfaceProtocol;
-   unsigned char iInterface;
+struct usb_interface_descriptor {
+    unsigned char bLength;
+    unsigned char bDescriptorType;
+    unsigned char bInterfaceNumber;
+    unsigned char bAlternateSetting;
+    unsigned char bNumEndpoints;
+    unsigned char bInterfaceClass;
+    unsigned char bInterfaceSubClass;
+    unsigned char bInterfaceProtocol;
+    unsigned char iInterface;
 
-   struct usb_endpoint_descriptor* endpoint;
+    struct usb_endpoint_descriptor* endpoint;
 
-   unsigned char* extra; /* Extra descriptors */
-   int extralen;
+    unsigned char* extra; /* Extra descriptors */
+    int extralen;
 };
 
 #define USB_MAXALTSETTING 128 /* Hard limit */
 
-struct usb_interface
-{
-   struct usb_interface_descriptor* altsetting;
+struct usb_interface {
+    struct usb_interface_descriptor* altsetting;
 
-   int num_altsetting;
+    int num_altsetting;
 };
 
 /* Configuration descriptor information.. */
 #define USB_MAXCONFIG 8
-struct usb_config_descriptor
-{
-   unsigned char bLength;
-   unsigned char bDescriptorType;
-   unsigned short wTotalLength;
-   unsigned char bNumInterfaces;
-   unsigned char bConfigurationValue;
-   unsigned char iConfiguration;
-   unsigned char bmAttributes;
-   unsigned char MaxPower;
+struct usb_config_descriptor {
+    unsigned char bLength;
+    unsigned char bDescriptorType;
+    unsigned short wTotalLength;
+    unsigned char bNumInterfaces;
+    unsigned char bConfigurationValue;
+    unsigned char iConfiguration;
+    unsigned char bmAttributes;
+    unsigned char MaxPower;
 
-   struct usb_interface* interface;
+    struct usb_interface* interface;
 
-   unsigned char* extra; /* Extra descriptors */
-   int extralen;
+    unsigned char* extra; /* Extra descriptors */
+    int extralen;
 };
 
 /* Device descriptor */
-struct usb_device_descriptor
-{
-   unsigned char bLength;
-   unsigned char bDescriptorType;
-   unsigned short bcdUSB;
-   unsigned char bDeviceClass;
-   unsigned char bDeviceSubClass;
-   unsigned char bDeviceProtocol;
-   unsigned char bMaxPacketSize0;
-   unsigned short idVendor;
-   unsigned short idProduct;
-   unsigned short bcdDevice;
-   unsigned char iManufacturer;
-   unsigned char iProduct;
-   unsigned char iSerialNumber;
-   unsigned char bNumConfigurations;
+struct usb_device_descriptor {
+    unsigned char bLength;
+    unsigned char bDescriptorType;
+    unsigned short bcdUSB;
+    unsigned char bDeviceClass;
+    unsigned char bDeviceSubClass;
+    unsigned char bDeviceProtocol;
+    unsigned char bMaxPacketSize0;
+    unsigned short idVendor;
+    unsigned short idProduct;
+    unsigned short bcdDevice;
+    unsigned char iManufacturer;
+    unsigned char iProduct;
+    unsigned char iSerialNumber;
+    unsigned char bNumConfigurations;
 };
 
-struct usb_ctrl_setup
-{
-   unsigned char bRequestType;
-   unsigned char bRequest;
-   unsigned short wValue;
-   unsigned short wIndex;
-   unsigned short wLength;
+struct usb_ctrl_setup {
+    unsigned char bRequestType;
+    unsigned char bRequest;
+    unsigned short wValue;
+    unsigned short wIndex;
+    unsigned short wLength;
 };
 
 /*
@@ -241,54 +232,51 @@ struct usb_ctrl_setup
 /* struct usb_device; */
 /* struct usb_bus; */
 
-struct usb_device
-{
-   struct usb_device *next, *prev;
+struct usb_device {
+    struct usb_device *next, *prev;
 
-   char filename[LIBUSB_PATH_MAX];
+    char filename[LIBUSB_PATH_MAX];
 
-   struct usb_bus* bus;
+    struct usb_bus* bus;
 
-   struct usb_device_descriptor descriptor;
-   struct usb_config_descriptor* config;
+    struct usb_device_descriptor descriptor;
+    struct usb_config_descriptor* config;
 
-   void* dev; /* Darwin support */
+    void* dev; /* Darwin support */
 
-   unsigned char devnum;
+    unsigned char devnum;
 
-   unsigned char num_children;
-   struct usb_device** children;
+    unsigned char num_children;
+    struct usb_device** children;
 };
 
-struct usb_bus
-{
-   struct usb_bus *next, *prev;
+struct usb_bus {
+    struct usb_bus *next, *prev;
 
-   char dirname[LIBUSB_PATH_MAX];
+    char dirname[LIBUSB_PATH_MAX];
 
-   struct usb_device* devices;
-   unsigned long location;
+    struct usb_device* devices;
+    unsigned long location;
 
-   struct usb_device* root_dev;
+    struct usb_device* root_dev;
 };
 
 /* Version information, Windows specific */
-struct usb_version
-{
-   struct
-   {
-      int major;
-      int minor;
-      int micro;
-      int nano;
-   } dll;
-   struct
-   {
-      int major;
-      int minor;
-      int micro;
-      int nano;
-   } driver;
+struct usb_version {
+    struct
+    {
+        int major;
+        int minor;
+        int micro;
+        int nano;
+    } dll;
+    struct
+    {
+        int major;
+        int minor;
+        int micro;
+        int nano;
+    } driver;
 };
 
 struct usb_dev_handle;
@@ -296,7 +284,7 @@ typedef struct usb_dev_handle usb_dev_handle;
 
 /* Variables */
 #ifndef __USB_C__
-#   define usb_busses usb_get_busses()
+#define usb_busses usb_get_busses()
 #endif
 
 #include <poppack.h>
@@ -315,11 +303,11 @@ int usb_get_string_simple(usb_dev_handle* dev, int index, char* buf, size_t bufl
 
 /* descriptors.c */
 int usb_get_descriptor_by_endpoint(usb_dev_handle* udev,
-                                   int ep,
-                                   unsigned char type,
-                                   unsigned char index,
-                                   void* buf,
-                                   int size);
+    int ep,
+    unsigned char type,
+    unsigned char index,
+    void* buf,
+    int size);
 int usb_get_descriptor(usb_dev_handle* udev, unsigned char type, unsigned char index, void* buf, int size);
 
 /* <arch>.c */
@@ -328,13 +316,13 @@ int usb_bulk_read(usb_dev_handle* dev, int ep, char* bytes, int size, int timeou
 int usb_interrupt_write(usb_dev_handle* dev, int ep, char* bytes, int size, int timeout);
 int usb_interrupt_read(usb_dev_handle* dev, int ep, char* bytes, int size, int timeout);
 int usb_control_msg(usb_dev_handle* dev,
-                    int requesttype,
-                    int request,
-                    int value,
-                    int index,
-                    char* bytes,
-                    int size,
-                    int timeout);
+    int requesttype,
+    int request,
+    int value,
+    int index,
+    char* bytes,
+    int size,
+    int timeout);
 int usb_set_configuration(usb_dev_handle* dev, int configuration);
 int usb_claim_interface(usb_dev_handle* dev, int interface);
 int usb_release_interface(usb_dev_handle* dev, int interface);

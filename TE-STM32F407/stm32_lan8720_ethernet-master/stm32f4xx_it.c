@@ -85,10 +85,9 @@ void NMI_Handler(void)
  */
 void HardFault_Handler(void)
 {
-   /* Go to infinite loop when Hard Fault exception occurs */
-   while (1)
-   {
-   }
+    /* Go to infinite loop when Hard Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -98,10 +97,9 @@ void HardFault_Handler(void)
  */
 void MemManage_Handler(void)
 {
-   /* Go to infinite loop when Memory Manage exception occurs */
-   while (1)
-   {
-   }
+    /* Go to infinite loop when Memory Manage exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -111,10 +109,9 @@ void MemManage_Handler(void)
  */
 void BusFault_Handler(void)
 {
-   /* Go to infinite loop when Bus Fault exception occurs */
-   while (1)
-   {
-   }
+    /* Go to infinite loop when Bus Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -124,10 +121,9 @@ void BusFault_Handler(void)
  */
 void UsageFault_Handler(void)
 {
-   /* Go to infinite loop when Usage Fault exception occurs */
-   while (1)
-   {
-   }
+    /* Go to infinite loop when Usage Fault exception occurs */
+    while(1) {
+    }
 }
 
 /**
@@ -146,25 +142,23 @@ void DebugMon_Handler(void)
  */
 void ETH_IRQHandler(void)
 {
-   portBASE_TYPE xHigherPriorityTaskWoken = pdFALSE;
+    portBASE_TYPE xHigherPriorityTaskWoken = pdFALSE;
 
-   /* Frame received */
-   if (ETH_GetDMAFlagStatus(ETH_DMA_FLAG_R) == SET)
-   {
-      /* Give the semaphore to wakeup LwIP task */
-      xSemaphoreGiveFromISR(s_xSemaphore, &xHigherPriorityTaskWoken);
-   }
+    /* Frame received */
+    if(ETH_GetDMAFlagStatus(ETH_DMA_FLAG_R) == SET) {
+        /* Give the semaphore to wakeup LwIP task */
+        xSemaphoreGiveFromISR(s_xSemaphore, &xHigherPriorityTaskWoken);
+    }
 
-   /* Clear the interrupt flags. */
-   /* Clear the Eth DMA Rx IT pending bits */
-   ETH_DMAClearITPendingBit(ETH_DMA_IT_R);
-   ETH_DMAClearITPendingBit(ETH_DMA_IT_NIS);
+    /* Clear the interrupt flags. */
+    /* Clear the Eth DMA Rx IT pending bits */
+    ETH_DMAClearITPendingBit(ETH_DMA_IT_R);
+    ETH_DMAClearITPendingBit(ETH_DMA_IT_NIS);
 
-   /* Switch tasks if necessary. */
-   if (xHigherPriorityTaskWoken != pdFALSE)
-   {
-      portEND_SWITCHING_ISR(xHigherPriorityTaskWoken);
-   }
+    /* Switch tasks if necessary. */
+    if(xHigherPriorityTaskWoken != pdFALSE) {
+        portEND_SWITCHING_ISR(xHigherPriorityTaskWoken);
+    }
 }
 
 /******************************************************************************/

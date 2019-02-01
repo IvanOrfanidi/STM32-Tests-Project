@@ -77,12 +77,12 @@ extern "C" {
 #define portSTACK_TYPE unsigned long
 #define portBASE_TYPE long
 
-#if (configUSE_16_BIT_TICKS == 1)
+#if(configUSE_16_BIT_TICKS == 1)
 typedef unsigned portSHORT portTickType;
-#   define portMAX_DELAY (portTickType)0xffff
+#define portMAX_DELAY (portTickType)0xffff
 #else
 typedef unsigned portLONG portTickType;
-#   define portMAX_DELAY (portTickType)0xffffffff
+#define portMAX_DELAY (portTickType)0xffffffff
 #endif
 /*-----------------------------------------------------------*/
 
@@ -113,12 +113,12 @@ extern void vPortClearInterruptMaskFromISR(unsigned portBASE_TYPE);
 
 /* Context switches are requested using the force register. */
 #define portYIELD() \
-   INTC_SFRC = 0x3E; \
-   portNOP(); \
-   portNOP(); \
-   portNOP(); \
-   portNOP(); \
-   portNOP()
+    INTC_SFRC = 0x3E; \
+    portNOP(); \
+    portNOP(); \
+    portNOP(); \
+    portNOP(); \
+    portNOP()
 
 /*-----------------------------------------------------------*/
 
@@ -128,10 +128,9 @@ extern void vPortClearInterruptMaskFromISR(unsigned portBASE_TYPE);
 /*-----------------------------------------------------------*/
 
 #define portEND_SWITCHING_ISR(xSwitchRequired) \
-   if (xSwitchRequired != pdFALSE) \
-   { \
-      portYIELD(); \
-   }
+    if(xSwitchRequired != pdFALSE) { \
+        portYIELD(); \
+    }
 
 #ifdef __cplusplus
 }

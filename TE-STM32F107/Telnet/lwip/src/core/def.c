@@ -52,7 +52,7 @@
  * Note ntohs() and ntohl() are merely references to the htonx counterparts.
  */
 
-#if (LWIP_PLATFORM_BYTESWAP == 0) && (BYTE_ORDER == LITTLE_ENDIAN)
+#if(LWIP_PLATFORM_BYTESWAP == 0) && (BYTE_ORDER == LITTLE_ENDIAN)
 
 /**
  * Convert an u16_t from host- to network byte order.
@@ -62,7 +62,7 @@
  */
 u16_t lwip_htons(u16_t n)
 {
-   return ((n & 0xff) << 8) | ((n & 0xff00) >> 8);
+    return ((n & 0xff) << 8) | ((n & 0xff00) >> 8);
 }
 
 /**
@@ -73,7 +73,7 @@ u16_t lwip_htons(u16_t n)
  */
 u16_t lwip_ntohs(u16_t n)
 {
-   return lwip_htons(n);
+    return lwip_htons(n);
 }
 
 /**
@@ -84,7 +84,7 @@ u16_t lwip_ntohs(u16_t n)
  */
 u32_t lwip_htonl(u32_t n)
 {
-   return ((n & 0xff) << 24) | ((n & 0xff00) << 8) | ((n & 0xff0000UL) >> 8) | ((n & 0xff000000UL) >> 24);
+    return ((n & 0xff) << 24) | ((n & 0xff00) << 8) | ((n & 0xff0000UL) >> 8) | ((n & 0xff000000UL) >> 24);
 }
 
 /**
@@ -95,7 +95,7 @@ u32_t lwip_htonl(u32_t n)
  */
 u32_t lwip_ntohl(u32_t n)
 {
-   return lwip_htonl(n);
+    return lwip_htonl(n);
 }
 
 #endif /* (LWIP_PLATFORM_BYTESWAP == 0) && (BYTE_ORDER == LITTLE_ENDIAN) */

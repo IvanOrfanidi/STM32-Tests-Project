@@ -41,7 +41,7 @@
  * (using sio_read()).
  */
 #ifndef SLIP_USE_RX_THREAD
-#   define SLIP_USE_RX_THREAD !NO_SYS
+#define SLIP_USE_RX_THREAD !NO_SYS
 #endif
 
 /** Set this to 1 to enable functions to pass in RX bytes from ISR context.
@@ -50,7 +50,7 @@
  * If disabled, slipif_poll() polls the serila line (using sio_tryread()).
  */
 #ifndef SLIP_RX_FROM_ISR
-#   define SLIP_RX_FROM_ISR 0
+#define SLIP_RX_FROM_ISR 0
 #endif
 
 /** Set this to 1 (default for SLIP_RX_FROM_ISR) to queue incoming packets
@@ -58,7 +58,7 @@
  * If disabled, packets will be dropped if more than one packet is received.
  */
 #ifndef SLIP_RX_QUEUE
-#   define SLIP_RX_QUEUE SLIP_RX_FROM_ISR
+#define SLIP_RX_QUEUE SLIP_RX_FROM_ISR
 #endif
 
 #ifdef __cplusplus

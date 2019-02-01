@@ -84,12 +84,12 @@ extern "C" {
 #define portSTACK_TYPE unsigned portCHAR
 #define portBASE_TYPE portCHAR
 
-#if (configUSE_16_BIT_TICKS == 1)
+#if(configUSE_16_BIT_TICKS == 1)
 typedef unsigned portSHORT portTickType;
-#   define portMAX_DELAY (portTickType)0xffff
+#define portMAX_DELAY (portTickType)0xffff
 #else
 typedef unsigned portLONG portTickType;
-#   define portMAX_DELAY (portTickType)0xffffffff
+#define portMAX_DELAY (portTickType)0xffffffff
 #endif
 
 /*-----------------------------------------------------------*/
@@ -116,7 +116,7 @@ void vPortYield(void);
 #define portYIELD() vPortYield()
 
 #ifdef IAR_MEGA_AVR
-#   define outb(PORT, VALUE) PORT = VALUE
+#define outb(PORT, VALUE) PORT = VALUE
 #endif
 /*-----------------------------------------------------------*/
 

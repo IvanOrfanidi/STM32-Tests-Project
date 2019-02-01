@@ -68,14 +68,14 @@ static int flag;
  */
 void code_style_example_function(void)
 {
-   /*
+    /*
     * Local variables should always be declared at the start of the
     * function.
     */
-   int i; /* Use short variable names for loop
+    int i; /* Use short variable names for loop
 counters. */
 
-   /*
+    /*
     * There should be no space between keywords and the first
     * parenthesis. There should be spaces around binary operators, no
     * spaces between a unary operator and its operand.
@@ -83,24 +83,21 @@ counters. */
     * Curly brackets following for(), if(), do, and case() statements
     * should follow the statement on the same line.
     */
-   for (i = 0; i < 10; ++i)
-   {
-      /*
+    for(i = 0; i < 10; ++i) {
+        /*
        * Always use full blocks (curly brackets) after if(), for(), and
        * while() statements, even though the statement is a single line
        * of code. This makes the code easier to read and modifications
        * are less error prone.
        */
-      if (i == c)
-      {
-         return c; /* No parentesis around return values. */
-      }
-      else
-      { /* The else keyword is placed inbetween
+        if(i == c) {
+            return c; /* No parentesis around return values. */
+        }
+        else { /* The else keyword is placed inbetween
 curly brackers, always on its own line. */
-         c++;
-      }
-   }
+            c++;
+        }
+    }
 }
 /*---------------------------------------------------------------------------*/
 /*

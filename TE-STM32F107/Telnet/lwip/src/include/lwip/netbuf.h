@@ -45,19 +45,18 @@ extern "C" {
 /** This netbuf includes a checksum */
 #define NETBUF_FLAG_CHKSUM 0x02
 
-struct netbuf
-{
-   struct pbuf *p, *ptr;
-   ip_addr_t addr;
-   u16_t port;
+struct netbuf {
+    struct pbuf *p, *ptr;
+    ip_addr_t addr;
+    u16_t port;
 #if LWIP_NETBUF_RECVINFO || LWIP_CHECKSUM_ON_COPY
-#   if LWIP_CHECKSUM_ON_COPY
-   u8_t flags;
-#   endif /* LWIP_CHECKSUM_ON_COPY */
-   u16_t toport_chksum;
-#   if LWIP_NETBUF_RECVINFO
-   ip_addr_t toaddr;
-#   endif /* LWIP_NETBUF_RECVINFO */
+#if LWIP_CHECKSUM_ON_COPY
+    u8_t flags;
+#endif /* LWIP_CHECKSUM_ON_COPY */
+    u16_t toport_chksum;
+#if LWIP_NETBUF_RECVINFO
+    ip_addr_t toaddr;
+#endif /* LWIP_NETBUF_RECVINFO */
 #endif /* LWIP_NETBUF_RECVINFO || LWIP_CHECKSUM_ON_COPY */
 };
 
@@ -81,17 +80,16 @@ void netbuf_first(struct netbuf* buf);
 #define netbuf_set_fromaddr(buf, fromaddr) ip_addr_set((&(buf)->addr), fromaddr)
 #define netbuf_fromport(buf) ((buf)->port)
 #if LWIP_NETBUF_RECVINFO
-#   define netbuf_destaddr(buf) (&((buf)->toaddr))
-#   define netbuf_set_destaddr(buf, destaddr) ip_addr_set((&(buf)->addr), destaddr)
-#   define netbuf_destport(buf) (((buf)->flags & NETBUF_FLAG_DESTADDR) ? (buf)->toport_chksum : 0)
+#define netbuf_destaddr(buf) (&((buf)->toaddr))
+#define netbuf_set_destaddr(buf, destaddr) ip_addr_set((&(buf)->addr), destaddr)
+#define netbuf_destport(buf) (((buf)->flags & NETBUF_FLAG_DESTADDR) ? (buf)->toport_chksum : 0)
 #endif /* LWIP_NETBUF_RECVINFO */
 #if LWIP_CHECKSUM_ON_COPY
-#   define netbuf_set_chksum(buf, chksum) \
-      do \
-      { \
-         (buf)->flags = NETBUF_FLAG_CHKSUM; \
-         (buf)->toport_chksum = chksum; \
-      } while (0)
+#define netbuf_set_chksum(buf, chksum) \
+    do { \
+        (buf)->flags = NETBUF_FLAG_CHKSUM; \
+        (buf)->toport_chksum = chksum; \
+    } while(0)
 #endif /* LWIP_CHECKSUM_ON_COPY */
 
 #ifdef __cplusplus

@@ -43,16 +43,16 @@
  *
  */
 #ifndef __TELNETD_H__
-#   define __TELNETD_H__
+#define __TELNETD_H__
 
-#   include "uip.h"
+#include "uip.h"
 
 /**
  * The maximum length of a telnet line.
  *
  * \hideinitializer
  */
-#   define TELNETD_LINELEN 36
+#define TELNETD_LINELEN 36
 
 /**
  * The number of output lines being buffered for all telnet
@@ -60,17 +60,16 @@
  *
  * \hideinitializer
  */
-#   define TELNETD_NUMLINES 2
+#define TELNETD_NUMLINES 2
 
 /**
  * A telnet connection structure.
  */
-struct telnetd_state
-{
-   char* lines[TELNETD_NUMLINES];
-   char buf[TELNETD_LINELEN];
-   char bufptr;
-   u8_t state;
+struct telnetd_state {
+    char* lines[TELNETD_NUMLINES];
+    char buf[TELNETD_LINELEN];
+    char bufptr;
+    u8_t state;
 };
 
 /**
@@ -97,13 +96,13 @@ void telnetd_prompt(struct telnetd_state* s, char* str);
 
 void telnetd_app(void);
 
-#   ifndef UIP_APPCALL
-#      define UIP_APPCALL telnetd_app
-#   endif
+#ifndef UIP_APPCALL
+#define UIP_APPCALL telnetd_app
+#endif
 
-#   ifndef UIP_APPSTATE_SIZE
-#      define UIP_APPSTATE_SIZE (sizeof(struct telnetd_state))
-#   endif
+#ifndef UIP_APPSTATE_SIZE
+#define UIP_APPSTATE_SIZE (sizeof(struct telnetd_state))
+#endif
 
 void telnetd_init(void);
 

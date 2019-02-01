@@ -80,12 +80,12 @@ extern "C" {
 #define portSTACK_TYPE unsigned long
 #define portBASE_TYPE long
 
-#if (configUSE_16_BIT_TICKS == 1)
+#if(configUSE_16_BIT_TICKS == 1)
 typedef unsigned portSHORT portTickType;
-#   define portMAX_DELAY (portTickType)0xffff
+#define portMAX_DELAY (portTickType)0xffff
 #else
 typedef unsigned portLONG portTickType;
-#   define portMAX_DELAY (portTickType)0xffffffff
+#define portMAX_DELAY (portTickType)0xffffffff
 #endif
 /*-----------------------------------------------------------*/
 
@@ -101,24 +101,24 @@ typedef unsigned portLONG portTickType;
 #define portSW0_BIT (0x01 << 8)
 
 #define portDISABLE_INTERRUPTS() \
-   { \
-      unsigned portLONG ulStatus; \
+    { \
+        unsigned portLONG ulStatus; \
 \
-      /* Mask interrupts at and below the kernel interrupt priority. */ \
-      ulStatus = _CP0_GET_STATUS(); \
-      ulStatus |= (configMAX_SYSCALL_INTERRUPT_PRIORITY << portIPL_SHIFT); \
-      _CP0_SET_STATUS(ulStatus); \
-   }
+        /* Mask interrupts at and below the kernel interrupt priority. */ \
+        ulStatus = _CP0_GET_STATUS(); \
+        ulStatus |= (configMAX_SYSCALL_INTERRUPT_PRIORITY << portIPL_SHIFT); \
+        _CP0_SET_STATUS(ulStatus); \
+    }
 
 #define portENABLE_INTERRUPTS() \
-   { \
-      unsigned portLONG ulStatus; \
+    { \
+        unsigned portLONG ulStatus; \
 \
-      /* Unmask all interrupts. */ \
-      ulStatus = _CP0_GET_STATUS(); \
-      ulStatus &= ~portALL_IPL_BITS; \
-      _CP0_SET_STATUS(ulStatus); \
-   }
+        /* Unmask all interrupts. */ \
+        ulStatus = _CP0_GET_STATUS(); \
+        ulStatus &= ~portALL_IPL_BITS; \
+        _CP0_SET_STATUS(ulStatus); \
+    }
 
 extern void vTaskEnterCritical(void);
 extern void vTaskExitCritical(void);
@@ -136,14 +136,14 @@ extern void vPortClearInterruptMaskFromISR(unsigned portBASE_TYPE);
 /* Task utilities. */
 
 #define portYIELD() \
-   { \
-      unsigned portLONG ulStatus; \
+    { \
+        unsigned portLONG ulStatus; \
 \
-      /* Trigger software interrupt. */ \
-      ulStatus = _CP0_GET_CAUSE(); \
-      ulStatus |= portSW0_BIT; \
-      _CP0_SET_CAUSE(ulStatus); \
-   }
+        /* Trigger software interrupt. */ \
+        ulStatus = _CP0_GET_CAUSE(); \
+        ulStatus |= portSW0_BIT; \
+        _CP0_SET_CAUSE(ulStatus); \
+    }
 
 #define portNOP() asm volatile("nop")
 
@@ -155,14 +155,13 @@ extern void vPortClearInterruptMaskFromISR(unsigned portBASE_TYPE);
 /*-----------------------------------------------------------*/
 
 #define portEND_SWITCHING_ISR(xSwitchRequired) \
-   if (xSwitchRequired) \
-   { \
-      portYIELD(); \
-   }
+    if(xSwitchRequired) { \
+        portYIELD(); \
+    }
 
 /* Required by the kernel aware debugger. */
 #ifdef __DEBUG
-#   define portREMOVE_STATIC_QUALIFIER
+#define portREMOVE_STATIC_QUALIFIER
 #endif
 
 #ifdef __cplusplus

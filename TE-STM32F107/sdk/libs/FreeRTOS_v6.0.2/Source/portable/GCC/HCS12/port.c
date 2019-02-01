@@ -91,7 +91,7 @@ until the nesting depth reaches 0.  This variable simply tracks the nesting
 depth.  Each task maintains it's own critical nesting depth variable so
 uxCriticalNesting is saved and restored from the task stack during a context
 switch. */
-volatile unsigned portBASE_TYPE uxCriticalNesting = 0x80;   // un-initialized
+volatile unsigned portBASE_TYPE uxCriticalNesting = 0x80;    // un-initialized
 
 /*-----------------------------------------------------------*/
 
@@ -100,36 +100,36 @@ volatile unsigned portBASE_TYPE uxCriticalNesting = 0x80;   // un-initialized
  */
 portSTACK_TYPE* pxPortInitialiseStack(portSTACK_TYPE* pxTopOfStack, pdTASK_CODE pxCode, void* pvParameters)
 {
-   /* Setup the initial stack of the task.  The stack is set exactly as
+    /* Setup the initial stack of the task.  The stack is set exactly as
    expected by the portRESTORE_CONTEXT() macro.  In this case the stack as
    expected by the HCS12 RTI instruction. */
 
-   /* The address of the task function is placed in the stack byte at a time. */
-   *pxTopOfStack = (portSTACK_TYPE) * (((portSTACK_TYPE*)(&pxCode)) + 1);
-   *--pxTopOfStack = (portSTACK_TYPE) * (((portSTACK_TYPE*)(&pxCode)) + 0);
+    /* The address of the task function is placed in the stack byte at a time. */
+    *pxTopOfStack = (portSTACK_TYPE) * (((portSTACK_TYPE*)(&pxCode)) + 1);
+    *--pxTopOfStack = (portSTACK_TYPE) * (((portSTACK_TYPE*)(&pxCode)) + 0);
 
-   /* Next are all the registers that form part of the task context. */
+    /* Next are all the registers that form part of the task context. */
 
-   /* Y register */
-   *--pxTopOfStack = (portSTACK_TYPE)0xff;
-   *--pxTopOfStack = (portSTACK_TYPE)0xee;
+    /* Y register */
+    *--pxTopOfStack = (portSTACK_TYPE)0xff;
+    *--pxTopOfStack = (portSTACK_TYPE)0xee;
 
-   /* X register */
-   *--pxTopOfStack = (portSTACK_TYPE)0xdd;
-   *--pxTopOfStack = (portSTACK_TYPE)0xcc;
+    /* X register */
+    *--pxTopOfStack = (portSTACK_TYPE)0xdd;
+    *--pxTopOfStack = (portSTACK_TYPE)0xcc;
 
-   /* A register contains parameter high byte. */
-   *--pxTopOfStack = (portSTACK_TYPE) * (((portSTACK_TYPE*)(&pvParameters)) + 0);
+    /* A register contains parameter high byte. */
+    *--pxTopOfStack = (portSTACK_TYPE) * (((portSTACK_TYPE*)(&pvParameters)) + 0);
 
-   /* B register contains parameter low byte. */
-   *--pxTopOfStack = (portSTACK_TYPE) * (((portSTACK_TYPE*)(&pvParameters)) + 1);
+    /* B register contains parameter low byte. */
+    *--pxTopOfStack = (portSTACK_TYPE) * (((portSTACK_TYPE*)(&pvParameters)) + 1);
 
-   /* CCR: Note that when the task starts interrupts will be enabled since
+    /* CCR: Note that when the task starts interrupts will be enabled since
    "I" bit of CCR is cleared */
-   *--pxTopOfStack = (portSTACK_TYPE)0x80;   // keeps Stop disabled (MCU default)
+    *--pxTopOfStack = (portSTACK_TYPE)0x80;    // keeps Stop disabled (MCU default)
 
-   /* tmp softregs used by GCC. Values right now don't	matter. */
-   __asm("\n\
+    /* tmp softregs used by GCC. Values right now don't	matter. */
+    __asm("\n\
 		movw _.frame, 2,-%0							\n\
 		movw _.tmp, 2,-%0							\n\
 		movw _.z, 2,-%0								\n\
@@ -137,64 +137,65 @@ portSTACK_TYPE* pxPortInitialiseStack(portSTACK_TYPE* pxTopOfStack, pdTASK_CODE 
 		;movw _.d2, 2,-%0							\n\
 		;movw _.d1, 2,-%0							\n\
 	"
-         : "=A"(pxTopOfStack)
-         : "0"(pxTopOfStack));
+          : "=A"(pxTopOfStack)
+          : "0"(pxTopOfStack));
 
 #ifdef BANKED_MODEL
-   /* The page of the task. */
-   *--pxTopOfStack = 0x30;   // can only directly start in PPAGE 0x30
+    /* The page of the task. */
+    *--pxTopOfStack = 0x30;    // can only directly start in PPAGE 0x30
 #endif
 
-   /* The critical nesting depth is initialised with 0 (meaning not in
+    /* The critical nesting depth is initialised with 0 (meaning not in
    a critical section). */
-   *--pxTopOfStack = (portSTACK_TYPE)0x00;
+    *--pxTopOfStack = (portSTACK_TYPE)0x00;
 
-   return pxTopOfStack;
+    return pxTopOfStack;
 }
 /*-----------------------------------------------------------*/
 
 void vPortEndScheduler(void)
 {
-   /* It is unlikely that the HCS12 port will get stopped. */
+    /* It is unlikely that the HCS12 port will get stopped. */
 }
 /*-----------------------------------------------------------*/
 
 static void prvSetupTimerInterrupt(void)
 {
-   /* Enable hardware RTI timer */
-   /* Ignores configTICK_RATE_HZ */
-   RTICTL = 0x50;   // 16 MHz xtal: 976.56 Hz, 1024mS
-   CRGINT |= 0x80;   // RTIE
+    /* Enable hardware RTI timer */
+    /* Ignores configTICK_RATE_HZ */
+    RTICTL = 0x50;     // 16 MHz xtal: 976.56 Hz, 1024mS
+    CRGINT |= 0x80;    // RTIE
 }
 /*-----------------------------------------------------------*/
 
 portBASE_TYPE xPortStartScheduler(void)
 {
-   /* xPortStartScheduler() does not start the scheduler directly because
+    /* xPortStartScheduler() does not start the scheduler directly because
    the header file containing the xPortStartScheduler() prototype is part
    of the common kernel code, and therefore cannot use the CODE_SEG pragma.
    Instead it simply calls the locally defined xNearStartScheduler() -
    which does use the CODE_SEG pragma. */
 
-   short register d;
-   __asm("jmp  xStartSchedulerNear		; will never return" : "=d"(d));
-   return d;
+    short register d;
+    __asm("jmp  xStartSchedulerNear		; will never return"
+          : "=d"(d));
+    return d;
 }
 /*-----------------------------------------------------------*/
 
 portBASE_TYPE xStartSchedulerNear(void)
 {
-   /* Configure the timer that will generate the RTOS tick.  Interrupts are
+    /* Configure the timer that will generate the RTOS tick.  Interrupts are
    disabled when this function is called. */
-   prvSetupTimerInterrupt();
+    prvSetupTimerInterrupt();
 
-   /* Restore the context of the first task. */
-   portRESTORE_CONTEXT();
+    /* Restore the context of the first task. */
+    portRESTORE_CONTEXT();
 
-   portISR_TAIL();
+    portISR_TAIL();
 
-   /* Should not get here! */
-   return pdFALSE;
+    /* Should not get here! */
+    return pdFALSE;
 }
 /*-----------------------------------------------------------*/
 
@@ -208,16 +209,16 @@ portBASE_TYPE xStartSchedulerNear(void)
  */
 void vPortYield(void)
 {
-   portISR_HEAD();
-   /* NOTE: This is the trap routine (swi) although not defined as a trap.
+    portISR_HEAD();
+    /* NOTE: This is the trap routine (swi) although not defined as a trap.
       It will fill the stack the same way as an ISR in order to mix preemtion
       and cooperative yield. */
 
-   portSAVE_CONTEXT();
-   vTaskSwitchContext();
-   portRESTORE_CONTEXT();
+    portSAVE_CONTEXT();
+    vTaskSwitchContext();
+    portRESTORE_CONTEXT();
 
-   portISR_TAIL();
+    portISR_TAIL();
 }
 /*-----------------------------------------------------------*/
 
@@ -228,32 +229,32 @@ void vPortYield(void)
  */
 void vPortTickInterrupt(void)
 {
-   portISR_HEAD();
+    portISR_HEAD();
 
-   /* Clear tick timer flag */
-   CRGFLG = 0x80;
+    /* Clear tick timer flag */
+    CRGFLG = 0x80;
 
 #if configUSE_PREEMPTION == 1
-   {
-      /* A context switch might happen so save the context. */
-      portSAVE_CONTEXT();
+    {
+        /* A context switch might happen so save the context. */
+        portSAVE_CONTEXT();
 
-      /* Increment the tick ... */
-      vTaskIncrementTick();
+        /* Increment the tick ... */
+        vTaskIncrementTick();
 
-      /* ... then see if the new tick value has necessitated a
+        /* ... then see if the new tick value has necessitated a
       context switch. */
-      vTaskSwitchContext();
+        vTaskSwitchContext();
 
-      /* Restore the context of a task - which may be a different task
+        /* Restore the context of a task - which may be a different task
       to that interrupted. */
-      portRESTORE_CONTEXT();
-   }
+        portRESTORE_CONTEXT();
+    }
 #else
-   {
-      vTaskIncrementTick();
-   }
+    {
+        vTaskIncrementTick();
+    }
 #endif
 
-   portISR_TAIL();
+    portISR_TAIL();
 }

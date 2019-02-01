@@ -71,7 +71,7 @@
 #define TIMERS_H
 
 #ifndef INC_FREERTOS_H
-#   error "include FreeRTOS.h must appear in source files before include timers.h"
+#error "include FreeRTOS.h must appear in source files before include timers.h"
 #endif
 
 /*lint -e537 This headers are only multiply included if the application code
@@ -256,11 +256,11 @@ typedef void (*PendedFunction_t)(void*, uint32_t);
  * @endverbatim
  */
 TimerHandle_t xTimerCreate(const char* const pcTimerName,
-                           const TickType_t xTimerPeriodInTicks,
-                           const UBaseType_t uxAutoReload,
-                           void* const pvTimerID,
-                           TimerCallbackFunction_t pxCallbackFunction)
-   PRIVILEGED_FUNCTION; /*lint !e971 Unqualified char types are allowed for strings and single characters only. */
+    const TickType_t xTimerPeriodInTicks,
+    const UBaseType_t uxAutoReload,
+    void* const pvTimerID,
+    TimerCallbackFunction_t pxCallbackFunction)
+    PRIVILEGED_FUNCTION; /*lint !e971 Unqualified char types are allowed for strings and single characters only. */
 
 /**
  * void *pvTimerGetTimerID( TimerHandle_t xTimer );
@@ -384,7 +384,7 @@ TaskHandle_t xTimerGetTimerDaemonTaskHandle(void);
  *
  */
 #define xTimerStart(xTimer, xTicksToWait) \
-   xTimerGenericCommand((xTimer), tmrCOMMAND_START, (xTaskGetTickCount()), NULL, (xTicksToWait))
+    xTimerGenericCommand((xTimer), tmrCOMMAND_START, (xTaskGetTickCount()), NULL, (xTicksToWait))
 
 /**
  * BaseType_t xTimerStop( TimerHandle_t xTimer, TickType_t xTicksToWait );
@@ -508,7 +508,7 @@ TaskHandle_t xTimerGetTimerDaemonTaskHandle(void);
  * @endverbatim
  */
 #define xTimerChangePeriod(xTimer, xNewPeriod, xTicksToWait) \
-   xTimerGenericCommand((xTimer), tmrCOMMAND_CHANGE_PERIOD, (xNewPeriod), NULL, (xTicksToWait))
+    xTimerGenericCommand((xTimer), tmrCOMMAND_CHANGE_PERIOD, (xNewPeriod), NULL, (xTicksToWait))
 
 /**
  * BaseType_t xTimerDelete( TimerHandle_t xTimer, TickType_t xTicksToWait );
@@ -671,7 +671,7 @@ TaskHandle_t xTimerGetTimerDaemonTaskHandle(void);
  * @endverbatim
  */
 #define xTimerReset(xTimer, xTicksToWait) \
-   xTimerGenericCommand((xTimer), tmrCOMMAND_RESET, (xTaskGetTickCount()), NULL, (xTicksToWait))
+    xTimerGenericCommand((xTimer), tmrCOMMAND_RESET, (xTaskGetTickCount()), NULL, (xTicksToWait))
 
 /**
  * BaseType_t xTimerStartFromISR( 	TimerHandle_t xTimer,
@@ -758,8 +758,8 @@ TaskHandle_t xTimerGetTimerDaemonTaskHandle(void);
  * @endverbatim
  */
 #define xTimerStartFromISR(xTimer, pxHigherPriorityTaskWoken) \
-   xTimerGenericCommand( \
-      (xTimer), tmrCOMMAND_START_FROM_ISR, (xTaskGetTickCountFromISR()), (pxHigherPriorityTaskWoken), 0U)
+    xTimerGenericCommand( \
+        (xTimer), tmrCOMMAND_START_FROM_ISR, (xTaskGetTickCountFromISR()), (pxHigherPriorityTaskWoken), 0U)
 
 /**
  * BaseType_t xTimerStopFromISR( 	TimerHandle_t xTimer,
@@ -823,7 +823,7 @@ TaskHandle_t xTimerGetTimerDaemonTaskHandle(void);
  * @endverbatim
  */
 #define xTimerStopFromISR(xTimer, pxHigherPriorityTaskWoken) \
-   xTimerGenericCommand((xTimer), tmrCOMMAND_STOP_FROM_ISR, 0, (pxHigherPriorityTaskWoken), 0U)
+    xTimerGenericCommand((xTimer), tmrCOMMAND_STOP_FROM_ISR, 0, (pxHigherPriorityTaskWoken), 0U)
 
 /**
  * BaseType_t xTimerChangePeriodFromISR( TimerHandle_t xTimer,
@@ -897,7 +897,7 @@ TaskHandle_t xTimerGetTimerDaemonTaskHandle(void);
  * @endverbatim
  */
 #define xTimerChangePeriodFromISR(xTimer, xNewPeriod, pxHigherPriorityTaskWoken) \
-   xTimerGenericCommand((xTimer), tmrCOMMAND_CHANGE_PERIOD_FROM_ISR, (xNewPeriod), (pxHigherPriorityTaskWoken), 0U)
+    xTimerGenericCommand((xTimer), tmrCOMMAND_CHANGE_PERIOD_FROM_ISR, (xNewPeriod), (pxHigherPriorityTaskWoken), 0U)
 
 /**
  * BaseType_t xTimerResetFromISR( 	TimerHandle_t xTimer,
@@ -984,8 +984,8 @@ TaskHandle_t xTimerGetTimerDaemonTaskHandle(void);
  * @endverbatim
  */
 #define xTimerResetFromISR(xTimer, pxHigherPriorityTaskWoken) \
-   xTimerGenericCommand( \
-      (xTimer), tmrCOMMAND_RESET_FROM_ISR, (xTaskGetTickCountFromISR()), (pxHigherPriorityTaskWoken), 0U)
+    xTimerGenericCommand( \
+        (xTimer), tmrCOMMAND_RESET_FROM_ISR, (xTaskGetTickCountFromISR()), (pxHigherPriorityTaskWoken), 0U)
 
 /**
  * BaseType_t xTimerPendFunctionCallFromISR( PendedFunction_t xFunctionToPend,
@@ -1078,9 +1078,9 @@ TaskHandle_t xTimerGetTimerDaemonTaskHandle(void);
  * @endverbatim
  */
 BaseType_t xTimerPendFunctionCallFromISR(PendedFunction_t xFunctionToPend,
-                                         void* pvParameter1,
-                                         uint32_t ulParameter2,
-                                         BaseType_t* pxHigherPriorityTaskWoken);
+    void* pvParameter1,
+    uint32_t ulParameter2,
+    BaseType_t* pxHigherPriorityTaskWoken);
 
 /**
  * BaseType_t xTimerPendFunctionCall( PendedFunction_t xFunctionToPend,
@@ -1115,9 +1115,9 @@ BaseType_t xTimerPendFunctionCallFromISR(PendedFunction_t xFunctionToPend,
  *
  */
 BaseType_t xTimerPendFunctionCall(PendedFunction_t xFunctionToPend,
-                                  void* pvParameter1,
-                                  uint32_t ulParameter2,
-                                  TickType_t xTicksToWait);
+    void* pvParameter1,
+    uint32_t ulParameter2,
+    TickType_t xTicksToWait);
 
 /**
  * const char * const pcTimerGetTimerName( TimerHandle_t xTimer );
@@ -1129,7 +1129,7 @@ BaseType_t xTimerPendFunctionCall(PendedFunction_t xFunctionToPend,
  * @return The name assigned to the timer specified by the xTimer parameter.
  */
 const char* pcTimerGetTimerName(
-   TimerHandle_t xTimer); /*lint !e971 Unqualified char types are allowed for strings and single characters only. */
+    TimerHandle_t xTimer); /*lint !e971 Unqualified char types are allowed for strings and single characters only. */
 
 /*
  * Functions beyond this part are not part of the public API and are intended
@@ -1137,10 +1137,10 @@ const char* pcTimerGetTimerName(
  */
 BaseType_t xTimerCreateTimerTask(void) PRIVILEGED_FUNCTION;
 BaseType_t xTimerGenericCommand(TimerHandle_t xTimer,
-                                const BaseType_t xCommandID,
-                                const TickType_t xOptionalValue,
-                                BaseType_t* const pxHigherPriorityTaskWoken,
-                                const TickType_t xTicksToWait) PRIVILEGED_FUNCTION;
+    const BaseType_t xCommandID,
+    const TickType_t xOptionalValue,
+    BaseType_t* const pxHigherPriorityTaskWoken,
+    const TickType_t xTicksToWait) PRIVILEGED_FUNCTION;
 
 #ifdef __cplusplus
 }

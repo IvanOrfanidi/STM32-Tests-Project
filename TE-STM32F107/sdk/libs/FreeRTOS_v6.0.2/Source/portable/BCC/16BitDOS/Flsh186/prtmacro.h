@@ -73,22 +73,22 @@
 #define portSTACK_TYPE unsigned portSHORT
 #define portBASE_TYPE portSHORT
 
-#if (configUSE_16_BIT_TICKS == 1)
+#if(configUSE_16_BIT_TICKS == 1)
 typedef unsigned portSHORT portTickType;
-#   define portMAX_DELAY (portTickType)0xffff
+#define portMAX_DELAY (portTickType)0xffff
 #else
 typedef unsigned portLONG portTickType;
-#   define portMAX_DELAY (portTickType)0xffffffff
+#define portMAX_DELAY (portTickType)0xffffffff
 #endif
 /*-----------------------------------------------------------*/
 
 /* Critical section handling. */
 #define portENTER_CRITICAL() \
-   __asm { pushf } \
-   __asm \
-   { \
-      cli \
-   }
+    __asm { pushf } \
+    __asm \
+    { \
+        cli \
+    }
 
 #define portEXIT_CRITICAL() __asm { popf }
 

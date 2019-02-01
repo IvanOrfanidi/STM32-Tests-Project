@@ -47,17 +47,17 @@
 
 #if 0 /* don't build, this is only a skeleton, see previous comment */
 
-#   include "lwip/def.h"
-#   include "lwip/mem.h"
-#   include "lwip/pbuf.h"
-#   include <lwip/stats.h>
-#   include <lwip/snmp.h>
-#   include "netif/etharp.h"
-#   include "netif/ppp_oe.h"
+#include "lwip/def.h"
+#include "lwip/mem.h"
+#include "lwip/pbuf.h"
+#include <lwip/stats.h>
+#include <lwip/snmp.h>
+#include "netif/etharp.h"
+#include "netif/ppp_oe.h"
 
 /* Define those to better describe your network interface. */
-#   define IFNAME0 'e'
-#   define IFNAME1 'n'
+#define IFNAME0 'e'
+#define IFNAME1 'n'
 
 /**
  * Helper struct to hold private data used to operate your ethernet interface.
@@ -127,9 +127,9 @@ low_level_output(struct netif *netif, struct pbuf *p)
 
   initiate transfer();
 
-#   if ETH_PAD_SIZE
+#if ETH_PAD_SIZE
   pbuf_header(p, -ETH_PAD_SIZE); /* drop the padding word */
-#   endif
+#endif
 
   for(q = p; q != NULL; q = q->next) {
     /* Send the data from the pbuf to the interface, one pbuf at a
@@ -140,9 +140,9 @@ low_level_output(struct netif *netif, struct pbuf *p)
 
   signal that packet should be sent();
 
-#   if ETH_PAD_SIZE
+#if ETH_PAD_SIZE
   pbuf_header(p, ETH_PAD_SIZE); /* reclaim the padding word */
-#   endif
+#endif
   
   LINK_STATS_INC(link.xmit);
 
@@ -168,18 +168,18 @@ low_level_input(struct netif *netif)
      variable. */
   len = ;
 
-#   if ETH_PAD_SIZE
+#if ETH_PAD_SIZE
   len += ETH_PAD_SIZE; /* allow room for Ethernet padding */
-#   endif
+#endif
 
   /* We allocate a pbuf chain of pbufs from the pool. */
   p = pbuf_alloc(PBUF_RAW, len, PBUF_POOL);
   
   if (p != NULL) {
 
-#   if ETH_PAD_SIZE
+#if ETH_PAD_SIZE
     pbuf_header(p, -ETH_PAD_SIZE); /* drop the padding word */
-#   endif
+#endif
 
     /* We iterate over the pbuf chain until we have read the entire
      * packet into the pbuf. */
@@ -196,9 +196,9 @@ low_level_input(struct netif *netif)
     }
     acknowledge that packet has been read();
 
-#   if ETH_PAD_SIZE
+#if ETH_PAD_SIZE
     pbuf_header(p, ETH_PAD_SIZE); /* reclaim the padding word */
-#   endif
+#endif
 
     LINK_STATS_INC(link.recv);
   } else {
@@ -239,11 +239,11 @@ ethernetif_input(struct netif *netif)
   /* IP or ARP packet? */
   case ETHTYPE_IP:
   case ETHTYPE_ARP:
-#   if PPPOE_SUPPORT
+#if PPPOE_SUPPORT
   /* PPPoE packet? */
   case ETHTYPE_PPPOEDISC:
   case ETHTYPE_PPPOE:
-#   endif /* PPPOE_SUPPORT */
+#endif /* PPPOE_SUPPORT */
     /* full packet send to tcpip_thread to process */
     if (netif->input(p, netif)!=ERR_OK)
      { LWIP_DEBUGF(NETIF_DEBUG, ("ethernetif_input: IP input error\n"));
@@ -284,10 +284,10 @@ ethernetif_init(struct netif *netif)
     return ERR_MEM;
   }
 
-#   if LWIP_NETIF_HOSTNAME
+#if LWIP_NETIF_HOSTNAME
   /* Initialize interface hostname */
   netif->hostname = "lwip";
-#   endif /* LWIP_NETIF_HOSTNAME */
+#endif /* LWIP_NETIF_HOSTNAME */
 
   /*
    * Initialize the snmp variables and counters inside the struct netif.
