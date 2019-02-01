@@ -61,10 +61,10 @@
 #define __UIPOPT_H__
 
 #ifndef UIP_LITTLE_ENDIAN
-#   define UIP_LITTLE_ENDIAN 3412
+#define UIP_LITTLE_ENDIAN 3412
 #endif /* UIP_LITTLE_ENDIAN */
 #ifndef UIP_BIG_ENDIAN
-#   define UIP_BIG_ENDIAN 1234
+#define UIP_BIG_ENDIAN 1234
 #endif /* UIP_BIG_ENDIAN */
 
 #include "uip-conf.h"
@@ -109,9 +109,9 @@
  * \hideinitializer
  */
 #ifdef UIP_CONF_PINGADDRCONF
-#   define UIP_PINGADDRCONF UIP_CONF_PINGADDRCONF
+#define UIP_PINGADDRCONF UIP_CONF_PINGADDRCONF
 #else /* UIP_CONF_PINGADDRCONF */
-#   define UIP_PINGADDRCONF 0
+#define UIP_PINGADDRCONF 0
 #endif /* UIP_CONF_PINGADDRCONF */
 
 /**
@@ -175,9 +175,9 @@
  * \hideinitializer
  */
 #ifdef UIP_CONF_UDP
-#   define UIP_UDP UIP_CONF_UDP
+#define UIP_UDP UIP_CONF_UDP
 #else /* UIP_CONF_UDP */
-#   define UIP_UDP 0
+#define UIP_UDP 0
 #endif /* UIP_CONF_UDP */
 
 /**
@@ -189,9 +189,9 @@
  * \hideinitializer
  */
 #ifdef UIP_CONF_UDP_CHECKSUMS
-#   define UIP_UDP_CHECKSUMS UIP_CONF_UDP_CHECKSUMS
+#define UIP_UDP_CHECKSUMS UIP_CONF_UDP_CHECKSUMS
 #else
-#   define UIP_UDP_CHECKSUMS 0
+#define UIP_UDP_CHECKSUMS 0
 #endif
 
 /**
@@ -200,9 +200,9 @@
  * \hideinitializer
  */
 #ifdef UIP_CONF_UDP_CONNS
-#   define UIP_UDP_CONNS UIP_CONF_UDP_CONNS
+#define UIP_UDP_CONNS UIP_CONF_UDP_CONNS
 #else /* UIP_CONF_UDP_CONNS */
-#   define UIP_UDP_CONNS 10
+#define UIP_UDP_CONNS 10
 #endif /* UIP_CONF_UDP_CONNS */
 
 /**
@@ -240,9 +240,9 @@
  * \hideinitializer
  */
 #ifndef UIP_CONF_MAX_CONNECTIONS
-#   define UIP_CONNS 10
+#define UIP_CONNS 10
 #else /* UIP_CONF_MAX_CONNECTIONS */
-#   define UIP_CONNS UIP_CONF_MAX_CONNECTIONS
+#define UIP_CONNS UIP_CONF_MAX_CONNECTIONS
 #endif /* UIP_CONF_MAX_CONNECTIONS */
 
 /**
@@ -253,9 +253,9 @@
  * \hideinitializer
  */
 #ifndef UIP_CONF_MAX_LISTENPORTS
-#   define UIP_LISTENPORTS 20
+#define UIP_LISTENPORTS 20
 #else /* UIP_CONF_MAX_LISTENPORTS */
-#   define UIP_LISTENPORTS UIP_CONF_MAX_LISTENPORTS
+#define UIP_LISTENPORTS UIP_CONF_MAX_LISTENPORTS
 #endif /* UIP_CONF_MAX_LISTENPORTS */
 
 /**
@@ -311,9 +311,9 @@
  * \hideinitializer
  */
 #ifndef UIP_CONF_RECEIVE_WINDOW
-#   define UIP_RECEIVE_WINDOW UIP_TCP_MSS
+#define UIP_RECEIVE_WINDOW UIP_TCP_MSS
 #else
-#   define UIP_RECEIVE_WINDOW UIP_CONF_RECEIVE_WINDOW
+#define UIP_RECEIVE_WINDOW UIP_CONF_RECEIVE_WINDOW
 #endif
 
 /**
@@ -340,9 +340,9 @@
  * \hideinitializer
  */
 #ifdef UIP_CONF_ARPTAB_SIZE
-#   define UIP_ARPTAB_SIZE UIP_CONF_ARPTAB_SIZE
+#define UIP_ARPTAB_SIZE UIP_CONF_ARPTAB_SIZE
 #else
-#   define UIP_ARPTAB_SIZE 8
+#define UIP_ARPTAB_SIZE 8
 #endif
 
 /**
@@ -372,9 +372,9 @@
  * \hideinitializer
  */
 #ifndef UIP_CONF_BUFFER_SIZE
-#   define UIP_BUFSIZE 400
+#define UIP_BUFSIZE 400
 #else /* UIP_CONF_BUFFER_SIZE */
-#   define UIP_BUFSIZE UIP_CONF_BUFFER_SIZE
+#define UIP_BUFSIZE UIP_CONF_BUFFER_SIZE
 #endif /* UIP_CONF_BUFFER_SIZE */
 
 /**
@@ -385,9 +385,9 @@
  * \hideinitializer
  */
 #ifndef UIP_CONF_STATISTICS
-#   define UIP_STATISTICS 0
+#define UIP_STATISTICS 0
 #else /* UIP_CONF_STATISTICS */
-#   define UIP_STATISTICS UIP_CONF_STATISTICS
+#define UIP_STATISTICS UIP_CONF_STATISTICS
 #endif /* UIP_CONF_STATISTICS */
 
 /**
@@ -400,9 +400,9 @@
  * \hideinitializer
  */
 #ifndef UIP_CONF_LOGGING
-#   define UIP_LOGGING 0
+#define UIP_LOGGING 0
 #else /* UIP_CONF_LOGGING */
-#   define UIP_LOGGING UIP_CONF_LOGGING
+#define UIP_LOGGING UIP_CONF_LOGGING
 #endif /* UIP_CONF_LOGGING */
 
 /**
@@ -415,9 +415,9 @@
  *
  */
 #ifndef UIP_CONF_BROADCAST
-#   define UIP_BROADCAST 0
+#define UIP_BROADCAST 0
 #else /* UIP_CONF_BROADCAST */
-#   define UIP_BROADCAST UIP_CONF_BROADCAST
+#define UIP_BROADCAST UIP_CONF_BROADCAST
 #endif /* UIP_CONF_BROADCAST */
 
 /**
@@ -438,9 +438,9 @@ void uip_log(char* msg);
  * \hideinitializer
  */
 #ifdef UIP_CONF_LLH_LEN
-#   define UIP_LLH_LEN UIP_CONF_LLH_LEN
+#define UIP_LLH_LEN UIP_CONF_LLH_LEN
 #else /* UIP_CONF_LLH_LEN */
-#   define UIP_LLH_LEN 14
+#define UIP_LLH_LEN 14
 #endif /* UIP_CONF_LLH_LEN */
 
 /** @} */
@@ -465,9 +465,9 @@ void uip_log(char* msg);
  * \hideinitializer
  */
 #ifdef UIP_CONF_BYTE_ORDER
-#   define UIP_BYTE_ORDER UIP_CONF_BYTE_ORDER
+#define UIP_BYTE_ORDER UIP_CONF_BYTE_ORDER
 #else /* UIP_CONF_BYTE_ORDER */
-#   define UIP_BYTE_ORDER UIP_LITTLE_ENDIAN
+#define UIP_BYTE_ORDER UIP_LITTLE_ENDIAN
 #endif /* UIP_CONF_BYTE_ORDER */
 
 /** @} */

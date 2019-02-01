@@ -42,13 +42,13 @@
  *
  */
 #ifndef __RESOLV_H__
-#   define __RESOLV_H__
+#define __RESOLV_H__
 
 typedef int uip_udp_appstate_t;
 void resolv_appcall(void);
-#   define UIP_UDP_APPCALL resolv_appcall
+#define UIP_UDP_APPCALL resolv_appcall
 
-#   include "uipopt.h"
+#include "uipopt.h"
 
 /**
  * Callback function which is called when a hostname is found.

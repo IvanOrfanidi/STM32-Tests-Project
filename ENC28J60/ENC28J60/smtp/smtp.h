@@ -44,14 +44,14 @@
  *
  */
 #ifndef __SMTP_H__
-#   define __SMTP_H__
+#define __SMTP_H__
 
-#   include "uipopt.h"
+#include "uipopt.h"
 
 /**
  * Error number that signifies a non-error condition.
  */
-#   define SMTP_ERR_OK 0
+#define SMTP_ERR_OK 0
 
 /**
  * Callback function that is called when an e-mail transmission is
@@ -70,26 +70,25 @@ void smtp_init(void);
 /* Functions. */
 void smtp_configure(char* localhostname, u16_t* smtpserver);
 unsigned char smtp_send(char* to, char* from, char* subject, char* msg, u16_t msglen);
-#   define SMTP_SEND(to, cc, from, subject, msg) smtp_send(to, cc, from, subject, msg, strlen(msg))
+#define SMTP_SEND(to, cc, from, subject, msg) smtp_send(to, cc, from, subject, msg, strlen(msg))
 
 void smtp_appcall(void);
 
-struct smtp_state
-{
-   u8_t state;
-   char* to;
-   char* from;
-   char* subject;
-   char* msg;
-   u16_t msglen;
+struct smtp_state {
+    u8_t state;
+    char* to;
+    char* from;
+    char* subject;
+    char* msg;
+    u16_t msglen;
 
-   u16_t sentlen, textlen;
-   u16_t sendptr;
+    u16_t sentlen, textlen;
+    u16_t sendptr;
 };
 
-#   ifndef UIP_APPCALL
-#      define UIP_APPCALL smtp_appcall
-#   endif
+#ifndef UIP_APPCALL
+#define UIP_APPCALL smtp_appcall
+#endif
 typedef struct smtp_state uip_tcp_appstate_t;
 
 #endif /* __SMTP_H__ */

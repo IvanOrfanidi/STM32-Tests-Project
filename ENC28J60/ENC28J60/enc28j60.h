@@ -14,33 +14,33 @@
 #define ENC28J60_RESET_CLOCK RCC_APB2Periph_GPIOA
 
 #if _SPI_ENC28J60_PORT == 2
-#   define ENC28J60_SPI_PORT SPI2
-#   define ENC28J60_SPI_MOSI_PIN GPIO_Pin_15
-#   define ENC28J60_SPI_MISO_PIN GPIO_Pin_14
-#   define ENC28J60_SPI_SCK_PIN GPIO_Pin_13
-#   define ENC28J60_GPIO_PORT GPIOB
-#   define ENC28J60_SPI_PORT_CLOCK RCC_APB2Periph_GPIOB
-#   define SPI_CLOCK RCC_APB1Periph_SPI2
+#define ENC28J60_SPI_PORT SPI2
+#define ENC28J60_SPI_MOSI_PIN GPIO_Pin_15
+#define ENC28J60_SPI_MISO_PIN GPIO_Pin_14
+#define ENC28J60_SPI_SCK_PIN GPIO_Pin_13
+#define ENC28J60_GPIO_PORT GPIOB
+#define ENC28J60_SPI_PORT_CLOCK RCC_APB2Periph_GPIOB
+#define SPI_CLOCK RCC_APB1Periph_SPI2
 #endif
 
 #if _SPI_ENC28J60_PORT == 3
-#   define ENC28J60_SPI_PORT SPI3
-#   define ENC28J60_SPI_MOSI_PIN GPIO_Pin_5
-#   define ENC28J60_SPI_MISO_PIN GPIO_Pin_4
-#   define ENC28J60_SPI_SCK_PIN GPIO_Pin_3
-#   define ENC28J60_GPIO_PORT GPIOB
-#   define ENC28J60_SPI_PORT_CLOCK RCC_APB2Periph_GPIOB
-#   define SPI_CLOCK RCC_APB1Periph_SPI3
+#define ENC28J60_SPI_PORT SPI3
+#define ENC28J60_SPI_MOSI_PIN GPIO_Pin_5
+#define ENC28J60_SPI_MISO_PIN GPIO_Pin_4
+#define ENC28J60_SPI_SCK_PIN GPIO_Pin_3
+#define ENC28J60_GPIO_PORT GPIOB
+#define ENC28J60_SPI_PORT_CLOCK RCC_APB2Periph_GPIOB
+#define SPI_CLOCK RCC_APB1Periph_SPI3
 #endif
 
 #if _SPI_ENC28J60_PORT == 1
-#   define ENC28J60_SPI_PORT SPI1
-#   define ENC28J60_SPI_MOSI_PIN GPIO_Pin_7
-#   define ENC28J60_SPI_MISO_PIN GPIO_Pin_6
-#   define ENC28J60_SPI_SCK_PIN GPIO_Pin_5
-#   define ENC28J60_GPIO_PORT GPIOA
-#   define ENC28J60_SPI_PORT_CLOCK RCC_APB2Periph_GPIOA
-#   define SPI_CLOCK RCC_APB2Periph_SPI1
+#define ENC28J60_SPI_PORT SPI1
+#define ENC28J60_SPI_MOSI_PIN GPIO_Pin_7
+#define ENC28J60_SPI_MISO_PIN GPIO_Pin_6
+#define ENC28J60_SPI_SCK_PIN GPIO_Pin_5
+#define ENC28J60_GPIO_PORT GPIOA
+#define ENC28J60_SPI_PORT_CLOCK RCC_APB2Periph_GPIOA
+#define SPI_CLOCK RCC_APB2Periph_SPI1
 #endif
 
 // Init ENC28J60
@@ -55,8 +55,8 @@ uint8_t enc28j60_rcr(uint8_t adr);
 void enc28j60_wcr(uint8_t adr, uint8_t arg);
 uint16_t enc28j60_rcr16(uint8_t adr);
 void enc28j60_wcr16(uint8_t adr, uint16_t arg);
-void enc28j60_bfc(uint8_t adr, uint8_t mask);   // Clr bits (reg &= ~mask)
-void enc28j60_bfs(uint8_t adr, uint8_t mask);   // Set bits (reg |= mask)
+void enc28j60_bfc(uint8_t adr, uint8_t mask);    // Clr bits (reg &= ~mask)
+void enc28j60_bfs(uint8_t adr, uint8_t mask);    // Set bits (reg |= mask)
 
 // R/W Rx/Tx buffer
 void enc28j60_read_buffer(uint8_t* buf, uint16_t len);

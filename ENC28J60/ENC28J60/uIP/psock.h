@@ -79,10 +79,10 @@
  */
 
 #ifndef __PSOCK_H__
-#   define __PSOCK_H__
+#define __PSOCK_H__
 
-#   include "uipopt.h"
-#   include "pt.h"
+#include "uipopt.h"
+#include "pt.h"
 
 /*
  * The structure that holds the state of a buffer.
@@ -92,10 +92,9 @@
  * provided by the library.
  *
  */
-struct psock_buf
-{
-   u8_t* ptr;
-   unsigned short left;
+struct psock_buf {
+    u8_t* ptr;
+    unsigned short left;
 };
 
 /**
@@ -104,25 +103,24 @@ struct psock_buf
  * The protosocket structrure is an opaque structure with no user-visible
  * elements.
  */
-struct psock
-{
-   struct pt pt, psockpt; /* Protothreads - one that's using the psock
+struct psock {
+    struct pt pt, psockpt; /* Protothreads - one that's using the psock
               functions, and one that runs inside the
               psock functions. */
-   const u8_t* sendptr; /* Pointer to the next data to be sent. */
-   u8_t* readptr; /* Pointer to the next data to be read. */
+    const u8_t* sendptr;   /* Pointer to the next data to be sent. */
+    u8_t* readptr;         /* Pointer to the next data to be read. */
 
-   char* bufptr; /* Pointer to the buffer used for buffering
+    char* bufptr; /* Pointer to the buffer used for buffering
      incoming data. */
 
-   u16_t sendlen; /* The number of bytes left to be sent. */
-   u16_t readlen; /* The number of bytes left to be read. */
+    u16_t sendlen; /* The number of bytes left to be sent. */
+    u16_t readlen; /* The number of bytes left to be read. */
 
-   struct psock_buf buf; /* The structure holding the state of the
+    struct psock_buf buf; /* The structure holding the state of the
              input buffer. */
-   unsigned int bufsize; /* The size of the input buffer. */
+    unsigned int bufsize; /* The size of the input buffer. */
 
-   unsigned char state; /* The state of the protosocket. */
+    unsigned char state; /* The state of the protosocket. */
 };
 
 void psock_init(struct psock* psock, char* buffer, unsigned int buffersize);
@@ -143,7 +141,7 @@ void psock_init(struct psock* psock, char* buffer, unsigned int buffersize);
  *
  * \hideinitializer
  */
-#   define PSOCK_INIT(psock, buffer, buffersize) psock_init(psock, buffer, buffersize)
+#define PSOCK_INIT(psock, buffer, buffersize) psock_init(psock, buffer, buffersize)
 
 /**
  * Start the protosocket protothread in a function.
@@ -156,7 +154,7 @@ void psock_init(struct psock* psock, char* buffer, unsigned int buffersize);
  *
  * \hideinitializer
  */
-#   define PSOCK_BEGIN(psock) PT_BEGIN(&((psock)->pt))
+#define PSOCK_BEGIN(psock) PT_BEGIN(&((psock)->pt))
 
 PT_THREAD(psock_send(struct psock* psock, const char* buf, unsigned int len));
 /**
@@ -176,7 +174,7 @@ PT_THREAD(psock_send(struct psock* psock, const char* buf, unsigned int len));
  *
  * \hideinitializer
  */
-#   define PSOCK_SEND(psock, data, datalen) PT_WAIT_THREAD(&((psock)->pt), psock_send(psock, data, datalen))
+#define PSOCK_SEND(psock, data, datalen) PT_WAIT_THREAD(&((psock)->pt), psock_send(psock, data, datalen))
 
 /**
  * \brief      Send a null-terminated string.
@@ -188,7 +186,7 @@ PT_THREAD(psock_send(struct psock* psock, const char* buf, unsigned int len));
  *
  * \hideinitializer
  */
-#   define PSOCK_SEND_STR(psock, str) PT_WAIT_THREAD(&((psock)->pt), psock_send(psock, str, strlen(str)))
+#define PSOCK_SEND_STR(psock, str) PT_WAIT_THREAD(&((psock)->pt), psock_send(psock, str, strlen(str)))
 
 PT_THREAD(psock_generator_send(struct psock* psock, unsigned short (*f)(void*), void* arg));
 
@@ -214,8 +212,8 @@ PT_THREAD(psock_generator_send(struct psock* psock, unsigned short (*f)(void*), 
  *
  * \hideinitializer
  */
-#   define PSOCK_GENERATOR_SEND(psock, generator, arg) \
-      PT_WAIT_THREAD(&((psock)->pt), psock_generator_send(psock, generator, arg))
+#define PSOCK_GENERATOR_SEND(psock, generator, arg) \
+    PT_WAIT_THREAD(&((psock)->pt), psock_generator_send(psock, generator, arg))
 
 /**
  * Close a protosocket.
@@ -228,7 +226,7 @@ PT_THREAD(psock_generator_send(struct psock* psock, unsigned short (*f)(void*), 
  *
  * \hideinitializer
  */
-#   define PSOCK_CLOSE(psock) uip_close()
+#define PSOCK_CLOSE(psock) uip_close()
 
 PT_THREAD(psock_readbuf(struct psock* psock));
 /**
@@ -243,7 +241,7 @@ PT_THREAD(psock_readbuf(struct psock* psock));
  *
  * \hideinitializer
  */
-#   define PSOCK_READBUF(psock) PT_WAIT_THREAD(&((psock)->pt), psock_readbuf(psock))
+#define PSOCK_READBUF(psock) PT_WAIT_THREAD(&((psock)->pt), psock_readbuf(psock))
 
 PT_THREAD(psock_readto(struct psock* psock, unsigned char c));
 /**
@@ -260,7 +258,7 @@ PT_THREAD(psock_readto(struct psock* psock, unsigned char c));
  *
  * \hideinitializer
  */
-#   define PSOCK_READTO(psock, c) PT_WAIT_THREAD(&((psock)->pt), psock_readto(psock, c))
+#define PSOCK_READTO(psock, c) PT_WAIT_THREAD(&((psock)->pt), psock_readto(psock, c))
 
 /**
  * The length of the data that was previously read.
@@ -272,7 +270,7 @@ PT_THREAD(psock_readto(struct psock* psock, unsigned char c));
  *
  * \hideinitializer
  */
-#   define PSOCK_DATALEN(psock) psock_datalen(psock)
+#define PSOCK_DATALEN(psock) psock_datalen(psock)
 
 u16_t psock_datalen(struct psock* psock);
 
@@ -288,7 +286,7 @@ u16_t psock_datalen(struct psock* psock);
  *
  * \hideinitializer
  */
-#   define PSOCK_EXIT(psock) PT_EXIT(&((psock)->pt))
+#define PSOCK_EXIT(psock) PT_EXIT(&((psock)->pt))
 
 /**
  * Close a protosocket and exit the protosocket's protothread.
@@ -299,12 +297,11 @@ u16_t psock_datalen(struct psock* psock);
  *
  * \hideinitializer
  */
-#   define PSOCK_CLOSE_EXIT(psock) \
-      do \
-      { \
-         PSOCK_CLOSE(psock); \
-         PSOCK_EXIT(psock); \
-      } while (0)
+#define PSOCK_CLOSE_EXIT(psock) \
+    do { \
+        PSOCK_CLOSE(psock); \
+        PSOCK_EXIT(psock); \
+    } while(0)
 
 /**
  * Declare the end of a protosocket's protothread.
@@ -317,7 +314,7 @@ u16_t psock_datalen(struct psock* psock);
  *
  * \hideinitializer
  */
-#   define PSOCK_END(psock) PT_END(&((psock)->pt))
+#define PSOCK_END(psock) PT_END(&((psock)->pt))
 
 char psock_newdata(struct psock* s);
 
@@ -331,7 +328,7 @@ char psock_newdata(struct psock* s);
  *
  * \hideinitializer
  */
-#   define PSOCK_NEWDATA(psock) psock_newdata(psock)
+#define PSOCK_NEWDATA(psock) psock_newdata(psock)
 
 /**
  * Wait until a condition is true.
@@ -364,9 +361,9 @@ char psock_newdata(struct psock* s);
  *
  * \hideinitializer
  */
-#   define PSOCK_WAIT_UNTIL(psock, condition) PT_WAIT_UNTIL(&((psock)->pt), (condition));
+#define PSOCK_WAIT_UNTIL(psock, condition) PT_WAIT_UNTIL(&((psock)->pt), (condition));
 
-#   define PSOCK_WAIT_THREAD(psock, condition) PT_WAIT_THREAD(&((psock)->pt), (condition))
+#define PSOCK_WAIT_THREAD(psock, condition) PT_WAIT_THREAD(&((psock)->pt), (condition))
 
 #endif /* __PSOCK_H__ */
 

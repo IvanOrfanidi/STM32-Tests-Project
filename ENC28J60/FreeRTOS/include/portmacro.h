@@ -93,12 +93,12 @@ typedef portSTACK_TYPE StackType_t;
 typedef long BaseType_t;
 typedef unsigned long UBaseType_t;
 
-#if (configUSE_16_BIT_TICKS == 1)
+#if(configUSE_16_BIT_TICKS == 1)
 typedef uint16_t TickType_t;
-#   define portMAX_DELAY 0xffff
+#define portMAX_DELAY 0xffff
 #else
 typedef uint32_t TickType_t;
-#   define portMAX_DELAY 0xffffffffUL
+#define portMAX_DELAY 0xffffffffUL
 #endif
 /*-----------------------------------------------------------*/
 
@@ -114,8 +114,8 @@ extern void vPortYield(void);
 #define portNVIC_PENDSVSET_BIT (1UL << 28UL)
 #define portYIELD() vPortYield()
 #define portEND_SWITCHING_ISR(xSwitchRequired) \
-   if (xSwitchRequired) \
-   portNVIC_INT_CTRL_REG = portNVIC_PENDSVSET_BIT
+    if(xSwitchRequired) \
+    portNVIC_INT_CTRL_REG = portNVIC_PENDSVSET_BIT
 #define portYIELD_FROM_ISR(x) portEND_SWITCHING_ISR(x)
 /*-----------------------------------------------------------*/
 
@@ -123,18 +123,18 @@ extern void vPortYield(void);
 #if configUSE_PORT_OPTIMISED_TASK_SELECTION == 1
 
 /* Check the configuration. */
-#   if (configMAX_PRIORITIES > 32)
+#if(configMAX_PRIORITIES > 32)
 #error configUSE_PORT_OPTIMISED_TASK_SELECTION can only be set to 1 when configMAX_PRIORITIES is less than or equal to 32.  It is very rare that a system requires more than 10 to 15 difference priorities as tasks that share a priority will time slice.
-#   endif
+#endif
 
 /* Store/clear the ready priorities in a bit map. */
-#   define portRECORD_READY_PRIORITY(uxPriority, uxReadyPriorities) ((uxReadyPriorities) |= (1UL << (uxPriority)))
-#   define portRESET_READY_PRIORITY(uxPriority, uxReadyPriorities) ((uxReadyPriorities) &= ~(1UL << (uxPriority)))
+#define portRECORD_READY_PRIORITY(uxPriority, uxReadyPriorities) ((uxReadyPriorities) |= (1UL << (uxPriority)))
+#define portRESET_READY_PRIORITY(uxPriority, uxReadyPriorities) ((uxReadyPriorities) &= ~(1UL << (uxPriority)))
 
 /*-----------------------------------------------------------*/
 
-#   include <intrinsics.h>
-#   define portGET_HIGHEST_PRIORITY(uxTopPriority, uxReadyPriorities) uxTopPriority = (31 - __CLZ((uxReadyPriorities)))
+#include <intrinsics.h>
+#define portGET_HIGHEST_PRIORITY(uxTopPriority, uxReadyPriorities) uxTopPriority = (31 - __CLZ((uxReadyPriorities)))
 
 #endif /* configUSE_PORT_OPTIMISED_TASK_SELECTION */
 /*-----------------------------------------------------------*/
@@ -156,7 +156,7 @@ extern void vPortClearInterruptMask(uint32_t ulNewMask);
 /* Tickless idle/low power functionality. */
 #ifndef portSUPPRESS_TICKS_AND_SLEEP
 extern void vPortSuppressTicksAndSleep(TickType_t xExpectedIdleTime);
-#   define portSUPPRESS_TICKS_AND_SLEEP(xExpectedIdleTime) vPortSuppressTicksAndSleep(xExpectedIdleTime)
+#define portSUPPRESS_TICKS_AND_SLEEP(xExpectedIdleTime) vPortSuppressTicksAndSleep(xExpectedIdleTime)
 #endif
 /*-----------------------------------------------------------*/
 
@@ -169,7 +169,7 @@ not necessary for to use this port.  They are defined so the common demo files
 
 #ifdef configASSERT
 void vPortValidateInterruptPriority(void);
-#   define portASSERT_IF_INTERRUPT_PRIORITY_INVALID() vPortValidateInterruptPriority()
+#define portASSERT_IF_INTERRUPT_PRIORITY_INVALID() vPortValidateInterruptPriority()
 #endif
 
 /* portNOP() is not required by this port. */

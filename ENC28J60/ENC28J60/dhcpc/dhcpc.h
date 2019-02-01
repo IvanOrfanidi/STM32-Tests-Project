@@ -36,23 +36,22 @@
 #include "timer.h"
 #include "pt.h"
 
-struct dhcpc_state
-{
-   struct pt pt;
-   char state;
-   struct uip_udp_conn* conn;
-   struct timer timer;
-   u16_t ticks;
-   const void* mac_addr;
-   int mac_len;
+struct dhcpc_state {
+    struct pt pt;
+    char state;
+    struct uip_udp_conn* conn;
+    struct timer timer;
+    u16_t ticks;
+    const void* mac_addr;
+    int mac_len;
 
-   u8_t serverid[4];
+    u8_t serverid[4];
 
-   u16_t lease_time[2];
-   u16_t ipaddr[2];
-   u16_t netmask[2];
-   u16_t dnsaddr[2];
-   u16_t default_router[2];
+    u16_t lease_time[2];
+    u16_t ipaddr[2];
+    u16_t netmask[2];
+    u16_t dnsaddr[2];
+    u16_t default_router[2];
 };
 
 void dhcpc_init(const void* mac_addr, int mac_len);

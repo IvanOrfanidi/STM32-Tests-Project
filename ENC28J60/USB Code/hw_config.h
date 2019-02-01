@@ -27,21 +27,21 @@
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __HW_CONFIG_H
-#   define __HW_CONFIG_H
+#define __HW_CONFIG_H
 
-#   define SIZE_USB_DATA_BUFFER 64
+#define SIZE_USB_DATA_BUFFER 64
 
 /* Includes ------------------------------------------------------------------*/
-#   include "stm32f10x.h"
-#   include "platform_config_usb.h"
-#   include "usb_type.h"
+#include "stm32f10x.h"
+#include "platform_config_usb.h"
+#include "usb_type.h"
 
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/
 /* Exported macro ------------------------------------------------------------*/
 /* Exported define -----------------------------------------------------------*/
-#   define MASS_MEMORY_START 0x04002000
-#   define BULK_MAX_PACKET_SIZE 0x00000040
+#define MASS_MEMORY_START 0x04002000
+#define BULK_MAX_PACKET_SIZE 0x00000040
 
 /* Exported functions ------------------------------------------------------- */
 void Set_System(void);
