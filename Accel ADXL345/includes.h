@@ -9,11 +9,11 @@
 
 // Правило одного определения
 #ifdef __ALLOCATE_NOW__
-#   define GLOBAL PUBLIC
-#   define _EQU(x) = (x)
+#define GLOBAL PUBLIC
+#define _EQU(x) = (x)
 #else
-#   define GLOBAL _EXTERN
-#   define _EQU(x)
+#define GLOBAL _EXTERN
+#define _EQU(x)
 #endif
 
 // В описании функции могут быть определены дополнительные коды ошибок (#define)
@@ -75,11 +75,11 @@
 
 typedef __packed struct
 {
-   int16_t sValueAxisX;
-   int16_t sValueAxisY;
-   int16_t sValueAxisZ;
-   u8 ucInterrupt;
-   _Bool bDataValid;
+    int16_t sValueAxisX;
+    int16_t sValueAxisY;
+    int16_t sValueAxisZ;
+    u8 ucInterrupt;
+    _Bool bDataValid;
 } TAccel_Data;
 
 //**********************//
@@ -92,10 +92,10 @@ GLOBAL uint8_t g_aucTxBufferUSART1[TX_BUFFER_SIZE1];
 GLOBAL uint8_t g_aucTxBufferUSART2[TX_BUFFER_SIZE2];
 GLOBAL uint8_t g_aucTxBufferUSART3[TX_BUFFER_SIZE3];
 
-GLOBAL xQueueHandle xQueueAccelDataToUsart;   // Очередь данных
+GLOBAL xQueueHandle xQueueAccelDataToUsart;    // Очередь данных
 //**********************//
 
-GLOBAL xTaskHandle CurrentTaskHandle;   // ID текущего процесса(Debug)
-GLOBAL char* pNameCurrentTask;   //Имя текущего процесса(Debug)
+GLOBAL xTaskHandle CurrentTaskHandle;    // ID текущего процесса(Debug)
+GLOBAL char* pNameCurrentTask;           //Имя текущего процесса(Debug)
 
 #endif
