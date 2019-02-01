@@ -9,11 +9,11 @@
 
 // Правило одного определения
 #ifdef __ALLOCATE_NOW__
-#   define GLOBAL PUBLIC
-#   define _EQU(x) = (x)
+#define GLOBAL PUBLIC
+#define _EQU(x) = (x)
 #else
-#   define GLOBAL _EXTERN
-#   define _EQU(x)
+#define GLOBAL _EXTERN
+#define _EQU(x)
 #endif
 
 // В описании функции могут быть определены дополнительные коды ошибок (#define)
@@ -100,26 +100,25 @@ GLOBAL uint8_t g_aucTxBufferUSART3[TX_BUFFER_SIZE3];
 
 //**********************//
 
-typedef enum
-{
-   CHARGING_OFF = 0,
-   CHARGING_ON,
-   CHARGING_COMPLET
+typedef enum {
+    CHARGING_OFF = 0,
+    CHARGING_ON,
+    CHARGING_COMPLET
 } TYPE_CHARGING;
 GLOBAL TYPE_CHARGING g_eStatusCharging _EQU(CHARGING_OFF);
 
 typedef __packed struct
 {
-   int16_t sValueAxisX;
-   int16_t sValueAxisY;
-   int16_t sValueAxisZ;
-   u8 ucInterrupt;
-   _Bool bDataValid;
+    int16_t sValueAxisX;
+    int16_t sValueAxisY;
+    int16_t sValueAxisZ;
+    u8 ucInterrupt;
+    _Bool bDataValid;
 } TAccel_Data;
 GLOBAL TAccel_Data g_stAccelData;
 
-GLOBAL xTaskHandle CurrentTaskHandle;   // ID текущего процесса(Debug)
-GLOBAL char* pNameCurrentTask;   //Имя текущего процесса(Debug)
+GLOBAL xTaskHandle CurrentTaskHandle;    // ID текущего процесса(Debug)
+GLOBAL char* pNameCurrentTask;           //Имя текущего процесса(Debug)
 
 void IncreaseCountShot(void);
 
