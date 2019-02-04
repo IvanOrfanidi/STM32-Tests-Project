@@ -37,11 +37,6 @@
 /  If it is not the case, the value can also be set to 1 to improve the
 /  performance and code efficiency. */
 
-#define _FS_READONLY 0
-/* Setting _FS_READONLY to 1 defines read only configuration. This removes
-/  writing functions, f_write, f_sync, f_unlink, f_mkdir, f_chmod, f_rename,
-/  f_truncate and useless f_getfree. */
-
 #define _FS_MINIMIZE 0
 /* The _FS_MINIMIZE option defines minimization level to remove some functions.
 /
@@ -60,7 +55,7 @@
 /* To enable string functions, set _USE_STRFUNC to 1 or 2. */
 
 #define _USE_MKFS 1
-/* To enable f_mkfs function, set _USE_MKFS to 1 and set _FS_READONLY to 0 */
+/* To enable f_mkfs function, set _USE_MKFS to 1 */
 
 #define _USE_FORWARD 1
 /* To enable f_forward function, set _USE_FORWARD to 1 and set _FS_TINY to 1. */
@@ -562,12 +557,10 @@ typedef struct _FATFS_ {
 #if _MAX_SS != 512
     uint16_t s_size; /* Sector size */
 #endif
-#if !_FS_READONLY
     uint8_t fsi_flag;    /* fsinfo dirty flag (1:must be written back) */
     uint32_t last_clust; /* Last allocated cluster */
     uint32_t free_clust; /* Number of free clusters */
     uint32_t fsi_sector; /* fsinfo sector */
-#endif
 #if _FS_RPATH
     uint32_t cdir; /* Current directory (0:root)*/
 #endif
@@ -609,10 +602,8 @@ typedef struct _FIL_ {
     uint32_t org_clust;  /* File start cluster */
     uint32_t curr_clust; /* Current cluster */
     uint32_t dsect;      /* Current data sector */
-#if !_FS_READONLY
     uint32_t dir_sect; /* Sector containing the directory entry */
     uint8_t* dir_ptr;  /* Ponter to the directory entry in the window */
-#endif
 #if !_FS_TINY
     uint8_t buf[_MAX_SS]; /* File R/W buffer */
 #endif
@@ -696,10 +687,8 @@ char* f_gets(char*, int, FIL*);       /* Get a string from the file */
 /* User defined functions                                       */
 
 /* Real time clock */
-#if !_FS_READONLY
 uint32_t get_fattime(void); /* 31-25: Year(0-127 org.1980), 24-21: Month(1-12), 20-16: Day(1-31) */
 /* 15-11: Hour(0-23), 10-5: Minute(0-59), 4-0: Second(0-29 *2) */
-#endif
 
 /* Unicode - OEM code conversion */
 #if _USE_LFN
@@ -722,14 +711,12 @@ void ff_rel_grant(_SYNC_t);
 
 #define FA_READ 0x01
 #define FA_OPEN_EXISTING 0x00
-#if _FS_READONLY == 0
 #define FA_WRITE 0x02
 #define FA_CREATE_NEW 0x04
 #define FA_CREATE_ALWAYS 0x08
 #define FA_OPEN_ALWAYS 0x10
 #define FA__WRITTEN 0x20
 #define FA__DIRTY 0x40
-#endif
 #define FA__ERROR 0x80
 
 /* FAT sub type (FATFS.fs_type) */
