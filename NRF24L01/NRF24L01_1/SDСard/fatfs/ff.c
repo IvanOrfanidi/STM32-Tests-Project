@@ -309,7 +309,7 @@ static uint32_t get_fat(FATFS* fs, uint32_t clst)
     uint16_t wc;
     uint16_t bc;
     uint32_t fsect = fs->fatbase;
-switch(fs->fs_type) {
+    switch(fs->fs_type) {
         case FS_FAT12:
             bc = clst;
             bc += bc / 2;

@@ -19,15 +19,14 @@
 #include "board.hpp"
 
 /// Addresses of the RX_PW_P# registers
-const uint8_t RX_PW_PIPE[] =
-    {
-        Nrf::REG_RX_PW_P0,
-        Nrf::REG_RX_PW_P1,
-        Nrf::REG_RX_PW_P2,
-        Nrf::REG_RX_PW_P3,
-        Nrf::REG_RX_PW_P4,
-        Nrf::REG_RX_PW_P5
-    };
+const uint8_t RX_PW_PIPE[] = {
+    Nrf::REG_RX_PW_P0,
+    Nrf::REG_RX_PW_P1,
+    Nrf::REG_RX_PW_P2,
+    Nrf::REG_RX_PW_P3,
+    Nrf::REG_RX_PW_P4,
+    Nrf::REG_RX_PW_P5
+};
 
 /**
  * @brief Static instances of a class
@@ -653,16 +652,15 @@ void Nrf::SetAddrWidth(uint8_t addr_width) const
 void Nrf::SetAddr(uint8_t pipe, const uint8_t* addr) const
 {
     /// Addresses of the address registers
-    const uint8_t ADDR_REGS[] =
-        {
-            Nrf::REG_RX_ADDR_P0,
-            Nrf::REG_RX_ADDR_P1,
-            Nrf::REG_RX_ADDR_P2,
-            Nrf::REG_RX_ADDR_P3,
-            Nrf::REG_RX_ADDR_P4,
-            Nrf::REG_RX_ADDR_P5,
-            Nrf::REG_TX_ADDR
-        };
+    const uint8_t ADDR_REGS[] = {
+        Nrf::REG_RX_ADDR_P0,
+        Nrf::REG_RX_ADDR_P1,
+        Nrf::REG_RX_ADDR_P2,
+        Nrf::REG_RX_ADDR_P3,
+        Nrf::REG_RX_ADDR_P4,
+        Nrf::REG_RX_ADDR_P5,
+        Nrf::REG_TX_ADDR
+    };
 
     // RX_ADDR_Px register
     uint8_t addr_width;
