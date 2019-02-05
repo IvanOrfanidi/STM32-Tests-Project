@@ -2430,24 +2430,6 @@
         </file>
     </group>
     <group>
-        <name>SDCard</name>
-        <group>
-            <name>fatfs</name>
-            <file>
-                <name>$PROJ_DIR$\SDСard\fatfs\ff.c</name>
-            </file>
-        </group>
-        <file>
-            <name>$PROJ_DIR$\SDСard\diskio.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\SDСard\sdcard.cpp</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\SDСard\sdcard.hpp</name>
-        </file>
-    </group>
-    <group>
         <name>StdPeriphLib</name>
         <file>
             <name>$PROJ_DIR$\..\StdPeriphLib\src\misc.c</name>

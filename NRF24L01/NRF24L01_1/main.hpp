@@ -28,7 +28,6 @@
 #include "virtual_port.hpp"
 #include "nrf24l01.hpp"
 #include "rtc.hpp"
-#include "sdcard.hpp"
 
 #include <stdint.h>
 #include <time.h>

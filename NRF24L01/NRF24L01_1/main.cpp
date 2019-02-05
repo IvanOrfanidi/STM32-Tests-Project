@@ -79,15 +79,15 @@ Main::Main()
     txSingle = new Nrf(VPortSpi, GPIOB, GPIO_Pin_0, GPIOB, GPIO_Pin_2);
     if((txSingle == nullptr) || (txSingle->CreateClass() == false)) {
         cout << "Class Nrf was not created!\r";
-        while(true)
-            ;
+        while(true) {
+        }
     }
 
     // Check radio
     if(!(txSingle->Check())) {
         cout << "nRF fail!\r";
-        while(true)
-            ;
+        while(true) {
+        }
     }
 
     IWDG_ReloadCounter();

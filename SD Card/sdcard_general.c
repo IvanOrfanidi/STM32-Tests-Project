@@ -30,7 +30,7 @@ FATFS fs;          // Work area (file system object) for logical drive
 FIL fsrc, fdst;    // file objects
 // BYTE BufferSdCard[_MAX_SS]; // file copy BufferSDCard
 FRESULT res;    // FatFs function common result code
-UINT br, bw;    // File R/W count
+uint32_t br, bw;    // File R/W count
 
 #define MAX_NUM_FILES 10
 #define MAX_NUM_CHAR_FILE 13

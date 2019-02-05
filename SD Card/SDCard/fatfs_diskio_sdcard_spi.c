@@ -962,11 +962,11 @@ typedef struct
     DWORD year : 7;     // биты 25-31
 } fat_time_t;
 
-DWORD get_fattime(void)
+uint32_t get_fattime(void)
 {
     union {
         fat_time_t fat_time;
-        DWORD dword;
+        uint32_t dword;
     } time;
 
     time.fat_time.sec = 0;
@@ -979,17 +979,14 @@ DWORD get_fattime(void)
     return time.dword;
 }
 
-WCHAR ff_convert(/* Converted character, Returns zero on error */
-    WCHAR src,   /* Character code to be converted */
-    UINT dir     /* 0: Unicode to OEMCP, 1: OEMCP to Unicode */
-)
+
+uint16_t ff_convert(uint16_t src, uint32_t dir)
 {
     return src;
 }
 
-WCHAR ff_wtoupper(/* Upper converted character */
-    WCHAR chr     /* Input character */
-)
+
+uint16_t ff_wtoupper(uint16_t chr)
 {
     return chr;
 }

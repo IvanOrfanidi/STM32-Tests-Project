@@ -12,15 +12,14 @@ int main()
 
     InitBKP();
 
-    rtc_init();
+    //rtc_init();
 
     SD_Init();
 
     OutPutFile();
 
     // Start Task //
-    xTaskCreate(
-        vSdCardTask, "vSdCardTask", configMINIMAL_STACK_SIZE * 1, NULL, tskIDLE_PRIORITY + 1, &xHandleSDCardTask);
+    xTaskCreate(vSdCardTask, "vSdCardTask", configMINIMAL_STACK_SIZE * 1, NULL, tskIDLE_PRIORITY + 1, &xHandleSDCardTask);
 
     // Start scheduler //
     osKernelStart(NULL, NULL);
@@ -28,13 +27,13 @@ int main()
 
 void vApplicationMallocFailedHook(void)
 {
-    for(;;)
-        ;
+    for(;;) {
+    }
 }
 void vApplicationStackOverflowHook(TaskHandle_t pxTask, char* pcTaskName)
 {
-    for(;;)
-        ;
+    for(;;) {
+    }
 }
 
 void vApplicationIdleHook(void)

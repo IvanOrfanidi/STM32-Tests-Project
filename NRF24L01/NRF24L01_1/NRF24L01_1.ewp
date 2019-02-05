@@ -359,8 +359,6 @@
                     <state>$PROJ_DIR$\..\Drivers\EXTI</state>
                     <state>$PROJ_DIR$\..\Drivers\RTC</state>
                     <state>$PROJ_DIR$\..\nrf24l01</state>
-                    <state>$PROJ_DIR$\SDСard</state>
-                    <state>$PROJ_DIR$\SDСard\fatfs</state>
                 </option>
                 <option>
                     <name>CCStdIncCheck</name>
@@ -1393,7 +1391,6 @@
                     <state>$PROJ_DIR$\..\Drivers\EXTI</state>
                     <state>$PROJ_DIR$\..\Drivers\RTC</state>
                     <state>$PROJ_DIR$\..\nrf24l01</state>
-                    <state>$PROJ_DIR$\SDСard</state>
                 </option>
                 <option>
                     <name>CCStdIncCheck</name>
@@ -2126,24 +2123,6 @@
         </file>
         <file>
             <name>$PROJ_DIR$\..\nrf24l01\nrf24l01.hpp</name>
-        </file>
-    </group>
-    <group>
-        <name>SDCard</name>
-        <group>
-            <name>fatfs</name>
-            <file>
-                <name>$PROJ_DIR$\SDСard\fatfs\ff.c</name>
-            </file>
-        </group>
-        <file>
-            <name>$PROJ_DIR$\SDСard\diskio.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\SDСard\sdcard.cpp</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\SDСard\sdcard.hpp</name>
         </file>
     </group>
     <group>
