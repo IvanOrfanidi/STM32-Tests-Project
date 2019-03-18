@@ -1,4 +1,4 @@
-DRC Rules Export File for PCB: E:\STM32-Tests-Project\Archery2\PCB\Archer.PcbDoc
+DRC Rules Export File for PCB: D:\Home\STM32-Tests-Project\Archery2\PCB\Archer.PcbDoc
 RuleKind=Width|RuleName=Width_PowerClass_0.3mm|Scope=Board|Minimum=11.81
 RuleKind=Clearance|RuleName=Clearance_U1_0.1mm|Scope=Board|Minimum=3.94
 RuleKind=Clearance|RuleName=Clearance_All_0.22mm|Scope=Board|Minimum=8.66
