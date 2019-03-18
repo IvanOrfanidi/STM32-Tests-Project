@@ -639,7 +639,7 @@ static void SetSysClockTo48(void)
         /* PCLK1 = HCLK */
         RCC->CFGR |= (uint32_t)RCC_CFGR_PPRE1_DIV2;    // AHB1 Prescaler
 
-        /*  PLL configuration: PLLCLK = HSE * 6 = 48 MHz */
+        /*  PLL configuration: PLLCLK = HSE * 12 = 48 MHz */
         RCC->CFGR &= (uint32_t)((uint32_t) ~(RCC_CFGR_PLLSRC | RCC_CFGR_PLLXTPRE | RCC_CFGR_PLLMULL));
         RCC->CFGR |= (uint32_t)(RCC_CFGR_PLLSRC_HSE | RCC_CFGR_PLLXTPRE_HSE | RCC_CFGR_PLLMULL12);
 

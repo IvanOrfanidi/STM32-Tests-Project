@@ -270,8 +270,9 @@ void usbInitDriver(void)
 
 void usbDeInitDriver(void)
 {
-    if(!(fInitUsb))
+    if(!(fInitUsb)) {
         return;
+    }
     fInitUsb = FALSE;
 
     USB_CONN_OFF;
@@ -286,7 +287,7 @@ void vBuzzerTask(void* pvParameters)
     portTickType xLastWakeTimerDelay;
     portTickType xTimeout = 0;
 
-    while(1) {
+    while(TRUE) {
         if(!(xQueueReceive(xBuzQueue, &xTimeout, (TickType_t)10))) {
             xTimeout = 0;
         }
