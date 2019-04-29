@@ -358,6 +358,7 @@
                     <state>$PROJ_DIR$\..\Drivers\SPI</state>
                     <state>$PROJ_DIR$\..\Drivers\EXTI</state>
                     <state>$PROJ_DIR$\..\Drivers\RTC</state>
+                    <state>$PROJ_DIR$\..\Drivers\SoftTimer</state>
                     <state>$PROJ_DIR$\..\nrf24l01</state>
                 </option>
                 <option>
@@ -1390,6 +1391,7 @@
                     <state>$PROJ_DIR$\..\Drivers\SPI</state>
                     <state>$PROJ_DIR$\..\Drivers\EXTI</state>
                     <state>$PROJ_DIR$\..\Drivers\RTC</state>
+                    <state>$PROJ_DIR$\..\Drivers\SoftTimer</state>
                     <state>$PROJ_DIR$\..\nrf24l01</state>
                 </option>
                 <option>
@@ -2089,6 +2091,12 @@
             </file>
             <file>
                 <name>$PROJ_DIR$\..\Drivers\RTC\rtc.hpp</name>
+            </file>
+        </group>
+        <group>
+            <name>SoftTimer</name>
+            <file>
+                <name>$PROJ_DIR$\..\Drivers\SoftTimer\soft_timer.hpp</name>
             </file>
         </group>
         <group>

@@ -2396,6 +2396,12 @@
             </file>
         </group>
         <group>
+            <name>SoftTimer</name>
+            <file>
+                <name>$PROJ_DIR$\..\Drivers\SoftTimer\soft_timer.hpp</name>
+            </file>
+        </group>
+        <group>
             <name>SPI</name>
             <file>
                 <name>$PROJ_DIR$\..\Drivers\SPI\spi.cpp</name>

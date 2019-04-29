@@ -3,20 +3,20 @@
  * @file    system.cpp
  * @author  Ivan Orfanidi
  * @version V1.0.0
- * @date    27-01-2019
+ * @date    04-2019
  * @brief   This file system
  ******************************************************************************
  * @attention
  *
  *
- * <h2><center>&copy; COPYRIGHT 2011 STMicroelectronics</center></h2>
  ******************************************************************************
  */
 
 /* Includes ------------------------------------------------------------------*/
 #include "system.hpp"
 
-uint32_t System::SysCount = 0;
+time_t System::SysCount = 0;
+FunctionalState System::SysTickState = DISABLE;
 
 /*
  * @brief  Set NVIC Priority Group.
@@ -54,7 +54,7 @@ void System::SetNvicPriorityGroup(uint32_t priority_group)
  * @brief  Update and geting System Clock Core.
  * @retval System Clock Core.
  */
-uint32_t System::ClockUpdate()
+time_t System::ClockUpdate()
 {
     SystemCoreClockUpdate();
     return SystemCoreClock;
@@ -68,24 +68,58 @@ uint32_t System::ClockUpdate()
  *                      / 1000000  |   1us  /
  * @retval None.
  */
-void System::InitSysTick(uint32_t ticks_us)
+void System::InitSysTick(time_t ticks_us)
 {
     while(SysTick_Config(SystemCoreClock / ticks_us)) {
         // Wait running System Tick
     }
+    SysTickDisableIRQ();
     __enable_irq();
 }
 
-uint32_t System::GetSysCount()
+/**
+ * @brief  Set SysTick in mode Clock
+ * @param [in] state - ENABLE or DISABLE
+ */
+void System::SysTickClock(FunctionalState state)
+{
+    if(ENABLE == state) {
+        SysTickEnableIRQ();
+        __enable_irq();
+    }
+    else {
+        SysTickDisableIRQ();
+    }
+}
+
+/**
+ * @brief  Get conunter clock.
+ * @retval counter.
+ */
+time_t System::GetSysCount()
 {
     return SysCount;
 }
 
-void System::DelayMS(uint32_t delay)
+/**
+ * @brief  Delay in MS
+ * @retval None.
+ */
+void System::DelayMS(time_t delay)
 {
+    bool last = false;
+    if(DISABLE == SysTickState) {
+        SysTickEnableIRQ();
+        last = true;
+    }
+
     delay += SysCount;
-    while(delay >= SysCount)
-        ;
+    while(delay >= SysCount) {
+    }
+
+    if(last) {
+        SysTickDisableIRQ();
+    }
 }
 
 /**

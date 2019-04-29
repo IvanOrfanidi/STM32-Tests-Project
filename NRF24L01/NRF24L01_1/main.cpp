@@ -42,14 +42,6 @@ Main::Main()
 
     /* Initialisation RTC */
     Rtc::Init();
-    RTC_t rtc;
-    rtc.Year = 2017;
-    rtc.Month = 7;
-    rtc.Mday = 14;
-    rtc.Hour = 2;
-    rtc.Min = 40;
-    rtc.Sec = 0;
-    Rtc::SetTime(&rtc);
 
     /* Initialisation Watchdog Timer */
     Board::InitIWDG();
@@ -73,18 +65,18 @@ Main::Main()
     Spi Spi1(SPI1, &initStruct);
     VirtualPort* const VPortSpi = &Spi1;
 
-    strcpy(AddrNrf, "ESB");
+    strcpy(_AddrNrf, "ESB");
 
     /* Create radio */
-    txSingle = new Nrf(VPortSpi, GPIOB, GPIO_Pin_0, GPIOB, GPIO_Pin_2);
-    if((txSingle == nullptr) || (txSingle->CreateClass() == false)) {
+    _txSingle = new Nrf(VPortSpi, GPIOB, GPIO_Pin_0, GPIOB, GPIO_Pin_2);
+    if((_txSingle == nullptr) || (_txSingle->CreateClass() == false)) {
         cout << "Class Nrf was not created!\r";
         while(true) {
         }
     }
 
     // Check radio
-    if(!(txSingle->Check())) {
+    if(!(_txSingle->Check())) {
         cout << "nRF fail!\r";
         while(true) {
         }
@@ -103,12 +95,12 @@ Main::Main()
     settingsNrf.StateAutoAck = Nrf::AA_ON;                // Auto-ACK
     settingsNrf.AutoRetransmitDelay = Nrf::ARD_2500us;    // pause of 2500s in between
     settingsNrf.CountAutoRetransmits = 10;                // Count retransmissions
-    settingsNrf.AddrWidth = strlen(AddrNrf);              // Address width, its common for all pipes (RX and TX)
-    memcpy(settingsNrf.Addr, AddrNrf, strlen(AddrNrf));
-    txSingle->Init(settingsNrf);
+    settingsNrf.AddrWidth = strlen(_AddrNrf);             // Address width, its common for all pipes (RX and TX)
+    memcpy(settingsNrf.Addr, _AddrNrf, strlen(_AddrNrf));
+    _txSingle->Init(settingsNrf);
 
     // Wake the transceiver
-    txSingle->Enable();
+    _txSingle->Enable();
     System::DelayMS(5);
 
     /* Creating an external interrupt */
@@ -139,8 +131,8 @@ Main::Main()
         }
 
         // Transmit a packet
-        const Nrf::TXResult_t res = txSingle->TransmitPacket(buffer, length);
-        uint8_t otx = txSingle->GetRetransmitCounters();
+        const Nrf::TXResult_t res = _txSingle->TransmitPacket(buffer, length);
+        uint8_t otx = _txSingle->GetRetransmitCounters();
         otxPlosCnt = (otx & Nrf::MASK_PLOS_CNT) >> 4;    // packets lost counter
         otxArcCnt = (otx & Nrf::MASK_ARC_CNT);           // auto retransmissions counter
 
@@ -169,25 +161,25 @@ bool Main::ChannelBusy(uint8_t channel)
     settingsNrf.StateAutoAck = Nrf::AA_OFF;               // Auto-ACK
     settingsNrf.AutoRetransmitDelay = Nrf::ARD_2500us;    // pause of 2500s in between
     settingsNrf.CountAutoRetransmits = 10;                // Count retransmissions
-    settingsNrf.AddrWidth = strlen(AddrNrf);              // Address width, its common for all pipes (RX and TX)
-    memcpy(settingsNrf.Addr, AddrNrf, strlen(AddrNrf));
-    txSingle->Init(settingsNrf);
+    settingsNrf.AddrWidth = strlen(_AddrNrf);             // Address width, its common for all pipes (RX and TX)
+    memcpy(settingsNrf.Addr, _AddrNrf, strlen(_AddrNrf));
+    _txSingle->Init(settingsNrf);
 
     // Test Channel
-    txSingle->SetRFChannel(channel);    // 55 Channel is busy
-    txSingle->Enable();
+    _txSingle->SetRFChannel(channel);    // 55 Channel is busy
+    _txSingle->Enable();
     System::DelayMS(5);
-    txSingle->RxOn();
+    _txSingle->RxOn();
     uint32_t timeout = TEST_CHANNEL;
     while(timeout--) {
-        if(txSingle->GetReceivedPowerDetector()) {
+        if(_txSingle->GetReceivedPowerDetector()) {
             return true;
         }
         IWDG_ReloadCounter();
         System::DelayMS(1);
     }
-    txSingle->RxOff();
-    txSingle->Disable();
+    _txSingle->RxOff();
+    _txSingle->Disable();
     System::DelayMS(5);
 
     return false;

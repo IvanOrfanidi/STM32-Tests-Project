@@ -25,6 +25,7 @@
 #include "uart.hpp"
 #include "spi.hpp"
 #include "exti.hpp"
+#include "soft_timer.hpp"
 #include "virtual_port.hpp"
 #include "nrf24l01.hpp"
 #include "rtc.hpp"
@@ -46,11 +47,12 @@ class Main {
 
     bool ChannelBusy(uint8_t);
 
-    char AddrNrf[Nrf::MAX_SIZE_ADDRESS];
-
-    class Nrf* txSingle;
-
     class VirtualPort* VPortUart;
+
+  private:
+    char _AddrNrf[Nrf::MAX_SIZE_ADDRESS];
+
+    class Nrf* _txSingle;
 };
 
 extern "C" {

@@ -19,6 +19,7 @@ using namespace std;
 #include "exti.hpp"
 #include "rtc.hpp"
 #include "nrf24l01.hpp"
+#include "soft_timer.hpp"
 
 const uint8_t nRF_ADDR[] = { 'E', 'S', 'B' };
 
@@ -41,28 +42,17 @@ int main()
 
     /* Init System Timer */
     System::InitSysTick(1000);
+    System::SysTickClock(ENABLE);
 
     /* Initialisation Backup */
     Board::InitBKP();
 
     /* Initialisation Led */
     Board::InitLed();
-    Board::LedOn();
+    Board::LedOff();
 
     /* Initialisation RTC */
     Rtc::Init();
-    RTC_t rtc;
-    rtc.Year = 2017;
-    rtc.Month = 7;
-    rtc.Mday = 14;
-    rtc.Hour = 2;
-    rtc.Min = 40;
-    rtc.Sec = 0;
-    const uint32_t time = Rtc::DateToSec(&rtc);
-    Rtc::SetTime(time);
-
-    Rtc::InitAlarm(RtcInterrupt);
-    Rtc::SetAlarm(time + 1);
 
     /* Initialisation Watchdog Timer */
     Board::InitIWDG();
@@ -85,56 +75,72 @@ int main()
     /* Create radio */
     Nrf* rxSingle = new Nrf(VPortSpi, GPIOB, GPIO_Pin_0, GPIOB, GPIO_Pin_1);
     if((rxSingle == nullptr) || (rxSingle->CreateClass() == false)) {
-        while(true)
-            ;
+        while(true) {
+        }
     }
 
     if(!(rxSingle->Check())) {
-        while(true)
-            ;
+        while(true) {
+        }
     }
 
-    Nrf::Settings_t settingsNrf;
-    settingsNrf.OperationalMode = Nrf::MODE_RX;
-    settingsNrf.Channel = 40;                  // RF channel 40
-    settingsNrf.Pipe = Nrf::PIPE1;             // Work pipe
-    settingsNrf.DataRate = Nrf::DR_250kbps;    // data rate
-    settingsNrf.RfPower = Nrf::RF24_PA_MAX;    // TX power (maximum)
-    settingsNrf.CrcScheme = Nrf::CRC_2byte;    // CRC scheme
-    settingsNrf.StateAutoAck = Nrf::AA_ON;     // Auto-ACK
-    settingsNrf.PayloadLength = 32;
-    settingsNrf.AddrWidth = sizeof(nRF_ADDR) / sizeof(nRF_ADDR[0]);    // Address width, its common for all pipes (RX and TX)
-    memcpy(settingsNrf.Addr, nRF_ADDR, sizeof(nRF_ADDR) / sizeof(nRF_ADDR[0]));
-    rxSingle->Init(settingsNrf);
+    //    Nrf::Settings_t settingsNrf;
+    //    settingsNrf.OperationalMode = Nrf::MODE_RX;
+    //    settingsNrf.Channel = 40;                  // RF channel 40
+    //    settingsNrf.Pipe = Nrf::PIPE1;             // Work pipe
+    //    settingsNrf.DataRate = Nrf::DR_250kbps;    // data rate
+    //    settingsNrf.RfPower = Nrf::RF24_PA_MAX;    // TX power (maximum)
+    //    settingsNrf.CrcScheme = Nrf::CRC_2byte;    // CRC scheme
+    //    settingsNrf.StateAutoAck = Nrf::AA_ON;     // Auto-ACK
+    //    settingsNrf.PayloadLength = 32;
+    //    settingsNrf.AddrWidth = sizeof(nRF_ADDR) / sizeof(nRF_ADDR[0]);    // Address width, its common for all pipes (RX and TX)
+    //    memcpy(settingsNrf.Addr, nRF_ADDR, sizeof(nRF_ADDR) / sizeof(nRF_ADDR[0]));
+    //    rxSingle->Init(settingsNrf);
+    //
+    //    // Wake the transceiver
+    //    rxSingle->Enable();
+    //    System::DelayMS(5);
+    //
+    //    // Put the transceiver to the RX mode
+    //    rxSingle->RxOn();
+    //
+    //    /* Creating an external interrupt */
+    //    Exti* Interrupt = new Exti(GPIOA, GPIO_Pin_15, NrfTask);
+    //    Interrupt->SetTypeTrigger(EXTI_Trigger_Falling);
+    //    Interrupt->SetPriority(0, 0);
+    //    Interrupt->Enable();
+    //
+    //    // Buffer to store a payload of maximum width
+    //    uint8_t buffer[32];
+    //    memset(buffer, 0, sizeof(buffer));
+    //    uint8_t length = 32;
+    //    volatile uint8_t RPD = 0;
 
-    // Wake the transceiver
-    rxSingle->Enable();
-    System::DelayMS(5);
-
-    // Put the transceiver to the RX mode
-    rxSingle->RxOn();
-
-    /* Creating an external interrupt */
-    Exti* Interrupt = new Exti(GPIOA, GPIO_Pin_15, NrfTask);
-    Interrupt->SetTypeTrigger(EXTI_Trigger_Falling);
-    Interrupt->SetPriority(0, 0);
-    Interrupt->Enable();
-
-    // Buffer to store a payload of maximum width
-    uint8_t buffer[32];
-    memset(buffer, 0, sizeof(buffer));
-    uint8_t length = 32;
-    volatile uint8_t RPD = 0;
+    bool led = false;
+    SoftTimer timer(1000, System::GetSysCount);
+    System::DelayMS(1000);
 
     /* General loop */
     while(true) {
-        if(rxSingle->GetStatus_RXFIFO() != Nrf::STATUS_RXFIFO_EMPTY) {
-            // Get a payload from the transceiver
-            pipe = rxSingle->ReadPayload(buffer, &length);
-            RPD = rxSingle->GetReceivedPowerDetector();
-            IWDG_ReloadCounter();
-            memset(buffer, 0, sizeof(buffer));
+        //        if(rxSingle->GetStatus_RXFIFO() != Nrf::STATUS_RXFIFO_EMPTY) {
+        //            // Get a payload from the transceiver
+        //            pipe = rxSingle->ReadPayload(buffer, &length);
+        //            RPD = rxSingle->GetReceivedPowerDetector();
+        //            IWDG_ReloadCounter();
+        //            memset(buffer, 0, sizeof(buffer));
+        //        }
+
+        if(timer.Match()) {
+            if(led) {
+                Board::LedOff();
+            }
+            else {
+                Board::LedOn();
+            }
+            led = !led;
+            timer.Start(1000);
         }
+
         IWDG_ReloadCounter();
     }
 }
